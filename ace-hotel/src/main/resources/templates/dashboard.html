@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body>
+
+<div class="app">
+    <aside th:replace="~{fragments/layout :: sidebar('dashboard')}"></aside>
+
+    <div class="main">
+        <header th:replace="~{fragments/layout :: topbar('Dashboard')}"></header>
+
+        <main class="content">
+
+            <!-- ============ KPI ============ -->
+            <section class="kpis" aria-label="Chỉ số hôm nay">
+                <div class="kpi k-free">
+                    <span class="ico"></span>
+                    <div><p>Phòng trống</p><strong th:text="${view.freeRooms()}">0</strong></div>
+                </div>
+                <div class="kpi k-in">
+                    <span class="ico"></span>
+                    <div><p>Check-in hôm nay</p><strong th:text="${view.checkInToday()}">0</strong></div>
+                </div>
+                <div class="kpi k-out">
+                    <span class="ico"></span>
+                    <div><p>Check-out hôm nay</p><strong th:text="${view.checkOutToday()}">0</strong></div>
+                </div>
+                <div class="kpi k-svc">
+                    <span class="ico"></span>
+                    <div><p>Dịch vụ đi kèm</p><strong th:text="${view.servicesToday()}">0</strong></div>
+                </div>
+            </section>
+
+            <!-- ============ TÌNH TRẠNG PHÒNG ============ -->
+            <section class="panel" aria-labelledby="rooms-title">
+                <div class="panel-title">
+                    <h2 id="rooms-title">Tình trạng phòng</h2>
+                    <span th:text="${#lists.size(view.rooms())} + ' phòng'">10 phòng</span>
+                </div>
+
+                <div class="rooms-grid" th:if="${!#lists.isEmpty(view.rooms())}">
+                    <article class="room-card" th:each="room : ${view.rooms()}">
+                        <div class="head">
+                            <h3 th:text="'Phòng ' + ${room.roomNumber()}">Phòng 301</h3>
+                            <span class="badge" th:classappend="${room.state().cssClass}">
+                                <i></i><span th:text="${room.state().label}">Phòng trống</span>
+                            </span>
+                        </div>
+                        <p class="sub" th:text="${room.typeName()} + ' · ' + ${room.capacity()} + ' khách'">Deluxe · 2 khách</p>
+                        <p class="price">
+                            <strong th:text="${#numbers.formatInteger(room.pricePerNight(), 1, 'POINT')} + 'đ'">1.250.000đ</strong>
+                            <span>/ đêm</span>
+                        </p>
+                        <div class="chips">
+                            <span class="chip" th:each="c : ${room.chips()}" th:text="${c}">+ Ăn sáng</span>
+                        </div>
+                        <div class="actions" th:if="${!#lists.isEmpty(room.actions())}">
+                            <a class="btn btn-sm" th:each="a : ${room.actions()}"
+                               th:classappend="${a.primary()} ? 'btn-primary' : 'btn-secondary'"
+                               th:href="@{${a.href()}}" th:text="${a.label()}">Đặt phòng</a>
+                        </div>
+                        <p class="none" th:if="${#lists.isEmpty(room.actions())}">Không có thao tác nghiệp vụ</p>
+                    </article>
+                </div>
+                <p class="empty" th:if="${#lists.isEmpty(view.rooms())}">Chưa có phòng nào trong hệ thống.</p>
+            </section>
+
+            <!-- ============ CHECK-IN / CHECK-OUT HÔM NAY ============ -->
+            <section class="panel" aria-labelledby="today-title">
+                <div class="panel-title">
+                    <h2 id="today-title">Check-in / Check-out hôm nay</h2>
+                    <span th:text="${todayLabel}">Thứ Hai, 12/10/2026</span>
+                </div>
+
+                <div class="table-wrap" th:if="${!#lists.isEmpty(view.rows())}">
+                    <table class="data">
+                        <thead>
+                        <tr>
+                            <th>Mã đặt phòng</th>
+                            <th>Khách hàng</th>
+                            <th>Phòng</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Trạng thái</th>
+                            <th style="text-align:right">Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="row : ${view.rows()}" th:classappend="${row.highlight()} ? 'row-hot'">
+                            <td class="code" th:text="${row.code()}">BK-0001</td>
+                            <td th:text="${row.customerName()}">Nguyễn Minh Anh</td>
+                            <td th:text="${row.roomLabel()}">301 · Deluxe</td>
+                            <td th:text="${row.checkIn()}">12/10 · 14:00</td>
+                            <td th:text="${row.checkOut()}">14/10</td>
+                            <td>
+                                <span class="badge" th:classappend="${row.state().cssClass}">
+                                    <i></i><span th:text="${row.state().label}">Đang ở</span>
+                                </span>
+                            </td>
+                            <td class="act">
+                                <a class="btn btn-sm" th:each="a : ${row.actions()}"
+                                   th:classappend="${a.primary()} ? 'btn-primary' : 'btn-secondary'"
+                                   th:href="@{${a.href()}}" th:text="${a.label()}">Check-in</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="empty" th:if="${#lists.isEmpty(view.rows())}">Hôm nay chưa có lượt nhận hoặc trả phòng.</p>
+            </section>
+
+        </main>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

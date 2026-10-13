@@ -1,0 +1,65 @@
+/* ACE Color System. Mặc định Dark; Light khi <html data-theme="light">.
+   Màu vàng thương hiệu #FDBF2D giữ nguyên ở cả hai chế độ. */
+
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #000000;
+  --surface: #121212;
+  --elevated: #1c1c1c;
+  --border: #2a2a2a;
+
+  --primary: #fdbf2d;
+  --primary-hover: #ffd056;
+  --primary-pressed: #e5a90f;
+  --primary-soft: #2a2208;
+  --on-primary: #0a0a0a;
+
+  --text: #ffffff;
+  --text-2: #a1a1aa;
+  --text-3: #71717a;
+  --primary-text: #fdbf2d;
+
+  --st-free: #22c55e;
+  --st-reserved: #a78bfa;
+  --st-occupied: #60a5fa;
+  --st-maint: #9ca3af;
+  --st-overdue: #f87171;
+  --st-done: #9ca3af;
+
+  --disabled-bg: #1c1c1c;
+  --glow: rgba(253, 191, 45, 0.16);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --elevated: #ffffff;
+  --border: #e6e3da;
+
+  --primary: #fdbf2d;
+  --primary-hover: #e5a90f;
+  --primary-pressed: #c98f00;
+  --primary-soft: #fff4d1;
+  --on-primary: #0a0a0a;
+
+  --text: #0a0a0a;
+  --text-2: #52525b;
+  --text-3: #71717a;
+  --primary-text: #b45309;
+
+  --st-free: #15803d;
+  --st-reserved: #7c3aed;
+  --st-occupied: #2563eb;
+  --st-maint: #6b7280;
+  --st-overdue: #dc2626;
+  --st-done: #6b7280;
+
+  --disabled-bg: #ececec;
+  --glow: rgba(253, 191, 45, 0.30);
+  --shadow: 0 10px 30px rgba(10, 10, 10, 0.08);
+}

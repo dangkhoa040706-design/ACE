@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head(${info.title()})}"></head>
+<body>
+
+<div class="app">
+    <aside th:replace="~{fragments/layout :: sidebar(${active})}"></aside>
+
+    <div class="main">
+        <header th:replace="~{fragments/layout :: topbar(${info.title()})}"></header>
+
+        <main class="content">
+            <section class="panel wip">
+                <span class="chip">Đang xây dựng</span>
+                <h2 style="margin-top:14px" th:text="${info.title()}">Tên màn hình</h2>
+                <p class="muted" style="margin-top:6px">
+                    Màn hình này đã có đường dẫn và phân quyền, nhưng phần nghiệp vụ sẽ được viết theo kế hoạch.
+                </p>
+
+                <dl>
+                    <dt>Use case</dt><dd th:text="${info.useCase()}">UC03</dd>
+                    <dt>Màn hình trong plan</dt><dd th:text="${info.screens()}">S05</dd>
+                    <dt>Thời điểm làm</dt><dd th:text="${info.week()}">Tuần 2</dd>
+                    <dt>Đang đăng nhập với</dt>
+                    <dd><span sec:authentication="principal.fullName">Người dùng</span>
+                        (<span sec:authentication="principal.roleLabel">Vai trò</span>)</dd>
+                </dl>
+
+                <a class="btn btn-primary" th:href="@{/dashboard}">Về dashboard</a>
+            </section>
+        </main>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

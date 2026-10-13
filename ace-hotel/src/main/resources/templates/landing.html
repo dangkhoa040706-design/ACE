@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Trang chủ')}"></head>
+<body>
+
+<header class="site-header">
+    <div class="container nav">
+        <a class="brand" th:href="@{/}" aria-label="ACE Hotel">
+            <img th:src="@{/images/logo-ace.png}" alt="ACE Hotel">
+        </a>
+        <nav class="site-nav" aria-label="Điều hướng trang">
+            <a href="#gioi-thieu">Giới thiệu</a>
+            <a href="#phong">Phòng</a>
+            <a href="#dat-phong">Đặt phòng</a>
+            <a href="#dich-vu">Dịch vụ</a>
+            <a href="#lien-he">Liên hệ</a>
+        </nav>
+        <div class="nav-actions">
+            <th:block th:replace="~{fragments/layout :: themeToggle}"></th:block>
+            <a class="btn btn-primary btn-sm" th:href="@{/login}" sec:authorize="!isAuthenticated()">Đăng nhập</a>
+            <a class="btn btn-primary btn-sm" th:href="@{/dashboard}" sec:authorize="isAuthenticated()">Vào dashboard</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+        <div class="container">
+            <p class="eyebrow">Accommodation · Check-in · Extras</p>
+            <h1>Nghỉ ngơi trọn vẹn, <span class="gold">từ lúc nhận phòng</span> đến mọi dịch vụ đi kèm</h1>
+            <p class="lead">ACE là khách sạn nhỏ gọn, phục vụ tận tình: đặt phòng rõ ràng, nhận phòng nhanh tại quầy lễ tân
+                và các dịch vụ bổ sung được ghi nhận minh bạch trên một hóa đơn duy nhất.</p>
+            <div class="hero-cta">
+                <a class="btn btn-primary" href="#lien-he">Liên hệ đặt phòng</a>
+                <a class="btn btn-secondary" th:href="@{/login}" sec:authorize="!isAuthenticated()">Đăng nhập nhân viên</a>
+                <a class="btn btn-secondary" th:href="@{/dashboard}" sec:authorize="isAuthenticated()">Vào dashboard</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= GIỚI THIỆU ================= -->
+    <section class="section alt" id="gioi-thieu">
+        <div class="container">
+            <div class="section-head">
+                <h2>Ba điều làm nên ACE</h2>
+                <p>Tên khách sạn là ba trụ cột của một kỳ nghỉ: nơi lưu trú, nhận phòng gọn gàng và những dịch vụ đi kèm.</p>
+            </div>
+            <div class="grid cols-3">
+                <article class="card pillar">
+                    <div class="letter">A</div>
+                    <h3>Accommodation · Lưu trú</h3>
+                    <p>Nhiều hạng phòng từ tiêu chuẩn đến căn hộ nghỉ dưỡng, giá một đêm niêm yết rõ ràng.</p>
+                </article>
+                <article class="card pillar">
+                    <div class="letter">C</div>
+                    <h3>Check-in · Nhận phòng</h3>
+                    <p>Lễ tân kiểm tra phòng trống, giữ chỗ theo ngày bạn chọn và đón bạn nhận phòng ngay tại quầy.</p>
+                </article>
+                <article class="card pillar">
+                    <div class="letter">E</div>
+                    <h3>Extras · Dịch vụ đi kèm</h3>
+                    <p>Ăn sáng, đưa đón, giặt ủi, spa, thuê xe... được cộng thẳng vào hóa đơn khi bạn trả phòng.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= LOẠI PHÒNG (đọc từ bảng room_types) ================= -->
+    <section class="section" id="phong">
+        <div class="container">
+            <div class="section-head">
+                <h2>Các hạng phòng</h2>
+                <p>Giá tính theo đêm. Số đêm tối thiểu là một.</p>
+            </div>
+            <div class="grid cards" th:if="${!#lists.isEmpty(roomTypes)}">
+                <article class="card room-type" th:each="t : ${roomTypes}">
+                    <h3 th:text="${t.name}">Deluxe</h3>
+                    <p class="meta" th:text="'Tối đa ' + ${t.capacity} + ' khách'">Tối đa 2 khách</p>
+                    <p class="desc" th:text="${t.description}">Mô tả hạng phòng.</p>
+                    <p class="price">
+                        <strong th:text="${#numbers.formatInteger(t.pricePerNight, 1, 'POINT')} + 'đ'">1.250.000đ</strong>
+                        <span>/ đêm</span>
+                    </p>
+                </article>
+            </div>
+            <p class="muted" th:if="${#lists.isEmpty(roomTypes)}">Danh sách hạng phòng đang được cập nhật.</p>
+        </div>
+    </section>
+
+    <!-- ================= ĐẶT PHÒNG (chỉ giới thiệu) ================= -->
+    <section class="section alt" id="dat-phong">
+        <div class="container">
+            <div class="section-head">
+                <h2>Đặt phòng thế nào?</h2>
+                <p>Mọi đặt phòng được thực hiện cùng lễ tân để bạn được tư vấn đúng hạng phòng và đúng ngày.</p>
+            </div>
+            <ol class="steps">
+                <li>
+                    <h3>Liên hệ lễ tân</h3>
+                    <p>Cho chúng tôi biết ngày nhận, ngày trả, số khách và hạng phòng mong muốn.</p>
+                </li>
+                <li>
+                    <h3>Kiểm tra và giữ phòng</h3>
+                    <p>Lễ tân tìm phòng trống theo khoảng ngày của bạn và tạo đặt phòng trên hệ thống.</p>
+                </li>
+                <li>
+                    <h3>Nhận phòng tại quầy</h3>
+                    <p>Đến đúng ngày, lễ tân xác nhận và bàn giao phòng. Thanh toán khi trả phòng.</p>
+                </li>
+            </ol>
+            <p class="notice">Hiện chưa hỗ trợ khách tự đặt phòng hoặc thanh toán trực tuyến trên trang này.</p>
+        </div>
+    </section>
+
+    <!-- ================= DỊCH VỤ (đọc từ bảng services) ================= -->
+    <section class="section" id="dich-vu">
+        <div class="container">
+            <div class="section-head">
+                <h2>Dịch vụ đi kèm</h2>
+                <p>Đăng ký khi đang lưu trú, tính vào hóa đơn lúc trả phòng.</p>
+            </div>
+            <ul class="service-list" th:if="${!#lists.isEmpty(services)}">
+                <li th:each="s : ${services}">
+                    <span th:text="${s.name}">Ăn sáng</span>
+                    <span class="p" th:text="${#numbers.formatInteger(s.unitPrice, 1, 'POINT')} + 'đ / ' + ${s.unit}">150.000đ / suất</span>
+                </li>
+            </ul>
+            <p class="muted" th:if="${#lists.isEmpty(services)}">Danh mục dịch vụ đang được cập nhật.</p>
+        </div>
+    </section>
+
+    <!-- ================= DÀNH CHO NHÂN VIÊN ================= -->
+    <section class="section alt" id="nhan-vien">
+        <div class="container">
+            <div class="section-head">
+                <h2>Dành cho nhân viên</h2>
+                <p>Đăng nhập để dùng hệ thống quản lý. Chức năng hiển thị theo vai trò lễ tân hoặc quản lý.</p>
+            </div>
+            <div class="grid cols-4">
+                <article class="card tile">
+                    <span class="chip">Lễ tân · Quản lý</span>
+                    <h3>Đặt phòng</h3>
+                    <p>Tìm phòng trống theo khoảng ngày, tìm hoặc tạo khách hàng, tạo và hủy đặt phòng.</p>
+                </article>
+                <article class="card tile">
+                    <span class="chip">Lễ tân · Quản lý</span>
+                    <h3>Check-in / Check-out</h3>
+                    <p>Nhận phòng, tính tiền phòng và dịch vụ, thanh toán, in hóa đơn.</p>
+                </article>
+                <article class="card tile">
+                    <span class="chip">Lễ tân · Quản lý</span>
+                    <h3>Dịch vụ</h3>
+                    <p>Thêm dịch vụ cho phòng đang ở, theo dõi số lượng và đơn giá.</p>
+                </article>
+                <article class="card tile">
+                    <span class="chip">Chỉ quản lý</span>
+                    <h3>Quản lý và thống kê</h3>
+                    <p>Quản lý phòng, loại phòng, danh mục dịch vụ; xem doanh thu và công suất phòng.</p>
+                </article>
+            </div>
+            <p style="margin-top:24px">
+                <a class="btn btn-primary" th:href="@{/login}" sec:authorize="!isAuthenticated()">Đăng nhập để sử dụng</a>
+                <a class="btn btn-primary" th:href="@{/dashboard}" sec:authorize="isAuthenticated()">Vào dashboard</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- ================= LIÊN HỆ ================= -->
+    <section class="section" id="lien-he">
+        <div class="container contact">
+            <div class="section-head">
+                <h2>Liên hệ</h2>
+                <p>Thông tin dưới đây là nội dung mẫu cho bản demo môn học.</p>
+            </div>
+            <div class="card">
+                <dl>
+                    <dt>Địa chỉ</dt><dd>Số 1 Đường Mẫu, Quận Mẫu, Thành phố Hồ Chí Minh</dd>
+                    <dt>Điện thoại lễ tân</dt><dd>0900 000 000</dd>
+                    <dt>Email</dt><dd>letan@ace-hotel.example</dd>
+                    <dt>Giờ làm việc</dt><dd>Lễ tân phục vụ 24/7</dd>
+                    <dt>Giờ nhận / trả phòng</dt><dd>Nhận phòng từ 14:00, trả phòng trước 12:00</dd>
+                </dl>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container row">
+        <span>ACE · Accommodation, Check-in &amp; Extras</span>
+        <span>Môn 502050 · Phân tích và Thiết kế Yêu cầu · 2026</span>
+    </div>
+</footer>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
