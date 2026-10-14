@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bộ 4 Ảnh Phân Công Chuẩn Chương 1–8 (Không Phụ Lục) — ACE Hotel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+            background: #121316;
+            color: #111827;
+            padding: 28px;
+        }
+
+        .toolbar {
+            max-width: 1480px;
+            margin: 0 auto 24px auto;
+            background: #1e2028;
+            border: 1px solid #3f3f46;
+            border-left: 5px solid #fdbf2d;
+            border-radius: 10px;
+            padding: 16px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+        }
+
+        .toolbar h2 {
+            font-size: 18px;
+            color: #fdbf2d;
+        }
+
+        .toolbar p {
+            font-size: 13px;
+            color: #d4d4d8;
+            margin-top: 4px;
+        }
+
+        .btn-download {
+            background: #fdbf2d;
+            color: #0a0a0a;
+            border: none;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.15s;
+            white-space: nowrap;
+        }
+
+        .btn-download:hover {
+            background: #ffd056;
+        }
+
+        .card-wrapper {
+            max-width: 1480px;
+            margin: 0 auto 44px auto;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #e4e4e7;
+        }
+
+        /* KHUNG ẢNH CHUẨN */
+        .board {
+            width: 1480px;
+            background: #ffffff;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+        }
+
+        /* HEADER SANG TRỌNG CHUẨN ACE HOTEL */
+        .board-dark-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #272012 100%);
+            border-bottom: 4px solid #fdbf2d;
+            color: #ffffff;
+            padding: 24px 36px;
+        }
+
+        .board-dark-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: #fdbf2d;
+            margin-bottom: 6px;
+        }
+
+        .board-dark-header p {
+            font-size: 14.5px;
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .board-body {
+            padding: 22px 36px 26px 36px;
+            background: #ffffff;
+        }
+
+        /* MÀU 4 TUẦN */
+        .w1 {
+            background: #1d4ed8 !important;
+            color: #ffffff !important;
+        }
+
+        .w2 {
+            background: #047857 !important;
+            color: #ffffff !important;
+        }
+
+        .w3 {
+            background: #c2410c !important;
+            color: #ffffff !important;
+        }
+
+        .w4 {
+            background: #b91c1c !important;
+            color: #ffffff !important;
+        }
+
+        .w-person {
+            background: #1e293b !important;
+            color: #fdbf2d !important;
+        }
+
+        .week-pills {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .pill {
+            padding: 11px 18px;
+            border-radius: 8px;
+            color: #fff;
+        }
+
+        .pill strong {
+            display: block;
+            font-size: 16.5px;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .pill span {
+            font-size: 12.5px;
+            opacity: 0.95;
+        }
+
+        /* HỘP QUY ƯỚC VÀNG */
+        .rule-box {
+            background: #fefce8;
+            border: 1.5px solid #fde047;
+            border-left: 5px solid #eab308;
+            border-radius: 8px;
+            padding: 13px 18px;
+            margin-bottom: 16px;
+        }
+
+        .rule-box h3 {
+            color: #854d0e;
+            font-size: 13.5px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .rule-box ul {
+            list-style: disc;
+            margin-left: 20px;
+            font-size: 12.8px;
+            line-height: 1.6;
+            color: #1f2937;
+        }
+
+        /* TIÊU ĐỀ KHỐI */
+        .section-bar {
+            padding: 10px 16px;
+            color: #ffffff;
+            font-size: 15.5px;
+            font-weight: 800;
+            border-radius: 6px 6px 0 0;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        .section-bar span {
+            font-size: 12.5px;
+            font-weight: 400;
+            opacity: 0.92;
+        }
+
+        .bg-teal {
+            background: #0f5c5c;
+        }
+
+        .bg-brown {
+            background: #9a4a06;
+        }
+
+        .bg-navy {
+            background: #1e3a8a;
+        }
+
+        .bg-khoa {
+            background: #1d4ed8;
+        }
+
+        .bg-hoang {
+            background: #047857;
+        }
+
+        .bg-phong {
+            background: #c2410c;
+        }
+
+        .bg-kiet {
+            background: #6d28d9;
+        }
+
+        /* BẢNG CHUẨN */
+        table.grid-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+            font-size: 12.6px;
+            line-height: 1.52;
+        }
+
+        table.grid-table th,
+        table.grid-table td {
+            border: 1px solid #cbd5e1;
+            padding: 9px 11px;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        table.grid-table thead th {
+            background: #f1f5f9;
+            font-weight: 800;
+            color: #0f172a;
+            font-size: 13px;
+        }
+
+        .cell-handover {
+            background: #fef9c3 !important;
+            color: #991b1b;
+            font-weight: 700;
+        }
+
+        .cell-week {
+            font-weight: 800;
+            width: 105px;
+            color: #ffffff;
+        }
+
+        .person-col {
+            width: 165px;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .person-col small {
+            display: block;
+            font-weight: 500;
+            font-size: 11.8px;
+            margin-top: 4px;
+            opacity: 0.92;
+            line-height: 1.4;
+        }
+
+        ul.tight {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul.tight li {
+            position: relative;
+            padding-left: 13px;
+            margin-bottom: 4px;
+        }
+
+        ul.tight li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .footer-note {
+            font-size: 12.5px;
+            color: #4b5563;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="toolbar">
+        <div>
+            <h2>BỘ 4 ẢNH PHÂN CÔNG CHUẨN MỤC LỤC CHƯƠNG 1 – CHƯƠNG 8 (ĐÃ BỎ PHỤ LỤC)</h2>
+            <p>Khoa: Code full + Chương 5 + UC07/ERD/Class | Hoàng: Phụ trách chính file Doc (Phần đầu, Chương 3,
+                UC02–03, Chương 7, Chương 8, Gộp &amp; Hoàn thiện báo cáo) | Phong: Thuyết trình full + Chương 1–2 +
+                UC04–05 | Kiệt: Slide tiếng Anh full + Chương 6 + UC01/06.</p>
+        </div>
+        <button class="btn-download" onclick="downloadAll()">⬇ Tải Tất Cả 4 Ảnh (.PNG)</button>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ẢNH 1: ke-hoach-4-tuan.png                                                -->
+    <!-- ========================================================================= -->
+    <div class="card-wrapper">
+        <div class="card-actions">
+            <strong>1. Ảnh tổng quan: <code>ke-hoach-4-tuan.png</code></strong>
+            <button class="btn-download" onclick="exportPNG('board-1', 'ke-hoach-4-tuan.png')">📸 Tải ảnh .PNG
+                (ke-hoach-4-tuan.png)</button>
+        </div>
+
+        <div class="board" id="board-1">
+            <div class="board-dark-header">
+                <h1>KẾ HOẠCH 4 TUẦN: HỆ THỐNG QUẢN LÝ KHÁCH SẠN ACE</h1>
+                <p>Tuần 1: Viết Chương 1–5 + 7 Sơ đồ UC chi tiết + ERD/Class &rarr; Tuần 2: Khoa code full + Vẽ 7
+                    Activity &amp; 7 Sequence &rarr; Tuần 3: Bàn giao code, Hoàng hoàn thiện Chương 7–8 &amp; gộp doc,
+                    Kiệt làm slide &rarr; Tuần 4: Ôn tập</p>
+            </div>
+            <div class="board-body">
+                <table class="grid-table">
+                    <thead>
+                        <tr>
+                            <th class="w-person" style="width:165px;">Thành viên</th>
+                            <th class="w1" style="width:27%;">TUẦN 1 (12 đến 18/10)<br><span
+                                    style="font-weight:500;font-size:12px;">Chương 1–5 + 7 UC Diagram chi tiết +
+                                    ERD/Class</span></th>
+                            <th class="w2" style="width:25%;">TUẦN 2 (19 đến 25/10)<br><span
+                                    style="font-weight:500;font-size:12px;">Khoa code full &bull; Vẽ 7 Activity + 7
+                                    Sequence</span></th>
+                            <th class="w3" style="width:24%;">TUẦN 3 (26/10 đến 01/11)<br><span
+                                    style="font-weight:500;font-size:12px;">Bàn giao code, Hoàng gộp Chương 1–8, Kiệt
+                                    làm slide</span></th>
+                            <th class="w4" style="width:24%;">TUẦN 4 (02 đến 08/11)<br><span
+                                    style="font-weight:500;font-size:12px;">ÔN TẬP &amp; NỘP BÀI (09/11)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cell-handover" style="font-size:13.5px;">BÀN GIAO</td>
+                            <td class="cell-handover">Cuối tuần: Kiệt gửi 10 wireframe; Hoàng, Phong, Kiệt gửi đặc tả +
+                                sơ đồ UC chi tiết (UC01–UC06) cho Khoa. Khoa gửi ERD, Class Diagram, schema, dữ liệu mẫu
+                                cho cả nhóm.</td>
+                            <td style="background:#fef9c3;color:#374151;font-weight:600;">Không có bàn giao.<br>(Khoa
+                                code full; mỗi người vẽ đủ Activity &amp; Sequence cho các UC mình phụ trách).</td>
+                            <td class="cell-handover">Giữa tuần: Khoa bàn giao code và README. Cuối tuần: Khoa, Phong,
+                                Kiệt gửi toàn bộ các Chương đã viết &amp; 24 sơ đồ UML cho Hoàng gộp thành bao-cao.docx.
+                            </td>
+                            <td class="cell-handover">Khoa gửi video demo dự phòng cho Kiệt chèn vào slide. Hoàng hoàn
+                                thiện bản cuối bao-cao.docx và bao-cao.pdf (Chương 1–8) để nộp.</td>
+                        </tr>
+                        <tr>
+                            <td class="person-col bg-khoa">KHOA<small>Code full, demo,<br>Chương 5, ERD, Class,<br>Mục
+                                    4.2.7 (UC07)</small></td>
+                            <td style="background:#eff6ff;">
+                                <ul class="tight">
+                                    <li>Cùng cả nhóm chốt phạm vi mới, 7 use case, 8 bảng</li>
+                                    <li>Vẽ <b>Mục 4.3 (Class Diagram 8 lớp)</b> và <b>Mục 4.4 (ERD 8 bảng)</b></li>
+                                    <li>Viết <b>Chương 5 (Mục 5.1, 5.2, 5.3)</b>: Lược đồ quan hệ, Từ điển dữ liệu 8
+                                        bảng, Ràng buộc &amp; SQL</li>
+                                    <li>Viết <code>schema.sql</code>, <code>sample-data.sql</code> (cọc 30%, giá cuối
+                                        tuần, <code>DIRTY</code>, hóa đơn <code>++</code>)</li>
+                                    <li>Viết <b>Mục 4.2.7 (UC07)</b> + vẽ <code>uc-07.png</code>,
+                                        <code>act-uc07.png</code>, <code>seq-uc07.png</code></li>
+                                </ul>
+                            </td>
+                            <td style="background:#eff6ff;">
+                                <ul class="tight">
+                                    <li>Dựng project Spring Boot + 4 Giao diện (Landing Storytelling + 3 Dashboard)</li>
+                                    <li><b>Code full</b> theo thứ tự: <b>UC01</b> (Đăng ký/Login 3 Role), <b>UC02</b>
+                                        (Danh mục phòng/giá/DV), <b>UC03</b> (Đặt phòng Online + Cọc 30% + QR), <b>UC04
+                                            + UC05</b> (Check-in gán phòng sạch, Walk-in 0đ cọc; Check-out
+                                        <code>++</code> Online 70% / Walk-in 100%, chuyển <code>DIRTY</code>),
+                                        <b>UC06</b> (Room Folio), <b>UC07</b> (Thống kê)</li>
+                                </ul>
+                            </td>
+                            <td style="background:#eff6ff;">
+                                <ul class="tight">
+                                    <li>Hoàn thiện, test, sửa lỗi</li>
+                                    <li>Giữa tuần: bàn giao code + <code>README.md</code></li>
+                                    <li>Gửi <code>chuong-5-csdl-khoa.docx</code>, <code>chuong-4-uc07-khoa.docx</code>
+                                        và 5 sơ đồ (<code>ERD</code>, <code>Class</code>, <code>UC07</code>,
+                                        <code>Act UC07</code>, <code>Seq UC07</code>) cho Hoàng gộp báo cáo</li>
+                                    <li>Sửa lỗi theo phản hồi của 3 bạn</li>
+                                </ul>
+                            </td>
+                            <td style="background:#eff6ff;">
+                                <ul class="tight">
+                                    <li>Chuẩn bị thiết bị demo, nạp dữ liệu mẫu sạch</li>
+                                    <li>Quay video demo dự phòng (<code>demo-du-phong.mp4</code>)</li>
+                                    <li>Đáp án 8 câu về code, CSDL</li>
+                                    <li><b>Thao tác trên thiết bị để demo</b> cùng Phong</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="person-col bg-hoang">HOÀNG<small>Chủ trì Báo cáo Doc:<br>Phần đầu, Chương
+                                    3,<br>UC02–03, Chương 7–8,<br>Gộp &amp; Hoàn thiện Doc</small></td>
+                            <td style="background:#ecfdf5;">
+                                <ul class="tight">
+                                    <li>Tạo <code>bao-cao-khung.docx</code> chuẩn định dạng đề thi (Chương 1 &rarr;
+                                        Chương 8, không Phụ lục)</li>
+                                    <li>Viết <b>Chương 3 (Mục 3.1, 3.2, 3.3, 3.4)</b>: Quy tắc nghiệp vụ BR1–BR7, 18 FR,
+                                        9 NFR, MoSCoW</li>
+                                    <li>Vẽ <b>Mục 4.1 (Use Case tổng quát)</b></li>
+                                    <li>Viết <b>Mục 4.2.2 (UC02)</b> &amp; <b>Mục 4.2.3 (UC03)</b> + vẽ
+                                        <code>uc-02.png</code> và <code>uc-03.png</code></li>
+                                </ul>
+                            </td>
+                            <td style="background:#ecfdf5;">
+                                <ul class="tight">
+                                    <li>Vẽ <b>Activity &amp; Sequence UC02</b> (<code>act-uc02</code>,
+                                        <code>seq-uc02</code>)</li>
+                                    <li>Vẽ <b>Activity &amp; Sequence UC03</b> (<code>act-uc03</code>,
+                                        <code>seq-uc03</code>)</li>
+                                    <li>Làm <b>Phần đầu báo cáo</b> (Bìa, Phụ bìa, Mục lục, Danh mục hình/bảng/từ viết
+                                        tắt) &amp; <b>Tài liệu tham khảo</b></li>
+                                    <li>Soạn khung <b>Mục 7.1, 7.2, 7.4</b> (Kiến trúc, Dữ liệu mẫu &amp; Ma trận RTM)
+                                    </li>
+                                </ul>
+                            </td>
+                            <td style="background:#ecfdf5;">
+                                <ul class="tight">
+                                    <li>Chạy app chụp ảnh hoàn thiện <b>Chương 7 (Mục 7.1 &rarr; 7.4)</b></li>
+                                    <li>Viết <b>Chương 8 – Kết luận (Mục 8.1, 8.2, 8.3)</b></li>
+                                    <li><b>Nhận toàn bộ các Chương và 24 sơ đồ UML từ Khoa, Phong, Kiệt để gộp thành
+                                            <code>bao-cao.docx</code> hoàn chỉnh (Chương 1 &rarr; Chương 8)</b></li>
+                                </ul>
+                            </td>
+                            <td style="background:#ecfdf5;">
+                                <ul class="tight">
+                                    <li><b>Rà soát toàn bộ <code>bao-cao.docx</code> theo 6 tiêu chí, cập nhật mục lục
+                                            tự động và xuất <code>bao-cao.pdf</code> bản cuối để nộp E-learning</b></li>
+                                    <li>Tập hỏi đáp</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="person-col bg-phong">PHONG<small>Thuyết trình full,<br>Chương 1–2,
+                                    UC04–05,<br>Demo script, Câu hỏi</small></td>
+                            <td style="background:#fff7ed;">
+                                <ul class="tight">
+                                    <li>Viết <b>Chương 1 (Mục 1.1, 1.2, 1.3)</b>: Giới thiệu &amp; Phạm vi đề tài</li>
+                                    <li>Viết <b>Chương 2 (Mục 2.1, 2.2, 2.3, 2.4)</b>: Khảo sát &amp; Mô tả hiện trạng
+                                    </li>
+                                    <li>Viết <b>Mục 4.2.4 (UC04)</b> + vẽ <code>uc-04.png</code> (Check-in gán phòng
+                                        sạch &amp; Walk-in)</li>
+                                    <li>Viết <b>Mục 4.2.5 (UC05)</b> + vẽ <code>uc-05.png</code> (Check-out quyết toán
+                                        <code>++</code> &amp; chuyển <code>DIRTY</code>)</li>
+                                </ul>
+                            </td>
+                            <td style="background:#fff7ed;">
+                                <ul class="tight">
+                                    <li>Vẽ <b>Activity &amp; Sequence UC04</b> (<code>act-uc04</code>,
+                                        <code>seq-uc04</code>)</li>
+                                    <li>Vẽ <b>Activity &amp; Sequence UC05</b> (<code>act-uc05</code>,
+                                        <code>seq-uc05</code>)</li>
+                                    <li>Gửi toàn bộ <b>Chương 1, Chương 2, Mục 4.2.4, 4.2.5</b> cho Hoàng</li>
+                                    <li>Viết Kịch bản thuyết trình slide 1–8 &amp; Demo script bản 1</li>
+                                </ul>
+                            </td>
+                            <td style="background:#fff7ed;">
+                                <ul class="tight">
+                                    <li><i>(Đã hoàn tất phần viết báo cáo Word)</i></li>
+                                    <li>Chạy thử app, chốt <code>demo-script.docx</code> bản cuối</li>
+                                    <li>Hoàn chỉnh <code>kich-ban-thuyet-trinh.docx</code> cho đủ 12 slide (14 phút)
+                                    </li>
+                                    <li>Soạn <code>cau-hoi-du-kien.docx</code> (20 câu hỏi phản biện &amp; đáp án)</li>
+                                </ul>
+                            </td>
+                            <td style="background:#fff7ed;">
+                                <ul class="tight">
+                                    <li><b>Một mình thuyết trình toàn bộ 12 slide, 14 phút, tập 3 lần cùng Khoa</b></li>
+                                    <li>Điều phối tập hỏi đáp</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="person-col bg-kiet">KIỆT<small>Slide tiếng Anh full,<br>Chương 6
+                                    (Wireframe),<br>Mục 4.2.1 &amp; 4.2.6</small></td>
+                            <td style="background:#f5f3ff;">
+                                <ul class="tight">
+                                    <li>Vẽ <b>10 wireframe (WF-01 &rarr; WF-10)</b> cho 4 phân hệ giao diện</li>
+                                    <li>Viết <b>Mục 4.2.1 (UC01)</b> + vẽ <code>uc-01.png</code> (Đăng ký/Login &amp;
+                                        Điều hướng 3 Role)</li>
+                                    <li>Viết <b>Mục 4.2.6 (UC06)</b> + vẽ <code>uc-06.png</code> (Ghi nhận dịch vụ Room
+                                        Folio)</li>
+                                </ul>
+                            </td>
+                            <td style="background:#f5f3ff;">
+                                <ul class="tight">
+                                    <li>Viết <b>Chương 6 (Mục 6.1, 6.2, 6.3)</b>: ACE Color System, Sơ đồ điều hướng 4
+                                        giao diện (<code>dieu-huong.png</code>), RBAC &amp; Mô tả 10 Wireframe</li>
+                                    <li>Vẽ <b>Activity &amp; Sequence UC01</b> (<code>act-uc01</code>,
+                                        <code>seq-uc01</code>)</li>
+                                    <li>Vẽ <b>Activity &amp; Sequence UC06</b> (<code>act-uc06</code>,
+                                        <code>seq-uc06</code>)</li>
+                                    <li><b>Làm Slide tiếng Anh 1 đến 8</b></li>
+                                </ul>
+                            </td>
+                            <td style="background:#f5f3ff;">
+                                <ul class="tight">
+                                    <li>Gửi <code>chuong-4-uc01-uc06-kiet.docx</code>,
+                                        <code>chuong-6-giao-dien-kiet.docx</code>, 10 wireframe và 6 sơ đồ UML cho Hoàng
+                                        gộp vào báo cáo</li>
+                                    <li>Chạy app chụp ảnh, <b>hoàn thiện Slide tiếng Anh 9 đến 12</b></li>
+                                </ul>
+                            </td>
+                            <td style="background:#f5f3ff;">
+                                <ul class="tight">
+                                    <li>Chèn video dự phòng vào slide 10</li>
+                                    <li><b>Check và xuất <code>presentation-en.pptx</code> / <code>.pdf</code> bản
+                                            cuối</b></li>
+                                    <li>Tập hỏi đáp</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="footer-note">Cấu trúc quyển báo cáo gồm 8 Chương (Chương 1 &rarr; Chương 8) và Danh mục Tài
+                    liệu tham khảo, đã bỏ hoàn toàn phần Phụ lục theo yêu cầu của giảng viên.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ẢNH 2: pc-1-chot-chung-ban-giao.png                                       -->
+    <!-- ========================================================================= -->
+    <div class="card-wrapper">
+        <div class="card-actions">
+            <strong>2. Ảnh chốt chung &amp; bàn giao: <code>pc-1-chot-chung-ban-giao.png</code></strong>
+            <button class="btn-download" onclick="exportPNG('board-2', 'pc-1-chot-chung-ban-giao.png')">📸 Tải ảnh .PNG
+                (pc-1-chot-chung-ban-giao.png)</button>
+        </div>
+
+        <div class="board" id="board-2">
+            <div class="board-dark-header">
+                <h1>CHỐT CHUNG, CẤU TRÚC CHƯƠNG 1–8 VÀ LỊCH BÀN GIAO</h1>
+                <p>Hệ thống quản lý khách sạn ACE | Nhóm 4 người | Cấu trúc 8 Chương (Không Phụ lục) | Hạn cứng nộp báo
+                    cáo 23h59 ngày 09/11/2026</p>
+            </div>
+            <div class="board-body">
+                <div class="week-pills">
+                    <div class="pill w1"><strong>Tuần 1</strong><span>12 đến 18/10</span></div>
+                    <div class="pill w2"><strong>Tuần 2</strong><span>19 đến 25/10</span></div>
+                    <div class="pill w3"><strong>Tuần 3</strong><span>26/10 đến 01/11</span></div>
+                    <div class="pill w4"><strong>Tuần 4</strong><span>02 đến 08/11: ÔN TẬP</span></div>
+                </div>
+
+                <div class="rule-box">
+                    <h3>QUY ƯỚC CHUNG &amp; PHÂN BỔ QUYỂN BÁO CÁO (CHƯƠNG 1 &rarr; CHƯƠNG 8, KHÔNG PHỤ LỤC)</h3>
+                    <ul>
+                        <li><b>4 Trụ cột phụ trách chính:</b> <b>Khoa</b> code full ứng dụng &amp; thao tác thiết bị
+                            demo &bull; <b>Phong</b> thuyết trình full 12 slide &amp; làm kịch bản/câu hỏi &bull;
+                            <b>Kiệt</b> làm full bộ Slide tiếng Anh (12 slide) &amp; 10 Wireframe &bull; <b>Hoàng</b>
+                            phụ trách chính việc viết, gộp và hoàn thiện quyển báo cáo Word (<code>bao-cao.docx</code> /
+                            <code>bao-cao.pdf</code>) để nộp.</li>
+                        <li><b>Phân bổ 8 Chương trong Báo cáo Word (Đã bỏ Phụ lục theo yêu cầu của Cô):</b><br>
+                            &bull; <b>Phần đầu báo cáo</b> (Bìa, Phụ bìa, Mục lục, Danh mục hình/bảng/từ viết tắt) +
+                            <b>Chương 3</b> (Yêu cầu FR, NFR, MoSCoW) + <b>Mục 4.1, 4.2.2, 4.2.3</b> (UC Tổng quát,
+                            UC02, UC03) + <b>Chương 7</b> (Kết quả Prototype, Cài đặt Java, Demo &amp; Ma trận RTM) +
+                            <b>Chương 8</b> (Kết luận) + <b>Tài liệu tham khảo</b>: <b>Hoàng</b> phụ trách.<br>
+                            &bull; <b>Chương 1</b> (Giới thiệu &amp; Phạm vi) + <b>Chương 2</b> (Khảo sát hiện trạng) +
+                            <b>Mục 4.2.4, 4.2.5</b> (UC04, UC05): <b>Phong</b> phụ trách.<br>
+                            &bull; <b>Mục 4.2.1, 4.2.6</b> (UC01, UC06) + <b>Chương 6</b> (Thiết kế giao diện 10
+                            Wireframe &amp; Điều hướng): <b>Kiệt</b> phụ trách.<br>
+                            &bull; <b>Mục 4.2.7</b> (UC07) + <b>Mục 4.3, 4.4</b> (Class Diagram, ERD) + <b>Chương 5</b>
+                            (Thiết kế CSDL &amp; Từ điển dữ liệu 8 bảng): <b>Khoa</b> phụ trách.</li>
+                    </ul>
+                </div>
+
+                <div class="section-bar bg-teal">CHỐT ĐẦY ĐỦ 24 SƠ ĐỒ UML TRONG CHƯƠNG 4 (MỤC 4.1 &rarr; 4.4) <span>1 UC
+                        Tổng quát + 7 UC Chi tiết + 7 Activity + 7 Sequence + 1 Class + 1 ERD</span></div>
+                <table class="grid-table">
+                    <thead>
+                        <tr>
+                            <th style="width:215px;">Mục trong Chương 4</th>
+                            <th style="width:305px;">Danh sách sơ đồ phải vẽ (24 sơ đồ)</th>
+                            <th style="width:105px;">Người vẽ</th>
+                            <th>Nội dung biểu diễn trọng tâm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Mục 4.1, Mục 4.3 &amp; Mục 4.4 (Sơ đồ cấp hệ thống)</b></td>
+                            <td>1. <b>Use Case tổng quát</b> (<code>usecase-tong-quat.png</code>)<br>2. <b>Class Diagram
+                                    8 lớp</b> (<code>class-diagram.png</code>)<br>3. <b>ERD 8 bảng</b>
+                                (<code>erd.png</code>)</td>
+                            <td><b>Hoàng</b> (4.1)<br><b>Khoa</b> (4.3, 4.4)</td>
+                            <td>Mục 4.1 thể hiện 3 Actor &amp; 7 UC trên 2 phân hệ. Mục 4.3 (Class Diagram) và Mục 4.4
+                                (ERD) thể hiện đầy đủ 8 lớp/bảng, thuộc tính, phương thức và quan hệ (1–1, 1–N).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mục 4.2.1: UC01 – Đăng ký, Đăng nhập &amp; Điều hướng 3 Role</b></td>
+                            <td>4. <b>UC Diagram chi tiết UC01</b> (<code>uc-01.png</code>)<br>5. <b>Activity Diagram
+                                    UC01</b> (<code>act-uc01.png</code>)<br>6. <b>Sequence Diagram UC01</b>
+                                (<code>seq-uc01.png</code>)</td>
+                            <td><b>Kiệt</b><br>(3 sơ đồ)</td>
+                            <td>Đăng nhập, <code>&lt;&lt;include&gt;&gt;</code> Kiểm tra BCrypt &amp; Điều hướng
+                                Dashboard theo Role (<code>ADMIN</code>, <code>RECEPTIONIST</code>,
+                                <code>CUSTOMER</code>), <code>&lt;&lt;extend&gt;&gt;</code> Đăng ký khách hàng mới.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mục 4.2.2: UC02 – Quản lý Danh mục Phòng, Giá &amp; Dịch vụ</b></td>
+                            <td>7. <b>UC Diagram chi tiết UC02</b> (<code>uc-02.png</code>)<br>8. <b>Activity Diagram
+                                    UC02</b> (<code>act-uc02.png</code>)<br>9. <b>Sequence Diagram UC02</b>
+                                (<code>seq-uc02.png</code>)</td>
+                            <td><b>Hoàng</b><br>(3 sơ đồ)</td>
+                            <td>Quản lý hạng phòng (giá ngày thường T2–T5 &amp; cuối tuần T6–CN), Quản lý phòng vật lý
+                                (Thêm/Sửa/Bảo trì/Xóa) và Quản lý danh mục 4 nhóm dịch vụ.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mục 4.2.3: UC03 – Tìm kiếm &amp; Đặt phòng trực tuyến (⭐ Trọng tâm 1)</b></td>
+                            <td>10. <b>UC Diagram chi tiết UC03</b> (<code>uc-03.png</code>)<br>11. <b>Activity Diagram
+                                    UC03</b> (<code>act-uc03.png</code>)<br>12. <b>Sequence Diagram UC03</b>
+                                (<code>seq-uc03.png</code>)</td>
+                            <td><b>Hoàng</b><br>(3 sơ đồ)</td>
+                            <td>Kiểm tra tồn kho Quota hạng phòng, Pop-up xác nhận &amp; Thanh toán cọc 30%, lưu trạng
+                                thái <code>RESERVED</code> (<code>room_id = NULL</code>), Sinh Phiếu xác nhận QR, Hủy
+                                đơn.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mục 4.2.4: UC04 – Check-in, Gán phòng sạch &amp; Walk-in (⭐ Trọng tâm 2)</b></td>
+                            <td>13. <b>UC Diagram chi tiết UC04</b> (<code>uc-04.png</code>)<br>14. <b>Activity Diagram
+                                    UC04</b> (<code>act-uc04.png</code>)<br>15. <b>Sequence Diagram UC04</b>
+                                (<code>seq-uc04.png</code>)</td>
+                            <td><b>Phong</b><br>(3 sơ đồ)</td>
+                            <td>Quét/nhập mã QR đơn đặt trước hoặc tiếp nhận khách Walk-in (0đ cọc), lọc danh sách phòng
+                                vật lý đang <code>AVAILABLE (Clean)</code> để gán phòng, đổi sang <code>OCCUPIED</code>
+                                &amp; mở Folio.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mục 4.2.5: UC05 – Check-out, Quyết toán <code>++</code> &amp; Dọn phòng (⭐ Trọng tâm
+                                    3)</b></td>
+                            <td>16. <b>UC Diagram chi tiết UC05</b> (<code>uc-05.png</code>)<br>17. <b>Activity Diagram
+                                    UC05</b> (<code>act-uc05.png</code>)<br>18. <b>Sequence Diagram UC05</b>
+                                (<code>seq-uc05.png</code>)</td>
+                            <td><b>Phong</b><br>(3 sơ đồ)</td>
+                            <td>Tổng hợp tiền phòng/Folio/phụ thu, tính SVC 5% + VAT 10%, khấu trừ cọc (Online trả 70%
+                                còn lại vs Walk-in trả 100%), xuất hóa đơn VAT, đổi phòng sang <code>DIRTY</code> &amp;
+                                dọn sạch.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mục 4.2.6: UC06 – Ghi nhận dịch vụ lưu trú (Room Folio)</b></td>
+                            <td>19. <b>UC Diagram chi tiết UC06</b> (<code>uc-06.png</code>)<br>20. <b>Activity Diagram
+                                    UC06</b> (<code>act-uc06.png</code>)<br>21. <b>Sequence Diagram UC06</b>
+                                (<code>seq-uc06.png</code>)</td>
+                            <td><b>Kiệt</b><br>(3 sơ đồ)</td>
+                            <td>Chọn phòng đang <code>OCCUPIED</code>, chọn dịch vụ 4 nhóm (<code>MINIBAR</code>,
+                                <code>LAUNDRY</code>, <code>FB</code>, <code>DAMAGES</code>), đóng băng
+                                <code>unit_price</code> vào Room Folio, xóa dòng ghi nhầm.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mục 4.2.7: UC07 – Báo cáo Doanh thu &amp; Công suất phòng (⭐ Trọng tâm 4)</b></td>
+                            <td>22. <b>UC Diagram chi tiết UC07</b> (<code>uc-07.png</code>)<br>23. <b>Activity Diagram
+                                    UC07</b> (<code>act-uc07.png</code>)<br>24. <b>Sequence Diagram UC07</b>
+                                (<code>seq-uc07.png</code>)</td>
+                            <td><b>Khoa</b><br>(3 sơ đồ)</td>
+                            <td>Thống kê doanh thu đa chiều <code>++</code>, tính <code>Occupancy Rate</code> (loại trừ
+                                phòng <code>MAINTENANCE</code>), <code>ADR</code>, <code>RevPAR</code> theo bộ lọc thời
+                                gian.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="section-bar bg-brown">BÀN GIAO THEO TUẦN <span>đồng bộ theo tên Chương 1 &rarr; Chương
+                        8</span></div>
+                <table class="grid-table">
+                    <thead>
+                        <tr>
+                            <th style="width:90px;">Tuần</th>
+                            <th style="width:230px;">Ai gửi &rarr; ai nhận</th>
+                            <th>Gửi gì</th>
+                            <th style="width:120px;">Thời điểm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="5" class="cell-week w1">Tuần 1</td>
+                            <td><b>Hoàng &rarr; cả nhóm</b></td>
+                            <td><code>bao-cao-khung.docx</code> (định dạng chuẩn đề thi, chia sẵn Chương 1 &rarr; Chương
+                                8, không Phụ lục)</td>
+                            <td>Ngày đầu</td>
+                        </tr>
+                        <tr>
+                            <td><b>Khoa &rarr; cả nhóm</b></td>
+                            <td>File chốt quy trình nghiệp vụ mới (<code>quy-trinh-nghiep-vu-moi.md</code>: 3 Actor, 7
+                                Use Case, 8 bảng, Online 30/70 &amp; Walk-in 0/100)</td>
+                            <td>Ngày đầu</td>
+                        </tr>
+                        <tr>
+                            <td><b>Khoa &rarr; Hoàng, Phong, Kiệt</b></td>
+                            <td><code>erd.png</code>, <code>class-diagram.png</code>, <code>uc-07.png</code>,
+                                <code>database/schema.sql</code>, <code>database/sample-data.sql</code></td>
+                            <td>Cuối tuần</td>
+                        </tr>
+                        <tr>
+                            <td><b>Kiệt &rarr; Khoa</b></td>
+                            <td>10 wireframe: <code>docs/wireframes/wf-01.png</code> đến <code>wf-10.png</code> (Chương
+                                6)</td>
+                            <td>Cuối tuần</td>
+                        </tr>
+                        <tr>
+                            <td><b>Hoàng, Phong, Kiệt &rarr; Khoa</b></td>
+                            <td>Đặc tả + Sơ đồ UC chi tiết Chương 4: Hoàng (<b>Mục 4.2.2, 4.2.3</b>); Phong (<b>Mục
+                                    4.2.4, 4.2.5</b>); Kiệt (<b>Mục 4.2.1, 4.2.6</b>)</td>
+                            <td>Cuối tuần</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w2">Tuần 2</td>
+                            <td><b>Phong, Kiệt &rarr; Hoàng</b></td>
+                            <td>Khoa code full. Cuối Tuần 2: Phong gửi <code>chuong-1-2-phong.docx</code>,
+                                <code>chuong-4-uc04-uc05-phong.docx</code> + 6 sơ đồ cho Hoàng; Kiệt gửi
+                                <code>chuong-4-uc01-uc06-kiet.docx</code>, <code>chuong-6-giao-dien-kiet.docx</code> + 6
+                                sơ đồ UML &amp; 10 wireframe cho Hoàng.</td>
+                            <td>Cuối tuần</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="5" class="cell-week w3">Tuần 3</td>
+                            <td><b>Khoa &rarr; Hoàng, Phong, Kiệt</b></td>
+                            <td>Link GitHub của source + <code>README.md</code> (cài JDK 21, cách chạy, tài khoản demo
+                                <code>quanly</code>, <code>letan</code>, khách hàng)</td>
+                            <td>Giữa tuần</td>
+                        </tr>
+                        <tr>
+                            <td><b>Khoa &rarr; Hoàng</b></td>
+                            <td><code>chuong-4-uc07-khoa.docx</code>, <code>chuong-5-csdl-khoa.docx</code> và 5 sơ đồ
+                                UML của Khoa để Hoàng gộp báo cáo</td>
+                            <td>Giữa tuần</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phong &rarr; Khoa, Hoàng, Kiệt</b></td>
+                            <td><code>demo-script.docx</code> bản cuối, <code>kich-ban-thuyet-trinh.docx</code> (12
+                                slide) và <code>cau-hoi-du-kien.docx</code> (20 câu)</td>
+                            <td>Cuối tuần</td>
+                        </tr>
+                        <tr>
+                            <td><b>Hoàng &rarr; cả nhóm</b></td>
+                            <td>Viết xong <b>Chương 7, Chương 8</b> và gộp toàn bộ thành <code>bao-cao.docx</code> hoàn
+                                chỉnh (từ Trang bìa, Chương 1 &rarr; Chương 8, Tài liệu tham khảo)</td>
+                            <td>Cuối tuần</td>
+                        </tr>
+                        <tr>
+                            <td><b>Kiệt &rarr; Phong, Khoa, Hoàng</b></td>
+                            <td>Slide tiếng Anh đủ 12 slide (<code>presentation-en.pptx</code>, slide 10 chừa chỗ chèn
+                                video)</td>
+                            <td>Cuối tuần</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" class="cell-week w4">Tuần 4</td>
+                            <td><b>Khoa &rarr; Kiệt</b></td>
+                            <td><code>demo-du-phong.mp4</code> (video demo dự phòng) để Kiệt chèn vào Slide 10 và xuất
+                                slide bản cuối</td>
+                            <td>Đầu tuần</td>
+                        </tr>
+                        <tr>
+                            <td><b>Hoàng &rarr; Nộp bài</b></td>
+                            <td>Rà soát lần cuối <code>bao-cao.docx</code> và xuất <code>bao-cao.pdf</code> bản cuối
+                                cùng để nộp lên E-learning</td>
+                            <td>Trong tuần</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="section-bar bg-navy">PHẦN TRÌNH BÀY (14 phút) VÀ 12 SLIDE <span>Phong thuyết trình toàn bộ;
+                        Khoa thao tác thiết bị demo; cả nhóm trả lời hỏi đáp</span></div>
+                <table class="grid-table" style="margin-bottom:6px;">
+                    <thead>
+                        <tr>
+                            <th style="width:70px;">Slide</th>
+                            <th>Nội dung (Ánh xạ theo Chương 1 &rarr; Chương 8)</th>
+                            <th style="width:360px;">Người thực hiện</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>1 – 4</b></td>
+                            <td>Tiêu đề; Giới thiệu &amp; Phạm vi (Chương 1); Khảo sát hiện trạng &amp; Vấn đề (Chương
+                                2); Yêu cầu FR, NFR, MoSCoW (Chương 3)</td>
+                            <td>Phong nói</td>
+                        </tr>
+                        <tr>
+                            <td><b>5 – 8</b></td>
+                            <td>Mô hình UML (Chương 4); Thiết kế CSDL 8 bảng &amp; Vòng đời <code>DIRTY</code> (Chương
+                                5); Giao diện 4 phân hệ (Chương 6); Kiến trúc Spring Boot (Chương 7)</td>
+                            <td>Phong nói</td>
+                        </tr>
+                        <tr>
+                            <td><b>9</b></td>
+                            <td>Demo trực tiếp (Khách đặt Online cọc 30% &rarr; Check-in gán phòng sạch &amp; Walk-in 0đ
+                                cọc &rarr; Room Folio &rarr; Check-out <code>++</code> &rarr; <code>DIRTY</code> &rarr;
+                                Admin)</td>
+                            <td><b>Khoa thao tác trên thiết bị, Phong dẫn từng bước theo demo-script</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>10</b></td>
+                            <td>Video demo dự phòng (chỉ chiếu khi app lỗi)</td>
+                            <td><b>Khoa mở video, Phong thuyết minh</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>11 – 12</b></td>
+                            <td>Kết quả đạt được &amp; Ma trận RTM (Chương 7); Kết luận, hạn chế, hướng phát triển
+                                (Chương 8), mời hỏi đáp</td>
+                            <td>Phong nói; <b>Cả 4 người trả lời hỏi đáp (5–8 phút)</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ẢNH 3: pc-2-viec-khoa-hoang.png                                           -->
+    <!-- ========================================================================= -->
+    <div class="card-wrapper">
+        <div class="card-actions">
+            <strong>3. Ảnh chi tiết Khoa &amp; Hoàng: <code>pc-2-viec-khoa-hoang.png</code></strong>
+            <button class="btn-download" onclick="exportPNG('board-3', 'pc-2-viec-khoa-hoang.png')">📸 Tải ảnh .PNG
+                (pc-2-viec-khoa-hoang.png)</button>
+        </div>
+
+        <div class="board" id="board-3">
+            <div class="board-dark-header">
+                <h1>VIỆC CỦA KHOA VÀ HOÀNG (CHƯƠNG 1 – CHƯƠNG 8, KHÔNG PHỤ LỤC)</h1>
+                <p>Giữ nguyên phân công của Khoa | Hoàng phụ trách phần lớn nội dung file Doc, gộp bài và hoàn thiện báo
+                    cáo nộp</p>
+            </div>
+            <div class="board-body">
+                <div class="week-pills">
+                    <div class="pill w1"><strong>Tuần 1</strong><span>12 đến 18/10</span></div>
+                    <div class="pill w2"><strong>Tuần 2</strong><span>19 đến 25/10</span></div>
+                    <div class="pill w3"><strong>Tuần 3</strong><span>26/10 đến 01/11</span></div>
+                    <div class="pill w4"><strong>Tuần 4</strong><span>02 đến 08/11: ÔN TẬP</span></div>
+                </div>
+
+                <div class="section-bar bg-khoa">KHOA <span>Code full ứng dụng web, thao tác thiết bị demo, Mục 4.2.7
+                        (UC07), Mục 4.3 (Class Diagram), Mục 4.4 (ERD) &amp; Chương 5 (CSDL)</span></div>
+                <table class="grid-table">
+                    <thead>
+                        <tr>
+                            <th style="width:90px;">Tuần</th>
+                            <th>Việc phải làm</th>
+                            <th style="width:265px;">File giao nộp</th>
+                            <th style="width:230px;">Bàn giao cho ai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cell-week w1">Tuần 1</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Ngày đầu: tạo sẵn trong repo các thư mục <code>docs/</code>,
+                                        <code>docs/diagrams/</code>, <code>docs/wireframes/</code>,
+                                        <code>slides/</code>, <code>src/</code>, <code>database/</code></li>
+                                    <li>Gửi file chốt quy trình mới (<code>quy-trinh-nghiep-vu-moi.md</code>) vào nhóm
+                                        chat để thống nhất 3 Actor, 7 Use Case, 8 bảng</li>
+                                    <li>Vẽ <b>Mục 4.3 – Class Diagram (8 lớp thực thể)</b> và <b>Mục 4.4 – ERD (8 bảng
+                                            thực thể)</b></li>
+                                    <li>Viết <b>Chương 5 – Thiết kế Cơ sở dữ liệu (Mục 5.1, 5.2, 5.3)</b>: Lược đồ quan
+                                        hệ, Từ điển dữ liệu chi tiết 8 bảng và Ràng buộc toàn vẹn</li>
+                                    <li>Viết <code>schema.sql</code> và <code>sample-data.sql</code>: 5 hạng phòng (giá
+                                        ngày thường/cuối tuần), 12 phòng (4 trạng thái <code>AVAILABLE</code>,
+                                        <code>OCCUPIED</code>, <code>DIRTY</code>, <code>MAINTENANCE</code>), tài khoản
+                                        3 Role, 4 nhóm dịch vụ, các đặt phòng mẫu</li>
+                                    <li>Viết <b>Mục 4.2.7 – Đặc tả UC07 (Báo cáo doanh thu <code>++</code> &amp; Công
+                                            suất phòng)</b> + vẽ trọn bộ 3 sơ đồ: <b>UC Diagram UC07</b>
+                                        (<code>uc-07.png</code>), <b>Activity UC07</b> (<code>act-uc07.png</code>) và
+                                        <b>Sequence UC07</b> (<code>seq-uc07.png</code>)</li>
+                                </ul>
+                            </td>
+                            <td><code>erd.drawio</code>, <code>.png</code><br><code>class-diagram.drawio</code>,
+                                <code>.png</code><br><code>uc-07.drawio</code>,
+                                <code>.png</code><br><code>act-uc07.drawio</code>,
+                                <code>.png</code><br><code>seq-uc07.drawio</code>,
+                                <code>.png</code><br><code>chuong-4-uc07-khoa.docx</code><br><code>chuong-5-csdl-khoa.docx</code><br><code>schema.sql</code>,
+                                <code>sample-data.sql</code></td>
+                            <td class="cell-handover">Cuối tuần: <code>erd.png</code>, <code>class-diagram.png</code>,
+                                <code>uc-07.png</code>, <code>schema.sql</code>, <code>sample-data.sql</code> &rarr;
+                                Hoàng, Phong, Kiệt</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w2">Tuần 2</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Đầu tuần: dựng project Spring Boot (JDK 21; Spring Web, Thymeleaf, Spring Data
+                                        JPA, H2, Validation, Security), tách 3 lớp controller, service, repository; nạp
+                                        <code>schema.sql</code> và <code>sample-data.sql</code></li>
+                                    <li><b>Code full</b> theo thứ tự cố định: <b>UC01</b> (Đăng ký khách hàng &amp; Đăng
+                                        nhập tự động điều hướng 3 Role), <b>UC02</b> (Quản lý danh mục phòng, giá ngày
+                                        thường/cuối tuần &amp; dịch vụ), <b>UC03</b> (Tìm theo Quota hạng phòng, đặt
+                                        phòng Online cọc 30%, xuất Phiếu xác nhận QR), <b>UC04 + UC05</b> (Check-in quét
+                                        QR gán phòng sạch &amp; Walk-in 0đ cọc; Check-out tính <code>++</code> SVC 5% +
+                                        VAT 10%, trừ cọc 30% cho khách Online / thu 100% cho khách Walk-in, chuyển phòng
+                                        sang <code>DIRTY</code> + nút dọn sạch), <b>UC06</b> (Ghi nợ dịch vụ Room
+                                        Folio), <b>UC07</b> (Thống kê)</li>
+                                    <li>Giao diện 4 phân hệ theo 10 wireframe của Kiệt; mỗi chức năng chạy được thì
+                                        commit lên GitHub ngay trong ngày</li>
+                                </ul>
+                            </td>
+                            <td>Source trong <code>src/</code> trên GitHub (mỗi chức năng 1 commit)</td>
+                            <td>Không có</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w3">Tuần 3</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Từ đầu tuần đến giữa tuần: hoàn thiện chức năng còn lại, chạy thử từng chức năng
+                                        với dữ liệu mẫu, sửa lỗi</li>
+                                    <li>Giữa tuần: viết <code>README.md</code> gồm cách cài JDK 21 và IntelliJ, lệnh
+                                        chạy, địa chỉ truy cập, các tài khoản demo (<code>quanly</code>,
+                                        <code>letan</code>, khách hàng), rồi bàn giao</li>
+                                    <li>Gửi <code>chuong-4-uc07-khoa.docx</code>, <code>chuong-5-csdl-khoa.docx</code>
+                                        và 5 ảnh sơ đồ (<code>erd.png</code>, <code>class-diagram.png</code>,
+                                        <code>uc-07.png</code>, <code>act-uc07.png</code>, <code>seq-uc07.png</code>)
+                                        cho <b>Hoàng</b> để gộp vào báo cáo</li>
+                                    <li>Nửa sau tuần: sửa lỗi do 3 bạn báo khi chạy thử</li>
+                                </ul>
+                            </td>
+                            <td><code>README.md</code><br>Source trên
+                                GitHub<br><code>chuong-4-uc07-khoa.docx</code><br><code>chuong-5-csdl-khoa.docx</code>
+                            </td>
+                            <td class="cell-handover">Giữa tuần: link GitHub + <code>README.md</code> &rarr; Hoàng,
+                                Phong, Kiệt<br>Gửi file doc &amp; 5 sơ đồ của Khoa &rarr; <b>Hoàng</b></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w4">Tuần 4</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Chuẩn bị thiết bị demo: cài JDK 21, chạy app, nạp lại dữ liệu mẫu sạch</li>
+                                    <li>Quay video demo dự phòng: 1 file chạy đủ các chức năng đã cài theo
+                                        <code>demo-script.docx</code></li>
+                                    <li>Viết đáp án cho 8 câu hỏi về code, CSDL, demo trong
+                                        <code>cau-hoi-du-kien.docx</code> của Phong</li>
+                                    <li>Tập thao tác trên thiết bị demo theo <code>demo-script.docx</code> cùng Phong, 3
+                                        lần; mỗi lần bấm giờ phần demo</li>
+                                    <li>Tham gia buổi tập hỏi đáp do Phong điều phối</li>
+                                </ul>
+                            </td>
+                            <td><code>demo-du-phong.mp4</code><br><code>cau-hoi-du-kien.docx</code> (8 đáp án)</td>
+                            <td class="cell-handover">Đầu tuần: <code>demo-du-phong.mp4</code> &rarr; Kiệt</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="section-bar bg-hoang">HOÀNG <span>Chủ trì Báo cáo Word: Phần đầu, Chương 3, Mục 4.1 &amp;
+                        4.2.2–4.2.3 (UC02, UC03), Chương 7, Chương 8, Tài liệu tham khảo &amp; Gộp bài</span></div>
+                <table class="grid-table" style="margin-bottom:6px;">
+                    <thead>
+                        <tr>
+                            <th style="width:90px;">Tuần</th>
+                            <th>Việc phải làm</th>
+                            <th style="width:265px;">File giao nộp</th>
+                            <th style="width:230px;">Bàn giao cho ai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cell-week w1">Tuần 1</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Ngày đầu: làm <code>bao-cao-khung.docx</code> đúng định dạng đề thi (Times New
+                                        Roman 13pt, giãn dòng 1.5, lề 3.5 / 3 / 3.5 / 2 cm, số trang giữa đầu trang),
+                                        thiết lập sẵn <b>Chương 1 &rarr; Chương 8 (bỏ Phụ lục)</b></li>
+                                    <li>Viết <b>Chương 3 – Xác định và đặc tả yêu cầu (Mục 3.1, 3.2, 3.3, 3.4)</b>: Quy
+                                        tắc nghiệp vụ BR1–BR7, 18 FR, 9 NFR, bảng MoSCoW</li>
+                                    <li>Vẽ <b>Mục 4.1 – Biểu đồ Use Case tổng quát</b>
+                                        (<code>usecase-tong-quat.png</code>: 3 Actor, 7 Use Case)</li>
+                                    <li>Viết <b>Mục 4.2.2 (UC02)</b> và <b>Mục 4.2.3 (UC03)</b> + vẽ 2 sơ đồ Use Case
+                                        chi tiết: <code>uc-02.png</code> và <code>uc-03.png</code></li>
+                                </ul>
+                            </td>
+                            <td><code>bao-cao-khung.docx</code><br><code>chuong-3-hoang.docx</code><br><code>usecase-tong-quat.drawio</code>,
+                                <code>.png</code><br><code>uc-02.drawio</code>,
+                                <code>.png</code><br><code>uc-03.drawio</code>,
+                                <code>.png</code><br><code>chuong-4-uc02-uc03-hoang.docx</code></td>
+                            <td class="cell-handover">Ngày đầu: <code>bao-cao-khung.docx</code> &rarr; cả nhóm<br>Cuối
+                                tuần: đặc tả UC02, UC03 + <code>uc-02.png</code>, <code>uc-03.png</code> &rarr; Khoa
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w2">Tuần 2</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Vẽ tiếp 4 sơ đồ Activity &amp; Sequence cho <b>Mục 4.2.2 (UC02)</b> và <b>Mục
+                                            4.2.3 (UC03)</b>:<br>
+                                        &bull; <code>act-uc02.png</code> &amp; <code>seq-uc02.png</code> (CRUD
+                                        phòng/hạng phòng/dịch vụ, chặn xóa khi có lịch sử)<br>
+                                        &bull; <code>act-uc03.png</code> &amp; <code>seq-uc03.png</code> (Kiểm tra tồn
+                                        kho Quota hạng phòng, Pop-up cọc 30%, lưu <code>RESERVED</code>, sinh Phiếu QR)
+                                    </li>
+                                    <li>Soạn <b>Phần đầu báo cáo</b> (Trang bìa, Phụ bìa, Mục lục, Danh mục hình/bảng/từ
+                                        viết tắt) và <b>Danh mục Tài liệu tham khảo</b></li>
+                                    <li>Viết trước <b>Mục 7.1</b> (Kiến trúc kỹ thuật), <b>Mục 7.2</b> (Bộ dữ liệu mẫu)
+                                        và khung <b>Mục 7.4</b> (Ma trận truy vết RTM trong Chương 7)</li>
+                                </ul>
+                            </td>
+                            <td><code>act-uc02.drawio</code>, <code>.png</code><br><code>seq-uc02.drawio</code>,
+                                <code>.png</code><br><code>act-uc03.drawio</code>,
+                                <code>.png</code><br><code>seq-uc03.drawio</code>,
+                                <code>.png</code><br><code>phan-dau-hoang.docx</code><br><code>chuong-7-8-hoang.docx</code>
+                                (bản nháp)</td>
+                            <td>Không có</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w3">Tuần 3</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Sau khi nhận code từ Khoa: chạy app, chụp màn hình hoàn thiện <b>Mục 7.3</b>
+                                        (Kết quả cài đặt 4 phân hệ) và <b>Mục 7.4</b> (Hoàn chỉnh Ma trận truy vết RTM
+                                        &amp; Kết quả kiểm thử)</li>
+                                    <li>Viết trọn vẹn <b>Chương 8 – Kết luận (Mục 8.1 Kết quả đạt được, Mục 8.2 Hạn chế,
+                                            Mục 8.3 Hướng phát triển)</b></li>
+                                    <li><b>Cuối tuần: gộp toàn bộ các Chương 1 &rarr; Chương 8 và 24 sơ đồ UML của cả
+                                            nhóm vào <code>bao-cao.docx</code>, cập nhật tự động Mục lục, Danh mục hình
+                                            ảnh, Danh mục bảng biểu (Không để Phụ lục)</b></li>
+                                </ul>
+                            </td>
+                            <td><code>chuong-7-8-hoang.docx</code> (hoàn chỉnh)<br><code>bao-cao.docx</code> (đã gộp đủ
+                                Chương 1 &rarr; Chương 8)</td>
+                            <td class="cell-handover">Cuối tuần: gửi <code>bao-cao.docx</code> đã gộp hoàn chỉnh &rarr;
+                                cả nhóm xem</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w4">Tuần 4</td>
+                            <td>
+                                <ul class="tight">
+                                    <li><b>Rà soát &amp; hoàn thiện <code>bao-cao.docx</code> bản cuối theo 6 tiêu
+                                            chí:</b> (1) chính tả, ngữ pháp từng trang; (2) định dạng chuẩn đề thi; (3)
+                                        mục lục, danh mục hình/bảng đúng số trang, không có Phụ lục; (4) tên actor, use
+                                        case, bảng, cột thống nhất; (5) wireframe Chương 6 khớp ảnh chụp Chương 7; (6)
+                                        18 FR Chương 3 khớp Ma trận RTM ở Mục 7.4</li>
+                                    <li><b>Xuất <code>bao-cao.pdf</code> bản cuối cùng để nộp lên E-learning trước 23h59
+                                            ngày 09/11/2026</b></li>
+                                    <li>Tham gia buổi tập hỏi đáp do Phong điều phối</li>
+                                </ul>
+                            </td>
+                            <td><code>bao-cao.docx</code> (bản cuối)<br><code>bao-cao.pdf</code> (bản cuối)</td>
+                            <td class="cell-handover">Trong tuần: hoàn thiện <code>bao-cao.docx</code>,
+                                <code>bao-cao.pdf</code> bản cuối để nộp E-learning</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ẢNH 4: pc-3-viec-phong-kiet.png                                           -->
+    <!-- ========================================================================= -->
+    <div class="card-wrapper">
+        <div class="card-actions">
+            <strong>4. Ảnh chi tiết Phong &amp; Kiệt: <code>pc-3-viec-phong-kiet.png</code></strong>
+            <button class="btn-download" onclick="exportPNG('board-4', 'pc-3-viec-phong-kiet.png')">📸 Tải ảnh .PNG
+                (pc-3-viec-phong-kiet.png)</button>
+        </div>
+
+        <div class="board" id="board-4">
+            <div class="board-dark-header">
+                <h1>VIỆC CỦA PHONG VÀ KIỆT (CHƯƠNG 1 – CHƯƠNG 8, KHÔNG PHỤ LỤC)</h1>
+                <p>Phong tập trung Thuyết trình full 12 slide &amp; Kịch bản | Kiệt tập trung Slide tiếng Anh full 12
+                    slide &amp; Thiết kế giao diện Chương 6</p>
+            </div>
+            <div class="board-body">
+                <div class="week-pills">
+                    <div class="pill w1"><strong>Tuần 1</strong><span>12 đến 18/10</span></div>
+                    <div class="pill w2"><strong>Tuần 2</strong><span>19 đến 25/10</span></div>
+                    <div class="pill w3"><strong>Tuần 3</strong><span>26/10 đến 01/11</span></div>
+                    <div class="pill w4"><strong>Tuần 4</strong><span>02 đến 08/11: ÔN TẬP</span></div>
+                </div>
+
+                <div class="section-bar bg-phong">PHONG <span>Thuyết trình full 12 slide, Chương 1 &amp; Chương 2, Mục
+                        4.2.4 &amp; 4.2.5 (UC04, UC05 – 6 sơ đồ UML), Demo script &amp; 20 Câu hỏi</span></div>
+                <table class="grid-table">
+                    <thead>
+                        <tr>
+                            <th style="width:90px;">Tuần</th>
+                            <th>Việc phải làm</th>
+                            <th style="width:265px;">File giao nộp</th>
+                            <th style="width:230px;">Bàn giao cho ai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cell-week w1">Tuần 1</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Viết <b>Chương 1 – Giới thiệu và phạm vi đề tài (Mục 1.1, 1.2, 1.3)</b></li>
+                                    <li>Viết <b>Chương 2 – Khảo sát và mô tả hiện trạng (Mục 2.1, 2.2, 2.3, 2.4)</b>
+                                    </li>
+                                    <li>Viết <b>Mục 4.2.4 – Đặc tả UC04</b> + vẽ <b>UC Diagram chi tiết UC04</b>
+                                        (<code>uc-04.png</code>: Check-in quét QR, Gán phòng vật lý sạch &amp; Tiếp nhận
+                                        Walk-in 0đ cọc)</li>
+                                    <li>Viết <b>Mục 4.2.5 – Đặc tả UC05</b> + vẽ <b>UC Diagram chi tiết UC05</b>
+                                        (<code>uc-05.png</code>: Check-out quyết toán <code>++</code>: Online trả 70%
+                                        còn lại + DV, Walk-in trả 100%, chuyển phòng sang <code>DIRTY</code>)</li>
+                                </ul>
+                            </td>
+                            <td><code>chuong-1-2-phong.docx</code><br><code>uc-04.drawio</code>,
+                                <code>.png</code><br><code>uc-05.drawio</code>,
+                                <code>.png</code><br><code>chuong-4-uc04-uc05-phong.docx</code></td>
+                            <td class="cell-handover">Cuối tuần: đặc tả UC04, UC05 + <code>uc-04.png</code>,
+                                <code>uc-05.png</code> &rarr; Khoa</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w2">Tuần 2</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Vẽ tiếp 4 sơ đồ Activity &amp; Sequence cho <b>Mục 4.2.4 (UC04)</b> và <b>Mục
+                                            4.2.5 (UC05)</b>:<br>
+                                        &bull; <b>Activity Diagram UC04</b> (<code>act-uc04</code>) &amp; <b>Sequence
+                                            Diagram UC04</b> (<code>seq-uc04</code>: quét/nhập mã QR hoặc tạo Walk-in 0đ
+                                        cọc, lọc phòng <code>AVAILABLE</code> gán phòng sạch và mở Room Folio)<br>
+                                        &bull; <b>Activity Diagram UC05</b> (<code>act-uc05</code>) &amp; <b>Sequence
+                                            Diagram UC05</b> (<code>seq-uc05</code>: kiểm tra dịch vụ Folio &amp; phụ
+                                        thu trễ giờ, tính SVC 5% + VAT 10%, khấu trừ cọc Online 30% vs Walk-in 0đ, lập
+                                        hóa đơn VAT &amp; chuyển phòng sang <code>DIRTY</code>)</li>
+                                    <li><b>Cuối tuần: bàn giao toàn bộ <code>chuong-1-2-phong.docx</code>,
+                                            <code>chuong-4-uc04-uc05-phong.docx</code> và 6 sơ đồ UML cho Hoàng (hoàn
+                                            tất phần viết Doc của Phong)</b></li>
+                                    <li>Viết <code>kich-ban-thuyet-trinh.docx</code> bản 1 (slide 1 đến 8) và
+                                        <code>demo-script.docx</code> bản 1</li>
+                                </ul>
+                            </td>
+                            <td><code>act-uc04.drawio</code>, <code>.png</code><br><code>seq-uc04.drawio</code>,
+                                <code>.png</code><br><code>act-uc05.drawio</code>,
+                                <code>.png</code><br><code>seq-uc05.drawio</code>,
+                                <code>.png</code><br><code>kich-ban-thuyet-trinh.docx</code><br><code>demo-script.docx</code>
+                                (bản 1)</td>
+                            <td class="cell-handover">Cuối tuần: gửi Chương 1, Chương 2, Mục 4.2.4, 4.2.5 &amp; 6 sơ đồ
+                                &rarr; <b>Hoàng</b></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w3">Tuần 3</td>
+                            <td>
+                                <ul class="tight">
+                                    <li><i>(Không phải viết báo cáo Word nữa, tập trung 100% cho Thuyết trình, Demo
+                                            &amp; Phản biện)</i></li>
+                                    <li>Sau khi nhận code: chạy app theo <code>demo-script</code> bản 1, sửa thành bản
+                                        cuối cho đúng app thật</li>
+                                    <li>Hoàn chỉnh <code>kich-ban-thuyet-trinh.docx</code> cho cả 12 slide, tổng 14 phút
+                                    </li>
+                                    <li>Soạn <code>cau-hoi-du-kien.docx</code>: 20 câu kèm đáp án (12 câu về phân tích,
+                                        thiết kế, nghiệp vụ; 8 câu về code, CSDL, demo để trống đáp án cho Khoa)</li>
+                                </ul>
+                            </td>
+                            <td><code>demo-script.docx</code> (bản cuối)<br><code>kich-ban-thuyet-trinh.docx</code> (bản
+                                cuối)<br><code>cau-hoi-du-kien.docx</code></td>
+                            <td class="cell-handover">Sau bàn giao: <code>demo-script</code> &rarr; Khoa, Hoàng,
+                                Kiệt<br>Cuối tuần: <code>cau-hoi-du-kien</code> &rarr; Khoa</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w4">Tuần 4</td>
+                            <td>
+                                <ul class="tight">
+                                    <li><b>Tập trung ôn thuyết trình: một mình thuyết trình toàn bộ 12 slide, cùng Khoa
+                                            tập phần demo, 3 lần; mỗi lần bấm giờ (mục tiêu 14 phút, tối đa 15 phút),
+                                            ghi lại chỗ vấp sau mỗi lần</b></li>
+                                    <li>Điều phối buổi tập hỏi đáp: mỗi người trả lời thử đủ 20 câu trong
+                                        <code>cau-hoi-du-kien.docx</code></li>
+                                </ul>
+                            </td>
+                            <td>Không có</td>
+                            <td>Không có</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="section-bar bg-kiet">KIỆT <span>Slide tiếng Anh full 12 slide, Chương 6 (10 Wireframe &amp;
+                        Điều hướng), Mục 4.2.1 &amp; 4.2.6 (UC01, UC06 – 6 sơ đồ UML)</span></div>
+                <table class="grid-table" style="margin-bottom:6px;">
+                    <thead>
+                        <tr>
+                            <th style="width:90px;">Tuần</th>
+                            <th>Việc phải làm</th>
+                            <th style="width:265px;">File giao nộp</th>
+                            <th style="width:230px;">Bàn giao cho ai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cell-week w1">Tuần 1</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Vẽ <b>10 wireframe (WF-01 &rarr; WF-10)</b>: 1 Landing Page Storytelling; 2 Đăng
+                                        nhập &amp; Đăng ký khách hàng; 3 Dashboard Khách hàng &amp; Phiếu xác nhận QR; 4
+                                        Tìm hạng phòng &amp; Pop-up cọc 30%; 5 Dashboard Lễ tân (Sơ đồ phòng 4 trạng
+                                        thái &amp; nút dọn sạch); 6 Check-in gán phòng sạch &amp; Tiếp nhận Walk-in; 7
+                                        Ghi nợ dịch vụ Room Folio (4 nhóm); 8 Check-out quyết toán <code>++</code> &amp;
+                                        Hóa đơn VAT; 9 Quản lý phòng, hạng phòng (giá ngày thường/cuối tuần) &amp; danh
+                                        mục dịch vụ; 10 Dashboard Admin &amp; Thống kê Occupancy Rate</li>
+                                    <li>Viết <b>Mục 4.2.1 – Đặc tả UC01</b> + vẽ <b>UC Diagram chi tiết UC01</b>
+                                        (<code>uc-01.png</code>: Đăng ký, Đăng nhập &amp; Phân quyền điều hướng 3 Role)
+                                    </li>
+                                    <li>Viết <b>Mục 4.2.6 – Đặc tả UC06</b> + vẽ <b>UC Diagram chi tiết UC06</b>
+                                        (<code>uc-06.png</code>: Ghi nhận sử dụng dịch vụ lưu trú vào Room Folio)</li>
+                                </ul>
+                            </td>
+                            <td><code>wf-01</code> đến <code>wf-10</code> (<code>.drawio</code>,
+                                <code>.png</code>)<br><code>uc-01.drawio</code>,
+                                <code>.png</code><br><code>uc-06.drawio</code>,
+                                <code>.png</code><br><code>chuong-4-uc01-uc06-kiet.docx</code></td>
+                            <td class="cell-handover">Cuối tuần: 10 wireframe + đặc tả UC01, UC06 +
+                                <code>uc-01.png</code>, <code>uc-06.png</code> &rarr; Khoa</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w2">Tuần 2</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Viết <b>Chương 6 – Thiết kế giao diện người dùng (Mục 6.1, 6.2, 6.3)</b>: Hệ
+                                        thống màu ACE Color System, Sơ đồ luồng điều hướng 4 phân hệ
+                                        (<code>dieu-huong.png</code>), Ma trận phân quyền RBAC và Mô tả chi tiết 10 màn
+                                        hình WF-01 &rarr; WF-10</li>
+                                    <li>Vẽ tiếp 4 sơ đồ Activity &amp; Sequence cho <b>Mục 4.2.1 (UC01)</b> và <b>Mục
+                                            4.2.6 (UC06)</b>:<br>
+                                        &bull; <b>Activity Diagram UC01</b> (<code>act-uc01</code>) &amp; <b>Sequence
+                                            Diagram UC01</b> (<code>seq-uc01</code>)<br>
+                                        &bull; <b>Activity Diagram UC06</b> (<code>act-uc06</code>) &amp; <b>Sequence
+                                            Diagram UC06</b> (<code>seq-uc06</code>)</li>
+                                    <li><b>Cuối tuần: gửi <code>chuong-4-uc01-uc06-kiet.docx</code>,
+                                            <code>chuong-6-giao-dien-kiet.docx</code>, 10 wireframe và 6 sơ đồ UML cho
+                                            Hoàng (hoàn tất phần viết Doc của Kiệt)</b></li>
+                                    <li><b>Làm Slide tiếng Anh bản 1: slide 1 đến 8</b></li>
+                                </ul>
+                            </td>
+                            <td><code>chuong-6-giao-dien-kiet.docx</code><br><code>dieu-huong.drawio</code>,
+                                <code>.png</code><br><code>act-uc01.drawio</code>,
+                                <code>.png</code><br><code>seq-uc01.drawio</code>,
+                                <code>.png</code><br><code>act-uc06.drawio</code>,
+                                <code>.png</code><br><code>seq-uc06.drawio</code>,
+                                <code>.png</code><br><code>slides/presentation-en.pptx</code> (slide 1–8)</td>
+                            <td class="cell-handover">Cuối tuần: gửi Mục 4.2.1, 4.2.6, Chương 6, 10 wireframe &amp; 6 sơ
+                                đồ UML &rarr; <b>Hoàng</b></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w3">Tuần 3</td>
+                            <td>
+                                <ul class="tight">
+                                    <li><i>(Không phải ghép báo cáo Word nữa, tập trung 100% cho bộ Slide tiếng Anh)</i>
+                                    </li>
+                                    <li>Sau khi nhận code từ Khoa: chạy app, chụp ảnh giao diện thực tế, <b>làm tiếp
+                                            slide 9 đến 12, hoàn chỉnh đủ 12 slide tiếng Anh</b> (slide 10 chừa chỗ cho
+                                        video)</li>
+                                </ul>
+                            </td>
+                            <td><code>slides/presentation-en.pptx</code> (đủ 12 slide)</td>
+                            <td class="cell-handover">Cuối tuần: gửi file slide đủ 12 slide &rarr; Phong, Khoa, Hoàng
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cell-week w4">Tuần 4</td>
+                            <td>
+                                <ul class="tight">
+                                    <li>Chèn <code>demo-du-phong.mp4</code> của Khoa vào slide 10</li>
+                                    <li><b>Check slide theo 3 mục:</b> (1) tiếng Anh: chính tả, ngữ pháp; (2) khớp báo
+                                        cáo Chương 1–8: tên use case, tên bảng, số liệu; (3) đủ 12 slide, mỗi slide cô
+                                        đọng, thẩm mỹ</li>
+                                    <li><b>Xuất <code>presentation-en.pptx</code> và <code>presentation-en.pdf</code>
+                                            bản cuối</b></li>
+                                    <li>Tham gia buổi tập hỏi đáp do Phong điều phối: trả lời thử đủ 20 câu</li>
+                                </ul>
+                            </td>
+                            <td><code>presentation-en.pptx</code> (bản cuối)<br><code>presentation-en.pdf</code> (bản
+                                cuối)</td>
+                            <td class="cell-handover">Trong tuần: slide bản cuối &rarr; cả nhóm</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function exportPNG(elementId, filename) {
+            const el = document.getElementById(elementId);
+            const canvas = await html2canvas(el, {
+                scale: 2,
+                backgroundColor: "#ffffff",
+                useCORS: true
+            });
+            const link = document.createElement("a");
+            link.download = filename;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        }
+
+        async function downloadAll() {
+            await exportPNG('board-1', 'ke-hoach-4-tuan.png');
+            await new Promise(r => setTimeout(r, 400));
+            await exportPNG('board-2', 'pc-1-chot-chung-ban-giao.png');
+            await new Promise(r => setTimeout(r, 400));
+            await exportPNG('board-3', 'pc-2-viec-khoa-hoang.png');
+            await new Promise(r => setTimeout(r, 400));
+            await exportPNG('board-4', 'pc-3-viec-phong-kiet.png');
+        }
+    </script>
+</body>
+
+</html>
