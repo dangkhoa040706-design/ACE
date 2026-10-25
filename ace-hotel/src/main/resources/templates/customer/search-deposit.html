@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/public-layout :: layout(~{::title}, ~{::content})}">
+<head>
+  <title>Tìm Phòng &amp; Báo Giá Đặt Cọc 30% | ACE Hotel</title>
+</head>
+<body>
+  <div th:fragment="content" class="container" style="padding: 2.5rem 1rem;">
+
+    <!-- Thanh Tìm Kiếm Phòng -->
+    <div class="card card-elevated" style="margin-bottom: 2.5rem; border-color: rgba(253, 191, 45, 0.3);">
+      <h3 style="font-size: 1.25rem; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span>Tra Cứu Suất Trống (Quota) &amp; Biểu Giá Chi Tiết</span>
+      </h3>
+      <form th:action="@{/booking/search}" method="get" class="grid grid-cols-4 gap-4 items-center">
+        <div class="form-group" style="margin: 0;">
+          <label class="form-label" style="font-size: 0.825rem; color: var(--primary);">Ngày nhận phòng (Check-in)</label>
+          <input type="date" name="checkIn" th:value="${checkIn}" class="form-control" required>
+        </div>
+        <div class="form-group" style="margin: 0;">
+          <label class="form-label" style="font-size: 0.825rem; color: var(--primary);">Ngày trả phòng (Check-out)</label>
+          <input type="date" name="checkOut" th:value="${checkOut}" class="form-control" required>
+        </div>
+        <div class="form-group" style="margin: 0;">
+          <label class="form-label" style="font-size: 0.825rem; color: var(--primary);">Số lượng khách</label>
+          <select name="guests" class="form-select">
+            <option value="1" th:selected="${guests == 1}">1 Khách</option>
+            <option value="2" th:selected="${guests == 2}">2 Khách (Tiêu chuẩn)</option>
+            <option value="3" th:selected="${guests == 3}">3 Khách</option>
+            <option value="4" th:selected="${guests == 4}">4 Khách (Gia đình / Suite)</option>
+            <option value="5" th:selected="${guests == 5}">5 Khách (Cần thuê nhiều phòng)</option>
+            <option value="6" th:selected="${guests == 6}">6 Khách (Cần thuê nhiều phòng)</option>
+            <option value="8" th:selected="${guests == 8}">8 Khách (Đoàn lớn)</option>
+            <option value="10" th:selected="${guests == 10}">10+ Khách (Đoàn lớn)</option>
+          </select>
+        </div>
+        <div style="margin-top: 1.35rem;">
+          <button type="submit" class="btn btn-primary" style="width: 100%; height: 42px;">
+            Cập Nhật Báo Giá
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Cảnh báo nếu số lượng khách vượt quá sức chứa 1 phòng đơn lẻ (> 4 khách) -->
+    <div th:if="${capacityAdviceMessage != null}" class="card" style="margin-bottom: 2rem; background: rgba(245, 158, 11, 0.08); border: 1.5px solid #F59E0B; padding: 1.25rem 1.5rem; border-radius: 10px;">
+      <div style="display: flex; gap: 1rem; align-items: flex-start;">
+        <div style="color: #F59E0B; font-size: 1.75rem; flex-shrink: 0; line-height: 1;">⚠️</div>
+        <div>
+          <h4 style="color: #F59E0B; margin: 0 0 0.4rem 0; font-size: 1.05rem; font-weight: 700;">Khuyến nghị đặt phòng cho đoàn đông người:</h4>
+          <p style="margin: 0; color: var(--text); font-size: 0.95rem; line-height: 1.5;" th:text="${capacityAdviceMessage}"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thông báo nếu không còn phòng -->
+    <div th:if="${infoMessage != null}" class="card" style="text-align: center; padding: 3rem 1rem; border-color: rgba(245, 158, 11, 0.4);">
+      <div style="margin-bottom: 1rem; color: #F59E0B; display: flex; justify-content: center;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="9" y1="22" x2="9" y2="18"></line><line x1="15" y1="22" x2="15" y2="18"></line></svg>
+      </div>
+      <h3 style="color: #F59E0B; margin-bottom: 0.5rem;" th:text="${infoMessage}"></h3>
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Vui lòng chọn khoảng ngày khác hoặc điều chỉnh số lượng khách để kiểm tra lại.</p>
+    </div>
+
+    <!-- Danh sách Hạng Phòng Còn Quota -->
+    <div th:if="${!quotes.isEmpty()}">
+      <div class="flex justify-between items-center" style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.35rem; color: var(--text);">
+          Tìm thấy <span style="color: var(--primary);" th:text="${quotes.size()}"></span> hạng phòng phù hợp
+          (<span th:text="${checkIn}"></span> đến <span th:text="${checkOut}"></span>)
+        </h3>
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">
+          Biểu giá chuẩn: <strong>5% SVC + 10% VAT</strong> • Cọc giữ chỗ: <strong>30%</strong>
+        </span>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <div th:each="q : ${quotes}" class="card card-elevated"
+             style="display: flex; flex-direction: row; gap: 1.75rem; border-color: rgba(253, 191, 45, 0.25); padding: 1.5rem;">
+
+          <!-- Ảnh phòng -->
+          <div style="width: 280px; flex-shrink: 0; position: relative;">
+            <img th:src="${q.imageUrl}" th:alt="${q.name}"
+                 onerror="this.onerror=null;this.src='/images/room-standard.png';"
+                 style="width: 100%; height: 190px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border);">
+            <span class="badge-status badge-available"
+                  style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); border: 1px solid var(--st-free);">
+              Còn trống <strong th:text="${q.availableQuota}"></strong> suất
+            </span>
+          </div>
+
+          <!-- Thông tin & Báo giá -->
+          <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div class="flex justify-between items-start" style="margin-bottom: 0.65rem;">
+                <div>
+                  <h3 style="font-size: 1.45rem; color: var(--text); margin-bottom: 0.35rem;" th:text="${q.name}"></h3>
+                  <div style="font-size: 0.85rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                    <span style="background: rgba(253, 191, 45, 0.12); color: #FDBF2D; padding: 0.2rem 0.55rem; border-radius: 4px; font-weight: 600; border: 1px solid rgba(253, 191, 45, 0.3);">
+                      👥 Sức chứa: Tối đa <strong th:text="${q.capacity}"></strong> khách
+                    </span>
+                    <span style="background: rgba(59, 130, 246, 0.12); color: #93C5FD; padding: 0.2rem 0.55rem; border-radius: 4px; font-weight: 500; border: 1px solid rgba(59, 130, 246, 0.3);">
+                      🛏️ Loại giường: <strong th:text="${q.bedType}"></strong>
+                    </span>
+                    <span>•</span>
+                    <span>Thời gian lưu trú: <strong style="color: #FDBF2D;" th:text="${q.nights}"></strong> đêm</span>
+                  </div>
+                </div>
+
+                <!-- Đơn Giá Tiêu Chuẩn 1 Đêm (Rõ ràng & Minh bạch) -->
+                <div style="text-align: right; background: rgba(253, 191, 45, 0.08); border: 1px solid rgba(253, 191, 45, 0.25); border-radius: 8px; padding: 0.45rem 0.85rem;">
+                  <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Đơn giá tiêu chuẩn</div>
+                  <div style="font-size: 1.3rem; font-weight: 800; color: #FDBF2D; line-height: 1.2;">
+                    <span th:text="${#numbers.formatDecimal(q.pricePerNight, 0, 'COMMA', 0, 'POINT')}"></span>
+                    <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">đ / đêm</span>
+                  </div>
+                  <div th:if="${q.weekendPricePerNight != q.pricePerNight}" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem;">
+                    Cuối tuần (T6–CN): <strong th:text="${#numbers.formatDecimal(q.weekendPricePerNight, 0, 'COMMA', 0, 'POINT')}"></strong> đ/đêm
+                  </div>
+                </div>
+              </div>
+
+              <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;" th:text="${q.description}"></p>
+
+              <!-- Chi tiết tính giá theo công thức ++ -->
+              <div class="grid grid-cols-3 gap-3" style="background: var(--elevated); padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid var(--border);">
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-secondary);">Tiền phòng gốc (<span th:text="${q.nights}"></span> đêm):</div>
+                  <strong style="color: var(--text); font-size: 0.95rem;" th:text="${#numbers.formatDecimal(q.roomCharge, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
+                </div>
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-secondary);">Thuế &amp; Phí (5% SVC + 10% VAT):</div>
+                  <strong style="color: var(--text); font-size: 0.95rem;" th:text="${#numbers.formatDecimal(q.estSvc + q.estVat, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
+                </div>
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-secondary);">Tổng giá trị gói phòng (++):</div>
+                  <strong style="color: var(--primary); font-size: 1.15rem;" th:text="${#numbers.formatDecimal(q.estGrandTotal, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
+                </div>
+              </div>
+
+              <!-- Phân bổ Cọc 30% vs Còn lại 70% -->
+              <div class="flex items-center justify-between" style="font-size: 0.875rem; color: var(--text-secondary); background: rgba(253, 191, 45, 0.05); padding: 0.65rem 1rem; border-radius: 6px; border: 1px solid rgba(253, 191, 45, 0.15);">
+                <div>
+                  <span style="color: #FDBF2D; font-weight: 700;">●</span> Cọc 30% thanh toán ngay:
+                  <span style="color: #FDBF2D; font-weight: 800; font-size: 1.1rem;"
+                        th:text="${#numbers.formatDecimal(q.depositAmount, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span>
+                </div>
+                <div>
+                  <span style="color: var(--text-secondary); font-weight: 700;">●</span> Còn lại 70% trả tại quầy:
+                  <span style="color: var(--text); font-weight: 600;"
+                        th:text="${#numbers.formatDecimal(q.remainingAtCounter, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nút bấm đặt phòng -->
+            <div style="text-align: right; margin-top: 1rem;">
+              <div sec:authorize="isAnonymous()">
+                <a th:href="@{/login(redirect=${'/booking/search?checkIn=' + (checkIn != null ? checkIn : '') + '&checkOut=' + (checkOut != null ? checkOut : '') + '&guests=' + guests})}" class="btn btn-primary">
+                  Đăng Nhập Để Thanh Toán Cọc 30%
+                </a>
+              </div>
+
+              <div sec:authorize="isAuthenticated()">
+                <button type="button" class="btn btn-primary"
+                        th:data-rtid="${q.roomTypeId}"
+                        th:data-rtname="${q.name}"
+                        th:data-capacity="${q.capacity}"
+                        th:data-bedtype="${q.bedType}"
+                        th:data-nights="${q.nights}"
+                        th:data-roomcharge="${q.roomCharge}"
+                        th:data-svc="${q.estSvc}"
+                        th:data-vat="${q.estVat}"
+                        th:data-grand="${q.estGrandTotal}"
+                        th:data-deposit="${q.depositAmount}"
+                        th:data-remain="${q.remainingAtCounter}"
+                        onclick="openDepositModal(this)">
+                  Tiếp Tục Đặt Phòng &amp; Thanh Toán Cọc 30% →
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POP-UP MODAL XÁC NHẬN VÀ THANH TOÁN CỌC 30% (WF-04) -->
+    <div id="depositModal" class="modal-backdrop">
+      <div class="modal-content">
+        <div class="flex justify-between items-center" style="border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.25rem;">
+          <h3 style="color: var(--primary); font-size: 1.25rem; margin: 0;">
+            Xác Nhận Đặt Phòng &amp; Thanh Toán Cọc 30%
+          </h3>
+          <button type="button" onclick="closeDepositModal()" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">✕</button>
+        </div>
+
+        <form th:action="@{/booking/deposit}" method="post">
+          <input type="hidden" id="modalRoomTypeId" name="roomTypeId">
+          <input type="hidden" name="checkInDate" th:value="${checkIn}">
+          <input type="hidden" name="checkOutDate" th:value="${checkOut}">
+          <input type="hidden" name="guestCount" th:value="${guests}">
+
+          <!-- Thông tin khách -->
+          <div style="background: var(--elevated); padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.875rem;">
+            <div style="color: var(--text-secondary); margin-bottom: 0.25rem;">Khách hàng: <strong id="modalCustomerName" style="color: var(--text);" sec:authentication="name"></strong></div>
+            <div style="color: var(--text-secondary); margin-bottom: 0.25rem;">Hạng phòng: <strong id="modalRoomTypeName" style="color: var(--primary);"></strong> • <span id="modalBedType" style="color: #93C5FD;"></span> • <span id="modalCapacity" style="color: #FDBF2D; font-weight: 600;"></span></div>
+            <div style="color: var(--text-secondary);">Thời gian: <strong th:text="${checkIn}"></strong> (14:00) đến <strong th:text="${checkOut}"></strong> (12:00) (<span id="modalNights"></span> đêm)</div>
+          </div>
+
+          <!-- Bảng kê tài chính ++ -->
+          <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+            <div class="flex justify-between" style="font-size: 0.875rem; margin-bottom: 0.4rem;">
+              <span style="color: var(--text-secondary);">Tiền phòng gốc:</span>
+              <strong id="modalRoomCharge"></strong>
+            </div>
+            <div class="flex justify-between" style="font-size: 0.875rem; margin-bottom: 0.4rem;">
+              <span style="color: var(--text-secondary);">Phí phục vụ (SVC 5%):</span>
+              <strong id="modalSvc"></strong>
+            </div>
+            <div class="flex justify-between" style="font-size: 0.875rem; margin-bottom: 0.6rem;">
+              <span style="color: var(--text-secondary);">Thuế GTGT (VAT 10%):</span>
+              <strong id="modalVat"></strong>
+            </div>
+            <div class="flex justify-between items-center" style="border-top: 1px dashed var(--border); padding-top: 0.6rem; margin-bottom: 0.85rem;">
+              <span style="font-size: 0.95rem; font-weight: 600;">Tổng giá trị gói phòng (++):</span>
+              <strong id="modalGrandTotal" style="font-size: 1.15rem; color: var(--text);"></strong>
+            </div>
+
+            <!-- Nổi bật 30% Cọc -->
+            <div style="background: var(--primary-soft); border: 1px solid var(--primary); padding: 0.75rem 1rem; border-radius: 8px;">
+              <div class="flex justify-between items-center" style="margin-bottom: 0.25rem;">
+                <span style="font-weight: 700; color: var(--primary-text); display: inline-flex; align-items: center; gap: 0.35rem;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <span>Tiền cọc 30% thanh toán ngay:</span>
+                </span>
+                <span id="modalDepositAmount" style="font-size: 1.25rem; font-weight: 800; color: var(--primary-text);"></span>
+              </div>
+              <div class="flex justify-between items-center" style="font-size: 0.8rem; color: var(--text-secondary);">
+                <span>Số tiền 70% còn lại thanh toán khi Check-out:</span>
+                <span id="modalRemaining" style="font-weight: 600; color: var(--text);"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phương thức thanh toán cọc -->
+          <div class="form-group">
+            <label class="form-label" style="font-size: 0.875rem;">Chọn hình thức thanh toán cọc:</label>
+            <div class="flex gap-4">
+              <label class="flex items-center gap-2" style="cursor: pointer; font-size: 0.875rem;">
+                <input type="radio" name="paymentMethod" value="TRANSFER" checked>
+                <span style="display: inline-flex; align-items: center; gap: 0.35rem;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                  <span>Quét mã VietQR chuyển khoản</span>
+                </span>
+              </label>
+              <label class="flex items-center gap-2" style="cursor: pointer; font-size: 0.875rem;">
+                <input type="radio" name="paymentMethod" value="CARD">
+                <span style="display: inline-flex; align-items: center; gap: 0.35rem;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                  <span>Thẻ tín dụng / Thẻ ghi nợ</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Nút hành động -->
+          <div class="flex gap-3" style="margin-top: 1.5rem;">
+            <button type="button" class="btn btn-secondary" onclick="closeDepositModal()" style="flex: 1;">
+              Quay Lại
+            </button>
+            <button type="submit" class="btn btn-primary" style="flex: 2; display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Xác Nhận &amp; Thanh Toán Cọc 30%</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function formatMoney(num) {
+      return new Intl.NumberFormat('vi-VN').format(num) + ' đ';
+    }
+
+    function openDepositModal(btn) {
+      document.getElementById('modalRoomTypeId').value = btn.getAttribute('data-rtid');
+      document.getElementById('modalRoomTypeName').textContent = btn.getAttribute('data-rtname');
+      var capacity = btn.getAttribute('data-capacity');
+      var bedType = btn.getAttribute('data-bedtype');
+      document.getElementById('modalBedType').textContent = bedType ? '🛏️ ' + bedType : '';
+      document.getElementById('modalCapacity').textContent = capacity ? '👥 Tối đa ' + capacity + ' khách' : '';
+      document.getElementById('modalNights').textContent = btn.getAttribute('data-nights');
+      document.getElementById('modalRoomCharge').textContent = formatMoney(btn.getAttribute('data-roomcharge'));
+      document.getElementById('modalSvc').textContent = formatMoney(btn.getAttribute('data-svc'));
+      document.getElementById('modalVat').textContent = formatMoney(btn.getAttribute('data-vat'));
+      document.getElementById('modalGrandTotal').textContent = formatMoney(btn.getAttribute('data-grand'));
+      document.getElementById('modalDepositAmount').textContent = formatMoney(btn.getAttribute('data-deposit'));
+      document.getElementById('modalRemaining').textContent = formatMoney(btn.getAttribute('data-remain'));
+
+      var modal = document.getElementById('depositModal');
+      modal.classList.add('active');
+    }
+
+    function closeDepositModal() {
+      var modal = document.getElementById('depositModal');
+      modal.classList.remove('active');
+    }
+  </script>
+</body>
+</html>

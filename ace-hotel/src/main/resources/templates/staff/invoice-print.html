@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/pms-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title th:text="'Hóa Đơn VAT #INV-' + ${invoice.invoiceId} + ' | ACE Hotel'">Hóa Đơn VAT | ACE Hotel</title>
+</head>
+<body>
+<section>
+
+  <!-- Control Buttons (Hidden on Print via print.css) -->
+  <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <a th:href="@{/staff/dashboard}" class="btn btn-secondary">
+      <span>← Quay về Sơ đồ phòng</span>
+    </a>
+    <div style="display: flex; gap: 0.75rem;">
+      <button type="button" class="btn btn-primary" onclick="window.print()" style="display: inline-flex; align-items: center; gap: 0.45rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        <span>In Hóa Đơn VAT</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Printable Invoice Document Sheet -->
+  <div class="card invoice-sheet" style="padding: 2.5rem; max-width: 850px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border);">
+
+    <!-- Header: Hotel Brand & Invoice Title -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #FDBF2D; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span class="brand-logo-wrapper" style="padding: 6px 10px;">
+          <img th:src="@{/images/2_logo-ACE_khong-nen.png}" alt="ACE Hotel" style="height: 48px; width: auto;">
+        </span>
+        <div>
+          <h1 style="font-size: 1.5rem; font-weight: 800; color: #FDBF2D; margin: 0; letter-spacing: 1px;">ACE HOTEL</h1>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">
+            Accommodation, Check-in &amp; Extras<br>
+            Hotline: 0903723342 | Email: dangkhoa040706@gmail.com
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: right;">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">HÓA ĐƠN GIÁ TRỊ GIA TĂNG (VAT)</div>
+        <div style="font-size: 1.6rem; font-weight: 900; color: #FDBF2D; margin-top: 0.25rem;" th:text="'#INV-' + ${invoice.invoiceId}">#INV-1</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+          Ngày lập: <strong th:text="${#temporals.format(invoice.paidAt, 'dd/MM/yyyy HH:mm')}">14/10/2026 12:30</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metadata: Customer & Stay Information -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.75rem; background: var(--elevated); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border);">
+      <div>
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px;">Khách Hàng</div>
+        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text); margin-top: 0.2rem;" th:text="${booking.customer.fullName}">Nguyễn Minh Anh</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);" th:text="'SĐT: ' + ${booking.customer.phone}">SĐT: 0901234567</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);"
+             th:if="${booking.customer.idNumber != null}" th:text="'CCCD/Passport: ' + ${booking.customer.idNumber}">CCCD: 079198001122</div>
+      </div>
+
+      <div>
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px;">Thông Tin Lưu Trú</div>
+        <div style="font-weight: 800; font-size: 1.1rem; color: #FDBF2D; margin-top: 0.2rem;"
+             th:text="'Phòng ' + ${booking.room != null ? booking.room.roomNumber : 'N/A'} + ' (' + ${booking.roomType.name} + ')'">Phòng 301 (Deluxe)</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);"
+             th:text="'Mã đặt phòng: ' + ${booking.bookingCode}">Mã: BK-2401</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);"
+             th:text="'Thời gian: ' + ${#temporals.format(booking.checkInDate, 'dd/MM/yyyy')} + ' → ' + ${#temporals.format(booking.checkOutDate, 'dd/MM/yyyy')} + ' (' + ${booking.nights} + ' đêm)'">
+          14/10/2026 → 16/10/2026 (2 đêm)
+        </div>
+      </div>
+    </div>
+
+    <!-- Table of Charges -->
+    <table class="table" style="width: 100%; margin-bottom: 1.5rem;">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Khoản Mục Thanh Toán</th>
+          <th style="text-align: center;">SL</th>
+          <th style="text-align: right;">Đơn Giá</th>
+          <th style="text-align: right;">Thành Tiền (VNĐ)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 1. Tiền phòng gốc -->
+        <tr>
+          <td>1</td>
+          <td>
+            <div style="font-weight: 700;" th:text="'Tiền phòng ' + ${booking.roomType.name} + ' (' + ${booking.nights} + ' đêm)'">Tiền phòng Deluxe (2 đêm)</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">Áp dụng biểu giá động ngày thường / cuối tuần</div>
+          </td>
+          <td style="text-align: center;" th:text="${booking.nights}">2</td>
+          <td style="text-align: right;">—</td>
+          <td style="text-align: right; font-weight: 700;"
+              th:text="${#numbers.formatDecimal(invoice.roomCharge, 0, 'COMMA', 0, 'POINT')}">2,000,000</td>
+        </tr>
+
+        <!-- 2. Các dòng dịch vụ Room Folio -->
+        <tr th:each="order, stat : ${serviceOrders}">
+          <td th:text="${stat.count + 1}">2</td>
+          <td>
+            <span style="font-weight: 600;" th:text="${order.service.name}">Bữa sáng Buffet</span>
+            <span style="font-size: 0.75rem; color: var(--text-secondary);" th:text="' [' + ${order.service.category.name()} + ']'"> [FB]</span>
+          </td>
+          <td style="text-align: center;" th:text="${order.quantity}">2</td>
+          <td style="text-align: right;" th:text="${#numbers.formatDecimal(order.unitPrice, 0, 'COMMA', 0, 'POINT')}">100,000</td>
+          <td style="text-align: right; font-weight: 600;"
+              th:text="${#numbers.formatDecimal(order.lineTotal, 0, 'COMMA', 0, 'POINT')}">200,000</td>
+        </tr>
+
+        <!-- 3. Phụ thu nhận sớm nếu có -->
+        <tr th:if="${invoice.earlyCheckinFee > 0}">
+          <td>•</td>
+          <td style="font-weight: 600;">Phụ thu nhận phòng sớm (Early Check-in)</td>
+          <td style="text-align: center;">1</td>
+          <td style="text-align: right;" th:text="${#numbers.formatDecimal(invoice.earlyCheckinFee, 0, 'COMMA', 0, 'POINT')}"></td>
+          <td style="text-align: right; font-weight: 600;" th:text="${#numbers.formatDecimal(invoice.earlyCheckinFee, 0, 'COMMA', 0, 'POINT')}"></td>
+        </tr>
+
+        <!-- 4. Phụ thu trả trễ nếu có -->
+        <tr th:if="${invoice.lateCheckoutFee > 0}">
+          <td>•</td>
+          <td style="font-weight: 600;">Phụ thu trả phòng trễ (Late Check-out)</td>
+          <td style="text-align: center;">1</td>
+          <td style="text-align: right;" th:text="${#numbers.formatDecimal(invoice.lateCheckoutFee, 0, 'COMMA', 0, 'POINT')}"></td>
+          <td style="text-align: right; font-weight: 600;" th:text="${#numbers.formatDecimal(invoice.lateCheckoutFee, 0, 'COMMA', 0, 'POINT')}"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Financial Totals Block -->
+    <div style="margin-left: auto; max-width: 420px; border-top: 2px solid var(--border); padding-top: 0.75rem;">
+      <div class="flex items-center justify-between" style="padding: 0.35rem 0; font-size: 0.9rem;">
+        <span style="font-weight: 600;">Tổng chi phí gốc (Subtotal):</span>
+        <strong th:text="${#numbers.formatDecimal(invoice.subtotal, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">2,300,000 VNĐ</strong>
+      </div>
+      <div class="flex items-center justify-between" style="padding: 0.35rem 0; font-size: 0.9rem; color: var(--text-secondary);">
+        <span>Phí phục vụ (SVC 5%):</span>
+        <span th:text="${#numbers.formatDecimal(invoice.serviceChargeAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">115,000 VNĐ</span>
+      </div>
+      <div class="flex items-center justify-between" style="padding: 0.35rem 0; font-size: 0.9rem; color: var(--text-secondary);">
+        <span>Thuế GTGT (VAT 10%):</span>
+        <span th:text="${#numbers.formatDecimal(invoice.vatAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">241,500 VNĐ</span>
+      </div>
+      <div class="flex items-center justify-between" style="padding: 0.5rem 0; font-size: 1.1rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 0.35rem 0;">
+        <span style="font-weight: 800; color: #FDBF2D;">TỔNG CỘNG HÓA ĐƠN (++):</span>
+        <strong style="color: #FDBF2D; font-size: 1.25rem;"
+                th:text="${#numbers.formatDecimal(invoice.grandTotal, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">2,656,500 VNĐ</strong>
+      </div>
+      <div class="flex items-center justify-between" style="padding: 0.35rem 0; font-size: 0.9rem; color: var(--st-free);">
+        <span style="font-weight: 600;">Khấu trừ tiền cọc đã đóng:</span>
+        <strong th:text="'- ' + ${#numbers.formatDecimal(invoice.depositDeducted, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">- 693,000 VNĐ</strong>
+      </div>
+      <div class="flex items-center justify-between" style="padding: 0.75rem 0; font-size: 1.2rem; border-top: 2px solid var(--st-free); margin-top: 0.35rem;">
+        <span style="font-weight: 900; color: var(--text);">THỰC THU TẠI QUẦY:</span>
+        <strong style="font-size: 1.45rem; color: #FDBF2D; font-weight: 900;"
+                th:text="${#numbers.formatDecimal(invoice.balanceDue, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">1,963,500 VNĐ</strong>
+      </div>
+      <div style="text-align: right; font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+        Hình thức thanh toán: <strong th:text="${invoice.paymentMethod.name()}">CASH</strong>
+      </div>
+    </div>
+
+    <!-- Footer Signatures -->
+    <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; text-align: center;">
+      <div style="width: 200px;">
+        <div style="font-weight: 700; font-size: 0.9rem;">Khách Hàng</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary);">(Ký và ghi rõ họ tên)</div>
+        <div style="height: 60px;"></div>
+        <div style="font-weight: 600;" th:text="${booking.customer.fullName}">Nguyễn Minh Anh</div>
+      </div>
+      <div style="width: 200px;">
+        <div style="font-weight: 700; font-size: 0.9rem;">Nhân Viên Lễ Tân</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary);">(Ký xác nhận quyết toán)</div>
+        <div style="height: 60px;"></div>
+        <div style="font-weight: 600;" th:text="${invoice.createdBy != null ? invoice.createdBy.fullName : 'Lễ tân'}">Lễ tân</div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+</body>
+</html>

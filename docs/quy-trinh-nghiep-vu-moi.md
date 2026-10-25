@@ -131,8 +131,8 @@ Hệ thống phân luồng người dùng tự động ngay tại cổng xác th
          +----------------------------+----------------------------+
          |                                                         |
   [Tài khoản Nội bộ có sẵn]                                [Khách hàng mới]
-  - Admin (quanly / Ace@123)                                       |
-  - Lễ tân (letan / Ace@123)                               [Form Đăng ký Khách hàng]
+  - Admin (admin / admin)                                       |
+  - Lễ tân (nhanvien / nhanvien)                               [Form Đăng ký Khách hàng]
          |                                                 - Họ và tên (full_name)
          |                                                 - Ngày sinh (date_of_birth)
          |                                                 - Số điện thoại (phone)
@@ -158,8 +158,9 @@ Hệ thống phân luồng người dùng tự động ngay tại cổng xác th
 ### Quy tắc đăng nhập & điều hướng:
 1. **Đối với Admin và Nhân viên Lễ tân:**
    - Khởi tạo sẵn trong `sample-data.sql` (mật khẩu băm `BCrypt`)[cite: 6, 53]:
-     - Quản trị viên: `quanly` / `Ace@123` (Role: `ADMIN`) $\rightarrow$ Tự động điều hướng về `/admin/dashboard`[cite: 53].
-     - Lễ tân: `letan` / `Ace@123` (Role: `RECEPTIONIST`) $\rightarrow$ Tự động điều hướng về `/staff/dashboard`[cite: 53].
+     - Quản trị viên: `admin` / `admin` (Role: `ADMIN`) $\rightarrow$ Tự động điều hướng về `/admin/dashboard`[cite: 53].
+     - Lễ tân: `nhanvien` / `nhanvien` (Role: `RECEPTIONIST`) $\rightarrow$ Tự động điều hướng về `/staff/dashboard`[cite: 53].
+     - Khách hàng mẫu: `khach` / `khach` (Role: `CUSTOMER`) $\rightarrow$ Tự động điều hướng về `/customer/dashboard`[cite: 53].
 2. **Đối với Khách hàng trực tuyến (`CUSTOMER`):**
    - Khách hàng bấm **Đăng ký (`/register`)** và nhập 5 trường bắt buộc trên form: `full_name`, `date_of_birth`, `phone`, `username`, `password` (có thể nhập thêm `email`, `id_number` tùy chọn)[cite: 53].
    - Hệ thống tạo bản ghi `users` (`role = 'CUSTOMER'`) và bản ghi `customers` liên kết qua `user_id`, sau đó điều hướng về `/customer/dashboard`[cite: 53].

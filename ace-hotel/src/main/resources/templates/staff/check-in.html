@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/pms-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title>Thủ Tục Check-in &amp; Tiếp Nhận Khách | ACE Hotel</title>
+</head>
+<body>
+<section>
+
+  <!-- Navigation Tabs: Khách Đặt Trước (QR) vs Khách Vãng Lai (Walk-in) -->
+  <div style="display: flex; gap: 0.5rem; border-bottom: 2px solid var(--border); margin-bottom: 1.75rem;">
+    <a th:href="@{/staff/check-in}" class="btn"
+       th:style="${activeTab == 'reserved' ? 'background: #FDBF2D; color: #0A0A0A; font-weight: 700; border-radius: 8px 8px 0 0;' : 'background: transparent; color: var(--text-secondary); border-radius: 8px 8px 0 0;'}"
+       style="display: inline-flex; align-items: center; gap: 0.45rem;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      <span>Chế độ 1: Khách Đặt Trước (Quét QR)</span>
+    </a>
+    <a th:href="@{/staff/walk-in}" class="btn"
+       th:style="${activeTab == 'walkin' ? 'background: #FDBF2D; color: #0A0A0A; font-weight: 700; border-radius: 8px 8px 0 0;' : 'background: transparent; color: var(--text-secondary); border-radius: 8px 8px 0 0;'}"
+       style="display: inline-flex; align-items: center; gap: 0.45rem;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+      <span>Chế độ 2: Tiếp Nhận Khách Vãng Lai (Walk-in 0đ Cọc)</span>
+    </a>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- TAB 1: KHÁCH ĐẶT TRƯỚC (QUÉT QR CHECK-IN)  -->
+  <!-- ========================================== -->
+  <div th:if="${activeTab == 'reserved'}">
+    <!-- Search Bar -->
+    <div class="card" style="padding: 1.5rem; margin-bottom: 1.75rem;">
+      <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span>Tra Cứu Đơn Đặt Trước &amp; Quét Mã QR</span>
+      </h2>
+      <form th:action="@{/staff/check-in}" method="get" id="bookingSearchForm" style="display: flex; gap: 0.75rem; max-width: 720px; align-items: center; flex-wrap: wrap;">
+        <input type="text" id="bookingSearchCodeInput" name="code" class="form-control" autofocus
+               placeholder="Quét mã QR hoặc nhập Mã Đơn (ví dụ: BK-2402) / SĐT khách..."
+               th:value="${param.code}" required style="font-weight: 500; flex: 1; min-width: 250px;">
+        <button type="submit" class="btn btn-primary" style="white-space: nowrap; height: 42px;">
+          <span>Tìm kiếm đơn</span>
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="openQrScannerModal()"
+                style="white-space: nowrap; height: 42px; display: inline-flex; align-items: center; gap: 0.45rem; border-color: rgba(253, 191, 45, 0.4); color: #FDBF2D;"
+                title="Bật camera để quét mã QR từ bill xác nhận đặt trước của khách">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          <span>Bật Camera Quét QR</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Alert / Cảnh báo nếu không có phòng sạch -->
+    <div th:if="${warningMessage != null}" class="flash-alert alert-warning" style="margin-bottom: 1.5rem;">
+      <span th:text="${warningMessage}"></span>
+    </div>
+
+    <!-- Booking Details Card for Confirmation -->
+    <div th:if="${booking != null}" class="card" style="padding: 1.75rem;">
+      <div class="flex items-center justify-between" style="border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.25rem;">
+        <div>
+          <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px;">Hồ sơ đơn đặt phòng</span>
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: #FDBF2D; margin-top: 0.25rem;" th:text="${booking.bookingCode}">BK-2402</h3>
+        </div>
+        <span class="badge badge-warning" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">CHỜ NHẬN PHÒNG (RESERVED)</span>
+      </div>
+
+      <!-- Thông tin tóm tắt -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem; background: var(--surface); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border);">
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Khách hàng</div>
+          <div style="font-weight: 700; color: var(--text); font-size: 1.05rem;" th:text="${booking.customer.fullName}">Trần Thị Mai</div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary);" th:text="${booking.customer.phone}">0912345678</div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Hạng phòng đặt</div>
+          <div style="font-weight: 700; color: #FDBF2D; font-size: 1.05rem;" th:text="${booking.roomType.name}">Deluxe</div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary);">
+            <span th:text="'Sức chứa: ' + ${booking.roomType.capacity} + ' khách'">Sức chứa: 2 khách</span> • 
+            <span style="color: #60A5FA;" th:text="${booking.roomType.bedType}">1 Giường đôi Queen</span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text); margin-top: 0.2rem;" th:text="'Khách đăng ký: ' + ${booking.guestCount} + ' người'">Khách đăng ký: 2 người</div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Thời gian lưu trú</div>
+          <div style="font-weight: 700; color: var(--text);" th:text="${#temporals.format(booking.checkInDate, 'dd/MM/yyyy') + ' → ' + #temporals.format(booking.checkOutDate, 'dd/MM/yyyy')}">14/10/2026 → 16/10/2026</div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary);" th:text="${booking.nights + ' đêm'}">2 đêm</div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Tiền cọc Online 30% đã thu</div>
+          <div style="font-weight: 800; color: var(--st-free); font-size: 1.15rem;" th:text="${#numbers.formatDecimal(booking.depositAmount, 0, 'COMMA', 0, 'POINT') + 'đ'}">693,000đ</div>
+          <div style="font-size: 0.75rem; color: var(--st-free); display: flex; align-items: center; gap: 0.25rem;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Đã xác nhận cọc</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Gán Phòng Sạch, Phụ Thu & Check-in -->
+      <form th:action="@{/staff/check-in}" method="post">
+        <input type="hidden" name="bookingId" th:value="${booking.bookingId}">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+          <!-- 1. Chọn phòng vật lý sạch (BR2) -->
+          <div>
+            <label class="form-label" style="font-weight: 700;">
+              1. Chọn Phòng Vật Lý Sạch (<span style="color: var(--st-free);">AVAILABLE</span>) <span style="color: #EF4444;">*</span>
+            </label>
+            <div th:if="${cleanRooms.isEmpty()}" style="color: #EF4444; font-size: 0.85rem; padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-radius: 6px; border: 1px solid rgba(239, 68, 68, 0.3); display: flex; align-items: flex-start; gap: 0.5rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              <div>Hiện không còn phòng sạch thuộc hạng <strong><span th:text="${booking.roomType.name}"></span></strong>! Vui lòng vào Sơ đồ phòng và bấm <strong>[Xác nhận đã dọn sạch]</strong> cho các phòng DIRTY trước.</div>
+            </div>
+            <select th:if="${!cleanRooms.isEmpty()}" name="roomId" class="form-control" required style="font-weight: 600; font-size: 1rem;">
+              <option value="" disabled selected>-- Chọn phòng trống sạch để giao chìa khóa --</option>
+              <option th:each="r : ${cleanRooms}" th:value="${r.roomId}"
+                      th:text="'P.' + ${r.roomNumber} + ' - Tầng ' + ${r.floor} + ' (' + ${r.roomType.name} + ' | ' + ${r.roomType.bedType} + ' | Tối đa ' + ${r.roomType.capacity} + ' khách)'">
+                P.201 - Tầng 2 (Deluxe - Trống sạch)
+              </option>
+            </select>
+          </div>
+
+          <!-- 2. Nhập / Đối chiếu CCCD -->
+          <div>
+            <label class="form-label" style="font-weight: 700;">
+              2. Số CCCD / Passport Khách Lưu Trú <span style="color: #EF4444;">*</span>
+            </label>
+            <input type="text" name="idNumber" class="form-control" required
+                   th:value="${booking.customer.idNumber}"
+                   placeholder="Nhập 12 số CCCD hoặc số Passport...">
+          </div>
+        </div>
+
+        <!-- 3. Chính sách Phụ thu Nhận phòng sớm (Early Check-in) -->
+        <div style="margin-bottom: 1.75rem; background: var(--surface); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border);">
+          <label class="form-label" style="font-weight: 700; margin-bottom: 0.75rem;">
+            3. Phụ Thu Nhận Phòng Sớm (Early Check-in Policy - Chuẩn 14:00)
+          </label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem;">
+            <button type="button" class="btn btn-secondary fee-btn" onclick="applyEarlyRate(0)" style="font-size: 0.8rem; justify-content: flex-start;">
+              <span>0% (0đ) - Đúng giờ / Miễn phí</span>
+            </button>
+            <button type="button" class="btn btn-secondary fee-btn" onclick="applyEarlyRate(30)" style="font-size: 0.8rem; justify-content: flex-start;">
+              <span>30% - Từ 09:00 đến 14:00</span>
+            </button>
+            <button type="button" class="btn btn-secondary fee-btn" onclick="applyEarlyRate(50)" style="font-size: 0.8rem; justify-content: flex-start;">
+              <span>50% - Từ 06:00 đến 09:00</span>
+            </button>
+            <button type="button" class="btn btn-secondary fee-btn" onclick="applyEarlyRate(100)" style="font-size: 0.8rem; justify-content: flex-start;">
+              <span>100% - Trước 06:00 sáng</span>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">Số tiền phụ thu nhận sớm áp dụng:</span>
+            <input type="number" id="earlyFeeInput" name="earlyCheckinFee" value="0" min="0" step="1000"
+                   class="form-control" style="width: 200px; font-weight: 700; color: #FDBF2D;">
+            <span style="font-size: 0.85rem; font-weight: 600;">VNĐ</span>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+          <a th:href="@{/staff/dashboard}" class="btn btn-secondary">
+            <span>Hủy bỏ</span>
+          </a>
+          <button type="submit" class="btn btn-primary" th:disabled="${cleanRooms.isEmpty()}" style="display: inline-flex; align-items: center; gap: 0.45rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L12 11l-4-4-5 5 1.41 1.41L7 11l4 4 5.5-5.5m0 0l2-2"></path><circle cx="15.5" cy="8.5" r="2.5"></circle></svg>
+            <span>Xác Nhận Check-in &amp; Giao Chìa Khóa</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- TAB 2: TIẾP NHẬN KHÁCH VÃNG LAI (WALK-IN)  -->
+  <!-- ========================================== -->
+  <div th:if="${activeTab == 'walkin'}">
+    <div class="card" style="padding: 1.75rem; max-width: 800px; margin: 0 auto;">
+      <div style="border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+        <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px;">Tiếp nhận tại quầy</span>
+        <h2 style="font-size: 1.35rem; font-weight: 800; color: #FDBF2D; margin-top: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+          <span>Khách Vãng Lai (Walk-in) - 0đ Cọc Lúc Vào</span>
+        </h2>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.5;">
+          Quy tắc nghiệp vụ <strong>BR4</strong>: Khách vãng lai nhận phòng trống sạch ngay với <strong>tiền cọc 0đ</strong>. Khách sẽ thanh toán <strong>100% toàn bộ hóa đơn</strong> khi trả phòng (Check-out).
+        </div>
+      </div>
+
+      <form th:action="@{/staff/walk-in}" method="post">
+        <!-- 1. Chọn phòng vật lý AVAILABLE -->
+        <div style="margin-bottom: 1.25rem;">
+          <label class="form-label" style="font-weight: 700;">
+            1. Chọn Phòng Vật Lý Trống Sạch (<span style="color: var(--st-free);">AVAILABLE</span>) <span style="color: #EF4444;">*</span>
+          </label>
+          <select id="walkInRoomSelect" name="roomId" class="form-control" required style="font-weight: 600; font-size: 1rem;" onchange="validateWalkInCapacity()">
+            <option value="" disabled th:selected="${selectedRoomId == null}">-- Chọn phòng trống sạch đón khách --</option>
+            <option th:each="r : ${availableRooms}" th:value="${r.roomId}"
+                    th:selected="${selectedRoomId != null and selectedRoomId == r.roomId}"
+                    th:data-capacity="${r.roomType.capacity}"
+                    th:data-bed-type="${r.roomType.bedType}"
+                    th:data-room-name="${r.roomType.name}"
+                    th:data-price="${r.roomType.pricePerNight}"
+                    th:text="'P.' + ${r.roomNumber} + ' - ' + ${r.roomType.name} + ' (Tối đa ' + ${r.roomType.capacity} + ' khách | ' + ${r.roomType.bedType} + ' | Tầng ' + ${r.floor} + ' - ' + ${#numbers.formatDecimal(r.roomType.pricePerNight, 0, 'COMMA', 0, 'POINT')} + 'đ/đêm)'">
+              P.101 - Standard (Tối đa 2 khách | 1 Giường đôi Queen | Tầng 1 - 780,000đ/đêm)
+            </option>
+          </select>
+          <div id="walkInRoomInfoBox" style="display: none; margin-top: 0.5rem; padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.85rem; background: var(--surface); border: 1px solid var(--border);">
+            <span id="walkInRoomInfoText"></span>
+          </div>
+        </div>
+
+        <!-- 2. Thời gian và Số lượng khách -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+          <div>
+            <label class="form-label" style="font-weight: 700;">
+              2. Ngày Trả Phòng Dự Kiến <span style="color: #EF4444;">*</span>
+            </label>
+            <input type="date" name="checkOutDate" class="form-control" required
+                   th:value="${defaultCheckOutDate}" style="font-weight: 600;">
+            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Ngày nhận: Hôm nay (tức thời)</div>
+          </div>
+          <div>
+            <label class="form-label" style="font-weight: 700;">
+              3. Số Lượng Khách Lưu Trú <span style="color: #EF4444;">*</span>
+            </label>
+            <input type="number" id="walkInGuestCount" name="guestCount" class="form-control" value="1" min="1" max="10" required oninput="validateWalkInCapacity()" onchange="validateWalkInCapacity()">
+          </div>
+        </div>
+
+        <!-- Hộp cảnh báo / xác nhận sức chứa thời gian thực -->
+        <div id="walkInCapacityNotice" style="margin-bottom: 1.25rem;"></div>
+
+        <!-- 3. Thông tin Khách Hàng -->
+        <div style="background: var(--surface); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.45rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Thông Tin Khách Hàng (Được lưu vào Hồ sơ Khách hàng)</span>
+          </h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label class="form-label" style="font-weight: 600;">Họ và Tên <span style="color: #EF4444;">*</span></label>
+              <input type="text" name="fullName" class="form-control" required placeholder="Ví dụ: Hoàng Minh Trí">
+            </div>
+            <div>
+              <label class="form-label" style="font-weight: 600;">Số Điện Thoại <span style="color: #EF4444;">*</span></label>
+              <input type="tel" name="phone" class="form-control" required placeholder="Ví dụ: 0987654321">
+            </div>
+          </div>
+          <div>
+            <label class="form-label" style="font-weight: 600;">Số CCCD / Passport <span style="color: #EF4444;">*</span></label>
+            <input type="text" name="idNumber" class="form-control" required placeholder="Nhập 12 số CCCD của khách...">
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+          <a th:href="@{/staff/dashboard}" class="btn btn-secondary">
+            <span>Hủy bỏ</span>
+          </a>
+          <button type="submit" id="walkInSubmitBtn" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.45rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L12 11l-4-4-5 5 1.41 1.41L7 11l4 4 5.5-5.5m0 0l2-2"></path><circle cx="15.5" cy="8.5" r="2.5"></circle></svg>
+            <span>Xác Nhận Nhận Phòng Walk-in (0đ Cọc)</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- POPUP MODAL: CAMERA QR CODE SCANNER (QUÉT MÃ QR TỪ BILL XÁC NHẬN)        -->
+  <!-- ========================================================================= -->
+  <div id="qrScannerModalBackdrop" class="folio-modal-backdrop" onclick="handleQrScannerBackdropClick(event)">
+    <div class="folio-modal-dialog" style="max-width: 500px; padding: 1.5rem;" role="dialog" aria-modal="true">
+      <!-- Modal Header -->
+      <div class="folio-modal-header" style="margin-bottom: 0.85rem; padding-bottom: 0.75rem;">
+        <div class="flex items-center gap-3">
+          <div class="folio-modal-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #FFFFFF;">
+              Quét Mã QR Check-In
+            </h3>
+            <div style="font-size: 0.76rem; color: #94A3B8; margin-top: 2px;">
+              Hướng camera vào mã QR trên bill xác nhận đặt trước của khách
+            </div>
+          </div>
+        </div>
+        <button type="button" class="folio-modal-close" onclick="closeQrScannerModal()" title="Đóng camera (Esc)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Viewfinder Container -->
+      <div class="qr-scanner-wrapper">
+        <div id="qrReader" style="width: 100%; border-radius: 10px; overflow: hidden; background: #000; min-height: 250px;"></div>
+        
+        <!-- Camera Loading or Error Notice -->
+        <div id="qrScannerStatus" style="font-size: 0.78rem; color: #CBD5E1; text-align: center; margin-top: 0.65rem;">
+          Đang khởi tạo camera...
+        </div>
+      </div>
+
+      <!-- Footer Actions: Camera Toggle & File Upload Fallback -->
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08);">
+        <!-- Upload ảnh bill fallback -->
+        <label class="btn btn-secondary btn-sm" style="cursor: pointer; margin: 0; display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.76rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <span>Tải ảnh bill từ máy</span>
+          <input type="file" id="qrFileInput" accept="image/*" style="display: none;" onchange="handleQrFileUpload(this)">
+        </label>
+
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeQrScannerModal()">
+          <span>Đóng Camera</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thư viện Quét mã QR offline -->
+  <script th:src="@{/js/html5-qrcode.min.js}"></script>
+
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    var earlyBasePrice = /*[[${booking != null ? booking.roomType.pricePerNight : 0}]]*/ 1000000;
+    function applyEarlyRate(percent) {
+      var amount = Math.round(earlyBasePrice * (percent / 100));
+      document.getElementById('earlyFeeInput').value = amount;
+    }
+
+    // ==========================================
+    // Real-time Walk-in Capacity & Bed Validation
+    // ==========================================
+    function validateWalkInCapacity() {
+      var roomSelect = document.getElementById('walkInRoomSelect');
+      var guestInput = document.getElementById('walkInGuestCount');
+      var noticeBox = document.getElementById('walkInCapacityNotice');
+      var infoBox = document.getElementById('walkInRoomInfoBox');
+      var infoText = document.getElementById('walkInRoomInfoText');
+      var submitBtn = document.getElementById('walkInSubmitBtn');
+
+      if (!roomSelect || !guestInput || !noticeBox) return;
+
+      var guestCount = parseInt(guestInput.value, 10);
+      var selectedOption = roomSelect.options[roomSelect.selectedIndex];
+
+      if (!selectedOption || !selectedOption.value) {
+        if (infoBox) infoBox.style.display = 'none';
+        noticeBox.innerHTML = '';
+        guestInput.style.borderColor = '';
+        if (submitBtn) submitBtn.disabled = false;
+        return;
+      }
+
+      var capacity = parseInt(selectedOption.getAttribute('data-capacity'), 10) || 2;
+      var bedType = selectedOption.getAttribute('data-bed-type') || 'Giường tiêu chuẩn';
+      var roomName = selectedOption.getAttribute('data-room-name') || 'Phòng';
+
+      if (infoBox && infoText) {
+        infoBox.style.display = 'block';
+        infoText.innerHTML = '🛏️ <strong>Hạng ' + roomName + ':</strong> ' + bedType + ' • 👥 <strong>Sức chứa tối đa:</strong> <span style="color: #FDBF2D; font-weight: 700;">' + capacity + ' khách</span>';
+      }
+
+      if (isNaN(guestCount) || guestCount <= 0) {
+        noticeBox.innerHTML = `
+          <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #EF4444; color: #FCA5A5; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <span>Số lượng khách lưu trú phải lớn hơn 0.</span>
+          </div>
+        `;
+        guestInput.style.borderColor = '#EF4444';
+        if (submitBtn) submitBtn.disabled = true;
+      } else if (guestCount > 4) {
+        noticeBox.innerHTML = `
+          <div style="background: rgba(239, 68, 68, 0.15); border: 1.5px solid #EF4444; color: #FCA5A5; padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.875rem;">
+            <div style="font-weight: 700; color: #EF4444; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>VƯỢT QUÁ SỨC CHỨA TỐI ĐA CỦA KHÁCH SẠN (Tối đa 4 khách/phòng)</span>
+            </div>
+            <div style="line-height: 1.45; color: #FEE2E2;">
+              Số khách lưu trú (<strong>${guestCount} người</strong>) vượt quá sức chứa tối đa của 1 phòng đơn lẻ tại khách sạn (hạng Family &amp; Suite tối đa 4 khách). Vui lòng hướng dẫn khách thuê từ <strong>2 phòng trở lên</strong> để đảm bảo an toàn PCCC và trải nghiệm lưu trú.
+            </div>
+          </div>
+        `;
+        guestInput.style.borderColor = '#EF4444';
+        if (submitBtn) submitBtn.disabled = true;
+      } else if (guestCount > capacity) {
+        var excess = guestCount - capacity;
+        noticeBox.innerHTML = `
+          <div style="background: rgba(239, 68, 68, 0.15); border: 1.5px solid #EF4444; color: #FCA5A5; padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.875rem;">
+            <div style="font-weight: 700; color: #EF4444; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>VƯỢT QUÁ SỨC CHỨA HẠNG PHÒNG (${guestCount}/${capacity} khách)</span>
+            </div>
+            <div style="line-height: 1.45; color: #FEE2E2;">
+              Phòng hạng <strong>${roomName}</strong> chỉ có cấu hình <strong>${bedType}</strong>, sức chứa tối đa <strong>${capacity} khách</strong> (vượt quá ${excess} người). Vui lòng chọn phòng hạng <strong>Family</strong> hoặc <strong>Suite</strong> (tối đa 4 khách).
+            </div>
+          </div>
+        `;
+        guestInput.style.borderColor = '#EF4444';
+        if (submitBtn) submitBtn.disabled = true;
+      } else {
+        noticeBox.innerHTML = `
+          <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10B981; color: #6EE7B7; padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Số khách phù hợp: <strong>${guestCount}/${capacity} khách</strong> • Cấu hình: ${bedType}</span>
+          </div>
+        `;
+        guestInput.style.borderColor = '#10B981';
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      validateWalkInCapacity();
+    });
+
+    // ==========================================
+    // Camera QR Code Scanner Controller
+    // ==========================================
+    var html5QrCodeScanner = null;
+    var isCameraRunning = false;
+
+    function openQrScannerModal() {
+      var backdrop = document.getElementById('qrScannerModalBackdrop');
+      backdrop.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #FDBF2D;">Đang kết nối camera...</span> Vui lòng bấm "Cho phép" (Allow) nếu trình duyệt hỏi quyền camera.';
+
+      startQrCamera();
+    }
+
+    function closeQrScannerModal() {
+      stopQrCamera(function() {
+        var backdrop = document.getElementById('qrScannerModalBackdrop');
+        if (backdrop) backdrop.classList.remove('is-open');
+        document.body.style.overflow = '';
+      });
+    }
+
+    function handleQrScannerBackdropClick(event) {
+      if (event.target.id === 'qrScannerModalBackdrop') {
+        closeQrScannerModal();
+      }
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        var backdrop = document.getElementById('qrScannerModalBackdrop');
+        if (backdrop && backdrop.classList.contains('is-open')) {
+          closeQrScannerModal();
+        }
+      }
+    });
+
+    function startQrCamera() {
+      if (typeof Html5Qrcode === 'undefined') {
+        document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #EF4444;">Không tìm thấy thư viện quét mã QR. Vui lòng thử lại.</span>';
+        return;
+      }
+
+      if (!html5QrCodeScanner) {
+        html5QrCodeScanner = new Html5Qrcode("qrReader");
+      }
+
+      var config = {
+        fps: 15,
+        qrbox: { width: 230, height: 230 },
+        aspectRatio: 1.0
+      };
+
+      // Ưu tiên camera sau (environment), tự động fallback sang camera bất kỳ
+      html5QrCodeScanner.start(
+        { facingMode: "environment" },
+        config,
+        onQrCodeScanned,
+        onQrScanError
+      )
+      .then(function() {
+        isCameraRunning = true;
+        document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #10B981;">● Camera đang hoạt động</span> — Hướng mã QR vào khung ngắm';
+      })
+      .catch(function(err) {
+        Html5Qrcode.getCameras().then(function(cameras) {
+          if (cameras && cameras.length) {
+            html5QrCodeScanner.start(
+              cameras[0].id,
+              config,
+              onQrCodeScanned,
+              onQrScanError
+            ).then(function() {
+              isCameraRunning = true;
+              document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #10B981;">● Camera đang hoạt động</span> — Hướng mã QR vào khung ngắm';
+            }).catch(function(err2) {
+              handleCameraError(err2);
+            });
+          } else {
+            handleCameraError(err);
+          }
+        }).catch(function() {
+          handleCameraError(err);
+        });
+      });
+    }
+
+    function handleCameraError(err) {
+      isCameraRunning = false;
+      document.getElementById('qrScannerStatus').innerHTML = `
+        <div style="color: #EF4444; font-weight: 600; margin-bottom: 0.35rem;">Không thể truy cập camera</div>
+        <div style="color: #94A3B8; font-size: 0.74rem;">${err.message || 'Thiết bị không có camera hoặc quyền bị từ chối.'}</div>
+        <div style="color: #FDBF2D; font-size: 0.74rem; margin-top: 0.25rem;">Bạn có thể bấm nút "Tải ảnh bill từ máy" bên dưới để quét từ ảnh bill có sẵn.</div>
+      `;
+    }
+
+    function stopQrCamera(callback) {
+      if (html5QrCodeScanner && isCameraRunning) {
+        html5QrCodeScanner.stop().then(function() {
+          isCameraRunning = false;
+          if (callback) callback();
+        }).catch(function() {
+          isCameraRunning = false;
+          if (callback) callback();
+        });
+      } else {
+        if (callback) callback();
+      }
+    }
+
+    function onQrCodeScanned(decodedText, decodedResult) {
+      if (!decodedText) return;
+
+      // Trích xuất mã đơn đặt phòng (Ví dụ: BK-2404 hoặc từ URL .../check-in?code=BK-2404)
+      var bookingCode = null;
+      var match = decodedText.match(/BK-[A-Z0-9]+/i);
+      if (match) {
+        bookingCode = match[0].toUpperCase();
+      } else {
+        bookingCode = decodedText.trim();
+      }
+
+      if (bookingCode) {
+        document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #10B981; font-weight: 700;">✓ Đã nhận diện mã: ' + bookingCode + '</span>. Đang tải hồ sơ...';
+        
+        stopQrCamera(function() {
+          var backdrop = document.getElementById('qrScannerModalBackdrop');
+          if (backdrop) backdrop.classList.remove('is-open');
+          document.body.style.overflow = '';
+
+          // Tự động điền và điều hướng tra cứu đơn
+          var input = document.getElementById('bookingSearchCodeInput');
+          if (input) input.value = bookingCode;
+          window.location.href = '/staff/check-in?code=' + encodeURIComponent(bookingCode);
+        });
+      }
+    }
+
+    function onQrScanError(errorMessage) {
+      // Quét từng frame liên tục, không cần log lỗi frame trống
+    }
+
+    function handleQrFileUpload(input) {
+      if (!input.files || input.files.length === 0) return;
+      var file = input.files[0];
+
+      if (!html5QrCodeScanner) {
+        html5QrCodeScanner = new Html5Qrcode("qrReader");
+      }
+
+      stopQrCamera(function() {
+        document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #FDBF2D;">Đang quét mã QR từ tệp ảnh...</span>';
+        html5QrCodeScanner.scanFile(file, true)
+          .then(function(decodedText) {
+            onQrCodeScanned(decodedText, null);
+          })
+          .catch(function(err) {
+            document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #EF4444;">Không tìm thấy mã QR hợp lệ trong ảnh này. Vui lòng thử ảnh bill khác.</span>';
+          });
+      });
+    }
+    /*]]>*/
+  </script>
+
+</section>
+</body>
+</html>

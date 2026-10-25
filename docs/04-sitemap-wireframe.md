@@ -1,369 +1,356 @@
-# 04. SITEMAP VÀ WIREFRAME CHI TIẾT TOÀN BỘ 15 MÀN HÌNH (`S01` – `S15`)
+# 04. KIẾN TRÚC 4 PHÂN HỆ GIAO DIỆN, SITEMAP & WIREFRAME 10 MÀN HÌNH CHÍNH (`WF-01` – `WF-10`)
 
-> **Trạng thái:** Đã hoàn thiện đầy đủ 15 màn hình (`S01` – `S15`) kèm đặc tả trường dữ liệu và trạng thái nút bấm, giải quyết hoàn toàn **Mục #3** trong [08-bao-cao-tai-lieu-con-thieu.md](file:///D:/ACE/docs/08-bao-cao-tai-lieu-con-thieu.md).  
-> Giao diện tuân thủ nghiêm ngặt bảng màu ACE ([ACE_Light_Mode.png](file:///D:/ACE/docs/assets/ACE_Light_Mode.png), [ACE_Dark_Mode.png](file:///D:/ACE/docs/assets/ACE_Dark_Mode.png)).
+> **Phụ trách thiết kế & viết Chương 6:** **Kiệt** (Cài đặt Thymeleaf/CSS: **Khoa**).  
+> **Ánh xạ Báo cáo:** Phục vụ trực tiếp **Chương 6 – Thiết kế giao diện người dùng (Mục 6.1, 6.2, 6.3)** của quyển báo cáo.  
+> **Hệ thống màu:** Tuân thủ nghiêm ngặt `ACE Color System` (Dark Mode mặc định, có nút chuyển Light Mode, màu vàng thương hiệu `#FDBF2D`).
 
 ---
 
-## 1. Sitemap Điều hướng Tổng thể
+## 1. Sơ đồ Luồng Điều hướng Tổng thể Giữa 4 Phân hệ (`dieu-huong.png`)
+
 ```mermaid
 flowchart TD
-    L["S01: Landing Giới thiệu (/)"] --> LG["S02: Đăng nhập (/login)"]
-    LG --> D["S03: Tổng quan (/dashboard)"]
-    D --> R["S04: Danh sách phòng (/rooms)"]
-    D --> B["S07: Tìm phòng trống (/bookings/new)"]
-    B --> BC["S08: Chọn/Tạo khách & Xác nhận (/bookings/new/confirm)"]
-    BC --> BL["S09: Danh sách đặt phòng (/bookings)"]
-    D --> BL
-    BL --> CI["S10: Xác nhận Check-in (/bookings/{id}/check-in)"]
-    BL --> SV["S11: Thêm/Xóa dịch vụ (/bookings/{id}/services)"]
-    BL --> CO["S12: Check-out & Thanh toán (/bookings/{id}/check-out)"]
-    CO --> INV["S13: Hóa đơn & In (/invoices/{id})"]
-    D -. "Chỉ Quản lý (MANAGER)" .-> RM["S05: Thêm/Sửa phòng (/manage/rooms/**)"]
-    D -. "Chỉ Quản lý (MANAGER)" .-> RT["S06: Quản lý loại phòng (/manage/room-types)"]
-    D -. "Chỉ Quản lý (MANAGER)" .-> SC["S14: Danh mục dịch vụ (/manage/services)"]
-    D -. "Chỉ Quản lý (MANAGER)" .-> ST["S15: Thống kê (/reports)"]
+    subgraph Public["1. PHÂN HỆ CÔNG KHAI (PUBLIC)"]
+        WF01["WF-01: Landing Page Storytelling (GET /)"]
+        WF02["WF-02: Đăng nhập & Đăng ký Khách hàng (/login, /register)"]
+    end
+
+    subgraph CustomerPortal["2. PHÂN HỆ KHÁCH HÀNG (ROLE: CUSTOMER)"]
+        WF03["WF-03: Dashboard Khách hàng & Phiếu xác nhận QR (/customer/dashboard)"]
+        WF04["WF-04: Tìm Hạng phòng (Quota) & Pop-up Cọc 30% (/booking/search)"]
+    end
+
+    subgraph StaffPMS["3. PHÂN HỆ LỄ TÂN PMS (ROLE: RECEPTIONIST / ADMIN)"]
+        WF05["WF-05: Dashboard Lễ tân – Sơ đồ phòng 4 trạng thái & Nút Dọn sạch (/staff/dashboard)"]
+        WF06["WF-06: Check-in Quét QR Gán phòng sạch & Tiếp nhận Walk-in 0đ (/staff/check-in)"]
+        WF07["WF-07: Quản lý Room Folio & Ghi nợ 4 nhóm dịch vụ (/staff/bookings/{id}/folio)"]
+        WF08["WF-08: Check-out Quyết toán ++ (Online 70% / Walk-in 100%) & Hóa đơn VAT (/staff/bookings/{id}/check-out)"]
+    end
+
+    subgraph AdminBackoffice["4. PHÂN HỆ QUẢN TRỊ (ROLE: ADMIN)"]
+        WF09["WF-09: Quản lý Hạng phòng (Giá T2–T5 / T6–CN), Phòng & 4 Nhóm Dịch vụ (/admin/catalog)"]
+        WF10["WF-10: Dashboard Admin – Báo cáo Doanh thu ++ & Occupancy Rate (/admin/dashboard)"]
+    end
+
+    WF01 -->|"Bấm Đăng nhập / Đặt phòng"| WF02
+    WF02 -->|"Role = CUSTOMER"| WF03
+    WF02 -->|"Role = RECEPTIONIST"| WF05
+    WF02 -->|"Role = ADMIN"| WF10
+
+    WF01 -->|"Tìm hạng phòng trống"| WF04
+    WF03 -->|"Đặt phòng mới"| WF04
+    WF04 -->|"Thanh toán cọc 30% thành công"| WF03
+
+    WF05 -->|"Quét QR / Bấm Check-in hoặc Walk-in"| WF06
+    WF06 -->|"Gán phòng AVAILABLE -> OCCUPIED"| WF05
+    WF05 -->|"Chọn phòng OCCUPIED -> Thêm dịch vụ"| WF07
+    WF05 -->|"Chọn phòng OCCUPIED -> Trả phòng"| WF08
+    WF07 -->|"Chuyển sang Quyết toán"| WF08
+    WF08 -->|"Hoàn tất TT -> Phòng sang DIRTY"| WF05
+
+    WF10 -->|"Cấu hình Phòng, Giá & Dịch vụ"| WF09
+    WF09 -->|"Quay về Thống kê"| WF10
 ```
 
 ---
 
-## 2. Danh sách 15 Màn hình và Phân quyền Hiển thị
-| # | Màn hình | Route URL | Vai trò truy cập | UC | Ưu tiên |
-|:---:|---|---|---|:---:|:---:|
-| `S01` | Landing giới thiệu hệ thống | `GET /` | Công khai | (Xem `05`) | Should |
-| `S02` | Đăng nhập | `GET/POST /login` | Công khai | `UC01` | Must |
-| `S03` | Tổng quan (Dashboard) | `GET /dashboard` | Lễ tân, Quản lý | `UC01`, `FR-18` | Should |
-| `S04` | Danh sách phòng (Xem & Lọc) | `GET /rooms` | Lễ tân (xem), Quản lý (CRUD) | `UC02` | Must |
-| `S05` | Form Thêm / Sửa phòng | `GET/POST /manage/rooms/new`, `/{id}/edit` | **Chỉ Quản lý** | `UC02` | Must |
-| `S06` | Quản lý Loại phòng (CRUD) | `GET/POST /manage/room-types/**` | **Chỉ Quản lý** | `UC02` | Must |
-| `S07` | Tìm phòng trống theo ngày | `GET /bookings/new` | Lễ tân, Quản lý | `UC03` | Must |
-| `S08` | Chọn/Tạo khách & Xác nhận đặt | `GET /bookings/new/confirm`, `POST /bookings` | Lễ tân, Quản lý | `UC03` | Must |
-| `S09` | Danh sách đặt phòng | `GET /bookings` | Lễ tân, Quản lý | `UC03/04/05` | Must |
-| `S10` | Xác nhận Check-in | `GET/POST /bookings/{id}/check-in` | Lễ tân, Quản lý | `UC04` | Must |
-| `S11` | Thêm / Xóa dịch vụ phòng đang ở | `GET/POST /bookings/{id}/services/**` | Lễ tân, Quản lý | `UC06` | Must |
-| `S12` | Check-out và Thanh toán | `GET /bookings/{id}/check-out`, `POST /pay` | Lễ tân, Quản lý | `UC05` | Must |
-| `S13` | Chi tiết Hóa đơn & In | `GET /invoices/{id}` | Lễ tân, Quản lý | `UC05` | Should |
-| `S14` | Quản lý Danh mục Dịch vụ | `GET/POST /manage/services/**` | **Chỉ Quản lý** | `UC06` | Should |
-| `S15` | Báo cáo Thống kê | `GET /reports` | **Chỉ Quản lý** | `UC07` | Could (Đặc tả) |
+## 2. Danh mục 10 Màn hình Wireframe Chuẩn (`WF-01` – `WF-10`) & Phân quyền Route
 
-* **Menu Header theo vai trò:**
-  * **Lễ tân (`RECEPTIONIST`):** `Tổng quan (S03)` · `Phòng (S04 - chỉ xem)` · `Đặt phòng mới (S07)` · `Danh sách đặt phòng (S09)`.
-  * **Quản lý (`MANAGER`):** Có toàn bộ menu trên + `Loại phòng (S06)` · `Danh mục dịch vụ (S14)` · `Thống kê (S15)` (và các nút Thêm/Sửa/Bảo trì/Xóa ngay trên `S04`).
+| Mã WF | Tên màn hình Wireframe | Route URL chính | Quyền truy cập | Use Case |
+|:---:|---|---|:---:|:---:|
+| **WF-01** | Trang chủ giới thiệu khách sạn theo phong cách Storytelling | `GET /` | Công khai | `UC01`, `UC03` |
+| **WF-02** | Màn hình Đăng nhập & Đăng ký tài khoản khách hàng (2 tab) | `GET/POST /login`, `GET/POST /register` | Công khai | `UC01` |
+| **WF-03** | Dashboard Khách hàng & Thẻ Phiếu xác nhận đặt phòng kèm Mã QR | `GET /customer/dashboard`, `POST /customer/bookings/{id}/cancel` | `CUSTOMER` | `UC01`, `UC03` |
+| **WF-04** | Màn hình Tìm kiếm Hạng phòng (Quota) & Pop-up Xác nhận Cọc 30% | `GET /booking/search`, `POST /booking/deposit` | `CUSTOMER` | `UC03` |
+| **WF-05** | Dashboard Nhân viên Lễ tân: Sơ đồ phòng 4 trạng thái & Nút Dọn sạch | `GET /staff/dashboard`, `POST /staff/rooms/{id}/clean` | `RECEPTIONIST`, `ADMIN` | `UC04`, `UC05` |
+| **WF-06** | Màn hình Check-in Quét QR Gán phòng sạch & Tiếp nhận Walk-in (0đ cọc) | `GET/POST /staff/check-in`, `GET/POST /staff/walk-in` | `RECEPTIONIST`, `ADMIN` | `UC04` |
+| **WF-07** | Màn hình Quản lý Tài khoản phòng (Room Folio – 4 nhóm dịch vụ) | `GET/POST /staff/bookings/{id}/folio` | `RECEPTIONIST`, `ADMIN` | `UC06` |
+| **WF-08** | Màn hình Check-out Quyết toán `++` & Xem/In Hóa đơn VAT | `GET/POST /staff/bookings/{id}/check-out`, `GET /staff/invoices/{id}` | `RECEPTIONIST`, `ADMIN` | `UC05` |
+| **WF-09** | Màn hình Quản lý Hạng phòng (Giá ngày thường/cuối tuần), Phòng & Dịch vụ | `GET/POST /admin/room-types/**`, `/admin/rooms/**`, `/admin/services/**` | **Chỉ `ADMIN`** | `UC02` |
+| **WF-10** | Dashboard Quản trị viên: Báo cáo Doanh thu đa chiều `++` & `Occupancy Rate` | `GET /admin/dashboard` | **Chỉ `ADMIN`** | `UC07` |
 
 ---
 
-## 3. Luồng Điều hướng Nghiệp vụ Chính (Mục 2.7 Báo cáo)
-1. **Xác thực:** Mở trang giới thiệu `S01 (/)` $\rightarrow$ Đăng nhập `S02 (/login)` $\rightarrow$ Tổng quan `S03 (/dashboard)`.
-2. **Luồng Đặt phòng (`UC03`):** Từ `S03` hoặc menu bấm `Đặt phòng mới (S07)` $\rightarrow$ Chọn ngày nhận/trả & lọc loại phòng $\rightarrow$ Bấm **[Đặt phòng]** trên thẻ phòng trống $\rightarrow$ Sang `S08` tìm khách cũ hoặc nhập khách mới $\rightarrow$ Bấm **[Xác nhận đặt phòng]** $\rightarrow$ Chuyển về `S09 (/bookings)` hiện mã `BK-{id}`.
-3. **Luồng Nhận phòng & Phục vụ (`UC04` + `UC06`):** Tại `S03` hoặc `S09`, bấm **[Check-in]** trên đơn `BOOKED` $\rightarrow$ Xác nhận tại `S10` (phòng sang `OCCUPIED`) $\rightarrow$ Khi khách gọi dịch vụ, bấm **[Dịch vụ]** mở `S11` để thêm/xóa dòng dịch vụ.
-4. **Luồng Trả phòng & Lập hóa đơn (`UC05`):** Tại `S03` hoặc `S09`, bấm **[Check-out]** trên đơn `CHECKED_IN` $\rightarrow$ Mở `S12` kiểm tra bảng tính tiền tự động $\rightarrow$ Chọn `Tiền mặt / Thẻ / Chuyển khoản` $\rightarrow$ Bấm **[Xác nhận thanh toán]** $\rightarrow$ Mở `S13` xem và bấm **[In hóa đơn]**.
+## 3. Wireframe Chi tiết 10 Màn hình Chính (Chương 6 Báo cáo)
 
----
-
-## 4. Wireframe Chi tiết Toàn bộ 15 Màn hình (`S01` – `S15`)
-
-### S01 – Landing Giới thiệu Hệ thống (`GET /`)
+### WF-01 – Trang chủ Landing Page Storytelling (`GET /`)
 ```text
-+--------------------------------------------------------------------------------+
-| [ACE] Accommodation, Check-in & Extras     Tính năng | Quy trình | [☀/🌙] [Đăng nhập] |
-+--------------------------------------------------------------------------------+
-|                                                                                |
-|        HỆ THỐNG QUẢN LÝ KHÁCH SẠN NỘI BỘ CHO LỄ TÂN VÀ QUẢN LÝ                 |
-|        "Từ đặt phòng đến trả phòng, gọn trong một màn hình"                    |
-|                                                                                |
-|                    [ Đăng nhập hệ thống (/login) ]                             |
-+--------------------------------------------------------------------------------+
-| [1. Quản lý phòng]     [2. Đặt phòng chống trùng]   [3. Check-in / Check-out]  |
-| [4. Dịch vụ đi kèm]    [5. Thanh toán & Hóa đơn]    [6. Thống kê doanh thu]    |
-+--------------------------------------------------------------------------------+
-| Quy trình 4 bước:  (1) Đặt phòng ──► (2) Check-in ──► (3) Dịch vụ ──► (4) Trả  |
-+--------------------------------------------------------------------------------+
-| Đồ án môn 502050 – Phân tích và Thiết kế Yêu cầu · ĐH Tôn Đức Thắng · 2026     |
-+--------------------------------------------------------------------------------+
-```
-
-### S02 – Đăng nhập (`GET/POST /login`)
-```text
-+--------------------------------------------------+
-|                      [ACE]                       |
-|          Hệ thống Quản lý Khách sạn              |
-|  ----------------------------------------------  |
-|  [!] (Nếu lỗi: Sai tên đăng nhập hoặc mật khẩu.) |
-|                                                  |
-|  Tên đăng nhập * [ letan01                    ]  |
-|  Mật khẩu *      [ ••••••                     ]  |
-|                                                  |
-|            [      Đăng nhập      ]               |
-|         ← Quay lại trang giới thiệu (/)          |
-+--------------------------------------------------+
-```
-* **Trường nhập:** `username` (text, required), `password` (password, required). Nút **[Đăng nhập]** (Primary `#FDBF2D`).
-
-### S03 – Tổng quan / Dashboard (`GET /dashboard`)
-```text
-+------------------------------------------------------------------------------------+
-| [ACE] | Tổng quan* | Phòng | Đặt phòng mới | DS Đặt phòng | (QL: Loại phòng | DV)  |
-|                                               [☀/🌙] Nguyễn Thảo Lễ Tân [Đăng xuất]|
-+------------------------------------------------------------------------------------+
-| +-------------------+ +-------------------+ +-------------------+ +--------------+ |
-| | ● Phòng trống     | | ● Check-in hôm nay| | ● Check-out hôm nay| | ● Dịch vụ    | |
-| |   24 (8/12 mẫu)   | |   12 (1 mẫu)      | |   9  (2 mẫu)      | |   38 (6 mẫu) | |
-| +-------------------+ +-------------------+ +-------------------+ +--------------+ |
-|                                                                                    |
-| Check-in / Check-out hôm nay                                  Thứ Ba, 13/10/2026   |
-| +---------+-----------------+--------------+-------------+----------+------------+ |
-| | MÃ ĐẶT  | KHÁCH HÀNG      | PHÒNG        | NHẬN - TRẢ  | TRẠNG THÁI| THAO TÁC   | |
-| +---------+-----------------+--------------+-------------+----------+------------+ |
-| | BK-2401 | Nguyễn Minh Anh | 301 · Deluxe | 11/10–13/10 | ● Đang ở | [Check-out]| |
-| | BK-2402 | Trần Quốc Bảo   | 205 · Std    | 13/10–14/10 | ● Đã đặt | [Check-in] | |
-| | BK-2403 | Lê Thu Hà       | 418 · Suite  | 10/10–12/10 | ● Quá hạn| [Check-out]| |
-| +---------+-----------------+--------------+-------------+----------+------------+ |
-+------------------------------------------------------------------------------------+
-```
-
-### S04 – Danh sách Phòng & Lọc (`GET /rooms`)
-```text
-+------------------------------------------------------------------------------------+
-| DANH SÁCH PHÒNG KHÁCH SẠN        (Chỉ QL hiện: [Quản lý loại phòng] [+ Thêm phòng])|
-+------------------------------------------------------------------------------------+
-| Số phòng: [ 301... ]  Loại phòng: [ Tất cả v ]  Trạng thái: [ Tất cả v ]  [ Lọc ]  |
-+------------------------------------------------------------------------------------+
-| +------------------------+ +------------------------+ +--------------------------+ |
-| | Phòng 301   ● Đang ở   | | Phòng 205   ● Đã đặt   | | Phòng 103     ● Bảo trì  | |
-| | Tầng 3 · Deluxe · 2 ng | | Tầng 2 · Standard · 2ng| | Tầng 1 · Superior · 2 ng | |
-| | 1.250.000đ / đêm       | | 780.000đ / đêm         | | 950.000đ / đêm           | |
-| | [ Xem đặt phòng ]      | | [ Xem đặt phòng ]      | | (Không khả dụng)         | |
-| | (QL: [Sửa] [Bảo trì-x])| | (QL: [Sửa] [Bảo trì-x])| | (QL: [Sửa] [Mở lại] [Xóa])| |
-| +------------------------+ +------------------------+ +--------------------------+ |
-+------------------------------------------------------------------------------------+
-```
-* **Quy tắc nút bấm (`RBAC` & `D11`):** Lễ tân chỉ thấy nút **[Đặt phòng]** (nếu trống) hoặc **[Xem đặt phòng]**. Quản lý thấy thêm **[Sửa]**, **[Bảo trì / Mở lại]** (disabled khi đang `OCCUPIED` hoặc có hẹn nhận hôm nay) và **[Xóa]** (chặn xóa nếu đã có lịch sử booking theo `D10`).
-
-### S05 – Form Thêm / Sửa Phòng (`GET/POST /manage/rooms/new`, `/{id}/edit`) – *Chỉ Quản lý*
-```text
-+------------------------------------------------------------------+
-| THÊM / CẬP NHẬT THÔNG TIN PHÒNG (Chỉ Quản lý)                    |
-+------------------------------------------------------------------+
-| Số phòng *       [ 306                  ] (Unique, VD: 101, 301) |
-| Tầng *           [ 3                    ] (Số nguyên >= 1)       |
-| Loại phòng *     [ Deluxe - 1.250.000đ/đêm (2 khách)         v ] |
-| Trạng thái *     [ Phòng trống (AVAILABLE)                   v ] |
-|                  (Chỉ chọn AVAILABLE hoặc MAINTENANCE - D11)     |
-|                                                                  |
-|                        [ Hủy (/rooms) ]   [ Lưu thông tin phòng ]|
-+------------------------------------------------------------------+
-```
-
-### S06 – Quản lý Loại phòng (`GET/POST /manage/room-types`) – *Chỉ Quản lý*
-```text
-+------------------------------------------------------------------------------------+
-| QUẢN LÝ LOẠI PHÒNG (Chỉ Quản lý)                                  [← Quay lại S04] |
-+------------------------------------------------------------------------------------+
-| Form Thêm / Sửa Loại phòng:                                                        |
-| Tên loại * [ Superior   ]  Đơn giá/đêm (VNĐ) * [ 950000 ]  Sức chứa * [ 2 ]        |
-| Mô tả      [ Phòng diện tích rộng, cửa sổ thoáng nhìn ra phố   ]  [ Lưu loại phòng]|
-+------------------------------------------------------------------------------------+
-| DANH SÁCH LOẠI PHÒNG HIỆN CÓ                                                       |
-| Mã | Tên loại | Đơn giá / đêm | Sức chứa | Số phòng | Mô tả            | Thao tác  |
-| 1  | Standard | 780.000đ      | 2 khách  | 3 phòng  | Tiêu chuẩn...    | [Sửa][Xóa]|
-| 2  | Superior | 950.000đ      | 2 khách  | 3 phòng  | Cửa sổ thoáng... | [Sửa][Xóa]|
-| 3  | Deluxe   | 1.250.000đ    | 2 khách  | 2 phòng  | Ban công riêng...| [Sửa][Xóa]|
-+------------------------------------------------------------------------------------+
-```
-* **Ràng buộc:** Nút **[Xóa]** hiển thị hộp thoại xác nhận; nếu `Số phòng > 0` thì tầng Service chặn xóa và báo lỗi `MSG-12`.
-
-### S07 – Tìm Phòng Trống (`GET /bookings/new`)
-```text
-+------------------------------------------------------------------------------------+
-| BƯỚC 1/2: TÌM PHÒNG TRỐNG THEO NGÀY (UC03)                                         |
-+------------------------------------------------------------------------------------+
-| Ngày nhận * [ 13/10/2026 ]  Ngày trả * [ 15/10/2026 ]  Loại [ Tất cả v ] [Tìm kiếm]|
-| (Số đêm dự kiến: 2 đêm · Chỉ hiển thị phòng không trùng lịch BR2 và không Bảo trì) |
-+------------------------------------------------------------------------------------+
-| +--------------------------+ +--------------------------+                          |
-| | Phòng 101   ● Phòng trống| | Phòng 201   ● Phòng trống|                          |
-| | Tầng 1 · Standard · 2 ng | | Tầng 2 · Superior · 2 ng |                          |
-| | Đơn giá: 780.000đ / đêm  | | Đơn giá: 950.000đ / đêm  |                          |
-| | Tạm tính (2 đêm): 1.560k | | Tạm tính (2 đêm): 1.900k |                          |
-| | [  Chọn đặt phòng này  ] | | [  Chọn đặt phòng này  ] |                          |
-| +--------------------------+ +--------------------------+                          |
-+------------------------------------------------------------------------------------+
-```
-
-### S08 – Chọn / Tạo Khách hàng & Xác nhận Đặt phòng (`GET /bookings/new/confirm`, `POST /bookings`)
-```text
-+------------------------------------------------------------------------------------+
-| BƯỚC 2/2: THÔNG TIN KHÁCH HÀNG & XÁC NHẬN ĐẶT PHÒNG                                |
-+------------------------------------------------------------------------------------+
-| TÓM TẮT PHÒNG ĐÃ CHỌN:                                                             |
-| Phòng 101 (Standard · Tầng 1) | Nhận: 13/10/2026 → Trả: 15/10/2026 (2 đêm)         |
-| Đơn giá: 780.000đ/đêm         | Tiền phòng dự kiến: 1.560.000đ     [Đổi phòng khác]|
-+------------------------------------------------------------------------------------+
-| A. TÌM KHÁCH HÀNG ĐÃ CÓ TRONG HỆ THỐNG:                                            |
-| Từ khóa (Tên / SĐT / CCCD): [ Nguyễn...             ] [ Tìm khách ]                |
-| (•) Nguyễn Minh Anh  | SĐT: 0901234567 | CCCD: 079201001234                        |
-| ( ) Tạo khách hàng mới bên dưới                                                    |
-| ---------------------------------------------------------------------------------- |
-| B. HOẶC NHẬP KHÁCH HÀNG MỚI (Nếu chọn 'Tạo khách hàng mới' - D12):                 |
-| Họ và tên * [ ________________________ ]  Số điện thoại * [ __________________ ]   |
-| Số CCCD     [ ________________________ ]  Email           [ __________________ ]   |
-+------------------------------------------------------------------------------------+
-|                                      [ Quay lại S07 ]  [ Xác nhận tạo đặt phòng ]  |
-+------------------------------------------------------------------------------------+
-```
-
-### S09 – Danh sách Đặt phòng (`GET /bookings`)
-```text
-+------------------------------------------------------------------------------------+
-| DANH SÁCH ĐẶT PHÒNG (BOOKINGS)                              [+ Đặt phòng mới (S07)]|
-+------------------------------------------------------------------------------------+
-| Tìm (Mã BK / Tên khách / SĐT / Phòng): [ ________ ] Trạng thái: [ Tất cả v ] [Lọc] |
-+------------------------------------------------------------------------------------+
-| MÃ      | KHÁCH HÀNG      | PHÒNG      | NHẬN - TRẢ  | TRẠNG THÁI| THAO TÁC        |
-|---------|-----------------|------------|-------------|-----------|-----------------|
-| BK-2401 | Nguyễn Minh Anh | 301 Deluxe | 11/10–13/10 | ● Đang ở  | [DV] [Check-out]|
-| BK-2402 | Trần Quốc Bảo   | 205 Std    | 13/10–14/10 | ● Đã đặt  | [Check-in] [Hủy]|
-| BK-2403 | Lê Thu Hà       | 418 Suite  | 10/10–12/10 | ● Quá hạn | [DV] [Check-out]|
-| BK-2404 | Phạm Gia Huy    | 102 Std    | 14/10–16/10 | ● Đã đặt  | [Hủy đặt]       |
-| BK-2406 | Đặng Minh Khôi  | 401 Family | 08/10–10/10 | ● Đã trả  | [Xem hóa đơn]   |
-| BK-2407 | Bùi Thanh Trúc  | 302 Deluxe | 03/10–05/10 | ● Đã hủy  | —               |
-+------------------------------------------------------------------------------------+
-```
-
-### S10 – Xác nhận Check-in Nhận phòng (`GET/POST /bookings/{id}/check-in`)
-```text
-+--------------------------------------------------------------------+
-| XÁC NHẬN THỦ TỤC CHECK-IN NHẬN PHÒNG (UC04)                        |
-+--------------------------------------------------------------------+
-| Mã đặt phòng:    BK-2402                                           |
-| Khách hàng:      Trần Quốc Bảo (SĐT: 0912345678)                   |
-| Số CCCD/HC:      [ 079200005678         ] (Có thể cập nhật/bổ sung)|
-| Phòng nhận:      Phòng 205 – Hạng Standard (Tầng 2 · 780.000đ/đêm) |
-| Lịch lưu trú:    13/10/2026 → 14/10/2026 (1 đêm)                   |
-| Giờ nhận thực tế: Ghi nhận tự động thời điểm bấm xác nhận (NOW)    |
-|                                                                    |
-|                  [ Quay lại (/bookings) ]  [ Xác nhận Check-in ]   |
-+--------------------------------------------------------------------+
-```
-
-### S11 – Quản lý Dịch vụ Đi kèm của Phòng Đang ở (`GET/POST /bookings/{id}/services`)
-```text
-+------------------------------------------------------------------------------------+
-| DỊCH VỤ ĐI KÈM – ĐẶT PHÒNG BK-2401 (Phòng 301 · Khách: Nguyễn Minh Anh)            |
-| Trạng thái: ● Đang ở (CHECKED_IN)                      [Chuyển sang Check-out S12] |
-+------------------------------------------------------------------------------------+
-| THÊM DỊCH VỤ VÀO PHÒNG (BR5):                                                      |
-| Chọn dịch vụ * [ Ăn sáng Buffet - 150.000đ / Suất v ]  Số lượng * [ 2 ] [+ Thêm]   |
-+------------------------------------------------------------------------------------+
-| DANH SÁCH DỊCH VỤ ĐÃ GỌI CỦA PHÒNG 301                                             |
-| # | Tên dịch vụ          | Thời gian gọi    | SL | Đơn giá lúc gọi | Thành tiền |  |
-|---|----------------------|------------------|----|-----------------|------------|--|
-| 1 | Ăn sáng Buffet       | 12/10/2026 07:30 | 2  | 150.000đ        | 300.000đ   |[Xóa]|
-| 2 | Giặt ủi nhanh        | 12/10/2026 18:15 | 1  | 80.000đ         | 80.000đ    |[Xóa]|
-|------------------------------------------------------------------------------------|
-| TỔNG TIỀN DỊCH VỤ TẠM TÍNH:                                          380.000đ      |
-+------------------------------------------------------------------------------------+
-```
-
-### S12 – Check-out và Thanh toán (`GET /bookings/{id}/check-out`, `POST /bookings/{id}/pay`)
-```text
-+--------------------------------------------------------------------+
-| CHECK-OUT VÀ THANH TOÁN HÓA ĐƠN (UC05)                             |
-+--------------------------------------------------------------------+
-| Booking: BK-2401 · Khách: Nguyễn Minh Anh · Phòng 301 (Deluxe)     |
-| Nhận thực tế: 11/10/2026 14:00   | Ngày trả dự kiến: 13/10/2026    |
-| ------------------------------------------------------------------ |
-| 1. TIỀN PHÒNG (BR4, D7):                                           |
-|    Phòng 301 (Deluxe): 2 đêm × 1.250.000đ               2.500.000đ |
-| 2. DỊCH VỤ ĐI KÈM (UC06):                      [+ Thêm/Xóa DV S11] |
-|    - Ăn sáng Buffet × 2 (150.000đ/Suất)                   300.000đ |
-|    - Giặt ủi nhanh  × 1 (80.000đ/Lần)                      80.000đ |
-|    Tổng tiền dịch vụ:                                     380.000đ |
-| ------------------------------------------------------------------ |
-| TỔNG CỘNG THANH TOÁN (BR6):                             2.880.000đ |
-| ------------------------------------------------------------------ |
-| Hình thức thanh toán * (D9):                                       |
-|   (•) Tiền mặt (CASH)   ( ) Thẻ (CARD)   ( ) Chuyển khoản (TRANSFER)|
-|                                                                    |
-|                 [ Hủy (/bookings) ]  [ Xác nhận thanh toán & Trả ] |
-+--------------------------------------------------------------------+
-```
-
-### S13 – Chi tiết Hóa đơn & In (`GET /invoices/{id}`)
-```text
-+--------------------------------------------------------------------+
-|                   KHÁCH SẠN ACE – HÓA ĐƠN THANH TOÁN               |
-| Mã hóa đơn: #INV-2          | Ngày lập: 13/10/2026 11:30           |
-| Mã đặt phòng: BK-2401       | Thu ngân: Nguyễn Thảo Lễ Tân         |
-| Khách hàng: Nguyễn Minh Anh | SĐT: 0901234567                      |
-| Phòng: 301 (Deluxe)         | Lưu trú: 11/10/2026 → 13/10/2026     |
-| ------------------------------------------------------------------ |
-| Hạng mục                                  SL    Đơn giá  Thành tiền|
-| Tiền phòng Deluxe (2 đêm)                  2  1.250.000đ 2.500.000đ|
-| Dịch vụ: Ăn sáng Buffet                    2    150.000đ   300.000đ|
-| Dịch vụ: Giặt ủi nhanh                     1     80.000đ    80.000đ|
-| ------------------------------------------------------------------ |
-| TỔNG THANH TOÁN:                                         2.880.000đ|
-| Hình thức thanh toán: Chuyển khoản (TRANSFER) · Trạng thái: ĐÃ THU |
-+--------------------------------------------------------------------+
-|           [ ← Về danh sách đặt phòng ]   [ 🖨 In hóa đơn (D20) ]   |
-+--------------------------------------------------------------------+
-```
-
-### S14 – Quản lý Danh mục Dịch vụ (`GET/POST /manage/services`) – *Chỉ Quản lý*
-```text
-+------------------------------------------------------------------------------------+
-| QUẢN LÝ DANH MỤC DỊCH VỤ ĐI KÈM (Chỉ Quản lý - FR-12)                              |
-+------------------------------------------------------------------------------------+
-| Form Thêm / Sửa Dịch vụ:                                                           |
-| Tên dịch vụ * [ Ăn sáng Buffet ]  Đơn giá (VNĐ) * [ 150000 ]  Đơn vị * [ Suất ]    |
-|                                                                   [ Lưu dịch vụ ]  |
-+------------------------------------------------------------------------------------+
-| Mã | Tên dịch vụ               | Đơn giá   | Đơn vị tính | Đã gọi    | Thao tác    |
-|----|---------------------------|-----------|-------------|-----------|-------------|
-| 1  | Ăn sáng Buffet            | 150.000đ  | Suất        | 2 đơn     | [Sửa] [Xóa] |
-| 2  | Giặt ủi nhanh             | 80.000đ   | Lần         | 2 đơn     | [Sửa] [Xóa] |
-| 6  | Thuê xe máy theo ngày     | 180.000đ  | Ngày        | 0 đơn     | [Sửa] [Xóa] |
-+------------------------------------------------------------------------------------+
-```
-
-### S15 – Báo cáo Thống kê Doanh thu & Công suất (`GET /reports`) – *Chỉ Quản lý*
-```text
-+------------------------------------------------------------------------------------+
-| BÁO CÁO THỐNG KÊ DOANH THU & CÔNG SUẤT PHÒNG (UC07 - Chỉ Quản lý)                  |
-+------------------------------------------------------------------------------------+
-| Năm thống kê: [ 2026 v ]  Từ ngày: [ 01/10/2026 ] Đến: [ 31/10/2026 ] [Xem báo cáo]|
-+------------------------------------------------------------------------------------+
-| 1. DOANH THU THEO THÁNG (FR-16)           | 2. DOANH THU THEO LOẠI PHÒNG (FR-16)   |
-| Tháng | Số HĐ | Tiền phòng | Dịch vụ | Tổng | Loại phòng | Số lượt | Tổng doanh thu|
-| 10/26 | 2 HĐ  | 6.200.000đ | 730.000đ| 6.93M| Family     | 1 lượt  | 4.050.000đ    |
-|       |       |            |         |      | Deluxe     | 1 lượt  | 2.880.000đ    |
-|------------------------------------------------------------------------------------|
-| 3. CÔNG SUẤT KHAI THÁC PHÒNG (FR-17): Số đêm đã ở / (12 phòng × Số ngày) = 42.5%   |
-+------------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------------+
+| [Logo ACE] ACE HOTEL         Câu chuyện | Hạng phòng | Dịch vụ | [☀/🌙] [Đăng nhập]   |
++---------------------------------------------------------------------------------------+
+| SECTION 1 (HERO STORYTELLING):                                                        |
+|            NGHỆ THUẬT LƯU TRÚ & TRẢI NGHIỆM ĐẲNG CẤP TẠI ACE HOTEL                    |
+|         "Accommodation, Check-in & Extras — Chuẩn mực hiếu khách hiện đại"            |
+|   +-------------------------------------------------------------------------------+   |
+|   | Ngày nhận: [15/10/2026] | Ngày trả: [17/10/2026] | Số khách: [2] [Tìm phòng]  |   |
+|   +-------------------------------------------------------------------------------+   |
++---------------------------------------------------------------------------------------+
+| SECTION 2 (CÁC HẠNG PHÒNG NỔI BẬT - ĐỌC TỪ BẢNG room_types):                          |
+| +-------------------------+ +-------------------------+ +---------------------------+ |
+| | STANDARD ROOM (2 khách) | | DELUXE ROOM (2 khách)   | | EXECUTIVE SUITE (4 khách) | |
+| | T2–T5: 780.000đ / đêm   | | T2–T5: 1.250.000đ / đêm | | T2–T5: 3.200.000đ / đêm   | |
+| | T6–CN: 950.000đ / đêm   | | T6–CN: 1.500.000đ / đêm | | T6–CN: 3.800.000đ / đêm   | |
+| | [ Đặt hạng phòng này ]  | | [ Đặt hạng phòng này ]  | | [ Đặt hạng phòng này ]    | |
+| +-------------------------+ +-------------------------+ +---------------------------+ |
++---------------------------------------------------------------------------------------+
+| SECTION 3 (4 NHÓM TRẢI NGHIỆM & DỊCH VỤ):                                             |
+| [1. Ẩm thực & In-room Dining]  [2. Minibar Cao cấp]  [3. Giặt ủi Nhanh]  [4. Spa/VIP] |
++---------------------------------------------------------------------------------------+
+| FOOTER: ACE Hotel · Đồ án môn 502050 – Phân tích và Thiết kế Yêu cầu · ĐH TDTU 2026   |
++---------------------------------------------------------------------------------------+
 ```
 
 ---
 
-## 5. Design Tokens Chuẩn (Từ Bảng màu ACE)
-| Token | Light Mode (`ACE_Light_Mode.png`) | Dark Mode (`ACE_Dark_Mode.png`) | Ý nghĩa sử dụng |
-|---|---|---|---|
-| `Background` | `#F7F6F2` | `#000000` | Nền trang chính |
-| `Surface` | `#FFFFFF` | `#121212` | Nền thẻ (Card), Sidebar, Header |
-| `Elevated` | `#FFFFFF` | `#1C1C1C` | Nền Modal, Dropdown |
-| `Border` | `#E6E3DA` | `#2A2A2A` | Đường viền bảng, viền ô nhập |
-| `Primary` | `#FDBF2D` | `#FDBF2D` | Nút hành động chính, thương hiệu ACE |
-| `Primary hover` | `#E5A90F` | `#FFD056` | Trạng thái rê chuột nút chính |
-| `Primary pressed` | `#C98F00` | `#E5A90F` | Trạng thái nhấn giữ nút chính |
-| `Primary soft` | `#FFF4D1` | `#2A2208` | Nền highlight dòng cần chú ý, nút phụ |
-| `Text` | `#0A0A0A` | `#FFFFFF` | Chữ tiêu đề và nội dung chính |
-| `Text secondary` | `#52525B` | `#A1A1AA` | Chữ mô tả phụ |
-| `Text muted` | `#71717A` | `#71717A` | Placeholder trong input |
-| `Primary text` | `#B45309` | `#FDBF2D` | Chữ nhấn mạnh / Link màu vàng đủ độ tương phản |
+### WF-02 – Màn hình Đăng nhập & Đăng ký Khách hàng (`/login`, `/register`)
+```text
++---------------------------------------------------------------------------------------+
+|                              [Logo ACE: Accommodation, Check-in & Extras]             |
+|              +-------------------------------------------------------+                |
+|              |  [ TAB 1: ĐĂNG NHẬP ]     |  [ TAB 2: ĐĂNG KÝ KHÁCH ] |                |
+|              +-------------------------------------------------------+                |
+|  (Nếu chọn Tab ĐĂNG NHẬP):               |  (Nếu chọn Tab ĐĂNG KÝ KHÁCH HÀNG MỚI):     |
+|  Tên đăng nhập * [ nhanvien           ]  |  1. Họ và tên *     [ Nguyễn Văn A      ]  |
+|  Mật khẩu *      [ ••••••••           ]  |  2. Ngày sinh *     [ 15/05/2000        ]  |
+|                                          |  3. Số điện thoại * [ 0901234567        ]  |
+|  [       ĐĂNG NHẬP HỆ THỐNG       ]      |  4. Tên đăng nhập * [ nguyenvana        ]  |
+|  * Tự động nhận diện Role để chuyển về:  |  5. Mật khẩu *      [ ••••••••          ]  |
+|    - Admin -> /admin/dashboard           |                                            |
+|    - Lễ tân -> /staff/dashboard          |  [   TẠO TÀI KHOẢN & VÀO DASHBOARD   ]     |
+|    - Khách  -> /customer/dashboard       |                                            |
++---------------------------------------------------------------------------------------+
+```
 
-* **Màu Badge trạng thái (Light / Dark):**
-  * `Phòng trống`: `#15803D` / `#22C55E`
-  * `Đã đặt`: `#7C3AED` / `#A78BFA`
-  * `Đang ở`: `#2563EB` / `#60A5FA`
-  * `Đang dọn / bảo trì`: `#6B7280` / `#9CA3AF`
-  * `Quá hạn`: `#DC2626` / `#F87171`
+---
+
+### WF-03 – Dashboard Khách hàng & Phiếu Xác nhận Đặt phòng kèm Mã QR (`/customer/dashboard`)
+```text
++---------------------------------------------------------------------------------------+
+| [ACE] CỔNG KHÁCH HÀNG      Đơn đặt của tôi* | Đặt phòng mới (WF-04) | Hồ sơ | [Thoát] |
++---------------------------------------------------------------------------------------+
+| Xin chào, Nguyễn Văn A (SĐT: 0901234567)                  [+ Đặt phòng trực tuyến mới]|
+| ------------------------------------------------------------------------------------- |
+| CÁC ĐƠN ĐẶT PHÒNG CỦA TÔI:                                                            |
+| +---------------------------------------------------+-------------------------------+ |
+| | MÃ BOOKING: BK-8K4P9X2M   [● Đã xác nhận - Cọc 30%]|   PHIẾU XÁC NHẬN ĐẶT PHÒNG    | |
+| | Hạng phòng: Deluxe Room (2 khách)                 |   +-----------------------+   | |
+| | Nhận phòng: 25/10/2026 (14:00)                    |   |     [ MÃ QR CODE ]    |   | |
+| | Trả phòng:  27/10/2026 (12:00) · 2 đêm            |   |    BK-8K4P9X2M        |   | |
+| | ------------------------------------------------- |   +-----------------------+   | |
+| | Tiền phòng gốc (2 đêm):              2.000.000đ   |   Xuất trình mã QR này tại    | |
+| | Phí phục vụ (SVC 5%) + VAT (10%):      310.000đ   |   quầy Lễ tân để nhận phòng   | |
+| | Tổng giá trị gói phòng (++):         2.310.000đ   |   vật lý sạch (Clean Room).   | |
+| | Đã thanh toán cọc (30%):               693.000đ   |                               | |
+| | Còn thanh toán tại quầy (70%):       1.617.000đ   |   [ ⬇ Tải Phiếu ] [Hủy đơn]   | |
+| +---------------------------------------------------+-------------------------------+ |
++---------------------------------------------------------------------------------------+
+```
+
+---
+
+### WF-04 – Tìm Hạng phòng Trống (Quota) & Pop-up Xác nhận Cọc 30% (`/booking/search`)
+```text
++---------------------------------------------------------------------------------------+
+| TÌM KIẾM HẠNG PHÒNG TRỐNG & ĐẶT PHÒNG TRỰC TUYẾN (UC03)                               |
++---------------------------------------------------------------------------------------+
+| Ngày nhận * [25/10/2026]  Ngày trả * [27/10/2026]  Số khách * [2]  [Kiểm tra phòng]   |
++---------------------------------------------------------------------------------------+
+| KẾT QUẢ HẠNG PHÒNG CÒN SUẤT TRỐNG (Kiểm tra theo công thức Quota N_avail >= 1):       |
+| +-----------------------------------------------------------------------------------+ |
+| | DELUXE ROOM (Sức chứa: 2 khách · Còn 3 suất phòng trống trong khoảng ngày chọn)   | |
+| | Giá ngày thường: 1.000.000đ/đêm | Giá cuối tuần: 1.250.000đ/đêm                   | |
+| | Tạm tính 2 đêm: 2.000.000đ (+ SVC 5% & VAT 10% = 2.310.000đ) · Cọc 30%: 693.000đ  | |
+| |                                                       [ Tiếp tục đặt phòng ]      | |
+| +-----------------------------------------------------------------------------------+ |
+|                                                                                       |
+|   +=================== POP-UP MODAL: XÁC NHẬN & THANH TOÁN CỌC 30% ===============+   |
+|   | Khách hàng: Nguyễn Văn A (0901234567) | Hạng phòng: Deluxe Room (2 đêm)       |   |
+|   | Nhận dự kiến: 25/10/2026 (14:00)      | Trả dự kiến: 27/10/2026 (12:00)       |   |
+|   | ----------------------------------------------------------------------------- |   |
+|   | • Tiền phòng gốc (2 đêm):                                         2.000.000đ  |   |
+|   | • Phí phục vụ (SVC 5%):                                             100.000đ  |   |
+|   | • Thuế GTGT (VAT 10%):                                              210.000đ  |   |
+|   | • Tổng giá trị gói phòng (++):                                    2.310.000đ  |   |
+|   | • MỨC CỌC 30% CẦN THANH TOÁN NGAY:                                  693.000đ  |   |
+|   | • Còn lại thanh toán tại quầy khi Check-out (70%):                1.617.000đ  |   |
+|   | Phương thức cọc: (•) Quét VietQR   ( ) Thẻ ngân hàng                          |   |
+|   |               [ Quay lại chỉnh sửa ]   [ Xác nhận & Thanh toán cọc 30% ]      |   |
+|   +===============================================================================+   |
++---------------------------------------------------------------------------------------+
+```
+
+---
+
+### WF-05 – Dashboard Nhân viên Lễ tân: Sơ đồ Phòng 4 Trạng thái & Dọn phòng (`/staff/dashboard`)
+```text
++---------------------------------------------------------------------------------------+
+| [ACE] BÀN LÀM VIỆC LỄ TÂN (PMS)    Sơ đồ phòng* | Check-in/Walk-in (WF-06) | [Thoát]  |
++---------------------------------------------------------------------------------------+
+| [🟢 Trống sạch: 6]   [🔵 Đang ở: 3]   [🟠 Chờ dọn (DIRTY): 2]   [⚪ Bảo trì: 1]       |
+| ------------------------------------------------------------------------------------- |
+| TRA CỨU NHANH / QUÉT MÃ QR CHECK-IN: [ Nhập mã BK-8K4P9X2M hoặc SĐT... ] [Tìm đơn]    |
+|                                                    [+ Tiếp nhận Khách Walk-in (0đ cọc)]|
+| ------------------------------------------------------------------------------------- |
+| SƠ ĐỒ LƯỚI TÌNH TRẠNG PHÒNG VẬT LÝ (REALTIME):                                        |
+| +------------------------+ +------------------------+ +-----------------------------+ |
+| | P.201 · Deluxe         | | P.301 · Deluxe         | | P.102 · Standard            | |
+| | 🟢 AVAILABLE (Sạch)    | | 🔵 OCCUPIED (Đang ở)   | | 🟠 DIRTY (Chờ dọn dẹp)      | |
+| | Sẵn sàng đón khách     | | Khách: Nguyễn Minh Anh | | Vừa trả phòng lúc 11:45     | |
+| | [Gán Check-in/Walk-in] | | [Room Folio] [Trả phòng]| | [ ✓ Xác nhận đã dọn sạch ] | |
+| +------------------------+ +------------------------+ +-----------------------------+ |
++---------------------------------------------------------------------------------------+
+```
+
+---
+
+### WF-06 – Màn hình Check-in Gán Phòng Sạch & Tiếp nhận Khách Walk-in (`/staff/check-in`)
+```text
++---------------------------------------------------------------------------------------+
+| THỦ TỤC NHẬN PHÒNG (CHECK-IN) & GÁN PHÒNG VẬT LÝ SẠCH (UC04)                          |
++---------------------------------------------------------------------------------------+
+| [ CHẾ ĐỘ 1: KHÁCH ĐẶT TRƯỚC (QUÉT QR) ]    | [ CHẾ ĐỘ 2: KHÁCH VÃNG LAI (WALK-IN) ]   |
+| ------------------------------------------------------------------------------------- |
+| A. THÔNG TIN ĐƠN ĐẶT TRƯỚC (Mã: BK-8K4P9X2M · Trạng thái: RESERVED - Đã cọc 30%):     |
+| Khách hàng: Nguyễn Văn A | SĐT: 0901234567 | Số CCCD/Passport * [ 079200012345     ]  |
+| Hạng phòng đã đặt: Deluxe Room | Lưu trú: 25/10/2026 → 27/10/2026 (2 đêm)             |
+| Tiền cọc đã đóng (30%): 693.000đ | Còn thu lúc Check-out (70% + DV): 1.617.000đ       |
+| ------------------------------------------------------------------------------------- |
+| B. CHỌN GÁN PHÒNG VẬT LÝ ĐANG TRỐNG SẠCH (Chỉ hiện phòng Deluxe có status=AVAILABLE): |
+|   (•) Phòng P.201 – Tầng 2 (🟢 Trống sạch - Clean)                                    |
+|   ( ) Phòng P.202 – Tầng 2 (🟢 Trống sạch - Clean)                                    |
+|   [x] Phòng P.301 (Đang ở - Khóa)   [x] Phòng P.302 (🟠 DIRTY Chưa dọn - Khóa)        |
+| ------------------------------------------------------------------------------------- |
+| C. CHÍNH SÁCH NHẬN PHÒNG SỚM (Early Check-in Policy - Chuẩn 14:00):                   |
+|   (•) Đúng giờ / Miễn phí ưu đãi (0đ)   ( ) 09h–14h (+30%)   ( ) 06h–09h (+50%)       |
+| ------------------------------------------------------------------------------------- |
+| * Lưu ý nếu chọn Tab WALK-IN: Lễ tân chọn thẳng phòng AVAILABLE, nhập Họ tên, SĐT,    |
+|   CCCD, Ngày trả phòng; hệ thống ghi nhận deposit_amount = 0đ (Thu 100% lúc trả).     |
+|                                                                                       |
+|                           [ Quay lại Sơ đồ ]   [ Xác nhận Check-in & Giao chìa khóa ] |
++---------------------------------------------------------------------------------------+
+```
+
+---
+
+### WF-07 – Màn hình Quản lý Tài khoản Phòng (Room Folio – 4 Nhóm Dịch vụ) (`/staff/bookings/{id}/folio`)
+```text
++---------------------------------------------------------------------------------------+
+| ROOM FOLIO (SỔ CÁI CHI PHÍ PHÒNG) – PHÒNG P.301 (Mã: BK-2401 · Khách: Nguyễn Minh Anh)|
+| Trạng thái: 🔵 OCCUPIED (Đang lưu trú)                 [Chuyển sang Check-out WF-08]  |
++---------------------------------------------------------------------------------------+
+| GHI NỢ DỊCH VỤ MỚI VÀO PHÒNG (UC06 - Đóng băng đơn giá tại thời điểm gọi):            |
+| Nhóm DV: [1. MINIBAR v] | Mặt hàng: [Bia Tiger lon - 35.000đ/Lon v] | SL: [ 2 ] [+Ghi]|
+| (4 nhóm chuẩn: MINIBAR · LAUNDRY Giặt ủi · FB Ẩm thực · DAMAGES Đền bù tài sản)      |
++---------------------------------------------------------------------------------------+
+| DANH SÁCH DỊCH VỤ ĐÃ SỬ DỤNG TRONG KỲ LƯU TRÚ:                                        |
+| # | Nhóm     | Tên dịch vụ / Hàng hóa   | Thời gian  | Nhân viên | SL | Đơn giá | Tổng|
+|---|----------|--------------------------|------------|-----------|----|---------|-----|
+| 1 | FB       | Bữa sáng Buffet gọi thêm | 15/10 07:30| nhanvien  | 2  | 100.000đ| 200k|[Xóa]|
+| 2 | LAUNDRY  | Giặt ủi nhanh bộ đồ      | 15/10 18:00| nhanvien  | 1  |  50.000đ|  50k|[Xóa]|
+| 3 | MINIBAR  | Nước ngọt & Bia lon      | 16/10 21:00| nhanvien  | 2  |  25.000đ|  50k|[Xóa]|
+|---------------------------------------------------------------------------------------|
+| TỔNG TIỀN DỊCH VỤ GỐC (CHƯA THUẾ PHÍ ++):                                  300.000đ  |
++---------------------------------------------------------------------------------------+
+```
+
+---
+
+### WF-08 – Màn hình Check-out Quyết toán `++` & Xuất Hóa đơn VAT (`/staff/bookings/{id}/check-out`)
+```text
++---------------------------------------------------------------------------------------+
+| QUYẾT TOÁN TRẢ PHÒNG (CHECK-OUT) & HÓA ĐƠN VAT BIỂU GIÁ ++ (UC05)                     |
++---------------------------------------------------------------------------------------+
+| Mã Booking: BK-8K4P9X2M | Khách hàng: Nguyễn Văn A | Phòng vật lý: P.201 (Deluxe)     |
+| Nhận thực tế: 25/10/2026 14:00 | Trả thực tế: 27/10/2026 11:30 (Đúng giờ < 12:00)     |
+| ------------------------------------------------------------------------------------- |
+| BẢNG KÊ QUYẾT TOÁN TỰ ĐỘNG (Chuẩn công thức ++):                                      |
+| 1. Tiền phòng gốc (2 đêm Deluxe):                                          2.000.000đ |
+| 2. Tổng dịch vụ phát sinh (Room Folio - WF-07):                              300.000đ |
+| 3. Phụ thu nhận sớm / trả phòng trễ (Trước 12h = 0%):                              0đ |
+| ------------------------------------------------------------------------------------- |
+| • TỔNG CHI PHÍ GỐC (Subtotal Base = 1 + 2 + 3):                            2.300.000đ |
+| • Phí phục vụ (Service Charge - SVC 5%):                                     115.000đ |
+| • Thuế Giá trị gia tăng (VAT 10% trên Subtotal + SVC):                       241.500đ |
+| • TỔNG CỘNG HÓA ĐƠN (Grand Total ++):                                      2.656.500đ |
+| • Khấu trừ tiền đã cọc (Deposit: Online cọc 30% / Walk-in cọc 0đ):         - 693.000đ |
+| ===================================================================================== |
+| SỐ TIỀN THỰC THU TẠI QUẦY KHI CHECK-OUT (Balance Due):                     1.963.500đ |
+| *(Ghi chú: Khách Online trả 70% phòng còn lại + 100% DV; Khách Walk-in trả đủ 100%)*  |
+| ------------------------------------------------------------------------------------- |
+| Phương thức thanh toán *:  (•) Tiền mặt (CASH)   ( ) Thẻ POS (CARD)   ( ) VietQR      |
+|                                                                                       |
+|     [ 🖨 In Hóa đơn VAT (window.print) ]   [ Xác nhận Hoàn tất & Chuyển Phòng DIRTY ] |
++---------------------------------------------------------------------------------------+
+```
+
+---
+
+### WF-09 – Quản lý Hạng phòng (Giá T2–T5 / T6–CN), Phòng vật lý & Dịch vụ (`/admin/catalog`)
+```text
++---------------------------------------------------------------------------------------+
+| [ACE] QUẢN TRỊ DANH MỤC & BIỂU GIÁ (ADMIN - UC02)     [← Về Dashboard Admin (WF-10)]  |
++---------------------------------------------------------------------------------------+
+| [ TAB 1: HẠNG PHÒNG & GIÁ ]  |  [ TAB 2: PHÒNG VẬT LÝ ]  |  [ TAB 3: 4 NHÓM DỊCH VỤ ] |
++---------------------------------------------------------------------------------------+
+| FORM CẤU HÌNH HẠNG PHÒNG & BIỂU GIÁ ĐỘNG (DYNAMIC PRICING):                           |
+| Tên hạng * [ Deluxe Room ]  Sức chứa * [ 2 ]  Giá T2–T5 * [1000000]  Giá T6–CN * [1250000]|
+| Mô tả      [ Ban công hướng phố, bồn tắm nằm ]                  [ Lưu hạng phòng ]    |
+| ------------------------------------------------------------------------------------- |
+| DANH SÁCH HẠNG PHÒNG HIỆN CÓ:                                                         |
+| Mã | Tên hạng | Sức chứa | Giá Ngày thường (T2–T5) | Giá Cuối tuần (T6–CN) | Thao tác |
+|----|----------|----------|-------------------------|-----------------------|----------|
+| 1  | Standard | 2 khách  | 780.000đ / đêm          | 950.000đ / đêm        |[Sửa][Xóa]|
+| 2  | Deluxe   | 2 khách  | 1.000.000đ / đêm        | 1.250.000đ / đêm      |[Sửa][Xóa]|
+| 3  | Suite    | 4 khách  | 3.200.000đ / đêm        | 3.800.000đ / đêm      |[Sửa][Xóa]|
++---------------------------------------------------------------------------------------+
+```
+
+---
+
+### WF-10 – Dashboard Quản trị viên: Báo cáo Doanh thu `++` & Công suất Phòng (`/admin/dashboard`)
+```text
++---------------------------------------------------------------------------------------+
+| [ACE] BẢNG ĐIỀU KHIỂN QUẢN TRỊ (ADMIN BACKOFFICE - UC07)  Danh mục (WF-09) | [Thoát]  |
++---------------------------------------------------------------------------------------+
+| Bộ lọc kỳ báo cáo: Từ ngày [01/10/2026] Đến ngày [31/10/2026]          [ Xem báo cáo ]|
++---------------------------------------------------------------------------------------+
+| CHỈ SỐ HIỆU QUẢ KHAI THÁC KHÁCH SẠN CHUẨN QUỐC TẾ (Loại trừ phòng MAINTENANCE):       |
+| +-------------------------+ +-------------------------+ +---------------------------+ |
+| | TỶ LỆ LẤP ĐẦY (OR %)    | | GIÁ BÌNH QUÂN ĐÊM (ADR) | | DOANH THU / PHÒNG (RevPAR)| |
+| |        63.6%            | |      1.420.000đ         | |         903.120đ          | |
+| | (7 Occupied / 11 Phòng) | | (Doanh thu P / Đêm bán) | |    (ADR × Occupancy Rate) | |
+| +-------------------------+ +-------------------------+ +---------------------------+ |
+| ------------------------------------------------------------------------------------- |
+| BÁO CÁO CƠ CẤU DOANH THU ĐA CHIỀU (CHUẨN HẠCH TOÁN ++):                               |
+| Hạng mục doanh thu                           | Số tiền (VNĐ)     | Tỷ trọng (%)       |
+|----------------------------------------------|-------------------|--------------------|
+| 1. Doanh thu Tiền phòng gốc (Room Revenue)   |       28.400.000đ |             73.8%  |
+| 2. Doanh thu Dịch vụ (Minibar, Giặt ủi, F&B) |        4.200.000đ |             10.9%  |
+| 3. Phụ thu Nhận sớm & Trả trễ + Đền bù       |          650.000đ |              1.7%  |
+| 4. Doanh thu Phí phục vụ (SVC 5%)            |        1.662.500đ |              4.3%  |
+| 5. Thuế GTGT thu hộ ngân sách (VAT 10%)      |        3.491.250đ |              9.3%  |
+|----------------------------------------------|-------------------|--------------------|
+| TỔNG DOANH THU HÓA ĐƠN (GRAND TOTAL ++):     |       38.403.750đ |            100.0%  |
++---------------------------------------------------------------------------------------+
+```
+
+---
+
+## 4. Bảng Token Màu Chuẩn `ACE Color System` (Chương 6, Mục 6.1)
+
+| Token CSS | Dark Mode (Mặc định) | Light Mode | Ứng dụng trên 4 Phân hệ Giao diện |
+|---|:---:|:---:|---|
+| `--bg` | `#000000` | `#F7F6F2` | Nền chính toàn trang |
+| `--surface` | `#121212` | `#FFFFFF` | Thẻ phòng, thẻ KPI, Sidebar, Header |
+| `--elevated` | `#1C1C1C` | `#FFFFFF` | Pop-up xác nhận đặt cọc 30%, Modal Room Folio |
+| `--border` | `#2A2A2A` | `#E6E3DA` | Viền bảng, viền ô nhập liệu |
+| `--primary` | `#FDBF2D` | `#FDBF2D` | Nút hành động chính (chữ đen `#0A0A0A`), thương hiệu ACE |
+| `--primary-soft` | `#2A2208` | `#FFF4D1` | Nền highlight dòng cần xử lý hôm nay |
+| `--text` | `#FFFFFF` | `#0A0A0A` | Chữ tiêu đề và nội dung chính |
+| `--primary-text` | `#FDBF2D` | `#B45309` | Chữ/Link màu vàng đảm bảo độ tương phản trên nền sáng |
+| `--st-free` (`AVAILABLE`) | `#22C55E` | `#15803D` | Badge Xanh lá: Phòng trống sạch (Clean) |
+| `--st-reserved` (`RESERVED`) | `#A78BFA` | `#7C3AED` | Badge Tím: Đơn đã đặt & cọc 30% chờ Check-in |
+| `--st-occupied` (`OCCUPIED`) | `#60A5FA` | `#2563EB` | Badge Xanh dương: Phòng đang có khách ở |
+| `--st-dirty` (`DIRTY`) | `#F59E0B` | `#D97706` | Badge Cam: Phòng vừa trả, chờ dọn dẹp |
+| `--st-overdue` (`OVERDUE`) | `#F87171` | `#DC2626` | Badge Đỏ: Khách ở quá giờ/ngày trả phòng |
+| `--st-maint` (`MAINTENANCE`) | `#9CA3AF` | `#6B7280` | Badge Xám: Phòng đang bảo trì |

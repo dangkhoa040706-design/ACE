@@ -1,52 +1,44 @@
-# HỆ THỐNG TÀI LIỆU DỰ ÁN ACE (ACCOMMODATION, CHECK-IN & EXTRAS)
+# HỆ THỐNG HỒ SƠ PHÂN TÍCH & THIẾT KẾ DỰ ÁN ACE HOTEL (MÔN 502050)
 
 > **Học phần:** Phân tích và Thiết kế Yêu cầu (Mã môn: `502050`) – Khoa Công nghệ Thông tin, Trường Đại học Tôn Đức Thắng.  
-> **Đề tài:** Hệ thống Quản lý Khách sạn vừa và nhỏ (**ACE**).
+> **Đề tài 1:** Hệ thống Quản lý Khách sạn & Đặt phòng Trực tuyến **ACE Hotel** (*Accommodation, Check-in & Extras*).  
+> **Trạng thái:** Đã đồng bộ 100% theo **Quy trình Nghiệp vụ Mới (PMS & Online Booking Portal)** và cấu trúc báo cáo **Chương 1 – Chương 8 (Không Phụ lục)**.
 
 ---
 
-## 1. Cấu trúc Thư mục Tài liệu (`docs/`)
+## 1. Bản đồ Ánh xạ Tài liệu trong `docs/` vào 8 Chương Quyển Báo cáo (`bao-cao.docx`)
 
-Toàn bộ tài liệu phân tích, thiết kế, kế hoạch và kiểm thử của dự án được tổ chức thống nhất trong thư mục `docs/` theo thứ tự logic từ tổng quan đến chi tiết kỹ thuật:
-
-### A. Tài liệu Nền tảng & Kế hoạch (`01`, `07`, `08`, Bản chốt)
-| File | Nội dung chính | Phụ trách chính |
-|---|---|---|
-| [chot-pham-vi-actor-usecase-bang.md](file:///D:/ACE/docs/chot-pham-vi-actor-usecase-bang.md) | Văn bản chốt Phạm vi, 3 Actor, 7 Use Case, 8 bảng CSDL và 7 quy tắc nghiệp vụ (`BR1–BR7`) | Cả nhóm |
-| [01-project-brief.md](file:///D:/ACE/docs/01-project-brief.md) | Tổng quan dự án, mục tiêu, phạm vi, ràng buộc, tiêu chí đánh giá theo Rubric và quản trị rủi ro | Cả nhóm |
-| [07-ke-hoach-timeline.md](file:///D:/ACE/docs/07-ke-hoach-timeline.md) | Kế hoạch thực hiện 4 tuần (`M0–M6`), phân công chi tiết từng thành viên và lịch bàn giao | Cả nhóm |
-| [08-bao-cao-tai-lieu-con-thieu.md](file:///D:/ACE/docs/08-bao-cao-tai-lieu-con-thieu.md) | Checklist 12 hạng mục đầu vào nghiệp vụ theo nguyên tắc *"Zero Guesswork"* (Đã hoàn thiện 100%) | Cả nhóm |
-
-### B. Tài liệu Yêu cầu & Đặc tả Use Case / UML (`02`, `03`, `09`, `10`, `11`)
-| File | Nội dung chính | Mục báo cáo |
-|---|---|---|
-| [02-feature-list-backlog.md](file:///D:/ACE/docs/02-feature-list-backlog.md) | Danh sách chức năng theo module (Product Backlog `FR-01`..`FR-18`) | Mục 2.2, 2.4 |
-| [yeu-cau-fr-nfr-moscow.md](file:///D:/ACE/docs/yeu-cau-fr-nfr-moscow.md) | Danh sách 18 Yêu cầu chức năng (`FR`), 9 Yêu cầu phi chức năng (`NFR`) và bảng ưu tiên `MoSCoW` | Mục 2.4 |
-| [03-user-story-acceptance.md](file:///D:/ACE/docs/03-user-story-acceptance.md) | Tóm tắt User Stories và Tiêu chí nghiệm thu (Acceptance Criteria) cho 7 Use Case | Mục 2.4, 2.5 |
-| [09-dac-ta-use-case-he-thong-va-phong.md](file:///D:/ACE/docs/09-dac-ta-use-case-he-thong-va-phong.md) | Khảo sát hiện trạng, **Biểu đồ Use Case tổng quát**, **Biểu đồ Lớp (Class Diagram)**, Đặc tả chi tiết **`UC01`** & **`UC02`** | Mục 2.3, 2.5 |
-| [10-dac-ta-use-case-dat-phong-checkin-out.md](file:///D:/ACE/docs/10-dac-ta-use-case-dat-phong-checkin-out.md) | Đặc tả chi tiết **`UC03` (Đặt phòng)**, **`UC04` (Check-in)**, **`UC05` (Check-out & Thanh toán)** kèm **Sequence & Activity Diagrams** | Mục 2.5 |
-| [11-dac-ta-use-case-dich-vu-va-thong-ke.md](file:///D:/ACE/docs/11-dac-ta-use-case-dich-vu-va-thong-ke.md) | Đặc tả chi tiết **`UC06` (Dịch vụ đi kèm)** kèm **Sequence & Activity Diagrams** và **`UC07` (Thống kê doanh thu & công suất)** | Mục 2.5 |
-
-### C. Tài liệu Thiết kế Giao diện, CSDL, Phân quyền & Kiểm thử (`04`, `05`, `06`, `12`, `13`, `14`)
-| File | Nội dung chính | Mục báo cáo |
-|---|---|---|
-| [04-sitemap-wireframe.md](file:///D:/ACE/docs/04-sitemap-wireframe.md) | Sitemap điều hướng, Design Tokens và **Wireframe ASCII + Đặc tả trường/nút cho toàn bộ 15 màn hình (`S01`–`S15`)** | Mục 2.7 |
-| [05-content-brief-landing.md](file:///D:/ACE/docs/05-content-brief-landing.md) | Nội dung chi tiết cho trang Landing giới thiệu nội bộ (`S01` – `/`) | Mục 2.7 |
-| [06-tai-lieu-ky-thuat.md](file:///D:/ACE/docs/06-tai-lieu-ky-thuat.md) | Kiến trúc phân lớp Spring Boot, **Biểu đồ ERD 8 bảng**, **Từ điển dữ liệu (Data Dictionary)** và ràng buộc CSDL | Mục 2.5, 2.6 |
-| [12-phan-quyen-rbac-trang-thai-thong-bao.md](file:///D:/ACE/docs/12-phan-quyen-rbac-trang-thai-thong-bao.md) | Bảng chốt 22 quyết định (`D1–D22`), **Bảng & Sơ đồ chuyển trạng thái**, Công thức Dashboard, **RBAC Matrix** và **35 Thông báo tiếng Việt** | Mục 2.4, 2.6, 2.7 |
-| [13-kich-ban-demo-va-du-lieu-mau.md](file:///D:/ACE/docs/13-kich-ban-demo-va-du-lieu-mau.md) | Đặc tả bộ dữ liệu mẫu (`sample-data.sql`) và **Kịch bản thuyết trình & Demo trực tiếp 12–15 phút** cho 4 thành viên | Mục 2.8, 3.2, 4 |
-| [14-kiem-thu-nghiep-vu-va-ma-tran-truy-vet.md](file:///D:/ACE/docs/14-kiem-thu-nghiep-vu-va-ma-tran-truy-vet.md) | **Ma trận truy vết 2 chiều (RTM)**, **30 Test Cases nghiệp vụ** và **20 Câu hỏi & Đáp án bảo vệ cuối kỳ** | Mục 2.8, 2.9 |
+### A. Tài liệu Định hướng Quy trình, Mục lục & Kế hoạch Nhóm
+| File trong `docs/` | Nội dung cốt lõi | Người phụ trách |
+|---|---|:---:|
+| [`quy-trinh-nghiep-vu-moi.md`](./quy-trinh-nghiep-vu-moi.md) | **Tài liệu gốc quy trình mới:** 3 Actor, 4 Phân hệ Giao diện, 7 Use Case, Đặt phòng theo Quota hạng phòng, Cọc Online 30/70 vs Walk-in 0/100, Room Folio 4 nhóm, Biểu giá `++`, Vòng đời phòng `DIRTY` và DDL 8 bảng CSDL | Khoa + Cả nhóm |
+| [`00-muc-luc-va-huong-dan-7-uc.md`](./00-muc-luc-va-huong-dan-7-uc.md) | **Mục lục chi tiết Chương 1 $\rightarrow$ Chương 8 (bỏ Phụ lục)** và Cẩm nang hướng dẫn vẽ bộ **24 sơ đồ UML** cho từng thành viên | Khoa + Hoàng |
+| [`chot-pham-vi-actor-usecase-bang.md`](./chot-pham-vi-actor-usecase-bang.md) | Văn bản chốt Phạm vi, 3 Actor, 7 Use Case, 24 Sơ đồ UML, 8 Bảng CSDL và 7 Quy tắc nghiệp vụ (`BR1–BR7`) | Cả nhóm |
+| [`01-project-brief.md`](./01-project-brief.md) | Tổng quan dự án, phân vai 4 trụ cột (Khoa, Hoàng, Phong, Kiệt), ràng buộc kỹ thuật và tiêu chí Rubric | Cả nhóm |
+| [`07-ke-hoach-timeline.md`](./07-ke-hoach-timeline.md) | Kế hoạch thực hiện 4 tuần (`M0–M6`), lịch bàn giao các Chương và bộ 24 sơ đồ UML | Cả nhóm |
+| [`08-bao-cao-tai-lieu-con-thieu.md`](./08-bao-cao-tai-lieu-con-thieu.md) | Bảng chốt 22 quyết định thiết kế (`D1–D22`), bảng đồng bộ trạng thái và checklist đầu vào để Khoa code (Hoàn tất 100%) | Cả nhóm |
 
 ---
 
-## 2. Thư mục Tài sản Thiết kế & Đề thi (`docs/assets/`)
+### B. Tài liệu Nội dung Từng Chương của Quyển Báo cáo (Chương 1 $\rightarrow$ Chương 8)
+| Chương trong Báo cáo | File Nguồn trong `docs/` | Nội dung chi tiết | Phụ trách viết Word |
+|---|---|---|:---:|
+| **Chương 1 & Chương 2**<br>*(Giới thiệu, Phạm vi & Khảo sát hiện trạng)* | • [`01-project-brief.md`](./01-project-brief.md)<br>• [`09-dac-ta-use-case-he-thong-va-phong.md`](./09-dac-ta-use-case-he-thong-va-phong.md) *(Mục 1)* | Lý do chọn đề tài, mục tiêu, phạm vi 2 phân hệ, stakeholders, quy trình hiện tại và 5 bài toán cần giải quyết | **Phong**<br>(`chuong-1-2-phong.docx`) |
+| **Chương 3**<br>*(Xác định & Đặc tả Yêu cầu)* | • [`yeu-cau-fr-nfr-moscow.md`](./yeu-cau-fr-nfr-moscow.md)<br>• [`02-feature-list-backlog.md`](./02-feature-list-backlog.md)<br>• [`03-user-story-acceptance.md`](./03-user-story-acceptance.md) | 7 quy tắc nghiệp vụ (`BR1–BR7`), 18 yêu cầu chức năng (`FR-01`..`FR-18`), 9 yêu cầu phi chức năng (`NFR-01`..`NFR-09`) và bảng MoSCoW | **Hoàng**<br>(`chuong-3-hoang.docx`) |
+| **Chương 4**<br>*(Mô hình hóa Yêu cầu bằng UML – 24 Sơ đồ)* | • [`09-dac-ta-use-case-he-thong-va-phong.md`](./09-dac-ta-use-case-he-thong-va-phong.md) *(UC tổng quát, UC01, UC02)*<br>• [`10-dac-ta-use-case-dat-phong-checkin-out.md`](./10-dac-ta-use-case-dat-phong-checkin-out.md) *(UC03, UC04, UC05)*<br>• [`11-dac-ta-use-case-dich-vu-va-thong-ke.md`](./11-dac-ta-use-case-dich-vu-va-thong-ke.md) *(UC06, UC07)*<br>• [`06-tai-lieu-ky-thuat.md`](./06-tai-lieu-ky-thuat.md) *(Class Diagram, ERD)* | • **Mục 4.1:** Biểu đồ Use Case tổng quát (Hoàng)<br>• **Mục 4.2.1 – 4.2.7:** 7 Use Case chính, mỗi UC gồm Sơ đồ UC chi tiết + Bảng đặc tả 9 dòng + Activity Diagram + Sequence Diagram (Kiệt, Hoàng, Phong, Khoa)<br>• **Mục 4.3 & 4.4:** Class Diagram & ERD 8 bảng (Khoa) | **Cả 4 thành viên**<br>(Gửi về Hoàng gộp) |
+| **Chương 5**<br>*(Thiết kế Cơ sở dữ liệu)* | • [`06-tai-lieu-ky-thuat.md`](./06-tai-lieu-ky-thuat.md) *(Mục 5 & Mục 6)* | Lược đồ quan hệ 8 bảng, Từ điển dữ liệu chi tiết (`Data Dictionary`), ràng buộc toàn vẹn và các câu truy vấn SQL trọng tâm | **Khoa**<br>(`chuong-5-csdl-khoa.docx`) |
+| **Chương 6**<br>*(Thiết kế Giao diện Người dùng)* | • [`04-sitemap-wireframe.md`](./04-sitemap-wireframe.md)<br>• [`05-content-brief-landing.md`](./05-content-brief-landing.md)<br>• [`12-phan-quyen-rbac-trang-thai-thong-bao.md`](./12-phan-quyen-rbac-trang-thai-thong-bao.md) | Hệ thống màu `ACE Color System` (Dark/Light Mode), Sơ đồ điều hướng 4 phân hệ (`dieu-huong.png`), Ma trận phân quyền RBAC 3 Role và 10 Wireframe (`WF-01`..`WF-10`) | **Kiệt**<br>(`chuong-6-giao-dien-kiet.docx`) |
+| **Chương 7 & Chương 8**<br>*(Kết quả Prototype, Cài đặt Java, RTM & Kết luận)* | • [`13-kich-ban-demo-va-du-lieu-mau.md`](./13-kich-ban-demo-va-du-lieu-mau.md)<br>• [`14-kiem-thu-nghiep-vu-va-ma-tran-truy-vet.md`](./14-kiem-thu-nghiep-vu-va-ma-tran-truy-vet.md) | Kiến trúc kỹ thuật Spring Boot, bộ dữ liệu mẫu (`sample-data.sql`), kịch bản Demo 14 phút, ảnh chụp màn hình thực tế, **Ma trận truy vết 2 chiều RTM (Mục 7.4)**, 30 Test Cases và Kết luận (Chương 8) | **Hoàng**<br>(`chuong-7-8-hoang.docx` & Gộp toàn quyển `bao-cao.docx`) |
 
-* [01 FinalExam - 502050 - YeuCau.pdf](file:///D:/ACE/docs/assets/01%20FinalExam%20-%20502050%20-%20YeuCau.pdf): Đề thi báo cáo cuối kỳ chính thức và bảng Rubric chấm điểm.
-* [ACE_Light_Mode.png](file:///D:/ACE/docs/assets/ACE_Light_Mode.png): Bảng màu & Component UI chuẩn của hệ thống ACE (Chế độ Sáng).
-* [ACE_Dark_Mode.png](file:///D:/ACE/docs/assets/ACE_Dark_Mode.png): Bảng màu & Component UI chuẩn của hệ thống ACE (Chế độ Tối).
-* [ke-hoach-4-tuan.png](file:///D:/ACE/docs/assets/ke-hoach-4-tuan.png): Sơ đồ tổng quan kế hoạch làm việc 4 tuần của nhóm.
-* [phan-cong-chi-tiet-ban-giao.png](file:///D:/ACE/docs/assets/phan-cong-chi-tiet-ban-giao.png): Bảng phân công nhiệm vụ và lịch bàn giao chi tiết từng tuần.
-* **Sơ đồ phân công chi tiết theo thành viên (`docs/assets/phan-cong/`)**:
-  - [pc-1-chot-chung-ban-giao.png](file:///D:/ACE/docs/assets/phan-cong/pc-1-chot-chung-ban-giao.png): Kế hoạch chốt chung và mốc bàn giao.
-  - [pc-2-viec-khoa-hoang.png](file:///D:/ACE/docs/assets/phan-cong/pc-2-viec-khoa-hoang.png): Phân công công việc của Khoa & Hoàng.
-  - [pc-3-viec-phong-kiet.png](file:///D:/ACE/docs/assets/phan-cong/pc-3-viec-phong-kiet.png): Phân công công việc của Phong & Kiệt.
+---
+
+## 2. Danh mục Tài sản Thiết kế, Đề thi & Bảng Phân công (`docs/assets/`)
+
+* [`01 FinalExam - 502050 - YeuCau.pdf`](./assets/01%20FinalExam%20-%20502050%20-%20YeuCau.pdf): Đề thi báo cáo cuối kỳ chính thức và bảng Rubric chấm điểm.
+* [`ACE_Dark_Mode.png`](./assets/ACE_Dark_Mode.png) & [`ACE_Light_Mode.png`](./assets/ACE_Light_Mode.png): Bảng màu & Component UI chuẩn của hệ thống ACE Hotel.
+* [`phieu-xac-nhan-dat-phong-mau.png`](./assets/phieu-xac-nhan-dat-phong-mau.png): Mẫu Phiếu xác nhận đặt phòng trực tuyến kèm mã QR Code.
+* [`ke-hoach-4-tuan.png`](./assets/ke-hoach-4-tuan.png): Bảng tổng quan kế hoạch 4 tuần (Chương 1–8 & 24 sơ đồ UML).
+* **Bộ ảnh phân công chi tiết (`docs/assets/phan-cong/`):**
+  - [`pc-1-chot-chung-ban-giao.png`](./assets/phan-cong/pc-1-chot-chung-ban-giao.png): Quy ước chung, danh sách 24 sơ đồ UML, lịch bàn giao theo Chương và kịch bản 12 slide.
+  - [`pc-2-viec-khoa-hoang.png`](./assets/phan-cong/pc-2-viec-khoa-hoang.png): Phân công chi tiết từng tuần của **Khoa** và **Hoàng**.
+  - [`pc-3-viec-phong-kiet.png`](./assets/phan-cong/pc-3-viec-phong-kiet.png): Phân công chi tiết từng tuần của **Phong** và **Kiệt**.

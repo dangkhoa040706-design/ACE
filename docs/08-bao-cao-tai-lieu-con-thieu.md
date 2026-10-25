@@ -1,120 +1,66 @@
-# 08. TÀI LIỆU VÀ ĐẦU VÀO NGHIỆP VỤ CÒN THIẾU ĐỂ KHOA CODE
+# 08. CHỐT 22 QUYẾT ĐỊNH NGHIỆP VỤ (D1–D22), MA TRẬN TRẠNG THÁI & CHECKLIST ĐẦU VÀO ĐỂ KHOA CODE
 
-> **Mục đích:** File này xác định toàn bộ tài liệu đặc tả, thiết kế giao diện và quy tắc nghiệp vụ mà **Hoàng, Phong, Kiệt bắt buộc phải bàn giao cho Khoa trước 23:59 ngày 18/10/2026 (cuối Tuần 1)**.  
-> **Nguyên tắc "Zero Guesswork":** Khoa là người duy nhất phụ trách code Java (Spring Boot + Thymeleaf + H2). Mọi luồng xử lý, ràng buộc dữ liệu, thông báo lỗi, quyền hạn nút bấm và kịch bản demo phải có sẵn trong tài liệu để Khoa không phải tự suy đoán nghiệp vụ khi code.
-
----
-
-## 1. Chi tiết các đầu vào nghiệp vụ Khoa cần từ từng thành viên
-
-### 1.1. Từ Hoàng (Phụ trách Phân tích & Nghiệp vụ Phòng / Đặt phòng)
-* **Đặc tả chi tiết UC02 (Phòng & Loại phòng):**
-  - Quy tắc xác thực dữ liệu (Validation): Tên loại phòng, đơn giá đêm ($> 0$), sức chứa ($\ge 1$), định dạng số phòng (không trùng lặp).
-  - Quy tắc xóa dữ liệu (D10): Tuyệt đối không xóa phòng đã từng có booking; không xóa loại phòng nếu vẫn còn phòng trực thuộc.
-  - Quy tắc đổi trạng thái thủ công (D11): Quản lý chỉ được chuyển đổi qua lại giữa `AVAILABLE` và `MAINTENANCE` khi phòng không có khách ở và không có lịch đặt hôm nay.
-* **Đặc tả chi tiết UC03 (Tìm phòng trống & Đặt phòng):**
-  - Công thức kiểm tra trùng lịch (BR2, D18): Truy vấn SQL kiểm tra không bị chồng chéo khoảng ngày (`cũ.check_in < mới.check_out AND cũ.check_out > mới.check_in`). Xác nhận cho phép đặt phòng mới nhận đúng ngày phòng cũ trả.
-  - Quy tắc khách hàng (D12, D13): Trường bắt buộc (`full_name`, `phone`), trường tùy chọn (`id_number`, `email`), cơ chế kiểm tra trùng CCCD/CMND (`id_number` UNIQUE), phương thức tìm kiếm khách hàng (chứa chuỗi con, không phân biệt hoa thường).
-  - Quy tắc hủy đặt phòng (D19, BR7): Chỉ hủy khi trạng thái là `BOOKED`, không thay đổi trạng thái phòng.
-* **Bảng chuyển trạng thái (State Transition Matrix):**
-  - Thống nhất cơ chế đồng bộ trạng thái 2 chiều giữa `bookings.status` và `rooms.status` (xem chi tiết mục 3).
-* **Công thức tính 4 thẻ chỉ số Dashboard (S03 - D4):**
-  - Công thức đếm cho: Phòng trống, Check-in hôm nay, Check-out hôm nay, Dịch vụ đi kèm.
-
-### 1.2. Từ Phong (Phụ trách Thuyết trình, Nghiệp vụ Check-in/Out & Kịch bản Demo)
-* **Đặc tả chi tiết UC04 (Check-in):**
-  - Điều kiện nhận phòng: Booking ở trạng thái `BOOKED`, ngày nhận phòng $\le$ ngày hiện tại, phòng thực tế đang `AVAILABLE`.
-  - Quy định xử lý khi khách đến sớm/trễ so với ngày đặt (D7).
-  - Quy trình tiếp nhận khách vãng lai không đặt trước (D8): Hướng dẫn lễ tân tạo nhanh booking rồi check-in.
-* **Đặc tả chi tiết UC05 (Check-out & Thanh toán):**
-  - Công thức tính hóa đơn (BR4, BR6): $\text{Tổng thanh toán} = (\text{Số đêm} \times \text{Đơn giá phòng}) + \sum \text{Tiền dịch vụ}$.
-  - Quy định tính số đêm khi khách trả phòng sớm hoặc trễ (D7): Cố định theo số đêm đăng ký ban đầu (không phụ thu/giảm giá).
-  - Danh mục hình thức thanh toán (D9): Cố định 3 giá trị `CASH`, `CARD`, `TRANSFER`.
-  - Cơ chế chống tạo trùng hóa đơn / chống nhấn nút thanh toán 2 lần (Idempotency).
-* **Kịch bản Demo chi tiết (Demo Script) & Yêu cầu dữ liệu mẫu:**
-  - Danh sách dữ liệu mẫu cần chuẩn bị sẵn để khớp với bài nói 12-15 phút: số lượng phòng, danh mục phòng mẫu, khách hàng mẫu, booking mẫu để demo thêm dịch vụ và trả phòng trực tiếp.
-
-### 1.3. Từ Kiệt (Phụ trách Wireframe UI, Phân quyền & Định dạng)
-* **Wireframe chi tiết toàn bộ các màn hình (S01 - S14):**
-  - Hoàn thiện chi tiết layout cho 11 màn hình còn thiếu (tài liệu 04 mới chỉ có phác thảo ASCII cho S02, S03, S07, S12): S04, S05, S06, S08, S09, S10, S11, S13, S14.
-  - Thể hiện rõ cấu trúc bảng, các trường nhập liệu (input, dropdown, datepicker) và trạng thái nút bấm (enabled, disabled).
-* **Ma trận phân quyền theo Route và Nút bấm (RBAC Matrix):**
-  - Danh sách URL chặn theo vai trò (`/manage/**` chỉ dành cho `MANAGER`).
-  - Danh sách các nút ẩn/hiện trên từng giao diện theo vai trò (Lễ tân chỉ xem danh sách phòng, Quản lý thấy nút Thêm/Sửa/Bảo trì).
-  - Cơ chế xử lý khi người dùng không đủ quyền truy cập (chuyển hướng 403 hoặc quay lại trang chính).
-* **Danh sách thông báo hệ thống chuẩn tiếng Việt:**
-  - Thông báo lỗi nghiệp vụ, thông báo thao tác thành công, nội dung hộp thoại xác nhận khi thực hiện hành động nguy hiểm.
-* **Đặc tả chi tiết UC01 (Đăng nhập) & UC06 (Dịch vụ đi kèm):**
-  - UC01: Thông báo lỗi chung "Sai tên đăng nhập hoặc mật khẩu", xử lý hết phiên làm việc.
-  - UC06: Thao tác thêm dịch vụ; lưu đơn giá tại thời điểm thêm vào `service_orders.unit_price`; xác nhận cho phép xóa dòng dịch vụ đã thêm nhầm khi chưa thanh toán (D21).
+> **Nguyên tắc "Zero Guesswork":** Khoa là người duy nhất phụ trách code full ứng dụng Spring Boot. Toàn bộ 22 quyết định nghiệp vụ, bảng chuyển trạng thái và 12 hạng mục tài liệu dưới đây đã được chuẩn hóa 100% theo `quy-trinh-nghiep-vu-moi.md` để Khoa cài đặt chính xác mà không phải tự suy đoán bất kỳ chi tiết nào.
 
 ---
 
-## 2. Bảng 22 quyết định nghiệp vụ cần thống nhất (Chốt trước 14/10)
+## 1. Bảng 22 Quyết định Nghiệp vụ & Kỹ thuật Đã Chốt (`D1` – `D22`)
 
-| Mã | Vấn đề cần chốt | Giải pháp thống nhất để code | Phạm vi ảnh hưởng |
-|---|---|---|---|
-| **D1** | Trạng thái **"Quá hạn"** trên giao diện | **Không thêm cột vào CSDL.** Tính toán động trên code: Booking đang `CHECKED_IN` mà `check_out_date < LocalDate.now()`. | UC04, UC05, S03, S09 |
-| **D2** | Trạng thái phòng **"Đã đặt"** trên giao diện | **Cột `rooms.status` giữ nguyên 3 giá trị** (`AVAILABLE`, `OCCUPIED`, `MAINTENANCE`). Trạng thái "Đã đặt" trên giao diện suy ra từ việc có booking `BOOKED` trong ngày xem. | UC02, UC03, S04 |
-| **D3** | Công tắc **Late check-out**, tag **Ăn sáng / Đưa đón** | **Bỏ Late check-out** (phạm vi không có phụ thu). "Ăn sáng", "Đưa đón" là các **dịch vụ** trong bảng `services` (UC06), không cấu hình cứng vào phòng. | Wireframe, Bảng `services` |
-| **D4** | **Dashboard (S03):** Cách tính 4 thẻ chỉ số | - *Phòng trống:* `rooms.status = 'AVAILABLE'`<br>- *Check-in hôm nay:* `bookings.status = 'BOOKED'` và `check_in_date = hôm nay`<br>- *Check-out hôm nay:* `bookings.status = 'CHECKED_IN'` và `check_out_date = hôm nay`<br>- *Dịch vụ đi kèm:* Tổng số dòng `service_orders` của các booking đang `CHECKED_IN`. | Màn hình S03 |
-| **D5** | **Mã đặt phòng** hiển thị | Hiển thị dạng chuỗi: `BK-` + `booking_id` (tự sinh khi hiển thị, không thêm cột). | Toàn bộ giao diện có Booking |
-| **D6** | **Giờ check-in / check-out** | Đặt phòng chỉ chọn ngày (`DATE`). Giờ thực tế chỉ lưu vào `actual_check_in` / `actual_check_out` (`TIMESTAMP`) khi bấm nút Check-in / Check-out. | Bảng `bookings`, S09 |
-| **D7** | **Quy tắc nhận phòng sớm/trễ, trả sớm/muộn** | - Check-in khi `check_in_date <= hôm nay`.<br>- Check-out bất kỳ lúc nào khi đang `CHECKED_IN`.<br>- **Tiền phòng tính cố định theo số đêm đặt ban đầu** (không phạt trễ, không giảm tiền về sớm). | UC04, UC05, Logic tính tiền |
-| **D8** | **Khách vãng lai không đặt trước** | Không làm luồng tắt. Lễ tân thực hiện 2 thao tác: Tạo booking ngày hôm nay (UC03) $\rightarrow$ Bấm Check-in ngay lập tức (UC04). | UC03, UC04 |
-| **D9** | **Phương thức thanh toán (`payment_method`)** | Dùng ENUM cố định 3 giá trị: `CASH`, `CARD`, `TRANSFER`. Không kết nối cổng thanh toán trực tuyến. | Bảng `invoices`, UC05 |
-| **D10** | **Quy tắc xóa dữ liệu** | - *Phòng:* Không xóa nếu đã từng có booking (chuyển sang `MAINTENANCE`).<br>- *Loại phòng:* Không xóa nếu còn phòng trực thuộc.<br>- *Dịch vụ:* Không xóa nếu đã có trong `service_orders`.<br>- *Khách hàng:* Không hỗ trợ xóa. | NFR-04, Tầng Service xóa |
-| **D11** | **Chuyển trạng thái phòng thủ công (Quản lý)** | Quản lý chỉ được chuyển đổi giữa `AVAILABLE` và `MAINTENANCE`. Trạng thái `OCCUPIED` do hệ thống tự gán khi Check-in. Không cho bảo trì phòng đang có khách hoặc có hẹn nhận hôm nay. | UC02, S04, S05 |
-| **D12** | **Trường dữ liệu khách hàng** | Bắt buộc: `full_name`, `phone`. Tùy chọn: `id_number`, `email`. `id_number` là UNIQUE nếu có nhập. `phone` cho phép trùng. | Bảng `customers`, Form đặt phòng |
-| **D13** | **Cơ chế tìm kiếm** | Khớp chuỗi con (`LIKE %keyword%`), không phân biệt hoa thường. | UC02, UC03, JPA Repository |
-| **D14** | **Tài khoản Demo hệ thống** | Cố định 2 tài khoản nạp sẵn trong `sample-data.sql`:<br>1. Lễ tân: `letan01` / pass: `123456` (`RECEPTIONIST`)<br>2. Quản lý: `quanly01` / pass: `123456` (`MANAGER`) | UC01, Dữ liệu mẫu |
-| **D15** | **Phân trang danh sách** | Không phân trang (quy mô dữ liệu nhỏ). Danh sách hỗ trợ cuộn, sắp xếp mặc định theo ID hoặc ngày mới nhất. | Toàn bộ danh sách |
-| **D16** | **Quy ước tiền tệ** | Tiền VND số nguyên (`DECIMAL(12,0)` hoặc `BIGINT`), hiển thị phân cách dấu chấm: `1.250.000đ`. | Các trường hiển thị giá |
-| **D17** | **Múi giờ hệ thống ("Hôm nay")** | Sử dụng múi giờ Việt Nam: `ZoneId.of("Asia/Ho_Chi_Minh")`, lấy theo `LocalDate.now()`. | Dashboard, Check-in/out |
-| **D18** | **Biên trùng lịch đặt phòng (BR2)** | Cho phép đặt phòng nhận vào đúng ngày khách cũ trả (Ngày trả cũ = Ngày nhận mới **không tính trùng**). Khớp biểu thức: `cũ.in < mới.out AND cũ.out > mới.in`. | Logic kiểm tra phòng trống |
-| **D19** | **Hủy đặt phòng** | Chỉ hủy khi booking ở trạng thái `BOOKED` (chuyển sang `CANCELLED`). Trạng thái phòng không đổi. | UC03 |
-| **D20** | **Hình thức hiển thị hóa đơn** | Xem chi tiết hóa đơn trực tiếp trên màn hình (S13) là bắt buộc. Nút in hỗ trợ lệnh `window.print()` của trình duyệt. | S13, UC05 |
-| **D21** | **Xóa dòng dịch vụ đã thêm** | Không hỗ trợ sửa số lượng. Cho phép **xóa dòng dịch vụ** (`service_orders`) nếu booking còn đang `CHECKED_IN` (chưa thanh toán). | UC06, S11 |
-| **D22** | **Quản lý tài khoản người dùng** | Không làm giao diện thêm/sửa user. Tài khoản nhân viên chỉ nạp sẵn qua script CSDL. | Phạm vi hệ thống |
+| Mã | Vấn đề nghiệp vụ / kỹ thuật | Giải pháp thống nhất áp dụng vào Báo cáo & Code Java | Phạm vi ảnh hưởng |
+|:---:|---|---|---|
+| **D1** | **Kiến trúc Không gian Giao diện** | Thiết kế **4 phân hệ giao diện độc lập**: (1) Landing Storytelling (`/`), (2) Dashboard Khách hàng (`/customer/dashboard`), (3) Dashboard Lễ tân (`/staff/dashboard`), (4) Dashboard Admin (`/admin/dashboard`). | Toàn hệ thống, Chương 6 |
+| **D2** | **Phân quyền & Tự động điều hướng sau Đăng nhập** | Hệ thống có **3 Role**: `ADMIN`, `RECEPTIONIST`, `CUSTOMER`. Sau khi đăng nhập tại `/login`, `AuthenticationSuccessHandler` tự động chuyển hướng về đúng Dashboard của Role đó. | `UC01`, `SecurityConfig` |
+| **D3** | **Đăng ký Khách hàng Online vs Tạo Khách Walk-in** | • **Khách Online (`/register`):** Nhập 5 trường (`full_name`, `date_of_birth`, `phone`, `username`, `password`) $\rightarrow$ tạo bản ghi `users` (`CUSTOMER`) và `customers` (`user_id` khác null).<br>• **Khách Walk-in (tại quầy):** Lễ tân chỉ nhập `full_name`, `phone`, `id_number` (CCCD) $\rightarrow$ lưu vào `customers` với `user_id = NULL` và `date_of_birth = NULL`. | `UC01`, `UC04`, Bảng `customers` |
+| **D4** | **Cơ chế Đặt phòng Online theo Hạng phòng (`Quota`)** | Khi khách đặt Online (`UC03`), đơn lưu `room_type_id` và **`room_id = NULL`**. Hạng phòng còn đặt được khi tồn kho khả dụng $N_{\text{available}} = N_{\text{total}}(\neq \text{'MAINTENANCE'}) - N_{\text{booked}}(\in \{\text{'RESERVED'}, \text{'CHECKED\_IN'}\}) \ge 1$. | `UC03`, Bảng `bookings` |
+| **D5** | **Định giá Linh hoạt Ngày thường / Cuối tuần** | Bảng `room_types` lưu 2 mức giá: `price_per_night` (áp dụng cho đêm Thứ 2 $\rightarrow$ Thứ 5) và `weekend_price_per_night` (áp dụng cho đêm Thứ 6, Thứ 7, Chủ Nhật). | `UC02`, `UC03`, Bảng `room_types` |
+| **D6** | **Quy tắc Đặt cọc & Quyết toán (`Online 30/70` vs `Walk-in 0/100`)** | • **Khách Đặt Online (`UC03`):** Cọc trước **30%** tổng gói phòng ước tính (`++`) để giữ chỗ (`status = 'RESERVED'`). Khi Check-out thu **70% tiền phòng còn lại + 100% dịch vụ & phụ thu**.<br>• **Khách Walk-in (`UC04`):** Nhận phòng ngay tại quầy với **tiền cọc `0đ` (`deposit_amount = 0`)**. Khi Check-out thu **100% toàn bộ hóa đơn**. | `UC03`, `UC04`, `UC05` |
+| **D7** | **Phiếu Xác nhận Đặt phòng & Mã QR Check-in** | Sau khi thanh toán cọc 30%, hệ thống sinh mã `booking_code` duy nhất (ví dụ `BK-8K4P9X2M`) và hiển thị **Phiếu xác nhận đặt phòng kèm mã QR**. Lễ tân dùng ô nhập/quét mã này trên `/staff/dashboard` để mở thủ tục Check-in. | `UC03`, `UC04`, `WF-03`, `WF-05` |
+| **D8** | **Khóa an toàn khi Gán phòng vật lý (`Clean Room Guard`)** | Khi Check-in (`UC04`), hệ thống chỉ lọc các phòng vật lý thuộc đúng hạng phòng đang có **`rooms.status = 'AVAILABLE'` (Trống sạch)**. Tuyệt đối khóa các phòng `DIRTY`, `OCCUPIED`, `MAINTENANCE`. | `UC04`, `WF-06` |
+| **D9** | **Chính sách Phụ thu Nhận phòng sớm (`Early Check-in`)** | Giờ nhận phòng chuẩn là `14:00`. Nếu nhận sớm: Trước 06:00 phụ thu `100%` giá 1 đêm; 06:00–09:00 phụ thu `50%`; 09:00–14:00 phụ thu `30%` (hoặc Lễ tân chọn miễn phí ưu đãi `0đ`). Lưu vào `bookings.early_checkin_fee`. | `UC04`, `UC05` |
+| **D10** | **Chính sách Phụ thu Trả phòng trễ (`Late Check-out`)** | Giờ trả phòng chuẩn là trước `12:00` trưa. Nếu trả trễ: 12:00–15:00 phụ thu `30%` giá 1 đêm; 15:00–18:00 phụ thu `50%`; sau 18:00 phụ thu `100%` (Lễ tân có thể xác nhận hoặc miễn phí `0đ`). Lưu vào `bookings.late_checkout_fee`. | `UC05`, `WF-08` |
+| **D11** | **Phân loại 4 Nhóm Dịch vụ & Đóng băng giá Room Folio** | Bảng `services` chia thành 4 nhóm `category IN ('MINIBAR', 'LAUNDRY', 'FB', 'DAMAGES')`. Khi ghi nợ vào `service_orders`, hệ thống sao chép `unit_price` lúc gọi và lưu `created_by` là lễ tân thực hiện. Cho phép xóa dòng ghi nhầm khi đang `CHECKED_IN`. | `UC02`, `UC06`, `WF-07` |
+| **D12** | **Công thức Làm tròn Số nguyên `BIGINT` cho Biểu giá `++`** | Tính tuần tự trong Java Service:<br>1. `subtotal = room_charge + service_charge_total + early_checkin_fee + late_checkout_fee`<br>2. `service_charge_amount = Math.round(subtotal * 0.05)` *(SVC 5%)*<br>3. `vat_amount = Math.round((subtotal + service_charge_amount) * 0.10)` *(VAT 10%)*<br>4. `grand_total = subtotal + service_charge_amount + vat_amount`<br>5. `balance_due = grand_total - deposit_deducted` | `UC03`, `UC05`, Bảng `invoices` |
+| **D13** | **Vòng đời Buồng phòng & Trạng thái `DIRTY` (Chờ dọn dẹp)** | Ngay sau khi Check-out (`UC05`), phòng vật lý tự động chuyển sang **`DIRTY` (màu cam)**. Trên `/staff/dashboard`, Lễ tân bấm nút **[Xác nhận đã dọn sạch]** để chuyển phòng từ `DIRTY` về lại **`AVAILABLE` (màu xanh lá)**. | `UC05`, `WF-05`, Bảng `rooms` |
+| **D14** | **Nhãn hiển thị động `"Quá hạn"` (`OVERDUE`)** | Không thêm vào cột `status` của CSDL. Tính động bằng `booking.isOverdue()`: trả về `true` khi `status == 'CHECKED_IN'` và `check_out_date < LocalDate.now()`. | `UC04`, `UC05`, `WF-05` |
+| **D15** | **Phương thức Thanh toán & Chống trùng Hóa đơn** | `PaymentMethod` gồm 3 giá trị: `CASH`, `CARD`, `TRANSFER`. Bảng `invoices` có ràng buộc `UNIQUE(booking_id)` và kiểm tra Idempotency trong `@Transactional` để bấm đúp chuột không tạo 2 hóa đơn. | `UC05`, Bảng `invoices` |
+| **D16** | **Quy tắc Hủy đơn & Bảo toàn Lịch sử Dữ liệu** | Chỉ hủy được đơn đang ở trạng thái `RESERVED` (chuyển sang `CANCELLED`). Chặn xóa `rooms` đã có `bookings`, chặn xóa `room_types` đang có `rooms`/`bookings`, chặn xóa `services` đã có trong `service_orders`. | `UC02`, `UC03`, `NFR-04` |
+| **D17** | **Công thức Tính `Occupancy Rate`, `ADR`, `RevPAR` (`UC07`)** | Tổng số phòng kinh doanh $R_{\text{sellable}} = \text{AVAILABLE} + \text{OCCUPIED} + \text{DIRTY}$ (**bắt buộc loại trừ phòng `MAINTENANCE` khỏi mẫu số**). $\text{OR (\%)} = (\text{OCCUPIED} / R_{\text{sellable}}) \times 100\%$. | `UC07`, `WF-10` |
+| **D18** | **Biên Trùng lịch Khoảng ngày Nửa mở `[nhận, trả)`** | Cho phép khách mới nhận phòng đúng vào ngày khách cũ trả phòng (`existing.check_in_date < new.check_out_date AND existing.check_out_date > new.check_in_date`). | `UC03`, `UC04` |
+| **D19** | **Tài khoản Demo Chuẩn nạp sẵn trong `sample-data.sql`** | • Admin: `admin` / `admin` (`ADMIN`)<br>• Lễ tân: `nhanvien` / `nhanvien` (`RECEPTIONIST`)<br>• Khách hàng mẫu: `khach` / `khach` (`CUSTOMER`) | `UC01`, `sample-data.sql` |
+| **D20** | **Định dạng Tiền tệ, Ngày giờ & Múi giờ** | Tiền tệ kiểu `BIGINT` hiển thị `1.250.000đ`; ngày định dạng `dd/MM/yyyy`; múi giờ cố định `Asia/Ho_Chi_Minh`. | Toàn bộ giao diện |
+| **D21** | **Hệ thống Màu & Theme (`ACE Color System`)** | Mặc định **Dark Mode**, có nút chuyển đổi **Light Mode** lưu vào `localStorage ('ace-theme')`; giữ nguyên màu vàng thương hiệu `#FDBF2D`. | `tokens.css`, `theme.js` |
+| **D22** | **Cấu trúc Quyển Báo cáo & Bộ Sơ đồ UML** | Báo cáo gồm **8 Chương (Chương 1 $\rightarrow$ Chương 8) và Tài liệu tham khảo, bỏ Phụ lục**. Chương 4 có đầy đủ **24 sơ đồ UML** (1 UC tổng quát + 7 UC chi tiết + 7 Activity + 7 Sequence + 1 Class + 1 ERD). | Quyển báo cáo `bao-cao.docx` |
 
 ---
 
-## 3. Bảng chuyển trạng thái (State Transition Table)
+## 2. Bảng Chuyển Trạng thái Đồng bộ (`bookings.status` $\leftrightarrow$ `rooms.status`)
 
-| Thao tác nghiệp vụ | Điều kiện tiên quyết | Trạng thái Booking sau | Trạng thái Phòng sau | Ghi nhận thời gian | Vai trò thực hiện |
+| Thao tác nghiệp vụ | Điều kiện tiên quyết | `bookings.status` sau | `rooms.status` sau | Ghi nhận dữ liệu / thời gian | Vai trò thực hiện |
 |---|---|:---:|:---:|---|---|
-| **Tạo đặt phòng mới** | Không trùng lịch (D18), phòng không ở trạng thái `MAINTENANCE`. | `BOOKED` | Giữ nguyên (`AVAILABLE`) | `created_at = NOW()` | Lễ tân, Quản lý |
-| **Hủy đặt phòng** | Booking đang ở `BOOKED`. | `CANCELLED` | Giữ nguyên | Không | Lễ tân, Quản lý |
-| **Check-in nhận phòng** | Booking là `BOOKED`, `check_in_date <= hôm nay`, phòng `AVAILABLE`. | `CHECKED_IN` | `OCCUPIED` | `actual_check_in = NOW()` | Lễ tân, Quản lý |
-| **Thêm dịch vụ** | Booking đang ở `CHECKED_IN`. | `CHECKED_IN` | `OCCUPIED` | `ordered_at = NOW()` | Lễ tân, Quản lý |
-| **Xóa dòng dịch vụ** | Booking đang ở `CHECKED_IN`. | `CHECKED_IN` | `OCCUPIED` | Xóa dòng trong DB | Lễ tân, Quản lý |
-| **Check-out & Thanh toán** | Booking đang `CHECKED_IN`, chưa có hóa đơn. | `CHECKED_OUT` | `AVAILABLE` | `actual_check_out = NOW()`, `paid_at = NOW()` | Lễ tân, Quản lý |
-| **Chuyển phòng bảo trì** | Phòng `AVAILABLE`, không có booking `BOOKED` sắp tới. | Không đổi | `MAINTENANCE` | Không | **Chỉ Quản lý** |
-| **Hoàn tất bảo trì** | Phòng đang `MAINTENANCE`. | Không đổi | `AVAILABLE` | Không | **Chỉ Quản lý** |
+| **1. Khách đặt phòng Online & Cọc 30% (`UC03`)** | Hạng phòng còn Quota ($N_{\text{available}} \ge 1$), `check_out > check_in` | `RESERVED` | *(Chưa gán `room_id`)* | `deposit_amount = 30%`, sinh `booking_code` & Phiếu QR | `CUSTOMER` |
+| **2. Hủy đặt phòng (`UC03`)** | Đơn đang ở trạng thái `RESERVED` | `CANCELLED` | *(Không đổi)* | Hoàn trả 1 suất Quota cho hạng phòng | `CUSTOMER`, `RECEPTIONIST`, `ADMIN` |
+| **3A. Check-in khách đặt trước (`UC04`)** | Đơn `RESERVED`, chọn phòng vật lý thuộc hạng đó đang `AVAILABLE` | `CHECKED_IN` | `OCCUPIED` | Gán `room_id`, `actual_check_in = NOW()`, ghi `early_checkin_fee` (nếu có) | `RECEPTIONIST`, `ADMIN` |
+| **3B. Tiếp nhận khách Walk-in (`UC04`)** | Chọn phòng vật lý đang `AVAILABLE`, nhập thông tin khách & CCCD | `CHECKED_IN` | `OCCUPIED` | Tạo `bookings` với `deposit_amount = 0`, `actual_check_in = NOW()` | `RECEPTIONIST`, `ADMIN` |
+| **4. Ghi / Xóa dịch vụ Room Folio (`UC06`)** | Đơn đang ở trạng thái `CHECKED_IN` | `CHECKED_IN` | `OCCUPIED` | Lưu `service_orders` (đóng băng `unit_price`, lưu `created_by`) | `RECEPTIONIST`, `ADMIN` |
+| **5. Check-out & Quyết toán `++` (`UC05`)** | Đơn đang `CHECKED_IN`, chưa có bản ghi trong `invoices` | `CHECKED_OUT` | **`DIRTY`** *(Chờ dọn)* | Tạo `invoices` (`++`, trừ cọc), `actual_check_out = NOW()`, `paid_at = NOW()` | `RECEPTIONIST`, `ADMIN` |
+| **6. Xác nhận đã dọn sạch phòng (`UC05`)** | Phòng vật lý đang ở trạng thái `DIRTY` | *(Đã đóng)* | **`AVAILABLE`** *(Trống sạch)* | Mở khóa phòng để sẵn sàng gán cho lượt khách mới | `RECEPTIONIST`, `ADMIN` |
+| **7. Bật / Tắt trạng thái Bảo trì (`UC02`)** | Phòng đang `AVAILABLE` (không có khách ở) | *(Không đổi)* | `MAINTENANCE` $\leftrightarrow$ `AVAILABLE` | Loại trừ phòng `MAINTENANCE` khỏi mẫu số `Occupancy Rate` | **Chỉ `ADMIN`** |
 
 ---
 
-## 4. Kế hoạch bàn giao đầu vào cho Khoa (Tuần 1)
+## 3. Bảng Tổng hợp Trạng thái 12 Đầu vào Nghiệp vụ & Kỹ thuật (Hoàn tất 100%)
 
-* **Trước 23:59 ngày 14/10/2026:** Cả nhóm duyệt chính thức Bảng 22 quyết định nghiệp vụ (D1 - D22) và Bảng chuyển trạng thái. Khoa chủ động dựng project Spring Boot, viết DDL `schema.sql` và cấu hình H2.
-* **Trước 23:59 ngày 16/10/2026:** Kiệt nộp Wireframe đầy đủ (S01 - S14), Ma trận phân quyền và Danh sách thông báo tiếng Việt. Phong gửi bản nháp kịch bản demo và danh mục dữ liệu mẫu cần có.
-* **Trước 23:59 ngày 18/10/2026 (Hạn chót M1):** Hoàng, Phong, Kiệt bàn giao toàn bộ bản Đặc tả Use Case chi tiết (UC01 - UC06). Khoa rà soát lần cuối, tạo dữ liệu `sample-data.sql` và sẵn sàng code từ 19/10/2026.
-
----
-
-## 5. BẢNG TỔNG HỢP TÓM TẮT TÀI LIỆU ĐẦU VÀO ĐỂ CODE (TRẠNG THÁI: ĐÃ HOÀN TẤT 100%)
-
-| STT | Tên tài liệu / Đầu vào cần bàn giao | Người phụ trách | Mức độ ưu tiên | Hạn chót bàn giao | Tình trạng & File lưu trữ chính thức |
-|:---:|---|:---:|:---:|:---:|---|
-| **1** | **Xác nhận 22 quyết định nghiệp vụ (D1 - D22)** | Cả nhóm (Hoàng chủ trì) | **Mức A** (Chặn code) | 14/10/2026 | ✅ **Đã chốt** tại [12-phan-quyen-rbac-trang-thai-thong-bao.md](file:///D:/ACE/docs/12-phan-quyen-rbac-trang-thai-thong-bao.md) |
-| **2** | **Bảng chuyển trạng thái chuẩn (Booking & Phòng)** | Hoàng + Phong | **Mức A** (Chặn code) | 14/10/2026 | ✅ **Đã chốt** tại [12-phan-quyen-rbac-trang-thai-thong-bao.md](file:///D:/ACE/docs/12-phan-quyen-rbac-trang-thai-thong-bao.md) |
-| **3** | **Wireframe chi tiết toàn bộ 15 màn hình (S01-S15)** | Kiệt | **Mức A** (Chặn code) | 16/10/2026 | ✅ **Đã hoàn thành** tại [04-sitemap-wireframe.md](file:///D:/ACE/docs/04-sitemap-wireframe.md) |
-| **4** | **Ma trận phân quyền theo Route URL và Nút bấm (RBAC)** | Kiệt | **Mức A** (Chặn code) | 16/10/2026 | ✅ **Đã hoàn thành** tại [12-phan-quyen-rbac-trang-thai-thong-bao.md](file:///D:/ACE/docs/12-phan-quyen-rbac-trang-thai-thong-bao.md) |
-| **5** | **Đặc tả chi tiết UC02 (Phòng & Loại phòng) + Class Diagram** | Hoàng | **Mức A** (Chặn code) | 18/10/2026 | ✅ **Đã hoàn thành** tại [09-dac-ta-use-case-he-thong-va-phong.md](file:///D:/ACE/docs/09-dac-ta-use-case-he-thong-va-phong.md) |
-| **6** | **Đặc tả chi tiết UC03 (Tìm phòng & Đặt phòng) + Sequence/Activity** | Hoàng | **Mức A** (Chặn code) | 18/10/2026 | ✅ **Đã hoàn thành** tại [10-dac-ta-use-case-dat-phong-checkin-out.md](file:///D:/ACE/docs/10-dac-ta-use-case-dat-phong-checkin-out.md) |
-| **7** | **Đặc tả chi tiết UC04 (Check-in)** | Phong | **Mức A** (Chặn code) | 18/10/2026 | ✅ **Đã hoàn thành** tại [10-dac-ta-use-case-dat-phong-checkin-out.md](file:///D:/ACE/docs/10-dac-ta-use-case-dat-phong-checkin-out.md) |
-| **8** | **Đặc tả chi tiết UC05 (Check-out & Thanh toán) + Sequence/Activity** | Phong | **Mức A** (Chặn code) | 18/10/2026 | ✅ **Đã hoàn thành** tại [10-dac-ta-use-case-dat-phong-checkin-out.md](file:///D:/ACE/docs/10-dac-ta-use-case-dat-phong-checkin-out.md) |
-| **9** | **Đặc tả chi tiết UC01 (Đăng nhập), UC06 (Dịch vụ) & UC07 (Thống kê)** | Kiệt + Khoa | **Mức A** (Chặn code) | 18/10/2026 | ✅ **Đã hoàn thành** tại [09-...](file:///D:/ACE/docs/09-dac-ta-use-case-he-thong-va-phong.md) & [11-dac-ta-use-case-dich-vu-va-thong-ke.md](file:///D:/ACE/docs/11-dac-ta-use-case-dich-vu-va-thong-ke.md) |
-| **10** | **Danh sách 35 thông báo hệ thống chuẩn bằng tiếng Việt** | Kiệt | **Mức B** (Cần khi code) | 16/10/2026 | ✅ **Đã hoàn thành** tại [12-phan-quyen-rbac-trang-thai-thong-bao.md](file:///D:/ACE/docs/12-phan-quyen-rbac-trang-thai-thong-bao.md) |
-| **11** | **Kịch bản Demo chi tiết (15 phút) & Đặc tả bộ dữ liệu mẫu** | Phong | **Mức B** (Cần khi code) | 16/10/2026 | ✅ **Đã hoàn thành** tại [13-kich-ban-demo-va-du-lieu-mau.md](file:///D:/ACE/docs/13-kich-ban-demo-va-du-lieu-mau.md) |
-| **12** | **Ma trận truy vết (RTM), 30 Test Cases (BR1-BR7) & 20 câu hỏi đáp** | Hoàng + Phong | **Mức C** (Cần khi test) | 22/10/2026 | ✅ **Đã hoàn thành** tại [14-kiem-thu-nghiep-vu-va-ma-tran-truy-vet.md](file:///D:/ACE/docs/14-kiem-thu-nghiep-vu-va-ma-tran-truy-vet.md) |
+| STT | Hạng mục tài liệu / Đầu vào | Phụ trách Báo cáo | Trạng thái & File lưu trữ trong `docs/` |
+|:---:|---|:---:|---|
+| **1** | Quy trình nghiệp vụ mới chuẩn PMS & Online Booking | Cả nhóm (Khoa chủ trì) | ✅ Đã chốt tại `quy-trinh-nghiep-vu-moi.md` |
+| **2** | Mục lục Chương 1–8 (bỏ Phụ lục) & Hướng dẫn 7 Use Case | Khoa + Hoàng | ✅ Đã hoàn thành tại `00-muc-luc-va-huong-dan-7-uc.md` |
+| **3** | Tổng quan dự án, Backlog 18 FR & 7 Quy tắc `BR1–BR7` | Hoàng (Chương 1, 3) | ✅ Đã hoàn thành tại `01-project-brief.md`, `02-...`, `03-...` |
+| **4** | Sitemap 4 Phân hệ & 10 Wireframe (`WF-01` – `WF-10`) | Kiệt (Chương 6) | ✅ Đã hoàn thành tại `04-sitemap-wireframe.md` & `05-...` |
+| **5** | Class Diagram, ERD, Từ điển 8 bảng & SQL (`Chương 5`) | Khoa (Chương 4, 5) | ✅ Đã hoàn thành tại `06-tai-lieu-ky-thuat.md` |
+| **6** | Kế hoạch 4 tuần & Bộ 4 ảnh phân công (24 sơ đồ UML) | Cả nhóm | ✅ Đã hoàn thành tại `07-ke-hoach-timeline.md` & 4 ảnh `.png` |
+| **7** | Khảo sát hiện trạng, Đặc tả & Bộ sơ đồ `UC01`, `UC02` | Phong, Kiệt, Hoàng | 🔄 Sẵn sàng xuất ở đợt tiếp theo (`09-...`) |
+| **8** | Đặc tả & Bộ sơ đồ `UC03`, `UC04`, `UC05` | Hoàng, Phong | 🔄 Sẵn sàng xuất ở đợt tiếp theo (`10-...`) |
+| **9** | Đặc tả & Bộ sơ đồ `UC06`, `UC07` | Kiệt, Khoa | 🔄 Sẵn sàng xuất ở đợt tiếp theo (`11-...`) |
+| **10** | Ma trận RBAC 3 Role & Từ điển thông báo tiếng Việt | Kiệt, Khoa | 🔄 Sẵn sàng xuất ở đợt tiếp theo (`12-...`) |
+| **11** | Bộ dữ liệu mẫu (`sample-data.sql`) & Kịch bản Demo 14p | Khoa, Phong | 🔄 Sẵn sàng xuất ở đợt tiếp theo (`13-...`) |
+| **12** | Ma trận truy vết RTM (Mục 7.4), Test Cases & 20 Câu hỏi | Hoàng, Phong, Khoa | 🔄 Sẵn sàng xuất ở đợt tiếp theo (`14-...`) |

@@ -33,6 +33,7 @@ D:\ACE\
    - Mở thư mục [`ace-hotel/`](file:///D:/ACE/ace-hotel) bằng **IntelliJ IDEA** (yêu cầu **JDK 21**).
    - Chạy class `AceHotelApplication` hoặc lệnh `mvn spring-boot:run`.
    - Truy cập: `http://localhost:8080`.
-   - Tài khoản đăng nhập demo:
-     - Lễ tân: `letan` / `Ace@123`
-     - Quản lý: `quanly` / `Ace@123`
+   - Tài khoản đăng nhập demo (đúng 3 tài khoản chuẩn):
+     - Quản trị viên (`ADMIN`): `admin` / `admin`
+     - Lễ tân (`RECEPTIONIST`): `nhanvien` / `nhanvien`
+     - Khách hàng (`CUSTOMER`): `khach` / `khach`

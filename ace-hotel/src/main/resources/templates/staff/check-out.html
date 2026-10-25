@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/pms-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title th:text="'Quyết Toán Check-out - Phòng ' + ${summary.roomNumber} + ' | ACE Hotel'">Quyết Toán Check-out | ACE Hotel</title>
+</head>
+<body>
+<section>
+
+  <!-- Thông báo trạng thái nếu đơn đã Check-out hoặc chưa Check-in -->
+  <div th:if="${isAlreadyCheckedOut}" class="card" style="padding: 1.25rem; margin-bottom: 1.5rem; background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.3);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        <div>
+          <strong style="color: #3B82F6;">Đơn đặt phòng này đã hoàn tất thủ tục trả phòng (CHECKED_OUT).</strong>
+          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.2rem;">Hóa đơn quyết toán đã được lập và phòng đã chuyển sang trạng thái chờ buồng phòng xử lý.</div>
+        </div>
+      </div>
+      <a th:if="${existingInvoiceId != null}" th:href="@{'/staff/invoices/' + ${existingInvoiceId}}" class="btn btn-primary" style="white-space: nowrap;">
+        Xem Hóa Đơn VAT →
+      </a>
+    </div>
+  </div>
+
+  <div th:if="${isNotCheckedIn}" class="card" style="padding: 1.25rem; margin-bottom: 1.5rem; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.3);">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <div>
+        <strong style="color: #F59E0B;">Đơn đặt phòng này hiện chưa nhận phòng (Trạng thái: <span th:text="${booking.status}">RESERVED</span>).</strong>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.2rem;">Chỉ có thể quyết toán trả phòng cho khách đang lưu trú tại khách sạn.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. Thanh Tiêu Đề Hồ Sơ Check-out -->
+  <div class="card" style="padding: 1.5rem; margin-bottom: 1.75rem;">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+      <div>
+        <div class="flex items-center gap-3">
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="1.75"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            <span>Quyết Toán Trả Phòng:</span>
+            <span style="color: #FDBF2D;" th:text="'Phòng ' + ${summary.roomNumber}">Phòng 301</span>
+          </h2>
+          <span class="badge badge-info" th:text="${summary.roomTypeName}">Deluxe</span>
+          <span th:if="${booking.depositAmount == 0}" class="badge badge-warning">Khách Walk-in (0đ cọc)</span>
+          <span th:if="${booking.depositAmount > 0}" class="badge badge-success">Khách Online (Đã cọc 30%)</span>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem;">
+          Mã đơn: <strong style="color: #FDBF2D;" th:text="${summary.bookingCode}">BK-2401</strong> |
+          Khách hàng: <strong style="color: var(--text);" th:text="${summary.customerName}">Nguyễn Minh Anh</strong> |
+          SĐT: <span th:text="${summary.customerPhone}">0901234567</span> |
+          Thời gian: <span th:text="${#temporals.format(summary.checkInDate, 'dd/MM/yyyy') + ' → ' + #temporals.format(summary.checkOutDate, 'dd/MM/yyyy') + ' (' + summary.nights + ' đêm)'}">14/10 → 16/10 (2 đêm)</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <a th:href="@{'/staff/bookings/' + ${booking.bookingId} + '/folio'}" class="btn btn-secondary">
+          <span>← Quay lại Room Folio</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <form th:action="@{'/staff/bookings/' + ${booking.bookingId} + '/check-out'}" method="post" id="checkoutForm">
+
+    <!-- 2. Gợi ý & Điều chỉnh Phụ thu Trả phòng trễ (Late Check-out Policy) -->
+    <div class="card" style="padding: 1.5rem; margin-bottom: 1.75rem; background: var(--surface);">
+      <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="1.75"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Chính Sách Phụ Thu Trả Phòng Trễ (Late Check-out Policy - Tiêu chuẩn 12:00 Trưa)</span>
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
+        <button type="button" class="btn btn-secondary late-btn" onclick="applyLateRate(0)" style="font-size: 0.8rem; justify-content: flex-start;">
+          <span>0% (0đ) - Trước 12:00 / Miễn phí</span>
+        </button>
+        <button type="button" class="btn btn-secondary late-btn" onclick="applyLateRate(30)" style="font-size: 0.8rem; justify-content: flex-start;">
+          <span>30% - Từ 12:00 đến 15:00</span>
+        </button>
+        <button type="button" class="btn btn-secondary late-btn" onclick="applyLateRate(50)" style="font-size: 0.8rem; justify-content: flex-start;">
+          <span>50% - Từ 15:00 đến 18:00</span>
+        </button>
+        <button type="button" class="btn btn-secondary late-btn" onclick="applyLateRate(100)" style="font-size: 0.8rem; justify-content: flex-start;">
+          <span>100% - Sau 18:00 / Quá hạn</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">Mức phụ thu áp dụng cho đợt này:</span>
+        <input type="number" id="lateFeeInput" name="lateCheckoutFee"
+               th:value="${summary.lateCheckoutFee}" min="0" step="1000"
+               oninput="recalculateSummary()"
+               class="form-control" style="width: 220px; font-weight: 700; color: #FDBF2D;">
+        <span style="font-size: 0.85rem; font-weight: 600;">VNĐ</span>
+      </div>
+    </div>
+
+    <!-- 3. Bảng Quyết Toán Chi Phí Minh Bạch Chuẩn Biểu Giá ++ (BR6) -->
+    <div class="card" style="padding: 1.75rem; margin-bottom: 1.75rem;">
+      <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="1.75"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <span>Bảng Kê Chi Tiết Chi Phí &amp; Biểu Giá (++)</span>
+      </h3>
+
+      <table class="table" style="width: 100%;">
+        <tbody>
+          <!-- 1. Tiền phòng gốc -->
+          <tr>
+            <td style="width: 60%; font-weight: 600;">
+              1. Tiền phòng gốc (<span th:text="${summary.nights}">2</span> đêm: <span th:text="${summary.roomTypeName}">Deluxe</span>)
+            </td>
+            <td style="text-align: right; font-weight: 700; font-size: 1.05rem;" id="dispRoomCharge"
+                th:text="${#numbers.formatDecimal(summary.roomCharge, 0, 'COMMA', 0, 'POINT') + 'đ'}">2,000,000đ</td>
+          </tr>
+
+          <!-- 2. Dịch vụ Room Folio phát sinh -->
+          <tr>
+            <td style="font-weight: 600;">
+              2. Dịch vụ phát sinh từ Room Folio (<span th:text="${summary.serviceOrders.size()}">0</span> khoản Minibar/Giặt ủi/Ăn uống)
+            </td>
+            <td style="text-align: right; font-weight: 700; font-size: 1.05rem;" id="dispServiceChargeTotal"
+                th:text="${#numbers.formatDecimal(summary.serviceChargeTotal, 0, 'COMMA', 0, 'POINT') + 'đ'}">300,000đ</td>
+          </tr>
+
+          <!-- 3. Phụ thu nhận phòng sớm -->
+          <tr>
+            <td style="color: var(--text-secondary);">
+              3. Phụ thu nhận phòng sớm (Early Check-in)
+            </td>
+            <td style="text-align: right; font-weight: 600;" id="dispEarlyCheckinFee"
+                th:text="${#numbers.formatDecimal(summary.earlyCheckinFee, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+          </tr>
+
+          <!-- 4. Phụ thu trả phòng trễ -->
+          <tr>
+            <td style="color: var(--text-secondary);">
+              4. Phụ thu trả phòng trễ (Late Check-out)
+            </td>
+            <td style="text-align: right; font-weight: 600;" id="dispLateCheckoutFee"
+                th:text="${#numbers.formatDecimal(summary.lateCheckoutFee, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+          </tr>
+
+          <!-- TỔNG CHI PHÍ GỐC (Subtotal Base) -->
+          <tr style="border-top: 2px solid var(--border); background: var(--surface);">
+            <td style="font-weight: 700; text-transform: uppercase;">TỔNG CHI PHÍ GỐC (Subtotal Base):</td>
+            <td style="text-align: right; font-weight: 800; font-size: 1.1rem; color: var(--text);" id="dispSubtotal"
+                th:text="${#numbers.formatDecimal(summary.subtotal, 0, 'COMMA', 0, 'POINT') + 'đ'}">2,300,000đ</td>
+          </tr>
+
+          <!-- Phí phục vụ 5% (SVC) -->
+          <tr>
+            <td style="color: var(--text-secondary);">
+              + Phí phục vụ (SVC 5% tính trên Subtotal):
+            </td>
+            <td style="text-align: right; font-weight: 600; color: var(--text-secondary);" id="dispSvc"
+                th:text="${#numbers.formatDecimal(summary.serviceChargeAmount, 0, 'COMMA', 0, 'POINT') + 'đ'}">115,000đ</td>
+          </tr>
+
+          <!-- Thuế GTGT 10% (VAT) -->
+          <tr>
+            <td style="color: var(--text-secondary);">
+              + Thuế GTGT (VAT 10% tính trên Subtotal + SVC):
+            </td>
+            <td style="text-align: right; font-weight: 600; color: var(--text-secondary);" id="dispVat"
+                th:text="${#numbers.formatDecimal(summary.vatAmount, 0, 'COMMA', 0, 'POINT') + 'đ'}">241,500đ</td>
+          </tr>
+
+          <!-- TỔNG CỘNG HÓA ĐƠN (Grand Total ++) -->
+          <tr style="background: rgba(253, 191, 45, 0.08); border-top: 2px solid #FDBF2D;">
+            <td style="font-weight: 800; font-size: 1.1rem; color: #FDBF2D; text-transform: uppercase;">
+              TỔNG CỘNG HÓA ĐƠN (Grand Total ++):
+            </td>
+            <td style="text-align: right; font-weight: 900; font-size: 1.3rem; color: #FDBF2D;" id="dispGrandTotal"
+                th:text="${#numbers.formatDecimal(summary.grandTotal, 0, 'COMMA', 0, 'POINT') + 'đ'}">2,656,500đ</td>
+          </tr>
+
+          <!-- Khấu trừ tiền cọc -->
+          <tr>
+            <td style="font-weight: 600; color: var(--st-free);">
+              - Khấu trừ tiền đã cọc
+              <span th:if="${booking.depositAmount > 0}">(Khách Online đã cọc 30%)</span>
+              <span th:if="${booking.depositAmount == 0}">(Khách Walk-in không cọc lúc vào: 0đ)</span>:
+            </td>
+            <td style="text-align: right; font-weight: 700; color: var(--st-free); font-size: 1.1rem;" id="dispDeposit"
+                th:text="'- ' + ${#numbers.formatDecimal(summary.depositDeducted, 0, 'COMMA', 0, 'POINT') + 'đ'}">- 693,000đ</td>
+          </tr>
+
+          <!-- SỐ TIỀN THỰC THU TẠI QUẦY (Balance Due) -->
+          <tr style="background: rgba(34, 197, 94, 0.12); border-top: 3px solid var(--st-free);">
+            <td style="font-weight: 900; font-size: 1.25rem; color: var(--text); text-transform: uppercase;">
+              SỐ TIỀN THỰC THU TẠI QUẦY (Balance Due):
+            </td>
+            <td style="text-align: right; font-weight: 900; font-size: 1.6rem; color: #FDBF2D;" id="dispBalanceDue"
+                th:text="${#numbers.formatDecimal(summary.balanceDue, 0, 'COMMA', 0, 'POINT') + 'đ'}">1,963,500đ</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4. Phương Thức Thanh Toán & Hoàn Tất Check-out -->
+    <div class="card" style="padding: 1.5rem; margin-bottom: 2rem;">
+      <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="1.75"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        <span>Chọn Phương Thức Thanh Toán Tại Quầy</span>
+      </h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1.5rem;">
+        <label class="flex items-center gap-2" style="cursor: pointer; font-weight: 600;">
+          <input type="radio" name="paymentMethod" value="CASH" checked style="transform: scale(1.3);">
+          <span>Tiền mặt (Cash)</span>
+        </label>
+        <label class="flex items-center gap-2" style="cursor: pointer; font-weight: 600;">
+          <input type="radio" name="paymentMethod" value="CARD" style="transform: scale(1.3);">
+          <span>Quẹt thẻ POS (Credit/Debit Card)</span>
+        </label>
+        <label class="flex items-center gap-2" style="cursor: pointer; font-weight: 600;">
+          <input type="radio" name="paymentMethod" value="TRANSFER" style="transform: scale(1.3);">
+          <span>Chuyển khoản VietQR (Bank Transfer)</span>
+        </label>
+      </div>
+
+      <!-- Warning về chuyển DIRTY -->
+      <div style="font-size: 0.85rem; color: var(--st-dirty); margin-bottom: 1.5rem; padding: 0.85rem; background: rgba(249, 115, 22, 0.1); border-radius: 6px; border: 1px solid rgba(249, 115, 22, 0.3); display: flex; align-items: flex-start; gap: 0.5rem;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; margin-top: 1px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        <div>
+          <strong>Lưu ý nghiệp vụ BR7:</strong> Sau khi bấm xác nhận thanh toán, phòng <strong th:text="'P.' + ${summary.roomNumber}">P.301</strong> sẽ tự động chuyển sang trạng thái <strong>Chờ dọn dẹp (DIRTY)</strong> và khóa cứng không thể gán cho khách mới cho đến khi Lễ tân xác nhận đã dọn xong.
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+        <a th:href="@{/staff/dashboard}" class="btn btn-secondary">
+          <span>Hủy bỏ</span>
+        </a>
+        <button th:if="${!isAlreadyCheckedOut && !isNotCheckedIn}"
+                type="button" onclick="openCheckoutConfirmModal()"
+                class="btn btn-primary" style="font-size: 1.05rem; padding: 0.75rem 1.75rem; display: flex; align-items: center; gap: 0.5rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Xác Nhận Thanh Toán &amp; Lập Hóa Đơn VAT</span>
+        </button>
+        <button th:if="${isAlreadyCheckedOut || isNotCheckedIn}"
+                type="button" disabled
+                class="btn btn-secondary" style="font-size: 1.05rem; padding: 0.75rem 1.75rem; opacity: 0.5; cursor: not-allowed;">
+          <span>Không Thể Quyết Toán</span>
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- MODAL XÁC NHẬN QUYẾT TOÁN CHECK-OUT (UX RISK REMEDIATION) -->
+  <div id="checkoutConfirmModal" class="modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div class="modal-content card" style="max-width: 500px; width: 90%; padding: 1.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.25rem;">
+        <h3 style="color: var(--primary); font-size: 1.2rem; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="9 15 11 17 15 13"></polyline></svg>
+          <span>Xác Nhận Quyết Toán Check-out</span>
+        </h3>
+        <button type="button" onclick="closeCheckoutConfirmModal()" style="background: none; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer;">✕</button>
+      </div>
+
+      <div style="font-size: 0.9rem; color: var(--text); line-height: 1.6; margin-bottom: 1.25rem;">
+        <div>Phòng: <strong style="color: #FDBF2D;" th:text="'P.' + ${summary.roomNumber}">P.301</strong> (<span th:text="${summary.roomTypeName}">Deluxe</span>)</div>
+        <div>Khách hàng: <strong th:text="${summary.customerName}">Nguyễn Minh Anh</strong></div>
+        <div style="margin-top: 0.5rem; padding: 0.75rem; background: rgba(253, 191, 45, 0.08); border-radius: 6px; border: 1px solid rgba(253, 191, 45, 0.2);">
+          Số tiền thực thu tại quầy:
+          <strong id="modalConfirmAmount" style="font-size: 1.25rem; color: #FDBF2D; margin-left: 0.5rem;" th:text="${#numbers.formatDecimal(summary.balanceDue, 0, 'COMMA', 0, 'POINT') + 'đ'}">1,963,500đ</strong>
+        </div>
+      </div>
+
+      <!-- Check-list đối soát -->
+      <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" id="chkKey" checked style="accent-color: #FDBF2D;">
+          <span>Khách đã bàn giao đầy đủ thẻ/chìa khóa phòng</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" id="chkMinibar" checked style="accent-color: #FDBF2D;">
+          <span>Đã kiểm tra buồng phòng &amp; đối soát Mini-bar đầy đủ</span>
+        </label>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+        <button type="button" onclick="closeCheckoutConfirmModal()" class="btn btn-secondary">
+          <span>Hủy bỏ</span>
+        </button>
+        <button type="button" onclick="submitFinalCheckout()" class="btn btn-primary" style="padding: 0.6rem 1.25rem; font-weight: 700;">
+          <span>✓ Xác Nhận &amp; Xuất Hóa Đơn</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script tính toán lại tự động khi thay đổi Late Fee & Modal Handler -->
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    var baseRoomCharge = /*[[${summary.roomCharge}]]*/ 2000000;
+    var baseServiceCharge = /*[[${summary.serviceChargeTotal}]]*/ 300000;
+    var baseEarlyCheckin = /*[[${summary.earlyCheckinFee}]]*/ 0;
+    var baseDeposit = /*[[${summary.depositDeducted}]]*/ 693000;
+    var lateBasePrice = /*[[${booking != null && booking.roomType != null ? booking.roomType.pricePerNight : 1000000}]]*/ 1000000;
+
+    function formatVND(num) {
+      return num.toLocaleString('en-US') + 'đ';
+    }
+
+    function applyLateRate(percent) {
+      var amount = Math.round(lateBasePrice * (percent / 100));
+      document.getElementById('lateFeeInput').value = amount;
+      recalculateSummary();
+    }
+
+    function recalculateSummary() {
+      var lateFee = parseInt(document.getElementById('lateFeeInput').value, 10) || 0;
+      var subtotal = baseRoomCharge + baseServiceCharge + baseEarlyCheckin + lateFee;
+      var svc = Math.round(subtotal * 0.05);
+      var vat = Math.round((subtotal + svc) * 0.10);
+      var grandTotal = subtotal + svc + vat;
+      var balanceDue = Math.max(0, grandTotal - baseDeposit);
+
+      document.getElementById('dispLateCheckoutFee').textContent = formatVND(lateFee);
+      document.getElementById('dispSubtotal').textContent = formatVND(subtotal);
+      document.getElementById('dispSvc').textContent = formatVND(svc);
+      document.getElementById('dispVat').textContent = formatVND(vat);
+      document.getElementById('dispGrandTotal').textContent = formatVND(grandTotal);
+      document.getElementById('dispBalanceDue').textContent = formatVND(balanceDue);
+      if (document.getElementById('modalConfirmAmount')) {
+        document.getElementById('modalConfirmAmount').textContent = formatVND(balanceDue);
+      }
+    }
+
+    function openCheckoutConfirmModal() {
+      var modal = document.getElementById('checkoutConfirmModal');
+      if (modal) {
+        modal.style.display = 'flex';
+      }
+    }
+
+    function closeCheckoutConfirmModal() {
+      var modal = document.getElementById('checkoutConfirmModal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    function submitFinalCheckout() {
+      var form = document.getElementById('checkoutForm');
+      if (form) {
+        form.submit();
+      }
+    }
+    /*]]>*/
+  </script>
+
+</section>
+</body>
+</html>

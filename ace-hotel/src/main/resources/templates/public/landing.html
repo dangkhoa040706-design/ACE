@@ -1,0 +1,4072 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/public-layout :: layout(~{::title}, ~{::content})}">
+<head>
+  <title>ACE Hotel - Accommodation, Check-in &amp; Extras | Khách Sạn Đẳng Cấp</title>
+</head>
+<body>
+  <div th:fragment="content" style="overflow-x: clip; width: 100%; position: relative;">
+
+    <!-- 1. FLAGSHIP HERO SHOWCASE SECTION (2 Video + 3 Ảnh) -->
+    <section class="hero-showcase" id="heroShowcase">
+      <style>
+        .hero-showcase {
+          position: relative;
+          width: 100%;
+          min-height: calc(100vh - 76px);
+          background: #05070B;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          color: #FFFFFF;
+        }
+
+        /* Khung chứa các slide Media */
+        .hero-media-container {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          z-index: 1;
+        }
+
+        .hero-media-item {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+          pointer-events: none;
+        }
+
+        .hero-media-item.active {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .hero-media-item.is-video {
+          transform: scale(1.08);
+          transform-origin: center center;
+        }
+
+        .hero-media-item.is-image {
+          transform: scale(1.04);
+          transform-origin: center center;
+        }
+
+        .hero-media-item.is-image.active {
+          animation: heroKenBurns 5s linear forwards;
+        }
+
+        @keyframes heroKenBurns {
+          0% {
+            transform: scale(1.04);
+          }
+          100% {
+            transform: scale(1.12);
+          }
+        }
+
+        /* Lớp phủ Kính Gradient Kép đảm bảo độ tương phản */
+        .hero-overlay {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          pointer-events: none;
+          background: linear-gradient(90deg, rgba(6, 8, 12, 0.90) 0%, rgba(6, 8, 12, 0.58) 50%, rgba(6, 8, 12, 0.18) 100%),
+                      linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0) 45%, rgba(6, 8, 12, 0.85) 100%);
+        }
+
+        /* Vùng nội dung chữ động */
+        .hero-content-wrapper {
+          position: relative;
+          z-index: 5;
+          width: 100%;
+          max-width: 1240px;
+          margin: 0 auto;
+          padding: 4rem 1.5rem 8.5rem;
+        }
+
+        .hero-content-slide {
+          display: none;
+          opacity: 0;
+          transform: translateY(28px);
+          transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-content-slide.active {
+          display: block;
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .hero-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.35rem 0.9rem;
+          border-radius: 999px;
+          background: rgba(253, 191, 45, 0.12);
+          border: 1px solid rgba(253, 191, 45, 0.45);
+          color: #FDBF2D;
+          font-size: 0.78rem;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          margin-bottom: 1.25rem;
+        }
+
+        .hero-title {
+          font-size: clamp(2.1rem, 4.2vw, 3.5rem);
+          font-weight: 900;
+          color: #FFFFFF;
+          line-height: 1.16;
+          letter-spacing: -0.5px;
+          margin-bottom: 1.25rem;
+          text-shadow: 0 4px 24px rgba(0,0,0,0.7);
+          max-width: 860px;
+        }
+
+        .hero-title .gold-accent {
+          color: #FDBF2D;
+        }
+
+        .hero-desc {
+          font-size: clamp(1rem, 1.25vw, 1.15rem);
+          color: #E2E8F0;
+          line-height: 1.75;
+          max-width: 680px;
+          margin-bottom: 2.25rem;
+          text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+        }
+
+        .hero-actions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .hero-btn-primary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          background: #FDBF2D;
+          color: #0A0A0A !important;
+          font-weight: 700;
+          font-size: 0.95rem;
+          padding: 0.85rem 2rem;
+          border-radius: 999px;
+          text-decoration: none;
+          box-shadow: 0 6px 22px rgba(253, 191, 45, 0.35);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hero-btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 28px rgba(253, 191, 45, 0.55);
+        }
+
+        .hero-btn-secondary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          background: rgba(255, 255, 255, 0.08);
+          color: #FFFFFF !important;
+          font-weight: 600;
+          font-size: 0.95rem;
+          padding: 0.85rem 1.85rem;
+          border-radius: 999px;
+          border: 1px solid rgba(255, 255, 255, 0.28);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          text-decoration: none;
+          transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .hero-btn-secondary:hover {
+          background: rgba(255, 255, 255, 0.16);
+          border-color: rgba(255, 255, 255, 0.6);
+          transform: translateY(-2px);
+        }
+
+        /* Cụm điều khiển & Thanh tiến trình 5 vạch */
+        .hero-controls {
+          position: absolute;
+          bottom: 2rem;
+          left: 0;
+          right: 0;
+          z-index: 10;
+        }
+
+        .hero-controls-inner {
+          display: flex;
+          align-items: center;
+          gap: 1.25rem;
+          width: 100%;
+          max-width: 1240px;
+          margin: 0 auto;
+          padding: 0 1.5rem;
+        }
+
+        .hero-play-btn {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.12);
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          color: #FFFFFF;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          transition: background 0.2s, border-color 0.2s, transform 0.2s, color 0.2s;
+          flex-shrink: 0;
+        }
+
+        .hero-play-btn:hover {
+          background: rgba(253, 191, 45, 0.25);
+          border-color: #FDBF2D;
+          color: #FDBF2D;
+          transform: scale(1.06);
+        }
+
+        .hero-progress-group {
+          display: flex;
+          align-items: center;
+          gap: 0.85rem;
+          flex: 1;
+        }
+
+        .hero-progress-bar {
+          flex: 1;
+          cursor: pointer;
+          padding: 0.4rem 0;
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+        }
+
+        .hero-progress-label {
+          font-size: 0.72rem;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.6);
+          letter-spacing: 0.5px;
+          transition: color 0.2s ease;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .hero-progress-bar.active .hero-progress-label {
+          color: #FDBF2D;
+        }
+
+        .hero-progress-track {
+          height: 3px;
+          background: rgba(255, 255, 255, 0.22);
+          border-radius: 2px;
+          overflow: hidden;
+          position: relative;
+        }
+
+        .hero-progress-fill {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          width: 0%;
+          background: #FDBF2D;
+          transition: width 0.08s linear;
+        }
+
+        .hero-progress-bar.completed .hero-progress-fill {
+          width: 100% !important;
+        }
+
+        @media (max-width: 768px) {
+          .hero-content-wrapper {
+            padding: 3rem 1rem 7.5rem;
+          }
+          .hero-progress-label {
+            display: none;
+          }
+          .hero-controls {
+            bottom: 1.25rem;
+          }
+          .hero-actions {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .hero-btn-primary, .hero-btn-secondary {
+            width: 100%;
+          }
+        }
+      </style>
+
+      <!-- 1. Media Container: 2 Videos + 3 Images -->
+      <div class="hero-media-container" id="heroMediaContainer">
+        <!-- Slide 0: Video 1 (Đại sảnh về đêm) -->
+        <video class="hero-media-item is-video active" muted playsinline preload="auto" th:src="@{/videos/vid1.mp4}">
+          <source th:src="@{/videos/vid1.mp4}" type="video/mp4">
+        </video>
+
+        <!-- Slide 1: Video 2 (Phòng Presidential Suite) -->
+        <video class="hero-media-item is-video" muted playsinline preload="auto" th:src="@{/videos/vid2.mp4}">
+          <source th:src="@{/videos/vid2.mp4}" type="video/mp4">
+        </video>
+
+        <!-- Slide 2: Ảnh 1 (Check-in QR) -->
+        <img class="hero-media-item is-image" th:src="@{/images/hero/anh1.png}" alt="Quầy lễ tân công nghệ Check-in QR">
+
+        <!-- Slide 3: Ảnh 2 (In-Room Dining) -->
+        <img class="hero-media-item is-image" th:src="@{/images/hero/anh2.png}" alt="Ẩm thực In-Room Dining & Minibar">
+
+        <!-- Slide 4: Ảnh 3 (Spa đá đen) -->
+        <img class="hero-media-item is-image" th:src="@{/images/hero/anh3.png}" alt="Phòng tắm Spa đá đen & Bồn tắm thư giãn">
+      </div>
+
+      <!-- 2. Dual Gradient Contrast Overlay -->
+      <div class="hero-overlay"></div>
+
+      <!-- 3. Dynamic Typography Content Slides -->
+      <div class="hero-content-wrapper">
+        <!-- Slide 1 Content -->
+        <div class="hero-content-slide active" data-slide="0">
+          <div class="hero-badge">01 / 05 • ACE HOTEL FLAGSHIP</div>
+          <h1 class="hero-title">Đẳng Cấp Thượng Lưu, <span class="gold-accent">Minh Bạch Tuyệt Đối</span></h1>
+          <p class="hero-desc">
+            Chuẩn mực khách sạn 5 sao thế hệ mới — nơi kiến trúc Đen Obsidian &amp; Vàng Champagne hội tụ cùng trải nghiệm vận hành số hóa hoàn hảo.
+          </p>
+          <div class="hero-actions">
+            <a href="#hang-phong" class="hero-btn-primary">
+              <span>Khám Phá Hạng Phòng</span>
+              <span>↓</span>
+            </a>
+            <a href="#cau-chuyen" class="hero-btn-secondary">
+              <span>Câu Chuyện Thương Hiệu</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Slide 2 Content -->
+        <div class="hero-content-slide" data-slide="1">
+          <div class="hero-badge">02 / 05 • ACCOMMODATION</div>
+          <h1 class="hero-title">Tuyệt Tác Không Gian <span class="gold-accent">Nghỉ Dưỡng 5 Sao</span></h1>
+          <p class="hero-desc">
+            Năm hạng phòng từ Standard đến Presidential Suite với tầm nhìn toàn cảnh thành phố và biểu giá ngày thường, cuối tuần niêm yết rõ ràng.
+          </p>
+          <div class="hero-actions">
+            <a href="#hang-phong" class="hero-btn-primary">
+              <span>Xem 5 Hạng Phòng</span>
+              <span>↓</span>
+            </a>
+            <a th:href="@{/booking/search}" class="hero-btn-secondary">
+              <span>Tìm Phòng Trống</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Slide 3 Content -->
+        <div class="hero-content-slide" data-slide="2">
+          <div class="hero-badge">03 / 05 • SMART QR CHECK-IN</div>
+          <h1 class="hero-title">Giữ Chỗ Chắc Chắn Với <span class="gold-accent">30% Cọc &amp; Mã QR</span></h1>
+          <p class="hero-desc">
+            Khóa suất phòng thực tế theo tồn kho Quota thời gian thực. Nhận ngay Phiếu xác nhận QR và gán phòng sạch tại sảnh chỉ trong 15 giây.
+          </p>
+          <div class="hero-actions">
+            <a th:href="@{/booking/search}" class="hero-btn-primary">
+              <span>Đặt Phòng &amp; Nhận QR</span>
+              <span>→</span>
+            </a>
+            <a href="#quy-trinh" class="hero-btn-secondary">
+              <span>Quy Trình 3 Bước</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Slide 4 Content -->
+        <div class="hero-content-slide" data-slide="3">
+          <div class="hero-badge">04 / 05 • EXTRAS &amp; ROOM FOLIO</div>
+          <h1 class="hero-title">Hệ Sinh Thái Dịch Vụ <span class="gold-accent">Room Folio Tinh Tế</span></h1>
+          <p class="hero-desc">
+            Thưởng thức ẩm thực In-Room Dining, Minibar và giặt ủi tốc hành với đơn giá đóng băng minh bạch ngay tại thời điểm sử dụng.
+          </p>
+          <div class="hero-actions">
+            <a href="#dich-vu" class="hero-btn-primary">
+              <span>Khám Phá Dịch Vụ</span>
+              <span>↓</span>
+            </a>
+            <a th:href="@{/booking/search}" class="hero-btn-secondary">
+              <span>Đặt Phòng Ngay</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Slide 5 Content -->
+        <div class="hero-content-slide" data-slide="4">
+          <div class="hero-badge">05 / 05 • CLEAN ROOM GUARD</div>
+          <h1 class="hero-title">Cam Kết 100% <span class="gold-accent">Phòng Sạch Tinh Tươm</span></h1>
+          <p class="hero-desc">
+            Quy trình kiểm định buồng phòng khép kín trước mỗi lượt nhận phòng và quyết toán chuẩn biểu giá quốc tế (5% Phí phục vụ &amp; 10% VAT).
+          </p>
+          <div class="hero-actions">
+            <a th:href="@{/booking/search}" class="hero-btn-primary">
+              <span>Bắt Đầu Trải Nghiệm</span>
+              <span>→</span>
+            </a>
+            <a href="#hang-phong" class="hero-btn-secondary">
+              <span>Xem Bảng Giá</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Bottom Controls & 5-Bar Progress Bars -->
+      <div class="hero-controls">
+        <div class="hero-controls-inner">
+          <!-- Nút Pause / Play -->
+          <button type="button" class="hero-play-btn" id="heroPlayPauseBtn" title="Tạm dừng / Tiếp tục trình chiếu" aria-label="Tạm dừng / Tiếp tục">
+            <svg class="icon-pause" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <rect x="6" y="4" width="4" height="16" rx="1.5"></rect>
+              <rect x="14" y="4" width="4" height="16" rx="1.5"></rect>
+            </svg>
+            <svg class="icon-play" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display: none; margin-left: 2px;">
+              <polygon points="6 4 20 12 6 20 6 4"></polygon>
+            </svg>
+          </button>
+
+          <!-- 5 Thanh tiến trình -->
+          <div class="hero-progress-group">
+            <div class="hero-progress-bar active" data-index="0" title="Slide 1: Đại sảnh">
+              <span class="hero-progress-label">01 Đại sảnh</span>
+              <div class="hero-progress-track"><div class="hero-progress-fill"></div></div>
+            </div>
+            <div class="hero-progress-bar" data-index="1" title="Slide 2: Phòng Suite">
+              <span class="hero-progress-label">02 Phòng Suite</span>
+              <div class="hero-progress-track"><div class="hero-progress-fill"></div></div>
+            </div>
+            <div class="hero-progress-bar" data-index="2" title="Slide 3: Check-in QR">
+              <span class="hero-progress-label">03 Check-in QR</span>
+              <div class="hero-progress-track"><div class="hero-progress-fill"></div></div>
+            </div>
+            <div class="hero-progress-bar" data-index="3" title="Slide 4: Ẩm thực">
+              <span class="hero-progress-label">04 Ẩm thực</span>
+              <div class="hero-progress-track"><div class="hero-progress-fill"></div></div>
+            </div>
+            <div class="hero-progress-bar" data-index="4" title="Slide 5: Không gian Spa">
+              <span class="hero-progress-label">05 Không gian Spa</span>
+              <div class="hero-progress-track"><div class="hero-progress-fill"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Script Điều khiển Flagship Hero Showcase -->
+      <script>
+        (function() {
+          var totalSlides = 5;
+          var currentSlide = 0;
+          var isPaused = false;
+          var imageDuration = 5000;
+          var imageStartTime = null;
+          var imageElapsed = 0;
+          var animFrameId = null;
+          var videoFallbackTimer = null;
+
+          var mediaItems = document.querySelectorAll('.hero-media-item');
+          var contentSlides = document.querySelectorAll('.hero-content-slide');
+          var progressBars = document.querySelectorAll('.hero-progress-bar');
+          var playBtn = document.getElementById('heroPlayPauseBtn');
+          var iconPause = playBtn ? playBtn.querySelector('.icon-pause') : null;
+          var iconPlay = playBtn ? playBtn.querySelector('.icon-play') : null;
+
+          function isVideoSlide(index) {
+            return index === 0 || index === 1;
+          }
+
+          function clearTimers() {
+            if (animFrameId) {
+              cancelAnimationFrame(animFrameId);
+              animFrameId = null;
+            }
+            if (videoFallbackTimer) {
+              clearTimeout(videoFallbackTimer);
+              videoFallbackTimer = null;
+            }
+          }
+
+          function setProgress(index, percent) {
+            var bar = progressBars[index];
+            if (!bar) return;
+            var fill = bar.querySelector('.hero-progress-fill');
+            if (fill) {
+              fill.style.width = Math.min(100, Math.max(0, percent)) + '%';
+            }
+          }
+
+          function applySlideUI(index) {
+            mediaItems.forEach(function(item, i) {
+              if (i === index) {
+                item.classList.add('active');
+              } else {
+                item.classList.remove('active');
+                if (item.tagName === 'VIDEO') {
+                  try {
+                    item.pause();
+                    item.currentTime = 0;
+                  } catch (e) {}
+                }
+              }
+            });
+
+            contentSlides.forEach(function(slide, i) {
+              if (i === index) {
+                slide.classList.add('active');
+              } else {
+                slide.classList.remove('active');
+              }
+            });
+
+            progressBars.forEach(function(bar, i) {
+              var fill = bar.querySelector('.hero-progress-fill');
+              if (i < index) {
+                bar.classList.remove('active');
+                bar.classList.add('completed');
+                if (fill) fill.style.width = '100%';
+              } else if (i === index) {
+                bar.classList.add('active');
+                bar.classList.remove('completed');
+                if (fill) fill.style.width = '0%';
+              } else {
+                bar.classList.remove('active', 'completed');
+                if (fill) fill.style.width = '0%';
+              }
+            });
+          }
+
+          function runImageSlide(index) {
+            clearTimers();
+            imageStartTime = performance.now() - imageElapsed;
+
+            function step(now) {
+              if (isPaused) {
+                animFrameId = requestAnimationFrame(step);
+                return;
+              }
+              imageElapsed = now - imageStartTime;
+              var progress = (imageElapsed / imageDuration) * 100;
+              setProgress(index, progress);
+
+              if (imageElapsed >= imageDuration) {
+                nextSlide();
+              } else {
+                animFrameId = requestAnimationFrame(step);
+              }
+            }
+
+            animFrameId = requestAnimationFrame(step);
+          }
+
+          function runVideoSlide(index) {
+            clearTimers();
+            var video = mediaItems[index];
+            if (!video || video.tagName !== 'VIDEO') {
+              runImageSlide(index);
+              return;
+            }
+
+            try {
+              video.currentTime = 0;
+              var playPromise = video.play();
+              if (playPromise !== undefined) {
+                playPromise.catch(function() {
+                  videoFallbackTimer = setTimeout(nextSlide, 6000);
+                });
+              }
+            } catch (err) {
+              videoFallbackTimer = setTimeout(nextSlide, 6000);
+            }
+
+            videoFallbackTimer = setTimeout(function() {
+              if (currentSlide === index && !isPaused) {
+                nextSlide();
+              }
+            }, 12000);
+          }
+
+          function onVideoTimeUpdate(e) {
+            var video = e.target;
+            var index = Array.prototype.indexOf.call(mediaItems, video);
+            if (index === currentSlide && video.duration) {
+              var progress = (video.currentTime / video.duration) * 100;
+              setProgress(index, progress);
+            }
+          }
+
+          function onVideoEnded(e) {
+            var video = e.target;
+            var index = Array.prototype.indexOf.call(mediaItems, video);
+            if (index === currentSlide && !isPaused) {
+              nextSlide();
+            }
+          }
+
+          mediaItems.forEach(function(item) {
+            if (item.tagName === 'VIDEO') {
+              item.addEventListener('timeupdate', onVideoTimeUpdate);
+              item.addEventListener('ended', onVideoEnded);
+            }
+          });
+
+          function goToSlide(index) {
+            clearTimers();
+            imageElapsed = 0;
+            currentSlide = (index + totalSlides) % totalSlides;
+            applySlideUI(currentSlide);
+
+            if (isVideoSlide(currentSlide)) {
+              runVideoSlide(currentSlide);
+            } else {
+              runImageSlide(currentSlide);
+            }
+          }
+
+          function nextSlide() {
+            goToSlide(currentSlide + 1);
+          }
+
+          function togglePause() {
+            isPaused = !isPaused;
+            if (isPaused) {
+              if (iconPause) iconPause.style.display = 'none';
+              if (iconPlay) iconPlay.style.display = 'inline-block';
+              var currentMedia = mediaItems[currentSlide];
+              if (currentMedia && currentMedia.tagName === 'VIDEO') {
+                try { currentMedia.pause(); } catch(e) {}
+              }
+            } else {
+              if (iconPause) iconPause.style.display = 'inline-block';
+              if (iconPlay) iconPlay.style.display = 'none';
+              var currentMedia = mediaItems[currentSlide];
+              if (currentMedia && currentMedia.tagName === 'VIDEO') {
+                try { currentMedia.play(); } catch(e) {}
+              } else {
+                imageStartTime = performance.now() - imageElapsed;
+              }
+            }
+          }
+
+          if (playBtn) {
+            playBtn.addEventListener('click', togglePause);
+          }
+
+          progressBars.forEach(function(bar) {
+            bar.addEventListener('click', function() {
+              var targetIndex = parseInt(this.getAttribute('data-index'), 10);
+              if (!isNaN(targetIndex) && targetIndex !== currentSlide) {
+                goToSlide(targetIndex);
+              }
+            });
+          });
+
+          goToSlide(0);
+        })();
+      </script>
+    </section>
+
+    <!-- 2. FLAGSHIP ROOM SHOWCASE SECTION (5 Hạng Phòng Co Giãn - Vertical Expanding Accordion) -->
+    <section id="rooms" class="room-showcase-section">
+      <div id="hang-phong" style="position: absolute; top: -80px;"></div>
+      
+      <style>
+        .room-showcase-section {
+          position: relative;
+          padding: 5.5rem 0 3.25rem 0;
+          background: #080A0F;
+          border-bottom: none;
+          overflow: visible;
+          z-index: 1;
+        }
+
+        :root[data-theme="light"] .room-showcase-section {
+          background: #F7F6F2;
+        }
+
+        :root[data-theme="light"] .room-badge {
+          color: #B45309;
+          background: #FEF3C7;
+          border: 1px solid #FDE68A;
+          padding: 0.35rem 0.85rem;
+          border-radius: 999px;
+        }
+
+        :root[data-theme="light"] .room-badge::before {
+          background: #D97706;
+          box-shadow: 0 0 6px #D97706;
+        }
+
+        :root[data-theme="light"] .room-showcase-title {
+          color: #1A202C;
+        }
+
+        :root[data-theme="light"] .room-showcase-title .gold-accent {
+          background: linear-gradient(135deg, #1A202C 15%, #B45309 60%, #D97706 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        :root[data-theme="light"] .room-showcase-desc {
+          color: #4A5568;
+        }
+
+        /* 5 Thẻ Phòng Dọc: Nền sứ ngà, viền đồng, bóng đổ thanh thoát */
+        :root[data-theme="light"] .room-card-bar {
+          background: #FFFFFF;
+          border: 1px solid rgba(180, 83, 9, 0.22);
+          box-shadow: 0 10px 28px rgba(28, 25, 23, 0.07);
+        }
+
+        /* Thẻ thu gọn: Ảnh sáng rõ nét (brightness 0.82), lớp phủ màu hổ phách dịu mắt */
+        :root[data-theme="light"] .room-card-bar .room-card-bg {
+          filter: brightness(0.78);
+        }
+
+        :root[data-theme="light"] .room-card-overlay {
+          background: linear-gradient(180deg, rgba(28, 25, 23, 0.05) 0%, rgba(28, 25, 23, 0.35) 50%, rgba(28, 25, 23, 0.86) 100%);
+        }
+
+        /* Chữ và số trên thanh thu gọn */
+        :root[data-theme="light"] .room-collapsed-num {
+          color: #FDE68A;
+          text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        :root[data-theme="light"] .room-collapsed-name {
+          color: #FFFFFF;
+          text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+        }
+
+        :root[data-theme="light"] .room-collapsed-price {
+          color: #FDE68A;
+          text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Thẻ MỞ RỘNG (Active): Hào quang vàng hổ phách */
+        :root[data-theme="light"] .room-card-bar.active {
+          border-color: #C89B3C;
+          box-shadow: 0 20px 45px rgba(180, 83, 9, 0.16), 0 4px 16px rgba(180, 83, 9, 0.08);
+        }
+
+        :root[data-theme="light"] .room-card-bar.active .room-card-bg {
+          filter: brightness(0.96);
+        }
+
+        /* Badge sức chứa: Viên thuốc thủy tinh trắng sứ */
+        :root[data-theme="light"] .room-capacity-badge {
+          background: rgba(255, 255, 255, 0.92);
+          border: 1px solid rgba(180, 83, 9, 0.35);
+          color: #92400E;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Hộp biểu giá ngày thường & cuối tuần: Nền sứ ngà mờ */
+        :root[data-theme="light"] .room-price-box {
+          background: rgba(255, 255, 255, 0.92);
+          border: 1px solid rgba(180, 83, 9, 0.22);
+          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+        }
+
+        :root[data-theme="light"] .room-price-row:not(:last-child) {
+          border-bottom-color: rgba(180, 83, 9, 0.15);
+        }
+
+        :root[data-theme="light"] .room-price-row .price-label {
+          color: #52525B;
+          font-weight: 600;
+        }
+
+        :root[data-theme="light"] .room-price-row .price-val-weekday {
+          color: #B45309;
+          font-weight: 800;
+        }
+
+        :root[data-theme="light"] .room-price-row .price-val-weekend {
+          color: #D97706;
+          font-weight: 800;
+        }
+
+        /* Nút đặt phòng chân thẻ: Gradient vàng hoàng gia nổi bật */
+        :root[data-theme="light"] .room-book-btn {
+          background: linear-gradient(135deg, #FDBF2D 0%, #D97706 100%);
+          color: #0A0A0A !important;
+          border: none;
+          font-weight: 800;
+          box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
+        }
+
+        :root[data-theme="light"] .room-book-btn:hover {
+          background: linear-gradient(135deg, #FFD056 0%, #F59E0B 100%);
+          box-shadow: 0 6px 18px rgba(217, 119, 6, 0.45);
+          transform: translateY(-2px);
+        }
+
+        @media (max-width: 991px) {
+          .room-showcase-section {
+            padding-bottom: 3rem;
+          }
+        }
+
+        .room-showcase-grid {
+          display: grid;
+          grid-template-columns: 255px 1fr;
+          gap: 1.5rem;
+          align-items: center;
+        }
+
+        @media (max-width: 1120px) {
+          .room-showcase-grid {
+            grid-template-columns: 230px 1fr;
+            gap: 1.25rem;
+          }
+        }
+
+        @media (max-width: 991px) {
+          .room-showcase-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+        }
+
+        /* Cột trái: Thông tin cố định & Nút tìm phòng */
+        .room-showcase-info {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .room-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 2px;
+          color: #FDBF2D;
+          text-transform: uppercase;
+          margin-bottom: 0.75rem;
+        }
+
+        .room-badge::before {
+          content: "";
+          display: inline-block;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #FDBF2D;
+          box-shadow: 0 0 10px #FDBF2D;
+        }
+
+        .room-showcase-title {
+          font-size: 1.85rem;
+          font-weight: 800;
+          line-height: 1.3;
+          color: #FFFFFF;
+          margin: 0 0 1rem 0;
+          letter-spacing: -0.3px;
+        }
+
+        .room-showcase-title .gold-accent {
+          color: #FDBF2D;
+          background: linear-gradient(135deg, #FFFFFF 20%, #FDBF2D 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .room-showcase-desc {
+          font-size: 0.86rem;
+          line-height: 1.65;
+          color: rgba(255, 255, 255, 0.72);
+          margin: 0 0 1.5rem 0;
+        }
+
+        .room-cta-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          background: linear-gradient(135deg, #FDBF2D 0%, #F59E0B 100%);
+          color: #0A0A0A !important;
+          font-weight: 700;
+          font-size: 0.88rem;
+          padding: 0.75rem 1.45rem;
+          border-radius: 999px;
+          text-decoration: none;
+          box-shadow: 0 6px 20px rgba(253, 191, 45, 0.35);
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+          align-self: flex-start;
+        }
+
+        .room-cta-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px rgba(253, 191, 45, 0.55);
+        }
+
+        /* Cột phải: 5 Thanh Dọc Co Giãn (Vertical Expanding Cards) */
+        .room-accordion-wrapper {
+          display: flex;
+          gap: 0.65rem;
+          height: 500px;
+          min-width: 0;
+          width: 100%;
+        }
+
+        @media (max-width: 991px) {
+          .room-accordion-wrapper {
+            flex-direction: column;
+            height: auto;
+            gap: 0.75rem;
+          }
+        }
+
+        .room-card-bar {
+          position: relative;
+          flex: 1;
+          min-width: 0;
+          border-radius: 18px;
+          overflow: hidden;
+          cursor: pointer;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          background: #0D111A;
+          transition: flex 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                      border-color 0.4s ease,
+                      box-shadow 0.4s ease,
+                      height 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+        }
+
+        @media (max-width: 991px) {
+          .room-card-bar {
+            height: 76px;
+            flex: none;
+          }
+          .room-card-bar.active {
+            height: 460px;
+          }
+        }
+
+        /* Ảnh nền từng thanh - Giữ nguyên góc rộng, không zoom nhân tạo */
+        .room-card-bg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          filter: brightness(0.78);
+          transform: scale(1.0);
+          transition: filter 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), object-position 0.6s ease;
+          z-index: 1;
+        }
+
+        /* Tiêu cự thông minh cho từng hạng phòng: tôn lên nét đặc trưng riêng, không zoom đâm vào giữa giường */
+        .room-card-bar[data-index="0"] .room-card-bg { object-position: 36% 40%; } /* Standard: Giường & cửa kính đêm */
+        .room-card-bar[data-index="1"] .room-card-bg { object-position: 48% 40%; } /* Superior: Giường, ghế băng & trần gỗ */
+        .room-card-bar[data-index="2"] .room-card-bg { object-position: 74% 40%; } /* Deluxe: Cửa ban công kính & bàn trà view skyline */
+        .room-card-bar[data-index="3"] .room-card-bg { object-position: 60% 40%; } /* Family: 2 GIƯỜNG ĐÔI lớn & sofa */
+        .room-card-bar[data-index="4"] .room-card-bg { object-position: 68% 40%; } /* Suite: Phòng khách lớn, sofa nỉ, bàn đá, vách ngăn & phòng ngủ */
+
+        .room-card-bar.active[data-index="0"] .room-card-bg { object-position: 40% 35%; }
+        .room-card-bar.active[data-index="1"] .room-card-bg { object-position: 48% 35%; }
+        .room-card-bar.active[data-index="2"] .room-card-bg { object-position: 68% 35%; }
+        .room-card-bar.active[data-index="3"] .room-card-bg { object-position: 58% 35%; }
+        .room-card-bar.active[data-index="4"] .room-card-bg { object-position: 66% 35%; }
+
+        /* Lớp phủ tương phản dịu mắt, giữ ảnh sáng rõ nét */
+        .room-card-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(7, 10, 16, 0.12) 0%, rgba(7, 10, 16, 0.05) 45%, rgba(7, 10, 16, 0.85) 100%);
+          z-index: 2;
+          transition: background 0.4s ease;
+        }
+
+        /* Trạng thái THU GỌN (Collapsed) */
+        .room-collapsed-info {
+          position: absolute;
+          inset: 0;
+          z-index: 3;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 1.25rem 0.35rem;
+          pointer-events: none;
+          transition: opacity 0.3s ease;
+        }
+
+        .room-collapsed-num {
+          font-size: 1.05rem;
+          font-weight: 800;
+          color: #FDBF2D;
+          letter-spacing: 1px;
+          text-align: center;
+        }
+
+        .room-collapsed-label {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.4rem;
+        }
+
+        .room-collapsed-name {
+          font-size: 0.92rem;
+          font-weight: 700;
+          color: #FFFFFF;
+          white-space: nowrap;
+          text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+          writing-mode: vertical-rl;
+          transform: rotate(180deg);
+          letter-spacing: 1.5px;
+        }
+
+        .room-collapsed-price {
+          font-size: 0.72rem;
+          font-weight: 700;
+          color: #FDBF2D;
+          white-space: nowrap;
+          text-align: center;
+        }
+
+        @media (max-width: 991px) {
+          .room-collapsed-info {
+            flex-direction: row;
+            align-items: center;
+            padding: 0 1.25rem;
+          }
+          .room-collapsed-label {
+            flex-direction: row;
+            align-items: center;
+            gap: 1rem;
+          }
+          .room-collapsed-name {
+            writing-mode: horizontal-tb;
+            transform: none;
+          }
+        }
+
+        /* Trạng thái MỞ RỘNG (Expanded / Active): Mở rộng tỷ lệ 6.5 để chiếm 60% chiều ngang, tạo khung hình rộng */
+        .room-card-bar.active {
+          flex: 3.4;
+          border-color: rgba(253, 191, 45, 0.85);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(253, 191, 45, 0.2);
+        }
+
+        .room-card-bar.active .room-card-bg {
+          filter: brightness(0.96);
+          transform: scale(1.0);
+        }
+
+        .room-card-bar.active .room-collapsed-info {
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* Khung thông tin chi tiết trượt lên khi Active */
+        .room-expanded-content {
+          position: relative;
+          z-index: 3;
+          padding: 1.25rem 1.4rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 100%;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(16px);
+          transition: opacity 0.4s ease 0.1s, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, visibility 0.4s ease;
+          min-width: 0;
+          overflow: hidden;
+        }
+
+        .room-card-bar.active .room-expanded-content {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+          .room-expanded-content {
+            padding: 1rem;
+          }
+        }
+
+        .room-detail-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .room-capacity-badge-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          background: rgba(10, 14, 22, 0.78);
+          border: 1px solid rgba(253, 191, 45, 0.45);
+          color: #FDBF2D;
+          font-size: 0.74rem;
+          padding: 0.3rem 0.75rem;
+          border-radius: 999px;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 85%;
+        }
+
+        .room-capacity-badge-pill .badge-cap {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          font-weight: 700;
+        }
+
+        .room-capacity-badge-pill .badge-bed {
+          color: #93C5FD;
+          font-weight: 500;
+        }
+
+        .room-capacity-badge-pill .badge-divider {
+          color: rgba(255,255,255,0.3);
+        }
+
+        .room-order-num {
+          font-size: 1.25rem;
+          font-weight: 800;
+          color: rgba(255, 255, 255, 0.4);
+          letter-spacing: 1px;
+        }
+
+        /* Glass dock gọn gàng ở đáy thẻ, không che khuất toàn bộ ảnh phòng */
+        .room-bottom-glass-dock {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.75rem;
+          background: rgba(10, 14, 22, 0.85);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 14px;
+          padding: 0.75rem 1rem;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+          min-width: 0;
+          overflow: hidden;
+        }
+
+        .room-dock-left {
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+        }
+
+        .room-dock-left .room-detail-name {
+          font-size: 1.25rem;
+          font-weight: 800;
+          color: #FFFFFF;
+          margin: 0 0 0.15rem 0;
+          line-height: 1.2;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .room-dock-left .room-detail-desc {
+          font-size: 0.78rem;
+          line-height: 1.4;
+          color: rgba(255, 255, 255, 0.78);
+          margin: 0 0 0.4rem 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .room-dock-prices {
+          display: flex;
+          align-items: center;
+          gap: 0.45rem;
+          font-size: 0.76rem;
+        }
+
+        .room-dock-prices .dock-p-item {
+          color: rgba(255,255,255,0.7);
+        }
+
+        .room-dock-prices .dock-p-item strong {
+          color: #FDBF2D;
+          font-weight: 700;
+        }
+
+        .room-dock-prices .dock-p-item.wk strong {
+          color: #F59E0B;
+        }
+
+        .room-dock-prices .dock-p-sep {
+          color: rgba(255,255,255,0.25);
+        }
+
+        .room-dock-right {
+          flex-shrink: 0;
+        }
+
+        .room-dock-book-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          background: linear-gradient(135deg, #FDBF2D 0%, #F59E0B 100%);
+          color: #0A0A0A !important;
+          font-weight: 700;
+          font-size: 0.82rem;
+          padding: 0.55rem 1.05rem;
+          border-radius: 8px;
+          text-decoration: none;
+          box-shadow: 0 4px 15px rgba(253, 191, 45, 0.35);
+          transition: transform 0.2s, box-shadow 0.2s;
+          white-space: nowrap;
+        }
+
+        .room-dock-book-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(253, 191, 45, 0.55);
+        }
+
+        /* Light Theme Overrides */
+        :root[data-theme="light"] .room-capacity-badge-pill {
+          background: rgba(255, 255, 255, 0.92);
+          border-color: rgba(180, 83, 9, 0.35);
+          color: #92400E;
+        }
+        :root[data-theme="light"] .room-capacity-badge-pill .badge-bed {
+          color: #1E40AF;
+        }
+        :root[data-theme="light"] .room-bottom-glass-dock {
+          background: rgba(255, 255, 255, 0.92);
+          border-color: rgba(180, 83, 9, 0.25);
+          box-shadow: 0 10px 30px rgba(28, 25, 23, 0.12);
+        }
+        :root[data-theme="light"] .room-dock-left .room-detail-name {
+          color: #1C1917;
+        }
+        :root[data-theme="light"] .room-dock-left .room-detail-desc {
+          color: #57534E;
+        }
+        :root[data-theme="light"] .room-dock-prices .dock-p-item {
+          color: #78716C;
+        }
+        :root[data-theme="light"] .room-dock-prices .dock-p-item strong {
+          color: #B45309;
+        }
+        :root[data-theme="light"] .room-card-overlay {
+          background: linear-gradient(180deg, rgba(28, 25, 23, 0.05) 0%, rgba(28, 25, 23, 0.1) 45%, rgba(28, 25, 23, 0.65) 100%);
+        }
+      </style>
+
+      <div class="container">
+        <div class="room-showcase-grid">
+          
+          <!-- Cột Trái: Thông tin giới thiệu & Nút Tìm phòng -->
+          <div class="room-showcase-info">
+            <span class="room-badge">02 / 05 • ACCOMMODATION</span>
+            <h2 class="room-showcase-title">
+              Tuyệt Tác Không Gian <span class="gold-accent">Nghỉ Dưỡng 5 Sao</span>
+            </h2>
+            <p class="room-showcase-desc">
+              Chữ <strong>"A" (Accommodation)</strong> đại diện cho 5 không gian lưu trú tinh hoa tại ACE Hotel. Tận hưởng kiến trúc hiện đại, tầm nhìn panorama toàn thành phố và sự minh bạch tuyệt đối về biểu giá ngày thường và cuối tuần.
+            </p>
+            <a th:href="@{/booking/search}" class="room-cta-btn">
+              <span>Tìm Phòng &amp; Đặt Cọc</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Cột Phải: 5 Thanh Dọc Co Giãn (Thanh 01 Mở rộng mặc định) -->
+          <div class="room-accordion-wrapper" id="roomAccordion">
+            <div th:each="rt, stat : ${roomTypes}"
+                 class="room-card-bar"
+                 th:classappend="${stat.index == 0} ? 'active' : ''"
+                 th:data-index="${stat.index}">
+              
+              <!-- Ảnh nền -->
+              <img th:src="${rt.imageUrl}" th:alt="${rt.name}" class="room-card-bg"
+                   onerror="this.onerror=null;this.src='/images/room-standard.png';">
+              
+              <!-- Lớp phủ gradient -->
+              <div class="room-card-overlay"></div>
+
+              <!-- Trạng thái thu gọn -->
+              <div class="room-collapsed-info">
+                <span class="room-collapsed-num" th:text="${(stat.index + 1) < 10 ? '0' + (stat.index + 1) : (stat.index + 1)}">01</span>
+                <div class="room-collapsed-label">
+                  <span class="room-collapsed-name" th:text="${rt.name}">Standard</span>
+                  <span class="room-collapsed-price" 
+                        th:text="${rt.pricePerNight >= 1000000 ? (#numbers.formatDecimal(rt.pricePerNight / 1000000.0, 1, 'POINT', 1, 'POINT') + 'tr') : (#numbers.formatDecimal(rt.pricePerNight / 1000, 0, 'POINT', 0, 'POINT') + 'k')}">780k</span>
+                </div>
+              </div>
+
+              <!-- Trạng thái mở rộng -->
+              <div class="room-expanded-content">
+                <div class="room-detail-top">
+                  <div class="room-capacity-badge-pill">
+                    <span class="badge-cap">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                      Tối đa <strong th:text="${rt.capacity}"></strong> khách
+                    </span>
+                    <span class="badge-divider">•</span>
+                    <span class="badge-bed">🛏️ <strong th:text="${rt.bedType}"></strong></span>
+                  </div>
+                  <span class="room-order-num" th:text="${(stat.index + 1) < 10 ? '0' + (stat.index + 1) : (stat.index + 1)}">01</span>
+                </div>
+
+                <!-- Dock thông tin & đặt phòng gọn gàng phía dưới -->
+                <div class="room-bottom-glass-dock">
+                  <div class="room-dock-left">
+                    <h3 class="room-detail-name" th:text="${rt.name}">Standard</h3>
+                    <p class="room-detail-desc" th:text="${rt.description}">Phòng tiêu chuẩn giường đôi, đầy đủ tiện nghi cơ bản.</p>
+                    <div class="room-dock-prices">
+                      <span class="dock-p-item">T2–T5: <strong th:text="${#numbers.formatDecimal(rt.pricePerNight, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong></span>
+                      <span class="dock-p-sep">•</span>
+                      <span class="dock-p-item wk">T6–CN: <strong th:text="${#numbers.formatDecimal(rt.weekendPricePerNight, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong></span>
+                    </div>
+                  </div>
+                  <div class="room-dock-right">
+                    <a th:href="@{/booking/search(checkIn=${defaultCheckIn}, checkOut=${defaultCheckOut}, guests=${rt.capacity})}"
+                       class="room-dock-book-btn">
+                      <span>Đặt Phòng</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Script Điều Khiển Vertical Expanding Accordion -->
+      <script>
+        (function() {
+          var container = document.getElementById('roomAccordion');
+          if (!container) return;
+          var cards = container.querySelectorAll('.room-card-bar');
+          if (!cards || cards.length === 0) return;
+
+          cards.forEach(function(card) {
+            // Tương tác hover trên Desktop
+            card.addEventListener('mouseenter', function() {
+              cards.forEach(function(c) { c.classList.remove('active'); });
+              this.classList.add('active');
+            });
+
+            // Tương tác chạm / click trên Mobile hoặc Touch Device
+            card.addEventListener('click', function(e) {
+              if (e.target.closest('.room-book-btn')) return;
+              if (!this.classList.contains('active')) {
+                cards.forEach(function(c) { c.classList.remove('active'); });
+                this.classList.add('active');
+              }
+            });
+          });
+        })();
+      </script>
+    </section>
+
+    <!-- CẦU NỐI CHUYỂN CẢNH XÉO: LUXURY KINETIC TYPOGRAPHY (Section 2 -> Section 3) -->
+    <div class="diagonal-bridge-wrapper">
+      <style>
+        .diagonal-bridge-wrapper {
+          position: relative;
+          width: 100%;
+          overflow: visible;
+          padding: 0.85rem 0;
+          margin: 0;
+          background: transparent;
+          border: none;
+          z-index: 10;
+          pointer-events: auto;
+        }
+
+        .diagonal-ribbon {
+          transform: rotate(-3.5deg);
+          width: 112%;
+          margin-left: -6%;
+          padding: 1.15rem 0;
+          background: linear-gradient(90deg, #06080D 0%, #141A29 50%, #06080D 100%);
+          border-top: 2px solid #FDBF2D;
+          border-bottom: 2px solid #FDBF2D;
+          box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7), 0 0 30px rgba(253, 191, 45, 0.18);
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
+
+        .diagonal-track {
+          display: flex;
+          align-items: center;
+          gap: 2rem;
+          width: max-content;
+          will-change: transform;
+          animation: aceDiagonalMarquee 32s linear infinite;
+        }
+
+        .diagonal-ribbon:hover .diagonal-track {
+          animation-play-state: paused;
+        }
+
+        @keyframes aceDiagonalMarquee {
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(-50%, 0, 0);
+          }
+        }
+
+        .ribbon-item {
+          display: inline-flex;
+          align-items: center;
+          gap: 2rem;
+          font-size: 1.1rem;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          white-space: nowrap;
+          font-family: inherit;
+        }
+
+        .ribbon-star {
+          color: #FDBF2D;
+          text-shadow: 0 0 10px rgba(253, 191, 45, 0.7);
+          font-size: 1.25rem;
+        }
+
+        .text-solid-gold {
+          color: #FDBF2D;
+          font-weight: 800;
+        }
+
+        .text-solid-white {
+          color: #FFFFFF;
+          font-weight: 800;
+        }
+
+        .text-hollow-white {
+          color: transparent;
+          -webkit-text-stroke: 1px rgba(255, 255, 255, 0.78);
+          font-weight: 800;
+        }
+
+        .text-hollow-gold {
+          color: transparent;
+          -webkit-text-stroke: 1px rgba(253, 191, 45, 0.85);
+          font-weight: 800;
+        }
+
+        /* Dải Marquee Ribbon trên Light Mode: Dải lụa Champagne Thượng Hạng */
+        :root[data-theme="light"] .diagonal-ribbon {
+          background: linear-gradient(90deg, #FDFBF7 0%, #F5E8CD 25%, #EED7AE 50%, #F5E8CD 75%, #FDFBF7 100%);
+          border-top: 2px solid #C89B3C;
+          border-bottom: 2px solid #C89B3C;
+          box-shadow: 0 12px 30px rgba(180, 83, 9, 0.12), 0 2px 8px rgba(180, 83, 9, 0.05);
+        }
+
+        :root[data-theme="light"] .text-solid-gold {
+          color: #92400E;
+          font-weight: 800;
+        }
+
+        :root[data-theme="light"] .text-solid-white {
+          color: #1C1917;
+          font-weight: 800;
+        }
+
+        :root[data-theme="light"] .text-hollow-white {
+          color: transparent;
+          -webkit-text-stroke: 1.2px #78350F;
+          font-weight: 800;
+        }
+
+        :root[data-theme="light"] .text-hollow-gold {
+          color: transparent;
+          -webkit-text-stroke: 1.2px #B45309;
+          font-weight: 800;
+        }
+
+        :root[data-theme="light"] .ribbon-star {
+          color: #D97706;
+          text-shadow: 0 0 8px rgba(217, 119, 6, 0.35);
+        }
+      </style>
+
+      <div class="diagonal-ribbon" title="Lia chuột để tạm dừng chuyển động">
+        <div class="diagonal-track">
+          <!-- Chuỗi 1 -->
+          <div class="ribbon-item">
+            <span class="text-solid-gold">ACCOMMODATION</span><span class="ribbon-star">✦</span>
+            <span class="text-hollow-white">15S SMART QR CHECK-IN</span><span class="ribbon-star">✦</span>
+            <span class="text-solid-white">30% DEPOSIT GUARANTEE</span><span class="ribbon-star">✦</span>
+            <span class="text-hollow-gold">IN-ROOM DINING 24/7</span><span class="ribbon-star">✦</span>
+            <span class="text-solid-gold">EXPRESS LAUNDRY 4H</span><span class="ribbon-star">✦</span>
+            <span class="text-hollow-white">FROZEN FOLIO PRICING</span><span class="ribbon-star">✦</span>
+            <span class="text-solid-white">100% CLEAN ROOM GUARD</span><span class="ribbon-star">✦</span>
+            <span class="text-hollow-gold">TRANSPARENT 5% SVC &amp; 10% VAT</span><span class="ribbon-star">✦</span>
+          </div>
+          <!-- Chuỗi 2 (Nhân đôi để nối đuôi nhau không có điểm giật) -->
+          <div class="ribbon-item">
+            <span class="text-solid-gold">ACCOMMODATION</span><span class="ribbon-star">✦</span>
+            <span class="text-hollow-white">15S SMART QR CHECK-IN</span><span class="ribbon-star">✦</span>
+            <span class="text-solid-white">30% DEPOSIT GUARANTEE</span><span class="ribbon-star">✦</span>
+            <span class="text-hollow-gold">IN-ROOM DINING 24/7</span><span class="ribbon-star">✦</span>
+            <span class="text-solid-gold">EXPRESS LAUNDRY 4H</span><span class="ribbon-star">✦</span>
+            <span class="text-hollow-white">FROZEN FOLIO PRICING</span><span class="ribbon-star">✦</span>
+            <span class="text-solid-white">100% CLEAN ROOM GUARD</span><span class="ribbon-star">✦</span>
+            <span class="text-hollow-gold">TRANSPARENT 5% SVC &amp; 10% VAT</span><span class="ribbon-star">✦</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. SECTION 3: THE GRAND CINEMATIC SPLIT STAGE (Chữ "E" Extras & Room Folio) -->
+    <section id="services" class="folio-ecosystem-section">
+      <div id="dich-vu" style="position: absolute; top: -80px;"></div>
+      
+      <style>
+        .folio-ecosystem-section {
+          position: relative;
+          min-height: calc(100vh - 65px);
+          max-height: calc(100vh - 65px);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          margin-top: 0;
+          padding-top: clamp(0.75rem, 1.5vh, 1.25rem);
+          padding-bottom: clamp(0.75rem, 1.5vh, 1.25rem);
+          background: #080A0F;
+          border-top: none;
+          border-bottom: 1px solid var(--border);
+          z-index: 2;
+          overflow: hidden;
+          box-sizing: border-box;
+        }
+
+        :root[data-theme="light"] .folio-ecosystem-section {
+          background: #F7F6F2;
+        }
+
+        @media (max-width: 991px) {
+          .folio-ecosystem-section {
+            padding-top: 3rem;
+            padding-bottom: 3.5rem;
+            min-height: auto;
+            max-height: none;
+          }
+        }
+
+        .folio-header {
+          text-align: center;
+          margin-bottom: clamp(0.5rem, 1vh, 0.85rem);
+          flex-shrink: 0;
+        }
+
+        .folio-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 1.8px;
+          color: #FDBF2D;
+          text-transform: uppercase;
+          margin-bottom: 0.2rem;
+        }
+
+        .folio-badge::before {
+          content: "";
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #FDBF2D;
+          box-shadow: 0 0 8px #FDBF2D;
+        }
+
+        :root[data-theme="light"] .folio-badge {
+          color: #B45309;
+          background: #FEF3C7;
+          border: 1px solid #FDE68A;
+          padding: 0.35rem 0.85rem;
+          border-radius: 999px;
+        }
+
+        :root[data-theme="light"] .folio-badge::before {
+          background: #D97706;
+          box-shadow: 0 0 6px #D97706;
+        }
+
+        .folio-title {
+          font-size: clamp(1.4rem, 2vw, 1.85rem);
+          font-weight: 800;
+          color: var(--text);
+          margin: 0 0 0.25rem 0;
+          letter-spacing: -0.3px;
+          line-height: 1.2;
+        }
+
+        .folio-title .gold-accent {
+          color: #FDBF2D;
+          background: linear-gradient(135deg, #FFFFFF 20%, #FDBF2D 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        :root[data-theme="light"] .folio-title .gold-accent {
+          background: linear-gradient(135deg, #1A202C 20%, #D97706 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .folio-desc {
+          color: var(--text-secondary);
+          max-width: 760px;
+          margin: 0 auto;
+          font-size: 0.88rem;
+          line-height: 1.65;
+          white-space: normal;
+          overflow: visible;
+          text-overflow: clip;
+        }
+
+        /* Khung chứa 2 cột tách biệt (Cột Trái 44% - Cột Phải 56%) */
+        .folio-stage-container {
+          display: grid;
+          grid-template-columns: 460px 1fr;
+          gap: 1.5rem;
+          align-items: stretch;
+          height: clamp(370px, 50vh, 440px);
+          min-height: 0;
+          flex: 1;
+        }
+
+        @media (max-width: 1200px) {
+          .folio-stage-container {
+            grid-template-columns: 420px 1fr;
+            gap: 1.15rem;
+          }
+        }
+
+        @media (max-width: 991px) {
+          .folio-stage-container {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            height: auto;
+          }
+        }
+
+        /* =========================================================================
+           CỘT TRÁI: BẢNG ĐIỀU KHIỂN TƯƠNG TÁC (Interactive Control Hub)
+           ========================================================================= */
+        .folio-nav-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          height: 100%;
+          justify-content: space-between;
+        }
+
+        .folio-nav-item {
+          background: rgba(16, 22, 34, 0.75);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-left: 3px solid transparent;
+          border-radius: 12px;
+          padding: 0.65rem 1rem;
+          cursor: pointer;
+          transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        :root[data-theme="light"] .folio-nav-item {
+          background: #FFFFFF;
+          border: 1px solid rgba(180, 83, 9, 0.16);
+          box-shadow: 0 4px 14px rgba(28, 25, 23, 0.04);
+        }
+
+        .folio-nav-item:hover {
+          border-color: rgba(253, 191, 45, 0.4);
+          background: rgba(22, 30, 48, 0.9);
+        }
+
+        :root[data-theme="light"] .folio-nav-item:hover {
+          background: #FFFDF9;
+          border-color: rgba(180, 83, 9, 0.4);
+          transform: translateX(3px);
+          box-shadow: 0 6px 18px rgba(180, 83, 9, 0.08);
+        }
+
+        .folio-nav-item.active {
+          border-color: rgba(253, 191, 45, 0.8);
+          border-left: 3px solid #FDBF2D;
+          background: linear-gradient(135deg, rgba(253, 191, 45, 0.12) 0%, rgba(14, 20, 32, 0.95) 100%);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(253, 191, 45, 0.1);
+        }
+
+        :root[data-theme="light"] .folio-nav-item.active {
+          background: linear-gradient(135deg, #FFFDF8 0%, #FEF8EC 100%);
+          border-color: rgba(180, 83, 9, 0.45);
+          border-left: 4px solid #D97706;
+          box-shadow: 0 8px 24px rgba(180, 83, 9, 0.1);
+        }
+
+        .folio-nav-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.15rem;
+        }
+
+        .folio-nav-num {
+          font-size: 0.65rem;
+          font-weight: 700;
+          letter-spacing: 1.2px;
+          color: rgba(255, 255, 255, 0.45);
+          font-family: monospace;
+        }
+
+        :root[data-theme="light"] .folio-nav-num {
+          color: #718096;
+        }
+
+        .folio-nav-item.active .folio-nav-num {
+          color: #FDBF2D;
+        }
+
+        :root[data-theme="light"] .folio-nav-item.active .folio-nav-num {
+          color: #B45309;
+        }
+
+        .folio-nav-tag {
+          font-size: 0.62rem;
+          font-weight: 700;
+          color: #FDBF2D;
+          background: rgba(253, 191, 45, 0.12);
+          border: 1px solid rgba(253, 191, 45, 0.3);
+          padding: 0.1rem 0.45rem;
+          border-radius: 999px;
+          line-height: 1.2;
+        }
+
+        :root[data-theme="light"] .folio-nav-tag {
+          color: #B45309;
+          background: rgba(180, 83, 9, 0.08);
+          border-color: rgba(180, 83, 9, 0.25);
+        }
+
+        .folio-nav-title {
+          font-size: 0.95rem;
+          font-weight: 800;
+          color: #FFFFFF;
+          margin: 0;
+          line-height: 1.25;
+          transition: color 0.2s ease;
+        }
+
+        :root[data-theme="light"] .folio-nav-title {
+          color: #1A202C;
+        }
+
+        .folio-nav-item.active .folio-nav-title {
+          color: #FDBF2D;
+        }
+
+        :root[data-theme="light"] .folio-nav-item.active .folio-nav-title {
+          color: #B45309;
+        }
+
+        /* Khung chi tiết mở rộng bên trong tab active */
+        .folio-item-details {
+          display: none;
+          margin-top: 0.45rem;
+          padding-top: 0.45rem;
+          border-top: 1px dashed rgba(255, 255, 255, 0.1);
+          animation: aceFolioExpand 0.25s ease forwards;
+        }
+
+        :root[data-theme="light"] .folio-item-details {
+          border-top-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .folio-nav-item.active .folio-item-details {
+          display: block;
+        }
+
+        @keyframes aceFolioExpand {
+          from { opacity: 0; transform: translateY(-4px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .folio-chips-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.4rem;
+          margin-bottom: 0.45rem;
+        }
+
+        .folio-item-chip {
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 8px;
+          padding: 0.3rem 0.55rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        :root[data-theme="light"] .folio-item-chip {
+          background: #FAF7F0;
+          border-color: rgba(180, 83, 9, 0.18);
+        }
+
+        .folio-item-chip-name {
+          font-size: 0.72rem;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.85);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin-right: 0.35rem;
+        }
+
+        :root[data-theme="light"] .folio-item-chip-name {
+          color: #1C1917;
+        }
+
+        .folio-item-chip-price {
+          font-size: 0.74rem;
+          font-weight: 800;
+          color: #FDBF2D;
+          white-space: nowrap;
+        }
+
+        :root[data-theme="light"] .folio-item-chip-price {
+          color: #B45309;
+        }
+
+        .folio-item-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .folio-guarantee-note {
+          font-size: 0.68rem;
+          font-weight: 700;
+          color: #10B981;
+          line-height: 1.2;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        :root[data-theme="light"] .folio-guarantee-note {
+          color: #047857;
+        }
+
+        .folio-interactive-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          background: linear-gradient(135deg, #FDBF2D 0%, #F59E0B 100%);
+          color: #0A0A0A !important;
+          font-weight: 700;
+          font-size: 0.74rem;
+          padding: 0.35rem 0.75rem;
+          border-radius: 999px;
+          text-decoration: none;
+          box-shadow: 0 4px 12px rgba(253, 191, 45, 0.3);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          white-space: nowrap;
+          border: none;
+          cursor: pointer;
+        }
+
+        :root[data-theme="light"] .folio-interactive-btn {
+          background: linear-gradient(135deg, #FDBF2D 0%, #D97706 100%);
+          color: #0A0A0A !important;
+          font-weight: 800;
+          box-shadow: 0 4px 12px rgba(217, 119, 6, 0.28);
+        }
+
+        .folio-interactive-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(253, 191, 45, 0.5);
+        }
+
+        /* =========================================================================
+           CỘT PHẢI: MÀN CHIẾU ẢNH THUẦN KHIẾT 100% (Pure Visual Canvas)
+           ========================================================================= */
+        .folio-visual-stage {
+          position: relative;
+          border-radius: 16px;
+          overflow: hidden;
+          border: 1px solid rgba(253, 191, 45, 0.4);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(253, 191, 45, 0.12);
+          background: #05070A;
+          height: 100%;
+          min-height: 0;
+        }
+
+        :root[data-theme="light"] .folio-visual-stage {
+          background: #FDFBF7;
+          border: 1px solid rgba(180, 83, 9, 0.28);
+          box-shadow: 0 16px 40px rgba(28, 25, 23, 0.1), 0 2px 10px rgba(180, 83, 9, 0.06);
+        }
+
+        @media (max-width: 991px) {
+          .folio-visual-stage {
+            min-height: 380px;
+          }
+        }
+
+        .folio-stage-media {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+        }
+
+        .folio-media-img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0;
+          visibility: hidden;
+          transform: scale(1.04);
+          transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+        }
+
+        .folio-media-img.active {
+          opacity: 1;
+          visibility: visible;
+          transform: scale(1.0);
+        }
+
+        /* Badge định vị tinh tế góc trên bên trái của ảnh (không che khuất ảnh) */
+        .folio-stage-badge {
+          position: absolute;
+          top: 1rem;
+          left: 1rem;
+          z-index: 5;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          background: rgba(10, 14, 22, 0.82);
+          border: 1px solid rgba(253, 191, 45, 0.5);
+          padding: 0.35rem 0.85rem;
+          border-radius: 999px;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          font-size: 0.72rem;
+          font-weight: 800;
+          color: #FDBF2D;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        :root[data-theme="light"] .folio-stage-badge {
+          background: rgba(255, 255, 255, 0.94);
+          border: 1px solid rgba(180, 83, 9, 0.35);
+          color: #92400E;
+          box-shadow: 0 4px 14px rgba(28, 25, 23, 0.08);
+        }
+
+        .folio-stage-overlay-glow {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.4);
+          z-index: 2;
+        }
+
+        :root[data-theme="light"] .folio-stage-overlay-glow {
+          box-shadow: inset 0 0 35px rgba(28, 25, 23, 0.12);
+        }
+
+        /* =========================================================================
+           4 MODAL TƯƠNG TÁC CHUYÊN SÂU CHO 4 CHỨC NĂNG (Luxury Glass Modals)
+           ========================================================================= */
+        .ace-service-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(4, 6, 10, 0.85);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s ease, visibility 0.3s ease;
+          padding: 1rem;
+        }
+
+        .ace-service-modal-backdrop.open {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .ace-service-modal-card {
+          background: #0E1420;
+          border: 1px solid rgba(253, 191, 45, 0.5);
+          border-radius: 20px;
+          max-width: 620px;
+          width: 100%;
+          max-height: 85vh;
+          overflow-y: auto;
+          padding: 1.75rem 2rem;
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(253, 191, 45, 0.18);
+          position: relative;
+          transform: translateY(20px) scale(0.97);
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        :root[data-theme="light"] .ace-service-modal-backdrop {
+          background: rgba(15, 23, 42, 0.45);
+        }
+
+        :root[data-theme="light"] .ace-service-modal-card {
+          background: #FFFFFF;
+          border: 1px solid rgba(180, 83, 9, 0.25);
+          box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+        }
+
+        .ace-service-modal-backdrop.open .ace-service-modal-card {
+          transform: translateY(0) scale(1);
+        }
+
+        .ace-modal-close-btn {
+          position: absolute;
+          top: 1.25rem;
+          right: 1.25rem;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: #FFFFFF;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        :root[data-theme="light"] .ace-modal-close-btn {
+          background: rgba(0, 0, 0, 0.06);
+          border-color: rgba(0, 0, 0, 0.12);
+          color: #1A202C;
+        }
+
+        .ace-modal-close-btn:hover {
+          background: #FDBF2D;
+          color: #000000;
+          transform: rotate(90deg);
+        }
+
+        .ace-modal-header {
+          margin-bottom: 1.25rem;
+          padding-bottom: 0.85rem;
+          border-bottom: 1px dashed rgba(253, 191, 45, 0.3);
+        }
+
+        .ace-modal-tag {
+          font-size: 0.7rem;
+          font-weight: 800;
+          color: #FDBF2D;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+        }
+
+        :root[data-theme="light"] .ace-modal-tag {
+          color: #B45309;
+        }
+
+        .ace-modal-title {
+          font-size: 1.35rem;
+          font-weight: 800;
+          color: var(--text);
+          margin: 0.25rem 0 0.35rem 0;
+        }
+
+        .ace-modal-desc {
+          font-size: 0.84rem;
+          color: var(--text-secondary);
+          line-height: 1.5;
+          margin: 0;
+        }
+
+        .ace-modal-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.65rem;
+          margin-bottom: 1.25rem;
+        }
+
+        .ace-modal-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.65rem 0.85rem;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 10px;
+        }
+
+        :root[data-theme="light"] .ace-modal-item {
+          background: #FAF7F0;
+          border-color: rgba(180, 83, 9, 0.15);
+        }
+
+        .ace-modal-item-info {
+          display: flex;
+          flex-direction: column;
+          gap: 0.15rem;
+        }
+
+        .ace-modal-item-name {
+          font-size: 0.86rem;
+          font-weight: 700;
+          color: var(--text);
+        }
+
+        .ace-modal-item-sub {
+          font-size: 0.74rem;
+          color: var(--text-secondary);
+        }
+
+        .ace-modal-item-price {
+          font-size: 0.88rem;
+          font-weight: 800;
+          color: #FDBF2D;
+          white-space: nowrap;
+        }
+
+        :root[data-theme="light"] .ace-modal-item-price {
+          color: #B45309;
+        }
+
+        .ace-modal-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          flex-wrap: wrap;
+        }
+
+        :root[data-theme="light"] .ace-modal-footer {
+          border-top-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .ace-modal-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: linear-gradient(135deg, #FDBF2D 0%, #F59E0B 100%);
+          color: #0A0A0A !important;
+          font-weight: 700;
+          font-size: 0.82rem;
+          padding: 0.55rem 1.25rem;
+          border-radius: 999px;
+          text-decoration: none;
+          box-shadow: 0 4px 15px rgba(253, 191, 45, 0.35);
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        :root[data-theme="light"] .ace-modal-cta {
+          background: linear-gradient(135deg, #FDBF2D 0%, #D97706 100%);
+          color: #0A0A0A !important;
+        }
+
+        .ace-modal-cta:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(253, 191, 45, 0.55);
+        }
+      </style>
+
+      <div class="container">
+        <!-- Header Section 3 -->
+        <div class="folio-header">
+          <span class="folio-badge">03 / 05 • EXTRAS &amp; ROOM FOLIO</span>
+          <h2 class="folio-title">Hệ Sinh Thái Room Folio &amp; <span class="gold-accent">Tiện Nghi Thượng Hạng</span></h2>
+          <p class="folio-desc">
+            Chữ <strong>"E" (Extras)</strong> trong ACE Hotel — Ẩm thực 24/7, minibar ướp lạnh và giặt ủi 4h với sổ cái Room Folio đóng băng đơn giá (Quy tắc BR5).
+          </p>
+        </div>
+
+        <!-- Grand Master-Detail Split Stage (Cột Trái 44% - Cột Phải 56% Pure Image) -->
+        <div class="folio-stage-container">
+          
+          <!-- CỘT TRÁI (44%): BẢNG ĐIỀU KHIỂN & 4 CHỨC NĂNG TƯƠNG TÁC -->
+          <div class="folio-nav-list" id="folioNavList">
+            
+            <!-- Tab 0: CULINARY -->
+            <div class="folio-nav-item active" data-index="0" data-badge="● IN-SUITE DINING 24/7">
+              <div class="folio-nav-header">
+                <span class="folio-nav-num">01 / CULINARY</span>
+                <span class="folio-nav-tag">24/7 Nóng Sốt</span>
+              </div>
+              <h3 class="folio-nav-title">In-Suite Gastronomy</h3>
+              
+              <!-- Khung chi tiết mở rộng -->
+              <div class="folio-item-details">
+                <div class="folio-chips-row">
+                  <div class="folio-item-chip">
+                    <span class="folio-item-chip-name">Buffet sáng quốc tế</span>
+                    <span class="folio-item-chip-price">100k / suất</span>
+                  </div>
+                  <div class="folio-item-chip">
+                    <span class="folio-item-chip-name">Bò Wagyu món nóng 24/7</span>
+                    <span class="folio-item-chip-price">220k / phần</span>
+                  </div>
+                </div>
+                <div class="folio-item-footer">
+                  <span class="folio-guarantee-note">✓ Phục vụ nóng sốt dưới 30 phút</span>
+                  <button type="button" class="folio-interactive-btn" onclick="openAceServiceModal('gastronomy')">
+                    <span>Xem Thực Đơn →</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 1: MINIBAR -->
+            <div class="folio-nav-item" data-index="1" data-badge="● CURATED MINIBAR CELLAR">
+              <div class="folio-nav-header">
+                <span class="folio-nav-num">02 / MINIBAR</span>
+                <span class="folio-nav-tag">Đóng Băng Giá BR5</span>
+              </div>
+              <h3 class="folio-nav-title">Curated In-Room Minibar</h3>
+              
+              <!-- Khung chi tiết mở rộng -->
+              <div class="folio-item-details">
+                <div class="folio-chips-row">
+                  <div class="folio-item-chip">
+                    <span class="folio-item-chip-name">Bia Tiger lon lạnh</span>
+                    <span class="folio-item-chip-price">35k / lon</span>
+                  </div>
+                  <div class="folio-item-chip">
+                    <span class="folio-item-chip-name">Hạt điều cao cấp</span>
+                    <span class="folio-item-chip-price">50k / gói</span>
+                  </div>
+                </div>
+                <div class="folio-item-footer">
+                  <span class="folio-guarantee-note">✓ Khóa giá lịch sử check-in (BR5)</span>
+                  <button type="button" class="folio-interactive-btn" onclick="openAceServiceModal('minibar')">
+                    <span>Khám Phá Minibar →</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 2: VALET -->
+            <div class="folio-nav-item" data-index="2" data-badge="● ACE ROYAL VALET 4H">
+              <div class="folio-nav-header">
+                <span class="folio-nav-num">03 / VALET</span>
+                <span class="folio-nav-tag">Hỏa Tốc 4 Giờ</span>
+              </div>
+              <h3 class="folio-nav-title">Royal Garment Care</h3>
+              
+              <!-- Khung chi tiết mở rộng -->
+              <div class="folio-item-details">
+                <div class="folio-chips-row">
+                  <div class="folio-item-chip">
+                    <span class="folio-item-chip-name">Giặt ủi nhanh bộ đồ</span>
+                    <span class="folio-item-chip-price">80k / bộ</span>
+                  </div>
+                  <div class="folio-item-chip">
+                    <span class="folio-item-chip-name">Giặt hấp Comple / Vest</span>
+                    <span class="folio-item-chip-price">150k / chiếc</span>
+                  </div>
+                </div>
+                <div class="folio-item-footer">
+                  <span class="folio-guarantee-note">✓ Giao trả phẳng phiu trong 4 giờ</span>
+                  <button type="button" class="folio-interactive-btn" onclick="openAceServiceModal('valet')">
+                    <span>Biểu Phí Giặt Ủi →</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 3: FOLIO -->
+            <div class="folio-nav-item" data-index="3" data-badge="● SMART FOLIO &amp; AUDIT">
+              <div class="folio-nav-header">
+                <span class="folio-nav-num">04 / FOLIO AUDIT</span>
+                <span class="folio-nav-tag">Minh Bạch 100%</span>
+              </div>
+              <h3 class="folio-nav-title">Smart Folio &amp; Bồi Thường</h3>
+              
+              <!-- Khung chi tiết mở rộng -->
+              <div class="folio-item-details">
+                <div class="folio-chips-row">
+                  <div class="folio-item-chip">
+                    <span class="folio-item-chip-name">Vỡ ly sứ / thủy tinh</span>
+                    <span class="folio-item-chip-price">100k / cái</span>
+                  </div>
+                  <div class="folio-item-chip">
+                    <span class="folio-item-chip-name">Mất thẻ từ phòng</span>
+                    <span class="folio-item-chip-price">200k / thẻ</span>
+                  </div>
+                </div>
+                <div class="folio-item-footer">
+                  <span class="folio-guarantee-note">✓ Chuẩn 5% SVC + 10% VAT, trừ 30% cọc</span>
+                  <button type="button" class="folio-interactive-btn" onclick="openAceServiceModal('folio')">
+                    <span>Bảng Tính Quyết Toán →</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- CỘT PHẢI (56%): MÀN CHIẾU ẢNH THUẦN KHIẾT 100% (KHÔNG CÓ POPUP ĐÈ LÊN) -->
+          <div class="folio-visual-stage" id="folioVisualStage">
+            
+            <!-- Badge định vị tinh tế góc trên ảnh -->
+            <div class="folio-stage-badge" id="folioStageBadge">
+              ● IN-SUITE DINING 24/7
+            </div>
+
+            <!-- 4 Tác phẩm ảnh độc quyền chuẩn phong cách ACE Hotel -->
+            <div class="folio-stage-media">
+              <!-- Slide 0: Ẩm thực In-Suite Gastronomy -->
+              <img th:src="@{/images/services/ace-gastronomy.jpg}" alt="ACE In-Suite Gastronomy" class="folio-media-img active" data-slide="0">
+              <!-- Slide 1: Minibar rượu vang & bia Tiger ướp lạnh -->
+              <img th:src="@{/images/services/ace-minibar.jpg}" alt="ACE Curated Minibar Cellar" class="folio-media-img" data-slide="1">
+              <!-- Slide 2: Giặt hấp comple hoàng gia -->
+              <img th:src="@{/images/services/ace-valet.jpg}" alt="ACE Royal Garment Care" class="folio-media-img" data-slide="2">
+              <!-- Slide 3: Sổ cái điện tử & đại sảnh check-in cẩm thạch -->
+              <img th:src="@{/images/services/ace-folio.jpg}" alt="ACE Smart Folio Ledger" class="folio-media-img" data-slide="3">
+            </div>
+
+            <!-- Viền bóng mờ tinh tế (không che ảnh) -->
+            <div class="folio-stage-overlay-glow"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- =========================================================================
+           4 MODAL TƯƠNG TÁC CHUYÊN SÂU (Luxury Glass Modals)
+           ========================================================================= -->
+      
+      <!-- Modal 1: Thực Đơn In-Suite Gastronomy -->
+      <div class="ace-service-modal-backdrop" id="modal-gastronomy" onclick="if(event.target === this) closeAceServiceModal()">
+        <div class="ace-service-modal-card">
+          <button class="ace-modal-close-btn" onclick="closeAceServiceModal()">&times;</button>
+          <div class="ace-modal-header">
+            <span class="ace-modal-tag">● ĐẶC QUYỀN ẨM THỰC TẬN PHÒNG 24/7</span>
+            <h3 class="ace-modal-title">Thực Đơn Tinh Hoa In-Suite Gastronomy</h3>
+            <p class="ace-modal-desc">Mọi món ăn được chế biến tươi nóng từ bếp trưởng 5 sao và giao trực tiếp tận phòng trong vòng 30 phút.</p>
+          </div>
+          <div class="ace-modal-list">
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Bò bít tết Wagyu sốt tiêu đen nấm Truffle</span>
+                <span class="ace-modal-item-sub">Kèm khoai tây nghiền bơ Pháp và măng tây áp chảo</span>
+              </div>
+              <span class="ace-modal-item-price">320.000 đ</span>
+            </div>
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Mỳ Ý tôm hùm sốt kem bơ tỏi</span>
+                <span class="ace-modal-item-sub">Mỳ tươi thủ công, phô mai Parmesan 24 tháng</span>
+              </div>
+              <span class="ace-modal-item-price">260.000 đ</span>
+            </div>
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Buffet sáng quốc tế phục vụ tại phòng</span>
+                <span class="ace-modal-item-sub">Croissant bơ, trứng chần Benedict, nước ép cam tươi và cà phê</span>
+              </div>
+              <span class="ace-modal-item-price">100.000 đ</span>
+            </div>
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Salad cá hồi Nauy xông khói &amp; quả bơ</span>
+                <span class="ace-modal-item-sub">Xà lách thủy canh, dầu ô liu nguyên chất và giấm balsamic</span>
+              </div>
+              <span class="ace-modal-item-price">120.000 đ</span>
+            </div>
+          </div>
+          <div class="ace-modal-footer">
+            <span style="font-size: 0.78rem; color: #10B981; font-weight: 700;">✓ Phục vụ 24/7 – Ghi nhận tự động vào Room Folio</span>
+            <a th:href="@{/booking/search}" class="ace-modal-cta">
+              <span>Đặt Phòng Kèm Ẩm Thực</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal 2: Bảng Niêm Yết Minibar & Giá BR5 -->
+      <div class="ace-service-modal-backdrop" id="modal-minibar" onclick="if(event.target === this) closeAceServiceModal()">
+        <div class="ace-service-modal-card">
+          <button class="ace-modal-close-btn" onclick="closeAceServiceModal()">&times;</button>
+          <div class="ace-modal-header">
+            <span class="ace-modal-tag">● TỦ RƯỢU &amp; MINIBAR ƯỚP LẠNH</span>
+            <h3 class="ace-modal-title">Bảng Niêm Yết Minibar &amp; Quy Tắc Đóng Băng Giá (BR5)</h3>
+            <p class="ace-modal-desc">Đơn giá minibar được chụp lại và khóa cố định (Price Snapshot) tại thời điểm check-in. Khách không bao giờ phải chịu tăng giá trong kỳ nghỉ.</p>
+          </div>
+          <div class="ace-modal-list">
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Bia Tiger lon 330ml (Ướp lạnh)</span>
+                <span class="ace-modal-item-sub">Có sẵn 4 lon trong minibar mỗi phòng</span>
+              </div>
+              <span class="ace-modal-item-price">35.000 đ / lon</span>
+            </div>
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Rượu vang đỏ Montes Alpha Cabernet 375ml</span>
+                <span class="ace-modal-item-sub">Vang Chile hảo hạng, bảo quản nhiệt độ chuẩn 16°C</span>
+              </div>
+              <span class="ace-modal-item-price">320.000 đ / chai</span>
+            </div>
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Nước khoáng có ga San Pellegrino 500ml</span>
+                <span class="ace-modal-item-sub">Nước khoáng tự nhiên cao cấp từ Ý</span>
+              </div>
+              <span class="ace-modal-item-price">45.000 đ / chai</span>
+            </div>
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Hạt điều rang muối hảo hạng ACE Special</span>
+                <span class="ace-modal-item-sub">Hộp thiếc hút chân không cao cấp 150g</span>
+              </div>
+              <span class="ace-modal-item-price">50.000 đ / gói</span>
+            </div>
+          </div>
+          <div class="ace-modal-footer">
+            <span style="font-size: 0.78rem; color: #10B981; font-weight: 700;">✓ Quy tắc BR5: Đóng băng đơn giá lịch sử – Không phụ thu</span>
+            <a th:href="@{/booking/search}" class="ace-modal-cta">
+              <span>Tìm Phòng &amp; Đặt Cọc 30%</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal 3: Biểu Phí Giặt Ủi & Cam Kết 4H -->
+      <div class="ace-service-modal-backdrop" id="modal-valet" onclick="if(event.target === this) closeAceServiceModal()">
+        <div class="ace-service-modal-card">
+          <button class="ace-modal-close-btn" onclick="closeAceServiceModal()">&times;</button>
+          <div class="ace-modal-header">
+            <span class="ace-modal-tag">● ACE ROYAL VALET &amp; LAUNDRY</span>
+            <h3 class="ace-modal-title">Biểu Phí Giặt Ủi &amp; Cam Kết Tiến Độ 4 Giờ</h3>
+            <p class="ace-modal-desc">Dịch vụ giặt ủi và giặt hấp hoàng gia. Cam kết giao trả trang phục phẳng phiu tận phòng trong vòng 4 giờ. Nếu chậm trễ, miễn phí 100%.</p>
+          </div>
+          <div class="ace-modal-list">
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Giặt hấp Comple / Áo Vest nam &amp; nữ</span>
+                <span class="ace-modal-item-sub">Công nghệ hấp khô bảo vệ phom dáng và chất vải dạ</span>
+              </div>
+              <span class="ace-modal-item-price">150.000 đ / chiếc</span>
+            </div>
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Giặt ủi sơ mi lụa / Quần tây cao cấp</span>
+                <span class="ace-modal-item-sub">Ủi hơi nước áp suất cao, treo móc gỗ hoàng gia</span>
+              </div>
+              <span class="ace-modal-item-price">60.000 đ / chiếc</span>
+            </div>
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Giặt nhanh nguyên bộ trang phục thường ngày</span>
+                <span class="ace-modal-item-sub">Áo thun, quần jeans, đồ mặc nhà (Giặt sấy gấp gọn)</span>
+              </div>
+              <span class="ace-modal-item-price">80.000 đ / bộ</span>
+            </div>
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Đầm dạ hội / Trang phục lễ tiệc tơ tằm</span>
+                <span class="ace-modal-item-sub">Chăm sóc vải lụa tơ tằm đặc biệt chống phai màu</span>
+              </div>
+              <span class="ace-modal-item-price">180.000 đ / chiếc</span>
+            </div>
+          </div>
+          <div class="ace-modal-footer">
+            <span style="font-size: 0.78rem; color: #10B981; font-weight: 700;">✓ Cam kết 4H: Hoàn tiền 100% nếu giao trễ tiến độ</span>
+            <a th:href="@{/booking/search}" class="ace-modal-cta">
+              <span>Đặt Phòng Ngay</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal 4: Bảng Tính Quyết Toán Sổ Cái Minh Bạch -->
+      <div class="ace-service-modal-backdrop" id="modal-folio" onclick="if(event.target === this) closeAceServiceModal()">
+        <div class="ace-service-modal-card">
+          <button class="ace-modal-close-btn" onclick="closeAceServiceModal()">&times;</button>
+          <div class="ace-modal-header">
+            <span class="ace-modal-tag">● CÔNG THỨC QUYẾT TOÁN MINH BẠCH</span>
+            <h3 class="ace-modal-title">Bộ Mô Phỏng Sổ Cái Điện Tử (Folio Calculator)</h3>
+            <p class="ace-modal-desc">Minh bạch 100% chi phí. Bảng tính đối soát tức thời theo đúng công thức: Tiền phòng + Dịch vụ + 5% SVC + 10% VAT - 30% Đặt cọc.</p>
+          </div>
+          
+          <!-- Bảng mô phỏng live -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(253, 191, 45, 0.3); border-radius: 12px; padding: 1.15rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.84rem;">
+              <span style="color: var(--text-secondary);">1. Tiền phòng (Superior 1 đêm):</span>
+              <strong style="color: var(--text);">1.000.000 đ</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.84rem;">
+              <span style="color: var(--text-secondary);">2. Dịch vụ phát sinh (1 Bia + 1 Giặt ủi):</span>
+              <strong style="color: var(--text);">115.000 đ</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.84rem;">
+              <span style="color: var(--text-secondary);">3. Phí dịch vụ (5% SVC chuẩn):</span>
+              <strong style="color: #FDBF2D;">+ 55.750 đ</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.84rem;">
+              <span style="color: var(--text-secondary);">4. Thuế giá trị gia tăng (10% VAT):</span>
+              <strong style="color: #FDBF2D;">+ 117.075 đ</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px dashed rgba(255, 255, 255, 0.15); font-size: 0.84rem;">
+              <span style="color: #60A5FA;">5. Đã thanh toán (30% Tiền cọc Online):</span>
+              <strong style="color: #60A5FA;">- 300.000 đ</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 1rem;">
+              <span style="font-weight: 800; color: #FFFFFF;">Số tiền thanh toán lúc Check-out:</span>
+              <strong style="font-size: 1.25rem; font-weight: 800; color: #FDBF2D;">987.825 đ</strong>
+            </div>
+          </div>
+
+          <div class="ace-modal-list">
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Niêm yết đền bù: Vỡ ly sứ / cốc thủy tinh</span>
+                <span class="ace-modal-item-sub">Công khai minh bạch trong phòng, không kê khống giá</span>
+              </div>
+              <span class="ace-modal-item-price">100.000 đ / cái</span>
+            </div>
+            <div class="ace-modal-item">
+              <div class="ace-modal-item-info">
+                <span class="ace-modal-item-name">Niêm yết đền bù: Mất thẻ từ khóa phòng</span>
+                <span class="ace-modal-item-sub">Chi phí phôi thẻ từ RFID và cài đặt lại hệ thống bảo mật</span>
+              </div>
+              <span class="ace-modal-item-price">200.000 đ / thẻ</span>
+            </div>
+          </div>
+
+          <div class="ace-modal-footer">
+            <span style="font-size: 0.78rem; color: #10B981; font-weight: 700;">✓ Không phí ẩn – Hóa đơn điện tử VAT xuất ngay tại quầy</span>
+            <a th:href="@{/booking/search}" class="ace-modal-cta">
+              <span>Trải Nghiệm Đặt Cọc 30%</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Script Điều Khiển Master-Detail Split Stage & Modals -->
+      <script>
+        (function() {
+          var navItems = document.querySelectorAll('.folio-nav-item');
+          var mediaImgs = document.querySelectorAll('.folio-media-img');
+          var stageBadge = document.getElementById('folioStageBadge');
+
+          if (!navItems.length || !mediaImgs.length) return;
+
+          function activateFolioTab(index) {
+            navItems.forEach(function(item) {
+              item.classList.remove('active');
+            });
+            mediaImgs.forEach(function(img) {
+              img.classList.remove('active');
+            });
+
+            var targetNav = document.querySelector('.folio-nav-item[data-index="' + index + '"]');
+            var targetImg = document.querySelector('.folio-media-img[data-slide="' + index + '"]');
+
+            if (targetNav) {
+              targetNav.classList.add('active');
+              var badgeText = targetNav.getAttribute('data-badge');
+              if (stageBadge && badgeText) {
+                stageBadge.textContent = badgeText;
+              }
+            }
+            if (targetImg) {
+              targetImg.classList.add('active');
+            }
+          }
+
+          navItems.forEach(function(item) {
+            item.addEventListener('mouseenter', function() {
+              var idx = this.getAttribute('data-index');
+              activateFolioTab(idx);
+            });
+
+            item.addEventListener('click', function(e) {
+              if (e.target.closest('.folio-interactive-btn')) return;
+              var idx = this.getAttribute('data-index');
+              activateFolioTab(idx);
+            });
+          });
+
+          // Modal functions
+          window.openAceServiceModal = function(serviceType) {
+            var modal = document.getElementById('modal-' + serviceType);
+            if (modal) {
+              modal.classList.add('open');
+              document.body.style.overflow = 'hidden';
+            }
+          };
+
+          window.closeAceServiceModal = function() {
+            var openModals = document.querySelectorAll('.ace-service-modal-backdrop.open');
+            openModals.forEach(function(m) {
+              m.classList.remove('open');
+            });
+            document.body.style.overflow = '';
+          };
+
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+              window.closeAceServiceModal();
+            }
+          });
+        })();
+      </script>
+    </section>
+
+    <!-- 4. SECTION 4: ARCHITECTURAL BENTO GRID (OUR STORY & PHILOSOPHY) -->
+    <section id="story" class="story-bento-section">
+      <div id="cau-chuyen" style="position: absolute; top: -80px;"></div>
+      
+      <style>
+        .story-bento-section {
+          position: relative;
+          padding: 2.2rem 0 2.5rem;
+          background: #080A0F;
+          border-top: none;
+          border-bottom: 1px solid var(--border);
+          z-index: 2;
+          overflow: visible;
+          box-sizing: border-box;
+        }
+
+        :root[data-theme="light"] .story-bento-section {
+          background: #F7F6F2;
+        }
+
+        .story-header {
+          text-align: center;
+          margin-bottom: 0;
+        }
+
+        .story-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 2px;
+          color: #FDBF2D;
+          text-transform: uppercase;
+          margin-bottom: 0.35rem;
+        }
+
+        .story-badge::before {
+          content: "";
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #FDBF2D;
+          box-shadow: 0 0 8px #FDBF2D;
+        }
+
+        .story-title {
+          font-size: 1.85rem;
+          font-weight: 800;
+          color: var(--text);
+          margin: 0 0 0.4rem 0;
+          letter-spacing: -0.4px;
+          line-height: 1.25;
+        }
+
+        .story-title .gold-accent {
+          color: #FDBF2D;
+          background: linear-gradient(135deg, #FFFFFF 20%, #FDBF2D 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        :root[data-theme="light"] .story-title .gold-accent {
+          background: linear-gradient(135deg, #1A202C 20%, #D97706 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .story-desc {
+          color: var(--text-secondary);
+          max-width: 720px;
+          margin: 0 auto 1.15rem;
+          font-size: 0.84rem;
+          line-height: 1.45;
+          white-space: normal;
+          overflow: visible;
+          text-overflow: clip;
+        }
+
+        /* 12-Column Architectural Bento Grid */
+        .ace-bento-grid {
+          display: grid;
+          grid-template-columns: repeat(12, 1fr);
+          gap: 0.85rem;
+          max-width: 1240px;
+          margin: 0 auto;
+          box-sizing: border-box;
+        }
+
+        .bento-card {
+          padding: 1.15rem 1.35rem;
+          border-radius: 16px;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          background: linear-gradient(160deg, rgba(16, 21, 33, 0.88) 0%, rgba(9, 12, 18, 0.94) 100%);
+          border: 1px solid rgba(253, 191, 45, 0.18);
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.45s ease, box-shadow 0.45s ease;
+          box-sizing: border-box;
+        }
+
+        :root[data-theme="light"] .bento-card {
+          background: linear-gradient(160deg, #FFFFFF 0%, #F9F6EE 100%);
+          border: 1px solid rgba(180, 83, 9, 0.18);
+          box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+        }
+
+        .bento-card:hover {
+          transform: translateY(-4px);
+          border-color: rgba(253, 191, 45, 0.65);
+          box-shadow: 0 18px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(253, 191, 45, 0.15);
+        }
+
+        :root[data-theme="light"] .bento-card:hover {
+          border-color: rgba(180, 83, 9, 0.5);
+          box-shadow: 0 16px 32px rgba(180, 83, 9, 0.12);
+        }
+
+        /* Specific card column spans */
+        .bento-card-manifesto {
+          grid-column: span 7;
+        }
+
+        .bento-card-qr {
+          grid-column: span 5;
+        }
+
+        .bento-card-quota,
+        .bento-card-clean,
+        .bento-card-finance {
+          grid-column: span 4;
+        }
+
+        /* Watermark on Card 1 */
+        .bento-watermark {
+          font-size: 5.5rem;
+          font-weight: 900;
+          letter-spacing: -2px;
+          color: #FDBF2D;
+          opacity: 0.035;
+          position: absolute;
+          right: 1rem;
+          bottom: 0.25rem;
+          pointer-events: none;
+          line-height: 1;
+          user-select: none;
+        }
+
+        :root[data-theme="light"] .bento-watermark {
+          color: #B45309;
+          opacity: 0.05;
+        }
+
+        .bento-tag {
+          font-size: 0.68rem;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          color: #FDBF2D;
+          text-transform: uppercase;
+          margin-bottom: 0.35rem;
+        }
+
+        :root[data-theme="light"] .bento-tag {
+          color: #B45309;
+        }
+
+        .bento-manifesto-quote {
+          font-size: 1.18rem;
+          font-weight: 800;
+          line-height: 1.35;
+          color: var(--text);
+          margin: 0.35rem 0 0.45rem;
+          letter-spacing: -0.3px;
+          border: none;
+          padding: 0;
+        }
+
+        .bento-manifesto-lead {
+          font-size: 0.79rem;
+          line-height: 1.45;
+          color: var(--text-secondary);
+          margin: 0 0 0.75rem 0;
+        }
+
+        /* 3 Pillar Strip inside Card 1 */
+        .bento-pillars-strip {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.65rem;
+          margin-top: auto;
+        }
+
+        .bento-pillar-box {
+          background: rgba(255, 255, 255, 0.035);
+          border: 1px solid rgba(253, 191, 45, 0.18);
+          border-radius: 10px;
+          padding: 0.5rem 0.65rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.15rem;
+          transition: border-color 0.25s ease, background-color 0.25s ease;
+        }
+
+        :root[data-theme="light"] .bento-pillar-box {
+          background: #FFFFFF;
+          border-color: rgba(180, 83, 9, 0.22);
+          box-shadow: 0 2px 8px rgba(180, 83, 9, 0.05);
+        }
+
+        .bento-pillar-box:hover {
+          border-color: rgba(253, 191, 45, 0.5);
+          background: rgba(253, 191, 45, 0.05);
+        }
+
+        .bento-pillar-key {
+          font-size: 0.68rem;
+          font-weight: 800;
+          color: #FDBF2D;
+          letter-spacing: 0.5px;
+        }
+
+        :root[data-theme="light"] .bento-pillar-key {
+          color: #B45309;
+        }
+
+        .bento-pillar-val {
+          font-size: 0.72rem;
+          color: var(--text-secondary);
+          line-height: 1.3;
+          font-weight: 500;
+        }
+
+        :root[data-theme="light"] .bento-pillar-val {
+          color: #374151;
+        }
+
+        /* Card Header */
+        .bento-card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.5rem;
+        }
+
+        .bento-card-label {
+          font-size: 0.68rem;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          color: #FDBF2D;
+          text-transform: uppercase;
+        }
+
+        :root[data-theme="light"] .bento-card-label {
+          color: #B45309;
+        }
+
+        .bento-card-icon {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background: rgba(253, 191, 45, 0.08);
+          border: 1px solid rgba(253, 191, 45, 0.22);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        :root[data-theme="light"] .bento-card-icon {
+          background: rgba(180, 83, 9, 0.08);
+          border-color: rgba(180, 83, 9, 0.22);
+        }
+
+        :root[data-theme="light"] .bento-card-icon svg {
+          stroke: #B45309;
+        }
+
+        /* Monumental typography */
+        .bento-monumental-number {
+          font-size: 2.35rem;
+          font-weight: 900;
+          line-height: 1.05;
+          letter-spacing: -1px;
+          background: linear-gradient(135deg, #FFF6D6 0%, #FDBF2D 55%, #D97706 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 0.25rem;
+          display: inline-block;
+        }
+
+        .bento-monumental-number-sm {
+          font-size: 1.65rem;
+          font-weight: 900;
+          line-height: 1.1;
+          letter-spacing: -0.5px;
+          background: linear-gradient(135deg, #FFF6D6 0%, #FDBF2D 55%, #D97706 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 0;
+          display: inline-block;
+        }
+
+        :root[data-theme="light"] .bento-monumental-number,
+        :root[data-theme="light"] .bento-monumental-number-sm {
+          background: linear-gradient(135deg, #78350F 0%, #B45309 60%, #D97706 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .bento-metric-group {
+          display: flex;
+          align-items: baseline;
+          gap: 0.5rem;
+          margin-bottom: 0.35rem;
+          flex-wrap: wrap;
+        }
+
+        .bento-tag-badge {
+          font-size: 0.65rem;
+          font-weight: 700;
+          padding: 0.15rem 0.45rem;
+          border-radius: 5px;
+          background: rgba(253, 191, 45, 0.12);
+          border: 1px solid rgba(253, 191, 45, 0.28);
+          color: #FDBF2D;
+          letter-spacing: 0.5px;
+          vertical-align: middle;
+        }
+
+        :root[data-theme="light"] .bento-tag-badge {
+          background: rgba(180, 83, 9, 0.08);
+          border-color: rgba(180, 83, 9, 0.25);
+          color: #B45309;
+        }
+
+        .bento-card-title {
+          font-size: 0.92rem;
+          font-weight: 700;
+          color: var(--text);
+          margin: 0 0 0.25rem 0;
+          line-height: 1.3;
+          letter-spacing: -0.2px;
+        }
+
+        .bento-card-title-qr {
+          font-size: 0.96rem;
+          font-weight: 700;
+          color: var(--text);
+          margin: 0 0 0.35rem 0;
+          line-height: 1.3;
+          letter-spacing: -0.2px;
+        }
+
+        .bento-card-desc {
+          font-size: 0.76rem;
+          color: var(--text-secondary);
+          line-height: 1.4;
+          margin: 0 0 0.55rem 0;
+        }
+
+        .bento-card-desc-qr {
+          font-size: 0.79rem;
+          color: var(--text-secondary);
+          line-height: 1.45;
+          margin: 0 0 0.6rem 0;
+        }
+
+        /* Card Footer */
+        .bento-card-footer {
+          margin-top: auto;
+          padding-top: 0.45rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .bento-card-footer-qr {
+          margin-top: auto;
+          padding-top: 0.5rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        :root[data-theme="light"] .bento-card-footer,
+        :root[data-theme="light"] .bento-card-footer-qr {
+          border-top-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .bento-status-pill {
+          font-size: 0.72rem;
+          font-weight: 600;
+          color: #FDBF2D;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          line-height: 1.35;
+        }
+
+        .bento-status-pill-qr {
+          font-size: 0.74rem;
+          font-weight: 600;
+          color: #FDBF2D;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          line-height: 1.35;
+        }
+
+        :root[data-theme="light"] .bento-status-pill,
+        :root[data-theme="light"] .bento-status-pill-qr {
+          color: #B45309;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+          .bento-card-manifesto {
+            grid-column: span 12;
+          }
+          .bento-card-qr {
+            grid-column: span 12;
+          }
+          .bento-card-quota,
+          .bento-card-clean {
+            grid-column: span 6;
+          }
+          .bento-card-finance {
+            grid-column: span 12;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .story-bento-section {
+            padding: 2rem 0;
+          }
+          .ace-bento-grid {
+            gap: 0.75rem;
+            margin-top: 1rem;
+          }
+          .bento-card {
+            grid-column: span 12 !important;
+            padding: 1.15rem;
+          }
+          .bento-pillars-strip {
+            grid-template-columns: 1fr;
+            gap: 0.45rem;
+          }
+          .bento-manifesto-quote {
+            font-size: 1.15rem;
+          }
+          .bento-monumental-number {
+            font-size: 2.1rem;
+          }
+          .bento-monumental-number-sm {
+            font-size: 1.5rem;
+          }
+        }
+      </style>
+
+      <div class="container">
+        <!-- Header Section 4 -->
+        <div class="story-header">
+          <span class="story-badge">04 / 05 • OUR STORY &amp; PHILOSOPHY</span>
+          <h2 class="story-title">Triết Lý Vận Hành ACE: <span class="gold-accent">Minh Bạch &amp; Độc Bản</span></h2>
+          <p class="story-desc">
+            Sự giao thoa hoàn hảo giữa nghệ thuật hiếu khách 5 sao và hệ thống quản trị lưu trú chuẩn xác — nơi chữ A (Accommodation), chữ C (Check-in) và chữ E (Extras) vận hành đồng nhất vì sự riêng tư của bạn.
+          </p>
+        </div>
+
+        <!-- 12-Column Architectural Bento Grid -->
+        <div class="ace-bento-grid">
+
+          <!-- Ô 1 — Tuyên Ngôn Thương Hiệu ACE (span 7) -->
+          <div class="bento-card bento-card-manifesto">
+            <div class="bento-watermark" aria-hidden="true">ACE</div>
+            <div>
+              <div class="bento-tag">✦ THE ACE MANIFESTO • TUYÊN NGÔN THƯƠNG HIỆU</div>
+              <blockquote class="bento-manifesto-quote">
+                &ldquo;Sự sang trọng đích thực bắt đầu từ sự minh bạch tuyệt đối và không gian riêng tư không rào cản.&rdquo;
+              </blockquote>
+              <p class="bento-manifesto-lead">
+                ACE Hotel được kiến tạo để loại bỏ hoàn toàn ba nỗi ám ảnh của ngành khách sạn truyền thống: tình trạng quá tải phòng ảo (Overbooking), sự chờ đợi mệt mỏi tại quầy lễ tân và những khoản phụ phí mập mờ khi trả phòng.
+              </p>
+            </div>
+
+            <!-- Dải 3 Trụ Cột Đáy Thẻ -->
+            <div class="bento-pillars-strip">
+              <div class="bento-pillar-box">
+                <span class="bento-pillar-key">A • ACCOMMODATION</span>
+                <span class="bento-pillar-val">5 hạng phòng độc bản &amp; giá động T2–CN</span>
+              </div>
+              <div class="bento-pillar-box">
+                <span class="bento-pillar-key">C • CHECK-IN</span>
+                <span class="bento-pillar-val">Quét QR nhận phòng sạch trong 15 giây</span>
+              </div>
+              <div class="bento-pillar-box">
+                <span class="bento-pillar-key">E • EXTRAS</span>
+                <span class="bento-pillar-val">Sổ cái Room Folio đóng băng đơn giá</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ô 2 — Điểm Nhấn Công Nghệ Check-in QR (span 5) -->
+          <div class="bento-card bento-card-qr">
+            <div>
+              <div class="bento-card-header">
+                <span class="bento-card-label">● TOUCHLESS CONCIERGE</span>
+                <div class="bento-card-icon" title="Smart QR Check-in">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                    <path d="M7 7h.01"></path>
+                    <path d="M17 7h.01"></path>
+                    <path d="M7 17h.01"></path>
+                    <path d="M17 17h.01"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="bento-card-body">
+                <div class="bento-monumental-number">15 Giây</div>
+                <h3 class="bento-card-title-qr">Nhận Phòng Không Chạm Qua Mã QR Offline</h3>
+                <p class="bento-card-desc-qr">
+                  Ngay sau khi đặt cọc, hệ thống phát hành Phiếu xác nhận kèm Mã QR hoạt động 100% offline. Lễ tân quét mã, đối chiếu CCCD và trao chìa khóa tức thì.
+                </p>
+              </div>
+            </div>
+            <div class="bento-card-footer-qr">
+              <span class="bento-status-pill-qr">⚡ Tích hợp linh hoạt phụ thu nhận sớm (0% • 30% • 50% • 100%)</span>
+            </div>
+          </div>
+
+          <!-- Ô 3 — Bảo Chứng Giữ Chỗ Quota (span 4) -->
+          <div class="bento-card bento-card-quota">
+            <div>
+              <div class="bento-card-header">
+                <span class="bento-card-label">● QUOTA ENGINE</span>
+                <div class="bento-card-icon" title="Quota Guarantee">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <rect x="9" y="10" width="6" height="5" rx="1"></rect>
+                    <path d="M10 10V8a2 2 0 0 1 4 0v2"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="bento-card-body">
+                <div class="bento-metric-group">
+                  <span class="bento-monumental-number-sm">30% Cọc</span>
+                  <span class="bento-tag-badge">0% Overbooking</span>
+                </div>
+                <h3 class="bento-card-title">Khóa Chặt Suất Phòng Thực Tế</h3>
+                <p class="bento-card-desc">
+                  Mỗi đơn đặt phòng trực tuyến khóa trực tiếp vào quỹ phòng kinh doanh khả dụng (loại trừ phòng MAINTENANCE), đảm bảo luôn có phòng chờ đón bạn.
+                </p>
+              </div>
+            </div>
+            <div class="bento-card-footer">
+              <span class="bento-status-pill">✓ Hỗ trợ cả khách Walk-in 0đ cọc tại quầy (BR1 &amp; BR4)</span>
+            </div>
+          </div>
+
+          <!-- Ô 4 — Chốt Chặn Buồng Phòng Sạch (span 4) -->
+          <div class="bento-card bento-card-clean">
+            <div>
+              <div class="bento-card-header">
+                <span class="bento-card-label">● CLEAN ROOM GUARD</span>
+                <div class="bento-card-icon" title="Clean Room Guarantee">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+                    <path d="M5 3v4"></path>
+                    <path d="M19 17v4"></path>
+                    <path d="M3 5h4"></path>
+                    <path d="M17 19h4"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="bento-card-body">
+                <div class="bento-metric-group">
+                  <span class="bento-monumental-number-sm">100% Sạch</span>
+                  <span class="bento-tag-badge">DIRTY &#10142; AVAILABLE</span>
+                </div>
+                <h3 class="bento-card-title">Kiểm Định Buồng Phòng Khép Kín</h3>
+                <p class="bento-card-desc">
+                  Phòng vừa trả lập tức chuyển sang trạng thái DIRTY (Chờ dọn dẹp) và bị khóa gán khách mới cho đến khi hoàn tất quy trình vệ sinh chuẩn 5 sao.
+                </p>
+              </div>
+            </div>
+            <div class="bento-card-footer">
+              <span class="bento-status-pill">✓ Chốt chặn an toàn trạng thái phòng (BR2 &amp; BR7)</span>
+            </div>
+          </div>
+
+          <!-- Ô 5 — Chuẩn Mực Tài Chính Quốc Tế ++ (span 4) -->
+          <div class="bento-card bento-card-finance">
+            <div>
+              <div class="bento-card-header">
+                <span class="bento-card-label">● FINANCIAL STANDARD</span>
+                <div class="bento-card-icon" title="Financial Precision">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </div>
+              </div>
+              <div class="bento-card-body">
+                <div class="bento-metric-group">
+                  <span class="bento-monumental-number-sm">5% + 10%</span>
+                  <span class="bento-tag-badge">Biểu Giá ++</span>
+                </div>
+                <h3 class="bento-card-title">Đóng Băng Giá &amp; Quyết Toán Rõ Ràng</h3>
+                <p class="bento-card-desc">
+                  Đơn giá Room Folio được đóng băng ngay lúc gọi (Price Snapshot). Hóa đơn VAT bóc tách minh bạch 5% Phí phục vụ, 10% VAT và tự động trừ tiền cọc.
+                </p>
+              </div>
+            </div>
+            <div class="bento-card-footer">
+              <span class="bento-status-pill">✓ Làm tròn số nguyên BIGINT chính xác tuyệt đối (BR5 &amp; BR6)</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. SECTION 5: STICKY STACKING CARDS (THE 3-STEP SEAMLESS JOURNEY) -->
+    <section id="process" class="journey-sticky-section">
+      <div id="quy-trinh" style="position: absolute; top: -80px;"></div>
+      
+      <style>
+        .journey-sticky-section {
+          position: relative;
+          padding: 3rem 0 7rem;
+          background: #080A0F;
+          border-top: none;
+          border-bottom: 1px solid var(--border);
+          overflow: visible;
+          box-sizing: border-box;
+          z-index: 2;
+        }
+
+        :root[data-theme="light"] .journey-sticky-section {
+          background: #F7F6F2;
+        }
+
+        .journey-header {
+          text-align: center;
+          margin-bottom: 2.5rem;
+        }
+
+        .journey-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 2px;
+          color: #FDBF2D;
+          text-transform: uppercase;
+          margin-bottom: 0.35rem;
+        }
+
+        .journey-badge::before {
+          content: "";
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #FDBF2D;
+          box-shadow: 0 0 8px #FDBF2D;
+        }
+
+        .journey-title {
+          font-size: 1.85rem;
+          font-weight: 800;
+          color: var(--text);
+          margin: 0 0 0.4rem 0;
+          letter-spacing: -0.4px;
+          line-height: 1.25;
+        }
+
+        .journey-title .gold-accent {
+          color: #FDBF2D;
+          background: linear-gradient(135deg, #FFFFFF 20%, #FDBF2D 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        :root[data-theme="light"] .journey-title .gold-accent {
+          background: linear-gradient(135deg, #1A202C 20%, #D97706 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .journey-desc {
+          color: var(--text-secondary);
+          max-width: 720px;
+          margin: 0 auto;
+          font-size: 0.84rem;
+          line-height: 1.45;
+          white-space: normal;
+          overflow: visible;
+          text-overflow: clip;
+        }
+
+        /* Stacking Container */
+        .journey-stack-container {
+          max-width: 1080px;
+          margin: 0 auto;
+          position: relative;
+          box-sizing: border-box;
+          padding-bottom: 2rem;
+        }
+
+        /* Sticky Cards Base */
+        .journey-card {
+          position: sticky;
+          border-radius: 20px;
+          overflow: hidden;
+          box-sizing: border-box;
+          transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), filter 0.38s ease, box-shadow 0.38s ease;
+          transform-origin: top center;
+          background: linear-gradient(160deg, rgba(16, 21, 33, 0.95) 0%, rgba(9, 12, 18, 0.98) 100%);
+          border: 1px solid rgba(253, 191, 45, 0.24);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+        }
+
+        :root[data-theme="light"] .journey-card {
+          background: linear-gradient(160deg, #FFFFFF 0%, #F9F6EE 100%);
+          border-color: rgba(180, 83, 9, 0.22);
+        }
+
+        /* Specific sticky coordinates & stacking levels */
+        .journey-card-1 {
+          top: 110px;
+          z-index: 10;
+          margin-bottom: 180px;
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+        }
+
+        .journey-card-2 {
+          top: 174px;
+          z-index: 20;
+          margin-bottom: 180px;
+          border-top: 2px solid #FDBF2D;
+          box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.65), 0 20px 42px rgba(0, 0, 0, 0.5);
+        }
+
+        .journey-card-3 {
+          top: 238px;
+          z-index: 30;
+          margin-bottom: 0;
+          border-top: 2px solid #FDBF2D;
+          box-shadow: 0 -18px 45px rgba(0, 0, 0, 0.75), 0 24px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        :root[data-theme="light"] .journey-card-1 {
+          box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        :root[data-theme="light"] .journey-card-2,
+        :root[data-theme="light"] .journey-card-3 {
+          border-top: 2px solid rgba(180, 83, 9, 0.45);
+        }
+
+        :root[data-theme="light"] .journey-card-2 {
+          box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.08), 0 16px 36px rgba(15, 23, 42, 0.1);
+        }
+
+        :root[data-theme="light"] .journey-card-3 {
+          box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.1), 0 20px 42px rgba(15, 23, 42, 0.12);
+        }
+
+        /* Depth Scale & Dimming classes triggered by JS */
+        .journey-card.is-stacked-level-1 {
+          transform: scale(0.96) !important;
+          filter: brightness(0.72) !important;
+        }
+
+        .journey-card.is-stacked-level-2 {
+          transform: scale(0.98) !important;
+          filter: brightness(0.85) !important;
+        }
+
+        /* Khắc phục triệt để lỗi thẻ biến thành màu xám xi măng bẩn trong Light Mode */
+        :root[data-theme="light"] .journey-card.is-stacked-level-1 {
+          filter: none !important;
+          opacity: 0.90;
+          background: #EDEAE1 !important;
+          border-color: rgba(180, 83, 9, 0.16) !important;
+          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+        }
+
+        :root[data-theme="light"] .journey-card.is-stacked-level-2 {
+          filter: none !important;
+          opacity: 0.95;
+          background: #F4F1EA !important;
+          border-color: rgba(180, 83, 9, 0.2) !important;
+          box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08) !important;
+        }
+
+        :root[data-theme="light"] .journey-card.is-stacked-level-1 .journey-card-header,
+        :root[data-theme="light"] .journey-card.is-stacked-level-2 .journey-card-header {
+          background: rgba(237, 234, 225, 0.95) !important;
+        }
+
+        /* Inner Content */
+        .journey-card-inner {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          flex-direction: column;
+          box-sizing: border-box;
+        }
+
+        /* 64px Fixed Header */
+        .journey-card-header {
+          height: 64px;
+          min-height: 64px;
+          max-height: 64px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 1.75rem;
+          border-bottom: 1px solid rgba(253, 191, 45, 0.18);
+          background: rgba(13, 17, 26, 0.75);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          box-sizing: border-box;
+        }
+
+        :root[data-theme="light"] .journey-card-header {
+          background: rgba(255, 255, 255, 0.9);
+          border-bottom-color: rgba(180, 83, 9, 0.18);
+        }
+
+        .journey-card-header-left {
+          display: flex;
+          align-items: center;
+          gap: 0.65rem;
+        }
+
+        .journey-step-num {
+          font-size: 1.15rem;
+          font-weight: 900;
+          color: #FDBF2D;
+          letter-spacing: -0.5px;
+        }
+
+        :root[data-theme="light"] .journey-step-num {
+          color: #B45309;
+        }
+
+        .journey-step-sep {
+          color: rgba(253, 191, 45, 0.5);
+          font-weight: 700;
+        }
+
+        .journey-step-name {
+          font-size: 0.86rem;
+          font-weight: 800;
+          color: var(--text);
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+        }
+
+        .journey-step-tag {
+          font-size: 0.68rem;
+          font-weight: 700;
+          color: #FDBF2D;
+          background: rgba(253, 191, 45, 0.12);
+          border: 1px solid rgba(253, 191, 45, 0.3);
+          border-radius: 20px;
+          padding: 0.22rem 0.65rem;
+          letter-spacing: 0.5px;
+        }
+
+        :root[data-theme="light"] .journey-step-tag {
+          color: #B45309;
+          background: rgba(180, 83, 9, 0.08);
+          border-color: rgba(180, 83, 9, 0.25);
+        }
+
+        /* Card Body (2-Column Grid: Text Left, Photo Right) */
+        .journey-card-body {
+          padding: 1.5rem 1.75rem 1.75rem;
+          display: grid;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 1.75rem;
+          align-items: center;
+          box-sizing: border-box;
+        }
+
+        .journey-card-text-col {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
+        .journey-card-heading {
+          font-size: 1.18rem;
+          font-weight: 800;
+          color: var(--text);
+          margin: 0 0 0.45rem 0;
+          line-height: 1.35;
+          letter-spacing: -0.2px;
+        }
+
+        .journey-card-lead {
+          font-size: 0.81rem;
+          color: var(--text-secondary);
+          line-height: 1.5;
+          margin: 0 0 0.95rem 0;
+        }
+
+        .journey-feature-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.45rem;
+          margin-bottom: 1.15rem;
+        }
+
+        .journey-feature-item {
+          display: flex;
+          align-items: baseline;
+          gap: 0.55rem;
+          font-size: 0.77rem;
+          color: var(--text-secondary);
+          line-height: 1.45;
+        }
+
+        .journey-feature-item strong {
+          color: var(--text);
+          font-weight: 700;
+        }
+
+        .journey-feature-bullet {
+          color: #FDBF2D;
+          font-size: 0.72rem;
+          flex-shrink: 0;
+        }
+
+        :root[data-theme="light"] .journey-feature-bullet {
+          color: #B45309;
+        }
+
+        .journey-pills-row {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          flex-wrap: wrap;
+        }
+
+        .journey-pill {
+          font-size: 0.7rem;
+          font-weight: 600;
+          color: #FDBF2D;
+          background: rgba(253, 191, 45, 0.08);
+          border: 1px solid rgba(253, 191, 45, 0.22);
+          border-radius: 6px;
+          padding: 0.2rem 0.55rem;
+        }
+
+        :root[data-theme="light"] .journey-pill {
+          color: #B45309;
+          background: rgba(180, 83, 9, 0.06);
+          border-color: rgba(180, 83, 9, 0.2);
+        }
+
+        /* Photo Frame Right Column */
+        .journey-card-media-col {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .journey-photo-frame {
+          position: relative;
+          width: 100%;
+          height: 270px;
+          border-radius: 14px;
+          overflow: hidden;
+          border: 1px solid rgba(253, 191, 45, 0.35);
+          box-shadow: 0 14px 32px rgba(0, 0, 0, 0.6);
+          background: #0A0D14;
+        }
+
+        :root[data-theme="light"] .journey-photo-frame {
+          border-color: rgba(180, 83, 9, 0.25);
+          box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+          background: #EAE8E0;
+        }
+
+        .journey-photo-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+          transition: transform 0.5s ease;
+        }
+
+        .journey-card:hover .journey-photo-img {
+          transform: scale(1.04);
+        }
+
+        .journey-photo-badge {
+          position: absolute;
+          bottom: 0.65rem;
+          right: 0.65rem;
+          background: rgba(8, 10, 15, 0.85);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          border: 1px solid rgba(253, 191, 45, 0.35);
+          border-radius: 20px;
+          padding: 0.25rem 0.65rem;
+          font-size: 0.68rem;
+          font-weight: 700;
+          color: #FDBF2D;
+          letter-spacing: 0.5px;
+          z-index: 3;
+        }
+
+        :root[data-theme="light"] .journey-photo-badge {
+          background: rgba(255, 255, 255, 0.9);
+          border-color: rgba(180, 83, 9, 0.3);
+          color: #B45309;
+        }
+
+        /* Prominent CTA Conversion Button in Card 3 */
+        .journey-cta-wrapper {
+          margin-top: 1.15rem;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          flex-wrap: wrap;
+        }
+
+        .journey-cta-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.65rem;
+          padding: 0.8rem 1.65rem;
+          border-radius: 12px;
+          background: linear-gradient(135deg, #FDBF2D 0%, #D97706 100%);
+          color: #0A0D14;
+          font-weight: 800;
+          font-size: 0.92rem;
+          text-decoration: none;
+          box-shadow: 0 10px 24px rgba(253, 191, 45, 0.35);
+          transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+        }
+
+        .journey-cta-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 14px 32px rgba(253, 191, 45, 0.5);
+          color: #000000;
+        }
+
+        .journey-cta-star {
+          font-size: 1rem;
+          line-height: 1;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 960px) {
+          .journey-card-body {
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+          }
+          .journey-photo-frame {
+            height: 220px;
+          }
+          .journey-card-header {
+            padding: 0 1.25rem;
+          }
+          .journey-step-name {
+            font-size: 0.78rem;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .journey-sticky-section {
+            padding: 2.2rem 0 4rem;
+          }
+          .journey-card-1 {
+            top: 75px;
+            margin-bottom: 120px;
+          }
+          .journey-card-2 {
+            top: 131px;
+            margin-bottom: 120px;
+          }
+          .journey-card-3 {
+            top: 187px;
+          }
+          .journey-card-header {
+            height: 56px;
+            min-height: 56px;
+            max-height: 56px;
+            padding: 0 1rem;
+          }
+          .journey-step-num {
+            font-size: 1rem;
+          }
+          .journey-step-name {
+            font-size: 0.72rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+          }
+          .journey-step-tag {
+            font-size: 0.62rem;
+            padding: 0.15rem 0.45rem;
+          }
+          .journey-photo-frame {
+            height: 190px;
+          }
+        }
+      </style>
+
+      <div class="container">
+        <!-- Section Header -->
+        <div class="journey-header">
+          <span class="journey-badge">05 / 05 • THE 3-STEP SEAMLESS JOURNEY</span>
+          <h2 class="journey-title">Trải Nghiệm Đặt &amp; Nhận Phòng <span class="gold-accent">Tinh Gọn Trong 3 Bước</span></h2>
+          <p class="journey-desc">
+            Quy trình lưu trú được thiết kế tối giản hoá mọi thao tác — từ lựa chọn buồng phòng minh bạch, thanh toán ký quỹ an toàn, đến quét mã nhận phòng sạch chỉ trong 15 giây.
+          </p>
+        </div>
+
+        <!-- Sticky Stacking Container -->
+        <div class="journey-stack-container" id="journeyStackContainer">
+
+          <!-- Thẻ Bước 1 (top: 110px) -->
+          <div class="journey-card journey-card-1" id="journeyCard1">
+            <div class="journey-card-inner">
+              <!-- Fixed 64px Header -->
+              <div class="journey-card-header">
+                <div class="journey-card-header-left">
+                  <span class="journey-step-num">01</span>
+                  <span class="journey-step-sep">•</span>
+                  <span class="journey-step-name">CHỌN HẠNG PHÒNG &amp; KIỂM TRA QUOTA THỰC TẾ</span>
+                </div>
+                <div class="journey-card-header-right">
+                  <span class="journey-step-tag">BƯỚC 01/03</span>
+                </div>
+              </div>
+
+              <!-- Card Body Content: 2 Columns -->
+              <div class="journey-card-body">
+                <div class="journey-card-text-col">
+                  <h3 class="journey-card-heading">Minh Bạch Quota Khả Dụng &amp; Biểu Giá Động T2–CN</h3>
+                  <p class="journey-card-lead">
+                    Tra cứu thời gian thực quỹ phòng kinh doanh thực tế (loại trừ 100% phòng bảo trì MAINTENANCE). Biểu giá tự động điều chỉnh linh hoạt theo ngày thường và cuối tuần với cam kết không phụ phí ẩn.
+                  </p>
+                  <div class="journey-feature-list">
+                    <div class="journey-feature-item">
+                      <span class="journey-feature-bullet">✦</span>
+                      <div>
+                        <strong>5 Hạng phòng độc bản:</strong> Standard, Superior, Deluxe, Suite và Family.
+                      </div>
+                    </div>
+                    <div class="journey-feature-item">
+                      <span class="journey-feature-bullet">✦</span>
+                      <div>
+                        <strong>Quota Engine thời gian thực:</strong> Khóa phòng chính xác, loại trừ bảo trì.
+                      </div>
+                    </div>
+                    <div class="journey-feature-item">
+                      <span class="journey-feature-bullet">✦</span>
+                      <div>
+                        <strong>Biểu giá chuẩn xác:</strong> Hiển thị trọn gói giá gốc, không phí ẩn khi đặt phòng.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="journey-pills-row">
+                    <span class="journey-pill">✓ 0% Overbooking</span>
+                    <span class="journey-pill">✓ Báo giá tức thì theo đêm</span>
+                    <span class="journey-pill">✓ Đầy đủ tiện ích 5 sao</span>
+                  </div>
+                </div>
+
+                <!-- Dedicated Photo Frame Right -->
+                <div class="journey-card-media-col">
+                  <div class="journey-photo-frame">
+                    <img th:src="@{/images/quytrinh1.png}" src="/images/quytrinh1.png" alt="Chọn Hạng Phòng &amp; Kiểm Tra Quota Thực Tế" class="journey-photo-img">
+                    <div class="journey-photo-badge">
+                      <span>✦ Bước 1: Quota &amp; Đặt Phòng</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Thẻ Bước 2 (top: 174px) -->
+          <div class="journey-card journey-card-2" id="journeyCard2">
+            <div class="journey-card-inner">
+              <!-- Fixed 64px Header -->
+              <div class="journey-card-header">
+                <div class="journey-card-header-left">
+                  <span class="journey-step-num">02</span>
+                  <span class="journey-step-sep">•</span>
+                  <span class="journey-step-name">ĐẶT CỌC 30% ONLINE &amp; NHẬN PHIẾU MÃ QR OFFLINE</span>
+                </div>
+                <div class="journey-card-header-right">
+                  <span class="journey-step-tag">BƯỚC 02/03</span>
+                </div>
+              </div>
+
+              <!-- Card Body Content: 2 Columns -->
+              <div class="journey-card-body">
+                <div class="journey-card-text-col">
+                  <h3 class="journey-card-heading">Ký Quỹ 30% Khóa Suất &amp; Nhận Phiếu Xác Nhận Bảo Mật</h3>
+                  <p class="journey-card-lead">
+                    Thanh toán ký quỹ 30% trực tuyến an toàn qua Cổng thanh toán bảo mật. Hệ thống lập tức khóa chặt suất phòng trên Quota Engine và tự động phát hành Phiếu xác nhận đặt phòng kèm Mã QR Offline độc bản.
+                  </p>
+                  <div class="journey-feature-list">
+                    <div class="journey-feature-item">
+                      <span class="journey-feature-bullet">✦</span>
+                      <div>
+                        <strong>Bảo chứng 0% Overbooking:</strong> Suất phòng thực tế được khóa lập tức trên hệ thống.
+                      </div>
+                    </div>
+                    <div class="journey-feature-item">
+                      <span class="journey-feature-bullet">✦</span>
+                      <div>
+                        <strong>Mã QR Offline độc bản:</strong> Hoạt động 100% không phụ thuộc internet khi tới quầy.
+                      </div>
+                    </div>
+                    <div class="journey-feature-item">
+                      <span class="journey-feature-bullet">✦</span>
+                      <div>
+                        <strong>Chuẩn mực tài chính ++:</strong> Bóc tách minh bạch 5% Phí phục vụ và 10% VAT.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="journey-pills-row">
+                    <span class="journey-pill">⚡ Cọc 30% khóa phòng ngay</span>
+                    <span class="journey-pill">📱 QR Offline quét không cần mạng</span>
+                    <span class="journey-pill">🔒 Bảo mật thanh toán</span>
+                  </div>
+                </div>
+
+                <!-- Dedicated Photo Frame Right -->
+                <div class="journey-card-media-col">
+                  <div class="journey-photo-frame">
+                    <img th:src="@{/images/quytrinh2.png}" src="/images/quytrinh2.png" alt="Đặt Cọc 30% Online &amp; Nhận Phiếu Mã QR Offline" class="journey-photo-img">
+                    <div class="journey-photo-badge">
+                      <span>✦ Bước 2: Ký Quỹ &amp; Nhận Mã QR</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Thẻ Bước 3 (top: 238px) -->
+          <div class="journey-card journey-card-3" id="journeyCard3">
+            <div class="journey-card-inner">
+              <!-- Fixed 64px Header -->
+              <div class="journey-card-header">
+                <div class="journey-card-header-left">
+                  <span class="journey-step-num">03</span>
+                  <span class="journey-step-sep">•</span>
+                  <span class="journey-step-name">QUÉT MÃ QR TẠI SẢNH &amp; NHẬN PHÒNG SẠCH TRONG 15 GIÂY</span>
+                </div>
+                <div class="journey-card-header-right">
+                  <span class="journey-step-tag">BƯỚC 03/03</span>
+                </div>
+              </div>
+
+              <!-- Card Body Content: 2 Columns -->
+              <div class="journey-card-body">
+                <div class="journey-card-text-col">
+                  <h3 class="journey-card-heading">Nhận Phòng Không Chạm — Khởi Tạo Room Folio Tức Thì</h3>
+                  <p class="journey-card-lead">
+                    Lễ tân quét mã QR tại sảnh bằng đầu đọc chuyên dụng trong 15 giây, đối chiếu CCCD. Hệ thống tự động kiểm tra và chỉ gán phòng đã dọn sạch đạt chuẩn 5 sao (AVAILABLE), đóng băng đơn giá dịch vụ và trao thẻ từ tức thì.
+                  </p>
+                  <div class="journey-feature-list">
+                    <div class="journey-feature-item">
+                      <span class="journey-feature-bullet">✦</span>
+                      <div>
+                        <strong>15 Giây nhận phòng thần tốc:</strong> Quy trình không chạm, không thủ tục rườm rà.
+                      </div>
+                    </div>
+                    <div class="journey-feature-item">
+                      <span class="journey-feature-bullet">✦</span>
+                      <div>
+                        <strong>Chốt chặn Clean Guard 5 sao:</strong> Khóa cứng phòng DIRTY, chỉ bàn giao phòng sạch.
+                      </div>
+                    </div>
+                    <div class="journey-feature-item">
+                      <span class="journey-feature-bullet">✦</span>
+                      <div>
+                        <strong>Room Folio điện tử:</strong> Đóng băng giá dịch vụ (Price Snapshot) suốt kỳ lưu trú.
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CTA Button -->
+                  <div class="journey-cta-wrapper">
+                    <a th:href="@{/booking/search}" class="journey-cta-btn">
+                      <span class="journey-cta-star">★</span>
+                      <span>Bắt Đầu Đặt Phòng Ngay Hôm Nay</span>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Dedicated Photo Frame Right -->
+                <div class="journey-card-media-col">
+                  <div class="journey-photo-frame">
+                    <img th:src="@{/images/quytrinh3.png}" src="/images/quytrinh3.png" alt="Check-in 15 Giây &amp; Nhận Phòng Sạch" class="journey-photo-img">
+                    <div class="journey-photo-badge">
+                      <span>✦ Bước 3: 15 Giây Nhận Phòng</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Depth Scale & Dimming Controller -->
+      <script>
+        (function () {
+          function updateJourneyStack() {
+            var c1 = document.getElementById('journeyCard1');
+            var c2 = document.getElementById('journeyCard2');
+            var c3 = document.getElementById('journeyCard3');
+            if (!c1 || !c2 || !c3) return;
+
+            var r2 = c2.getBoundingClientRect();
+            var r3 = c3.getBoundingClientRect();
+
+            // When Card 2 stacks onto Card 1
+            if (r2.top <= 190) {
+              c1.classList.add('is-stacked-level-1');
+            } else {
+              c1.classList.remove('is-stacked-level-1');
+            }
+
+            // When Card 3 stacks onto Card 2
+            if (r3.top <= 255) {
+              c2.classList.add('is-stacked-level-2');
+            } else {
+              c2.classList.remove('is-stacked-level-2');
+            }
+          }
+
+          window.addEventListener('scroll', function () {
+            requestAnimationFrame(updateJourneyStack);
+          }, { passive: true });
+
+          window.addEventListener('resize', function () {
+            requestAnimationFrame(updateJourneyStack);
+          }, { passive: true });
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateJourneyStack);
+          } else {
+            updateJourneyStack();
+          }
+        })();
+      </script>
+    </section>
+
+    </div>
+</body>
+</html>

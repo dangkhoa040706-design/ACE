@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/pms-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title>Bàn Lễ Tân PMS - Sơ Đồ Phòng Điều Hành | ACE Hotel</title>
+</head>
+<body>
+<section>
+
+  <style>
+    /* Architectural Floor Matrix & Split Command Cockpit Styles */
+    .cockpit-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* 1. Command & Telemetry Bar */
+    .command-telemetry-bar {
+      background: rgba(13, 18, 28, 0.92);
+      border: 1px solid rgba(253, 191, 45, 0.2);
+      border-radius: 10px;
+      padding: 0.65rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    :root[data-theme="light"] .command-telemetry-bar {
+      background: rgba(255, 255, 255, 0.97);
+      border: 1px solid rgba(230, 227, 218, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .telemetry-filter-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.38rem 0.8rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-secondary);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+    .filter-pill:hover {
+      border-color: rgba(253, 191, 45, 0.4);
+      color: var(--text);
+    }
+    .filter-pill.is-active {
+      background: rgba(253, 191, 45, 0.15);
+      border-color: #FDBF2D;
+      color: #FDBF2D;
+      box-shadow: 0 0 10px rgba(253, 191, 45, 0.25);
+    }
+    :root[data-theme="light"] .filter-pill {
+      background: rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      color: #52525B;
+    }
+    :root[data-theme="light"] .filter-pill:hover {
+      border-color: rgba(180, 83, 9, 0.4);
+      color: #18181B;
+    }
+    :root[data-theme="light"] .filter-pill.is-active {
+      background: rgba(180, 83, 9, 0.1);
+      border-color: #B45309;
+      color: #B45309;
+      box-shadow: 0 2px 8px rgba(180, 83, 9, 0.12);
+    }
+
+    .dot-indicator {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .dot-all { background: #E2E8F0; }
+    .dot-free { background: #10B981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6); }
+    .dot-occupied { background: #3B82F6; box-shadow: 0 0 6px rgba(59, 130, 246, 0.6); }
+    .dot-dirty { background: #F59E0B; box-shadow: 0 0 6px rgba(245, 158, 11, 0.6); }
+    .dot-maint { background: #94A3B8; }
+
+    .telemetry-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .search-qr-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .search-qr-box input {
+      padding: 0.42rem 0.75rem 0.42rem 2.2rem;
+      font-size: 0.82rem;
+      border-radius: 7px;
+      width: 250px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(253, 191, 45, 0.25);
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+    :root[data-theme="light"] .search-qr-box input {
+      background: #FFFFFF;
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+    .search-qr-box input:focus {
+      outline: none;
+      border-color: #FDBF2D;
+      box-shadow: 0 0 10px rgba(253, 191, 45, 0.3);
+      width: 280px;
+    }
+    .search-qr-icon {
+      position: absolute;
+      left: 0.7rem;
+      pointer-events: none;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-search-qr {
+      padding: 0.42rem 0.85rem;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: #FDBF2D;
+      color: #0A0A0A;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-search-qr:hover {
+      background: #E5AC28;
+      box-shadow: 0 2px 10px rgba(253, 191, 45, 0.35);
+    }
+
+    .btn-walkin-action {
+      padding: 0.42rem 0.85rem;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: rgba(253, 191, 45, 0.1);
+      border: 1px solid rgba(253, 191, 45, 0.45);
+      color: #FDBF2D;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-walkin-action:hover {
+      background: #FDBF2D;
+      color: #0A0A0A;
+      box-shadow: 0 2px 10px rgba(253, 191, 45, 0.35);
+    }
+    :root[data-theme="light"] .btn-walkin-action {
+      background: rgba(180, 83, 9, 0.08);
+      border-color: rgba(180, 83, 9, 0.4);
+      color: #B45309;
+    }
+    :root[data-theme="light"] .btn-walkin-action:hover {
+      background: #B45309;
+      color: #FFFFFF;
+    }
+
+    /* 2. Split Command Cockpit Grid */
+    .cockpit-main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.35fr) minmax(320px, 1fr);
+      gap: 1rem;
+      align-items: start;
+    }
+    @media (max-width: 1180px) {
+      .cockpit-main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Column: Architectural Floor Matrix */
+    .floor-matrix-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .floor-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0.65rem;
+    }
+
+    .floor-badge {
+      width: 54px;
+      flex-shrink: 0;
+      background: rgba(13, 18, 28, 0.85);
+      border: 1px solid rgba(253, 191, 45, 0.22);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 0.2rem;
+      text-align: center;
+      user-select: none;
+    }
+    :root[data-theme="light"] .floor-badge {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(180, 83, 9, 0.2);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .floor-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #FDBF2D;
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+    }
+    :root[data-theme="light"] .floor-code {
+      color: #B45309;
+    }
+    .floor-sub {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    .floor-rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.65rem;
+      flex: 1;
+    }
+
+    /* Room Keycard - Linear Luxury Cockpit Card */
+    .room-keycard {
+      background: #0E131F;
+      border: 1px solid rgba(253, 191, 45, 0.16);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 112px;
+      transition: opacity 0.25s ease, filter 0.25s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+      font-variant-numeric: tabular-nums;
+      position: relative;
+    }
+    :root[data-theme="light"] .room-keycard {
+      background: #FFFFFF;
+      border: 1px solid rgba(230, 227, 218, 0.95);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .room-keycard:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+    :root[data-theme="light"] .room-keycard:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Dimmed state when filtered */
+    .room-keycard.is-dimmed {
+      opacity: 0.18;
+      filter: grayscale(0.85);
+      transform: scale(0.98);
+      pointer-events: none;
+    }
+
+    /* Card Header */
+    .keycard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+    }
+    .keycard-num-group {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+    }
+    .keycard-number {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+    .keycard-type-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #FDBF2D;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    :root[data-theme="light"] .keycard-type-tag {
+      color: #B45309;
+    }
+
+    /* Status Pill on Card */
+    .keycard-status-pill {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      line-height: 1.2;
+    }
+    .pill-free {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #10B981;
+    }
+    .pill-occupied {
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #60A5FA;
+    }
+    :root[data-theme="light"] .pill-occupied {
+      color: #2563EB;
+      border-color: rgba(37, 99, 235, 0.35);
+    }
+    .pill-dirty {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #F59E0B;
+    }
+    .pill-maint {
+      background: rgba(148, 163, 184, 0.12);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: #94A3B8;
+    }
+    .pill-overdue {
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid rgba(239, 68, 68, 0.6);
+      color: #EF4444;
+      animation: pulse-border 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-border {
+      0%, 100% { border-color: rgba(239, 68, 68, 0.6); }
+      50% { border-color: rgba(239, 68, 68, 1); box-shadow: 0 0 6px rgba(239, 68, 68, 0.4); }
+    }
+
+    /* Overdue Card Highlight */
+    .room-keycard.is-overdue {
+      border-color: rgba(239, 68, 68, 0.75) !important;
+      background: #140C10 !important;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.22) !important;
+    }
+    :root[data-theme="light"] .room-keycard.is-overdue {
+      border-color: #DC2626 !important;
+      background: #FEF2F2 !important;
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.15) !important;
+    }
+
+    /* Architectural Stripes for Dirty and Maintenance */
+    .room-keycard.is-dirty {
+      background-image: repeating-linear-gradient(-45deg, rgba(245, 158, 11, 0.05) 0px, rgba(245, 158, 11, 0.05) 7px, transparent 7px, transparent 14px);
+    }
+    :root[data-theme="light"] .room-keycard.is-dirty {
+      background-image: repeating-linear-gradient(-45deg, rgba(245, 158, 11, 0.08) 0px, rgba(245, 158, 11, 0.08) 7px, transparent 7px, transparent 14px);
+    }
+    .room-keycard.is-maint {
+      background-image: repeating-linear-gradient(-45deg, rgba(148, 163, 184, 0.06) 0px, rgba(148, 163, 184, 0.06) 7px, transparent 7px, transparent 14px);
+    }
+    :root[data-theme="light"] .room-keycard.is-maint {
+      background-image: repeating-linear-gradient(-45deg, rgba(148, 163, 184, 0.09) 0px, rgba(148, 163, 184, 0.09) 7px, transparent 7px, transparent 14px);
+    }
+
+    /* Keycard Body Content */
+    .keycard-body {
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      line-height: 1.35;
+      margin-bottom: 0.45rem;
+    }
+    .keycard-guest-name {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .keycard-meta-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      margin-top: 0.15rem;
+    }
+    .keycard-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 700;
+      color: #FDBF2D;
+    }
+    :root[data-theme="light"] .keycard-code {
+      color: #B45309;
+    }
+
+    /* Keycard Footer Buttons */
+    .keycard-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 0.4rem;
+    }
+    :root[data-theme="light"] .keycard-footer {
+      border-top-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .btn-keycard-slim {
+      width: 100%;
+      padding: 0.3rem 0.5rem;
+      font-size: 0.73rem;
+      font-weight: 700;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      transition: all 0.18s ease;
+      cursor: pointer;
+      box-sizing: border-box;
+      line-height: 1.2;
+    }
+    .btn-kc-walkin {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #10B981;
+    }
+    .btn-kc-walkin:hover {
+      background: #10B981;
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    .keycard-actions-split {
+      display: flex;
+      gap: 0.35rem;
+    }
+    .btn-kc-folio {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-secondary);
+    }
+    .btn-kc-folio:hover {
+      background: rgba(253, 191, 45, 0.12);
+      border-color: #FDBF2D;
+      color: #FDBF2D;
+    }
+    :root[data-theme="light"] .btn-kc-folio {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.12);
+      color: #4B5563;
+    }
+    :root[data-theme="light"] .btn-kc-folio:hover {
+      background: rgba(180, 83, 9, 0.08);
+      border-color: #B45309;
+      color: #B45309;
+    }
+
+    .btn-kc-checkout {
+      flex: 1;
+      background: linear-gradient(135deg, #FDBF2D 0%, #D97706 100%);
+      border: 1px solid #FDBF2D;
+      color: #0A0A0A;
+    }
+    .btn-kc-checkout:hover {
+      background: #E5AC28;
+      box-shadow: 0 2px 8px rgba(253, 191, 45, 0.35);
+    }
+
+    .btn-kc-clean {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #F59E0B;
+    }
+    .btn-kc-clean:hover {
+      background: #F59E0B;
+      color: #0A0A0A;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-kc-disabled {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+
+    /* Right Column: Live Reserved Queue Dock */
+    .reserved-dock {
+      background: rgba(13, 18, 28, 0.92);
+      border: 1px solid rgba(253, 191, 45, 0.2);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      position: sticky;
+      top: 66px;
+    }
+    :root[data-theme="light"] .reserved-dock {
+      background: rgba(255, 255, 255, 0.97);
+      border-color: rgba(230, 227, 218, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .dock-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem;
+    }
+    .dock-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .dock-badge-count {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      background: rgba(253, 191, 45, 0.15);
+      border: 1px solid rgba(253, 191, 45, 0.35);
+      color: #FDBF2D;
+    }
+    :root[data-theme="light"] .dock-badge-count {
+      background: rgba(180, 83, 9, 0.1);
+      border-color: rgba(180, 83, 9, 0.3);
+      color: #B45309;
+    }
+
+    .reserved-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    /* Boarding Pass VIP Card */
+    .reserved-pass-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(253, 191, 45, 0.18);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      transition: all 0.2s ease;
+      font-variant-numeric: tabular-nums;
+    }
+    :root[data-theme="light"] .reserved-pass-card {
+      background: #FAF9F6;
+      border-color: rgba(180, 83, 9, 0.2);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+    .reserved-pass-card:hover {
+      border-color: #FDBF2D;
+      transform: translateY(-1px);
+    }
+    :root[data-theme="light"] .reserved-pass-card:hover {
+      border-color: #B45309;
+    }
+
+    .pass-row-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pass-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #FDBF2D;
+    }
+    :root[data-theme="light"] .pass-code {
+      color: #B45309;
+    }
+    .pass-type-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-secondary);
+    }
+    :root[data-theme="light"] .pass-type-badge {
+      background: rgba(0, 0, 0, 0.05);
+      color: #4B5563;
+    }
+
+    .pass-row-guest {
+      font-size: 0.78rem;
+      display: flex;
+      justify-content: space-between;
+      color: var(--text);
+    }
+    .pass-guest-name {
+      font-weight: 700;
+    }
+    .pass-dates {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .pass-row-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      padding-top: 0.4rem;
+    }
+    :root[data-theme="light"] .pass-row-action {
+      border-top-color: rgba(0, 0, 0, 0.08);
+    }
+    .pass-deposit {
+      font-size: 0.74rem;
+      color: #10B981;
+      font-weight: 700;
+    }
+    .btn-pass-assign {
+      padding: 0.28rem 0.65rem;
+      border-radius: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FDBF2D 0%, #D97706 100%);
+      color: #0A0A0A;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: all 0.2s ease;
+    }
+    .btn-pass-assign:hover {
+      box-shadow: 0 2px 8px rgba(253, 191, 45, 0.35);
+    }
+
+    /* Occupancy Telemetry Widget (BR8) */
+    .or-telemetry-widget {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 0.7rem;
+      margin-top: 0.35rem;
+    }
+    :root[data-theme="light"] .or-telemetry-widget {
+      background: #FFFFFF;
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    .or-metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+    .or-progress-track {
+      height: 6px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      margin-bottom: 0.45rem;
+    }
+    :root[data-theme="light"] .or-progress-track {
+      background: rgba(0, 0, 0, 0.06);
+    }
+    .or-progress-bar {
+      height: 100%;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #FDBF2D, #10B981);
+      transition: width 0.5s ease;
+    }
+  </style>
+
+  <div class="cockpit-wrapper">
+
+    <!-- 1. Thanh Điều Hành Kép (Command & Telemetry Bar) -->
+    <div class="command-telemetry-bar">
+      <!-- Cụm Trái: 5 Filter Pills Sống -->
+      <div class="telemetry-filter-group">
+        <button type="button" class="filter-pill is-active" data-filter="ALL" onclick="filterRoomCockpit('ALL', this)">
+          <span class="dot-indicator dot-all"></span>
+          <span>Tất cả</span>
+          <span style="opacity: 0.65;">•</span>
+          <strong th:text="${rooms.size()}">12</strong>
+        </button>
+
+        <button type="button" class="filter-pill" data-filter="AVAILABLE" onclick="filterRoomCockpit('AVAILABLE', this)">
+          <span class="dot-indicator dot-free"></span>
+          <span>Trống sạch</span>
+          <span style="opacity: 0.65;">•</span>
+          <strong th:text="${availableCount}">6</strong>
+        </button>
+
+        <button type="button" class="filter-pill" data-filter="OCCUPIED" onclick="filterRoomCockpit('OCCUPIED', this)">
+          <span class="dot-indicator dot-occupied"></span>
+          <span>Đang ở</span>
+          <span style="opacity: 0.65;">•</span>
+          <strong th:text="${occupiedCount}">3</strong>
+          <span th:if="${overdueCount > 0}" class="keycard-status-pill pill-overdue" style="font-size: 0.65rem; padding: 0.08rem 0.35rem; margin-left: 0.2rem;" th:text="${overdueCount + ' Quá hạn'}">1 Quá hạn</span>
+        </button>
+
+        <button type="button" class="filter-pill" data-filter="DIRTY" onclick="filterRoomCockpit('DIRTY', this)">
+          <span class="dot-indicator dot-dirty"></span>
+          <span>Chờ dọn</span>
+          <span style="opacity: 0.65;">•</span>
+          <strong th:text="${dirtyCount}">2</strong>
+        </button>
+
+        <button type="button" class="filter-pill" data-filter="MAINTENANCE" onclick="filterRoomCockpit('MAINTENANCE', this)">
+          <span class="dot-indicator dot-maint"></span>
+          <span>Bảo trì</span>
+          <span style="opacity: 0.65;">•</span>
+          <strong th:text="${maintenanceCount}">1</strong>
+        </button>
+      </div>
+
+      <!-- Cụm Phải: Tra Cứu QR Nhanh & Đón Khách Walk-in -->
+      <div class="telemetry-actions-group">
+        <form th:action="@{/staff/check-in}" method="get" class="search-qr-box" style="margin: 0;">
+          <span class="search-qr-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </span>
+          <input type="text" name="code" placeholder="Quét QR / Nhập BK-2402, SĐT..." autocomplete="off">
+          <button type="submit" class="btn-search-qr" style="margin-left: 0.35rem;">
+            <span>Tra cứu</span>
+          </button>
+        </form>
+
+        <a th:href="@{/staff/walk-in}" class="btn-walkin-action">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
+          </svg>
+          <span>+ Walk-in (0đ cọc)</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 2. Bố Cục Chính 2 Cột (Split Command Cockpit) -->
+    <div class="cockpit-main-grid">
+
+      <!-- CỘT TRÁI (~70%): MA TRẬN 4 TẦNG VẬT LÝ -->
+      <div class="floor-matrix-panel">
+        <th:block th:each="floorNum : ${#numbers.sequence(1, 4)}">
+          <div class="floor-row">
+            <!-- Nhãn tầng vật lý -->
+            <div class="floor-badge">
+              <span class="floor-code" th:text="'FL 0' + ${floorNum}">FL 01</span>
+              <span class="floor-sub" th:text="'Tầng ' + ${floorNum}">Tầng 1</span>
+            </div>
+
+            <!-- Lưới đúng 3 phòng của tầng -->
+            <div class="floor-rooms-grid">
+              <th:block th:each="r : ${rooms}" th:if="${r.floor == floorNum}">
+                <div class="room-keycard"
+                     th:attr="data-status=${r.status.name()}"
+                     th:classappend="${(r.status.name() == 'DIRTY' ? 'is-dirty ' : '') +
+                                     (r.status.name() == 'MAINTENANCE' ? 'is-maint ' : '') +
+                                     (r.status.name() == 'OCCUPIED' and roomBookingMap[r.roomId] != null and roomBookingMap[r.roomId].isOverdue() ? 'is-overdue' : '')}">
+
+                  <!-- Header Thẻ Phòng -->
+                  <div>
+                    <div class="keycard-header">
+                      <div class="keycard-num-group">
+                        <span class="keycard-number" th:text="'P.' + ${r.roomNumber}">P.101</span>
+                        <span class="keycard-type-tag" th:text="${r.roomType.name}">Standard</span>
+                      </div>
+
+                      <!-- Status Pill -->
+                      <div>
+                        <span th:if="${r.status.name() == 'AVAILABLE'}" class="keycard-status-pill pill-free">
+                          <span class="dot-indicator dot-free"></span>Trống sạch
+                        </span>
+                        <span th:if="${r.status.name() == 'DIRTY'}" class="keycard-status-pill pill-dirty">
+                          <span class="dot-indicator dot-dirty"></span>Chờ dọn
+                        </span>
+                        <span th:if="${r.status.name() == 'MAINTENANCE'}" class="keycard-status-pill pill-maint">
+                          <span class="dot-indicator dot-maint"></span>Bảo trì
+                        </span>
+                        <span th:if="${r.status.name() == 'OCCUPIED' and roomBookingMap[r.roomId] != null and roomBookingMap[r.roomId].isOverdue()}" class="keycard-status-pill pill-overdue">
+                          <span class="dot-indicator" style="background:#EF4444;"></span>Quá hạn
+                        </span>
+                        <span th:if="${r.status.name() == 'OCCUPIED' and (roomBookingMap[r.roomId] == null or !roomBookingMap[r.roomId].isOverdue())}" class="keycard-status-pill pill-occupied">
+                          <span class="dot-indicator dot-occupied"></span>Đang ở
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Body Thẻ Phòng theo trạng thái -->
+                    <div class="keycard-body">
+                      <!-- 1. AVAILABLE: Giá ngày thường & cuối tuần -->
+                      <div th:if="${r.status.name() == 'AVAILABLE'}">
+                        <div style="font-size: 0.72rem; color: var(--text-secondary);">
+                          T2–T5: <strong th:text="${#numbers.formatDecimal(r.roomType.pricePerNight / 1000, 0, 'COMMA', 0, 'POINT') + 'k'}">780k</strong>
+                          • T6–CN: <strong th:text="${#numbers.formatDecimal(r.roomType.weekendPricePerNight / 1000, 0, 'COMMA', 0, 'POINT') + 'k'}">950k</strong>
+                        </div>
+                      </div>
+
+                      <!-- 2. OCCUPIED: Khách + Mã đơn + Hạn trả -->
+                      <div th:if="${r.status.name() == 'OCCUPIED'}">
+                        <th:block th:if="${roomBookingMap[r.roomId] != null}">
+                          <div class="keycard-guest-name" th:text="${roomBookingMap[r.roomId].customer.fullName}">Nguyễn Minh Anh</div>
+                          <div class="keycard-meta-line">
+                            <span class="keycard-code" th:text="${roomBookingMap[r.roomId].bookingCode}">BK-2401</span>
+                            <span style="font-size: 0.7rem; color: var(--text-muted);" th:text="'Trả: ' + ${#temporals.format(roomBookingMap[r.roomId].checkOutDate, 'dd/MM')}">Trả: 14/10</span>
+                          </div>
+                        </th:block>
+                        <th:block th:if="${roomBookingMap[r.roomId] == null}">
+                          <div style="color: var(--text-muted); font-size: 0.72rem;">Khách lưu trú</div>
+                        </th:block>
+                      </div>
+
+                      <!-- 3. DIRTY: Nhãn buồng phòng -->
+                      <div th:if="${r.status.name() == 'DIRTY'}" style="font-size: 0.72rem; color: #F59E0B; font-weight: 600;">
+                        Khóa gán mới • Chờ buồng phòng
+                      </div>
+
+                      <!-- 4. MAINTENANCE: Khóa kỹ thuật -->
+                      <div th:if="${r.status.name() == 'MAINTENANCE'}" style="font-size: 0.72rem; color: #94A3B8; font-weight: 600;">
+                        Khóa kỹ thuật • Loại khỏi OR%
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Footer Hành Động Thẻ Phòng -->
+                  <div class="keycard-footer">
+                    <!-- 1. AVAILABLE: Nhận khách Walk-in -->
+                    <div th:if="${r.status.name() == 'AVAILABLE'}">
+                      <a th:href="@{/staff/walk-in(roomId=${r.roomId})}" class="btn-keycard-slim btn-kc-walkin">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        <span>Nhận khách Walk-in</span>
+                      </a>
+                    </div>
+
+                    <!-- 2. OCCUPIED: Room Folio & Check-out -->
+                    <div th:if="${r.status.name() == 'OCCUPIED' and roomBookingMap[r.roomId] != null}" class="keycard-actions-split">
+                      <button type="button"
+                              class="btn-keycard-slim btn-kc-folio"
+                              th:data-booking-id="${roomBookingMap[r.roomId].bookingId}"
+                              onclick="openFolioModal(this.getAttribute('data-booking-id'))"
+                              title="Mở Sổ Cái Dịch Vụ Phòng (Folio) dạng popup">
+                        <span>Folio</span>
+                      </button>
+                      <a th:href="@{'/staff/bookings/' + ${roomBookingMap[r.roomId].bookingId} + '/check-out'}" class="btn-keycard-slim btn-kc-checkout">
+                        <span>Check-out</span>
+                      </a>
+                    </div>
+
+                    <!-- 3. DIRTY: 1-Click Xác nhận đã dọn sạch -->
+                    <div th:if="${r.status.name() == 'DIRTY'}">
+                      <form th:action="@{'/staff/rooms/' + ${r.roomId} + '/clean'}" method="post" style="margin: 0;">
+                        <button type="submit" class="btn-keycard-slim btn-kc-clean">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                          <span>Xác nhận đã dọn sạch</span>
+                        </button>
+                      </form>
+                    </div>
+
+                    <!-- 4. MAINTENANCE: Khóa bảo trì -->
+                    <div th:if="${r.status.name() == 'MAINTENANCE'}">
+                      <button type="button" class="btn-keycard-slim btn-kc-disabled" disabled>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span>Đang bảo trì thiết bị</span>
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </th:block>
+            </div>
+          </div>
+        </th:block>
+      </div>
+
+      <!-- CỘT PHẢI (~30%): HÀNG ĐỢI ĐƠN ĐẶT TRƯỚC (LIVE RESERVED QUEUE DOCK) -->
+      <div class="reserved-dock">
+        <!-- Dock Header -->
+        <div class="dock-header">
+          <div class="dock-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+              <path d="M14 14h3v3h-3z"/><path d="M21 14v3"/><path d="M14 21v-3"/><path d="M17 21h4"/>
+            </svg>
+            <span>Đơn Đặt Trước (RESERVED)</span>
+          </div>
+          <span class="dock-badge-count" th:text="${reservedBookings.size() + ' đơn chờ'}">2 đơn chờ</span>
+        </div>
+
+        <!-- Empty state -->
+        <div th:if="${reservedBookings.isEmpty()}" style="text-align: center; padding: 1.5rem 1rem; color: var(--text-secondary); font-size: 0.8rem;">
+          Không có đơn giữ chỗ nào đang chờ check-in.
+        </div>
+
+        <!-- Danh sách thẻ Boarding Pass VIP -->
+        <div th:if="${!reservedBookings.isEmpty()}" class="reserved-list">
+          <div th:each="b : ${reservedBookings}" class="reserved-pass-card">
+            <!-- Row 1: Code + Type + Dates -->
+            <div class="pass-row-top">
+              <span class="pass-code" th:text="${b.bookingCode}">BK-2402</span>
+              <span class="pass-type-badge" th:text="${b.roomType.name}">Deluxe</span>
+              <span class="pass-dates" th:text="${#temporals.format(b.checkInDate, 'dd/MM') + ' → ' + #temporals.format(b.checkOutDate, 'dd/MM')}">19/10 → 21/10</span>
+            </div>
+
+            <!-- Row 2: Guest Name + Phone -->
+            <div class="pass-row-guest">
+              <span class="pass-guest-name" th:text="${b.customer.fullName}">Trần Quốc Bảo</span>
+              <span style="font-family: ui-monospace, monospace; color: var(--text-secondary); font-size: 0.72rem;" th:text="${b.customer.phone}">0912345678</span>
+            </div>
+
+            <!-- Row 3: Deposit Amount + Assign Button -->
+            <div class="pass-row-action">
+              <span class="pass-deposit" th:text="'Cọc 30%: ' + ${#numbers.formatDecimal(b.depositAmount, 0, 'COMMA', 0, 'POINT') + 'đ'}">Cọc 30%: 693,000đ</span>
+              <a th:href="@{/staff/check-in(code=${b.bookingCode})}" class="btn-pass-assign">
+                <span>Quét QR &amp; Gán Phòng</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Widget: Chuẩn Công Suất Khai Thác (BR8) -->
+        <div class="or-telemetry-widget"
+             th:with="sellableRooms=${rooms.size() - maintenanceCount},
+                      orRatio=${sellableRooms > 0 ? (occupiedCount * 100.0 / sellableRooms) : 0}">
+          <div class="or-metric-header">
+            <span style="font-weight: 700; color: var(--text);">Công Suất Khai Thác (OR%)</span>
+            <span style="font-family: ui-monospace, monospace; font-weight: 800; color: #FDBF2D;"
+                  th:text="${#numbers.formatDecimal(orRatio, 1, 'POINT', 1, 'COMMA') + '%'}">27.3%</span>
+          </div>
+
+          <div class="or-progress-track">
+            <div class="or-progress-bar" th:style="'width: ' + ${orRatio} + '%;'"></div>
+          </div>
+
+          <div class="flex items-center justify-between" style="font-size: 0.7rem; color: var(--text-muted);">
+            <span th:text="${occupiedCount + ' / ' + sellableRooms + ' phòng khả dụng (trừ P.103)'}">3 / 11 phòng khả dụng</span>
+            <a th:href="@{/admin/dashboard}" style="color: #FDBF2D; text-decoration: none; font-weight: 600;">Xem Báo Cáo →</a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- POPUP MODAL: QUICK ROOM FOLIO (SỔ CÁI PHÒNG NHANH)                        -->
+  <!-- ========================================================================= -->
+  <div id="folioModalBackdrop" class="folio-modal-backdrop" onclick="handleFolioBackdropClick(event)">
+    <div class="folio-modal-dialog" role="dialog" aria-modal="true">
+      <div id="folioModalBody">
+        <!-- Nội dung fragment /staff/bookings/{id}/folio-modal sẽ được nạp động vào đây -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript: Live Status Filtering & Quick Folio Popup Modal -->
+  <script>
+    function filterRoomCockpit(status, btn) {
+      // 1. Cập nhật nút active
+      document.querySelectorAll('.filter-pill').forEach(function(el) {
+        el.classList.remove('is-active');
+      });
+      if (btn) btn.classList.add('is-active');
+
+      // 2. Thu mờ các thẻ không khớp trạng thái
+      var cards = document.querySelectorAll('.room-keycard');
+      cards.forEach(function(card) {
+        var cardStatus = card.getAttribute('data-status');
+        if (status === 'ALL' || cardStatus === status) {
+          card.classList.remove('is-dimmed');
+        } else {
+          card.classList.add('is-dimmed');
+        }
+      });
+    }
+
+    // ==========================================
+    // Quick Room Folio Popup Modal Engine
+    // ==========================================
+    var currentFolioBookingId = null;
+
+    function openFolioModal(bookingId) {
+      currentFolioBookingId = bookingId;
+      var backdrop = document.getElementById('folioModalBackdrop');
+      var body = document.getElementById('folioModalBody');
+
+      // Loading skeleton
+      body.innerHTML = `
+        <div style="text-align: center; padding: 3rem 1rem;">
+          <div style="display: inline-block; width: 36px; height: 36px; border: 3px solid rgba(253, 191, 45, 0.2); border-top-color: #FDBF2D; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+          <div style="margin-top: 1rem; color: #CBD5E1; font-size: 0.88rem; font-weight: 600;">Đang nạp Sổ Cái Room Folio...</div>
+        </div>
+      `;
+      backdrop.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+
+      loadFolioContent(bookingId);
+    }
+
+    function closeFolioModal() {
+      var backdrop = document.getElementById('folioModalBackdrop');
+      if (backdrop) backdrop.classList.remove('is-open');
+      document.body.style.overflow = '';
+      currentFolioBookingId = null;
+    }
+
+    function handleFolioBackdropClick(event) {
+      if (event.target.id === 'folioModalBackdrop') {
+        closeFolioModal();
+      }
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        var backdrop = document.getElementById('folioModalBackdrop');
+        if (backdrop && backdrop.classList.contains('is-open')) {
+          closeFolioModal();
+        }
+      }
+    });
+
+    function loadFolioContent(bookingId) {
+      fetch('/staff/bookings/' + bookingId + '/folio-modal', {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+      .then(function(res) {
+        if (!res.ok) throw new Error('Không thể tải thông tin Room Folio');
+        return res.text();
+      })
+      .then(function(html) {
+        document.getElementById('folioModalBody').innerHTML = html;
+        if (window.AceSelect) {
+          window.AceSelect.initAll(document.getElementById('folioModalBody'));
+        }
+      })
+      .catch(function(err) {
+        document.getElementById('folioModalBody').innerHTML = `
+          <div style="text-align: center; padding: 2rem;">
+            <div style="color: #EF4444; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Lỗi tải dữ liệu</div>
+            <p style="color: #94A3B8; font-size: 0.85rem;">` + err.message + `</p>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="closeFolioModal()" style="margin-top: 1rem;">Đóng</button>
+          </div>
+        `;
+      });
+    }
+
+    function submitFolioService(event, form) {
+      event.preventDefault();
+      var btn = document.getElementById('btnSubmitFolioService');
+      if (btn) btn.disabled = true;
+
+      var formData = new FormData(form);
+      var actionUrl = form.action + '/ajax';
+
+      fetch(actionUrl, {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+      })
+      .then(function(res) {
+        return res.json().then(function(data) {
+          return { ok: res.ok, data: data };
+        });
+      })
+      .then(function(resObj) {
+        if (resObj.ok && resObj.data.success) {
+          if (window.AceToast) {
+            window.AceToast.show(resObj.data.message, 'success');
+          }
+          loadFolioContent(currentFolioBookingId);
+        } else {
+          showFolioModalAlert((resObj.data && resObj.data.message) ? resObj.data.message : 'Lỗi khi ghi nhận dịch vụ', 'error');
+          if (btn) btn.disabled = false;
+        }
+      })
+      .catch(function(err) {
+        showFolioModalAlert('Lỗi kết nối: ' + err.message, 'error');
+        if (btn) btn.disabled = false;
+      });
+
+      return false;
+    }
+
+    function deleteFolioService(bookingId, orderId, itemName) {
+      if (!confirm('Bạn có chắc chắn muốn xóa [' + (itemName || 'mặt hàng này') + '] khỏi Room Folio?')) {
+        return;
+      }
+
+      var csrfToken = document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '';
+      var formData = new FormData();
+      if (csrfToken) formData.append('_csrf', csrfToken);
+
+      fetch('/staff/bookings/' + bookingId + '/folio/' + orderId + '/delete/ajax', {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+      })
+      .then(function(res) {
+        return res.json().then(function(data) {
+          return { ok: res.ok, data: data };
+        });
+      })
+      .then(function(resObj) {
+        if (resObj.ok && resObj.data.success) {
+          if (window.AceToast) {
+            window.AceToast.show(resObj.data.message, 'success');
+          }
+          loadFolioContent(bookingId);
+        } else {
+          showFolioModalAlert((resObj.data && resObj.data.message) ? resObj.data.message : 'Lỗi khi xóa khoản dịch vụ', 'error');
+        }
+      })
+      .catch(function(err) {
+        showFolioModalAlert('Lỗi kết nối: ' + err.message, 'error');
+      });
+    }
+
+    function showFolioModalAlert(message, type) {
+      var alertBox = document.getElementById('folioModalAlert');
+      if (!alertBox) return;
+      alertBox.style.display = 'block';
+      if (type === 'error') {
+        alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
+        alertBox.style.border = '1px solid #EF4444';
+        alertBox.style.color = '#FCA5A5';
+      } else {
+        alertBox.style.background = 'rgba(16, 185, 129, 0.15)';
+        alertBox.style.border = '1px solid #10B981';
+        alertBox.style.color = '#6EE7B7';
+      }
+      alertBox.textContent = message;
+    }
+  </script>
+
+</section>
+</body>
+</html>

@@ -21,3 +21,7 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Local Tools
+tools/
+*.zip

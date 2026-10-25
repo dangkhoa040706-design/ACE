@@ -1,0 +1,74 @@
+/* =========================================================================
+   ACE HOTEL DESIGN SYSTEM - CSS CUSTOM PROPERTIES (tokens.css)
+   ========================================================================= */
+
+:root,
+:root[data-theme="dark"] {
+  /* Nền & Bề mặt (Dark Mode - Mặc định) */
+  --bg: #000000;
+  --surface: #121212;
+  --elevated: #1C1C1C;
+  --border: #2A2A2A;
+
+  /* Màu thương hiệu ACE Gold */
+  --primary: #FDBF2D;
+  --primary-hover: #FFD056;
+  --primary-pressed: #E5A90F;
+  --primary-soft: #2A2208;
+  --on-primary: #0A0A0A;
+
+  /* Chữ */
+  --text: #FFFFFF;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+  --primary-text: #FDBF2D;
+
+  /* 6 Trạng thái Phòng & Booking (Dark Mode) */
+  --st-free: #22C55E;           /* AVAILABLE - Trống sạch */
+  --st-free-bg: rgba(34, 197, 94, 0.14);
+  --st-reserved: #A78BFA;       /* RESERVED - Đã đặt & Cọc 30% */
+  --st-reserved-bg: rgba(167, 139, 250, 0.14);
+  --st-occupied: #60A5FA;       /* OCCUPIED - Đang ở */
+  --st-occupied-bg: rgba(96, 165, 250, 0.14);
+  --st-dirty: #F59E0B;          /* DIRTY - Chờ dọn dẹp */
+  --st-dirty-bg: rgba(245, 158, 11, 0.16);
+  --st-overdue: #F87171;        /* OVERDUE - Quá hạn */
+  --st-overdue-bg: rgba(248, 113, 113, 0.16);
+  --st-maint: #9CA3AF;          /* MAINTENANCE - Bảo trì */
+  --st-maint-bg: rgba(156, 163, 175, 0.14);
+}
+
+:root[data-theme="light"] {
+  /* Nền & Bề mặt (Light Mode) */
+  --bg: #F7F6F2;
+  --surface: #FFFFFF;
+  --elevated: #FFFFFF;
+  --border: #E6E3DA;
+
+  /* Màu thương hiệu ACE Gold */
+  --primary: #FDBF2D;
+  --primary-hover: #E5A90F;
+  --primary-pressed: #C98F00;
+  --primary-soft: #FFF4D1;
+  --on-primary: #0A0A0A;
+
+  /* Chữ */
+  --text: #0A0A0A;
+  --text-secondary: #52525B;
+  --text-muted: #71717A;
+  --primary-text: #B45309;      /* Vàng nâu đậm đủ độ tương phản trên nền sáng */
+
+  /* 6 Trạng thái Phòng & Booking (Light Mode) */
+  --st-free: #15803D;
+  --st-free-bg: #DCFCE7;
+  --st-reserved: #7C3AED;
+  --st-reserved-bg: #F3E8FF;
+  --st-occupied: #2563EB;
+  --st-occupied-bg: #DBEAFE;
+  --st-dirty: #D97706;
+  --st-dirty-bg: #FEF3C7;
+  --st-overdue: #DC2626;
+  --st-overdue-bg: #FEE2E2;
+  --st-maint: #6B7280;
+  --st-maint-bg: #F3F4F6;
+}

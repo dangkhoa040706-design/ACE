@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/public-layout :: layout(~{::title}, ~{::content})}">
+<head>
+  <title th:text="${pageTitle != null ? pageTitle : 'Đăng Nhập & Đăng Ký'}">Đăng Nhập &amp; Đăng Ký | ACE Hotel</title>
+</head>
+<body>
+  <div th:fragment="content" class="container" style="padding: 3rem 1rem; max-width: 540px; margin: 0 auto;">
+
+    <style>
+      .date-picker-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+      .date-picker-wrapper input[type="date"] {
+        color-scheme: dark;
+        cursor: pointer;
+        padding-right: 2.75rem;
+      }
+      :root[data-theme="light"] .date-picker-wrapper input[type="date"] {
+        color-scheme: light;
+      }
+      .date-picker-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+        position: absolute;
+        right: 0.25rem;
+        top: 0;
+        width: 2.5rem;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        z-index: 3;
+        cursor: pointer;
+      }
+      .date-picker-btn {
+        position: absolute;
+        right: 0.65rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        padding: 0.35rem;
+        color: #FDBF2D;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        line-height: 1;
+        z-index: 2;
+        transition: all 0.2s ease;
+      }
+      .date-picker-wrapper:hover .date-picker-btn,
+      .date-picker-btn:hover {
+        color: #FEE799;
+        background-color: rgba(253, 191, 45, 0.15);
+        transform: translateY(-50%) scale(1.08);
+      }
+
+      /* --- Dynamic Password Strength Bar & Criteria Checklist --- */
+      .pwd-strength-wrapper {
+        margin-top: 0.65rem;
+        padding: 0.75rem 0.9rem;
+        background: rgba(255, 255, 255, 0.035);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+      :root[data-theme="light"] .pwd-strength-wrapper {
+        background: rgba(0, 0, 0, 0.03);
+        border-color: rgba(0, 0, 0, 0.08);
+      }
+      .pwd-strength-track {
+        height: 6px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        overflow: hidden;
+        position: relative;
+        margin-top: 0.4rem;
+      }
+      :root[data-theme="light"] .pwd-strength-track {
+        background: rgba(0, 0, 0, 0.1);
+      }
+      .pwd-strength-fill {
+        height: 100%;
+        width: 0%;
+        background: #EF4444;
+        border-radius: 999px;
+        transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.35s ease, box-shadow 0.35s ease;
+      }
+      .pwd-criterion {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        color: var(--text-secondary);
+        font-size: 0.78rem;
+        transition: color 0.2s ease, font-weight 0.2s ease;
+      }
+      .pwd-criterion .crit-icon {
+        font-size: 0.9rem;
+        line-height: 1;
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+      .pwd-criterion.fulfilled {
+        color: #10B981;
+        font-weight: 600;
+      }
+      .pwd-criterion.fulfilled .crit-icon {
+        color: #10B981;
+        font-weight: 700;
+        transform: scale(1.15);
+      }
+    </style>
+
+    <!-- Logo & Header -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <img th:src="@{/images/3_logo-ACE-co-ten_khong-nen.png}" alt="ACE Hotel"
+           style="height: 60px; margin: 0 auto 1rem; display: block;">
+      <h2 style="font-size: 1.6rem; color: var(--text); margin-bottom: 0.35rem;">Chào Mừng Đến Với ACE Hotel</h2>
+      <p style="font-size: 0.9rem; color: var(--text-secondary);">Hệ thống Quản lý Khách sạn &amp; Cổng Đặt Phòng Trực Tuyến</p>
+    </div>
+
+    <!-- Card Wrapper -->
+    <div class="card card-elevated" style="padding: 2rem; border-color: rgba(253, 191, 45, 0.25);">
+
+      <!-- Tabs Header -->
+      <div class="flex" style="border-bottom: 1px solid var(--border); margin-bottom: 1.75rem;">
+        <button type="button" id="tabBtnLogin" onclick="switchTab('login')"
+                class="flex-1" style="flex: 1; padding: 0.75rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;"
+                th:styleappend="${activeTab == 'register' ? 'color: var(--text-secondary); border-bottom: 2px solid transparent;' : 'color: var(--primary); border-bottom: 2px solid var(--primary);'}">
+          Đăng Nhập
+        </button>
+        <button type="button" id="tabBtnRegister" onclick="switchTab('register')"
+                class="flex-1" style="flex: 1; padding: 0.75rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;"
+                th:styleappend="${activeTab == 'register' ? 'color: var(--primary); border-bottom: 2px solid var(--primary);' : 'color: var(--text-secondary); border-bottom: 2px solid transparent;'}">
+          Đăng Ký Thành Viên
+        </button>
+      </div>
+
+      <!-- Tab 1: Đăng nhập -->
+      <div id="tabContentLogin" th:style="${activeTab == 'register' ? 'display: none;' : 'display: block;'}">
+        <form th:action="@{/login}" method="post">
+          <div class="form-group">
+            <label class="form-label" for="loginUsername">Tên đăng nhập</label>
+            <input type="text" id="loginUsername" name="username" class="form-control"
+                   placeholder="Nhập tên đăng nhập của bạn" required autofocus>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">Mật khẩu</label>
+            <div class="password-wrapper">
+              <input type="password" id="loginPassword" name="password" class="form-control"
+                     placeholder="Nhập mật khẩu" required>
+              <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('loginPassword', this)"
+                      aria-label="Hiện mật khẩu" title="Hiện mật khẩu" tabindex="-1">
+                <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+            Đăng Nhập Hệ Thống
+          </button>
+        </form>
+      </div>
+
+      <!-- Tab 2: Đăng ký (5 trường bắt buộc) -->
+      <div id="tabContentRegister" th:style="${activeTab == 'register' ? 'display: block;' : 'display: none;'}">
+        <form th:action="@{/register}" method="post" th:object="${registerForm}" onsubmit="return validateRegisterForm(event)">
+
+          <!-- 1. Họ và tên -->
+          <div class="form-group">
+            <label class="form-label" for="regFullName">Họ và tên <span style="color: #EF4444;">*</span></label>
+            <input type="text" id="regFullName" th:field="*{fullName}" class="form-control"
+                   placeholder="Ví dụ: Nguyễn Văn A" required>
+            <small th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" style="color: #EF4444; font-size: 0.8rem;"></small>
+          </div>
+
+          <!-- 2. Ngày sinh -->
+          <div class="form-group">
+            <label class="form-label" for="regDob">Ngày sinh <span style="color: #EF4444;">*</span></label>
+            <div class="date-picker-wrapper">
+              <input type="date" id="regDob" th:field="*{dateOfBirth}" class="form-control"
+                     th:max="${T(java.time.LocalDate).now().minusYears(18)}" required
+                     onclick="try { this.showPicker(); } catch(e){}"
+                     placeholder="dd/mm/yyyy">
+              <button type="button" class="date-picker-btn" onclick="openDatePicker('regDob')"
+                      aria-label="Mở lịch chọn ngày sinh" title="Mở lịch chọn ngày sinh" tabindex="-1">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                  <circle cx="8" cy="14" r="1.2" fill="#FDBF2D"></circle>
+                  <circle cx="12" cy="14" r="1.2" fill="#FDBF2D"></circle>
+                  <circle cx="16" cy="14" r="1.2" fill="#FDBF2D"></circle>
+                  <circle cx="8" cy="18" r="1.2" fill="#FDBF2D"></circle>
+                  <circle cx="12" cy="18" r="1.2" fill="#FDBF2D"></circle>
+                </svg>
+              </button>
+            </div>
+            <small style="color: var(--text-secondary); font-size: 0.78rem;">Khách hàng từ đủ 18 tuổi trở lên theo quy định lưu trú khách sạn.</small>
+            <div th:if="${#fields.hasErrors('dateOfBirth')}">
+              <small th:errors="*{dateOfBirth}" style="color: #EF4444; font-size: 0.8rem;"></small>
+            </div>
+          </div>
+
+          <!-- 3. Số điện thoại -->
+          <div class="form-group">
+            <label class="form-label" for="regPhone">Số điện thoại <span style="color: #EF4444;">*</span></label>
+            <input type="tel" id="regPhone" th:field="*{phone}" class="form-control"
+                   placeholder="Ví dụ: 0901234567" pattern="^(0|\+84)[0-9]{9,10}$" required>
+            <small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" style="color: #EF4444; font-size: 0.8rem;"></small>
+          </div>
+
+          <!-- 4. Tên đăng nhập -->
+          <div class="form-group">
+            <label class="form-label" for="regUsername">Tên đăng nhập <span style="color: #EF4444;">*</span></label>
+            <input type="text" id="regUsername" th:field="*{username}" class="form-control"
+                   placeholder="Từ 3 - 50 ký tự viết liền không dấu" required>
+            <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: #EF4444; font-size: 0.8rem;"></small>
+          </div>
+
+          <!-- 5. Mật khẩu -->
+          <div class="form-group">
+            <label class="form-label" for="regPassword">Mật khẩu <span style="color: #EF4444;">*</span></label>
+            <div class="password-wrapper">
+              <input type="password" id="regPassword" th:field="*{password}" class="form-control"
+                     placeholder="Tối thiểu 8 ký tự (hoa, số, ký tự đặc biệt)" required oninput="onPasswordInput()">
+              <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPassword', this)"
+                      aria-label="Hiện mật khẩu" title="Hiện mật khẩu" tabindex="-1">
+                <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <!-- Thanh đo độ bảo mật (Strength Bar) chuyển từ Đỏ sang Xanh & 4 tiêu chí -->
+            <div class="pwd-strength-wrapper" id="pwdStrengthWrapper">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                <span style="color: var(--text-secondary); display: flex; align-items: center; gap: 0.35rem;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                  Độ bảo mật mật khẩu:
+                </span>
+                <span id="pwdStrengthLabel" style="font-weight: 700; color: #EF4444;">Chưa nhập (0/4)</span>
+              </div>
+
+              <!-- Thanh chuyển màu động: Đỏ -> Cam -> Vàng -> Xanh lá -->
+              <div class="pwd-strength-track">
+                <div id="pwdStrengthBar" class="pwd-strength-fill"></div>
+              </div>
+
+              <!-- 4 Tiêu chí bảo mật thời gian thực -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem 0.75rem; margin-top: 0.65rem;">
+                <div id="critLen" class="pwd-criterion">
+                  <span class="crit-icon">○</span>
+                  <span>Ít nhất 8 ký tự</span>
+                </div>
+                <div id="critUpper" class="pwd-criterion">
+                  <span class="crit-icon">○</span>
+                  <span>1 chữ cái viết hoa</span>
+                </div>
+                <div id="critNum" class="pwd-criterion">
+                  <span class="crit-icon">○</span>
+                  <span>Có số</span>
+                </div>
+                <div id="critSpec" class="pwd-criterion">
+                  <span class="crit-icon">○</span>
+                  <span>1 kí tự đặc biệt</span>
+                </div>
+              </div>
+            </div>
+
+            <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: #EF4444; font-size: 0.8rem; margin-top: 0.35rem; display: block;"></small>
+          </div>
+
+          <!-- 6. Xác nhận mật khẩu -->
+          <div class="form-group">
+            <label class="form-label" for="regConfirmPassword">Xác nhận mật khẩu <span style="color: #EF4444;">*</span></label>
+            <div class="password-wrapper">
+              <input type="password" id="regConfirmPassword" th:field="*{confirmPassword}" class="form-control"
+                     placeholder="Nhập lại chính xác mật khẩu ở trên" required oninput="checkPasswordMatch()">
+              <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regConfirmPassword', this)"
+                      aria-label="Hiện mật khẩu" title="Hiện mật khẩu" tabindex="-1">
+                <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <div id="pwdMatchNotice" style="font-size: 0.82rem; margin-top: 0.35rem; display: none; font-weight: 600;"></div>
+            <small th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" style="color: #EF4444; font-size: 0.8rem;"></small>
+          </div>
+
+          <!-- Tùy chọn: CCCD & Email -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="form-group">
+              <label class="form-label" for="regIdNumber">Số CCCD (Không bắt buộc)</label>
+              <input type="text" id="regIdNumber" th:field="*{idNumber}" class="form-control" placeholder="12 chữ số">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regEmail">Email (Không bắt buộc)</label>
+              <input type="email" id="regEmail" th:field="*{email}" class="form-control" placeholder="name@gmail.com">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.75rem; font-weight: 700;">
+            ★ Hoàn Tất Đăng Ký Thành Viên
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+    <script>
+      function openDatePicker(inputId) {
+        var input = document.getElementById(inputId);
+        if (!input) return;
+        if (typeof input.showPicker === 'function') {
+          try {
+            input.showPicker();
+            return;
+          } catch (err) {
+            console.debug('showPicker error:', err);
+          }
+        }
+        input.focus();
+      }
+
+      function switchTab(tab) {
+        var loginTab = document.getElementById('tabContentLogin');
+        var regTab = document.getElementById('tabContentRegister');
+        var btnLogin = document.getElementById('tabBtnLogin');
+        var btnReg = document.getElementById('tabBtnRegister');
+
+        if (!loginTab || !regTab || !btnLogin || !btnReg) return;
+
+        if (tab === 'register') {
+          loginTab.style.display = 'none';
+          regTab.style.display = 'block';
+          btnLogin.style.color = 'var(--text-secondary)';
+          btnLogin.style.borderBottom = '2px solid transparent';
+          btnReg.style.color = 'var(--primary)';
+          btnReg.style.borderBottom = '2px solid var(--primary)';
+        } else {
+          loginTab.style.display = 'block';
+          regTab.style.display = 'none';
+          btnReg.style.color = 'var(--text-secondary)';
+          btnReg.style.borderBottom = '2px solid transparent';
+          btnLogin.style.color = 'var(--primary)';
+          btnLogin.style.borderBottom = '2px solid var(--primary)';
+        }
+      }
+
+      function togglePasswordVisibility(inputId, btn) {
+        var input = document.getElementById(inputId);
+        if (!input) return;
+        var isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+
+        var eyeSvg = '<svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+        var eyeOffSvg = '<svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+
+        btn.innerHTML = isPassword ? eyeOffSvg : eyeSvg;
+        btn.setAttribute('aria-label', isPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+        btn.setAttribute('title', isPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+      }
+
+      function evaluatePasswordSecurity(pwd) {
+        if (!pwd) pwd = '';
+        var hasSpace = /\s/.test(pwd);
+        var hasLen = pwd.length >= 8;
+        var hasUpper = /[A-Z]/.test(pwd);
+        var hasNum = /[0-9]/.test(pwd);
+        // Loại bỏ dấu cách hoàn toàn khỏi ký tự đặc biệt
+        var hasSpec = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(pwd);
+
+        var score = (hasLen ? 1 : 0) + (hasUpper ? 1 : 0) + (hasNum ? 1 : 0) + (hasSpec ? 1 : 0);
+
+        updateCriterion('critLen', hasLen);
+        updateCriterion('critUpper', hasUpper);
+        updateCriterion('critNum', hasNum);
+        updateCriterion('critSpec', hasSpec);
+
+        var bar = document.getElementById('pwdStrengthBar');
+        var label = document.getElementById('pwdStrengthLabel');
+
+        if (bar && label) {
+          if (pwd.length === 0) {
+            bar.style.width = '0%';
+            bar.style.backgroundColor = '#EF4444';
+            bar.style.boxShadow = 'none';
+            label.textContent = 'Chưa nhập (0/4)';
+            label.style.color = '#EF4444';
+          } else if (hasSpace) {
+            bar.style.width = Math.max(score * 25, 25) + '%';
+            bar.style.backgroundColor = '#EF4444';
+            bar.style.boxShadow = '0 0 8px rgba(239, 68, 68, 0.4)';
+            label.textContent = '✕ Không được chứa dấu cách (' + score + '/4)';
+            label.style.color = '#EF4444';
+          } else if (score === 1) {
+            bar.style.width = '25%';
+            bar.style.backgroundColor = '#EF4444';
+            bar.style.boxShadow = '0 0 8px rgba(239, 68, 68, 0.4)';
+            label.textContent = 'Yếu (1/4)';
+            label.style.color = '#EF4444';
+          } else if (score === 2) {
+            bar.style.width = '50%';
+            bar.style.backgroundColor = '#F97316';
+            bar.style.boxShadow = '0 0 8px rgba(249, 115, 22, 0.4)';
+            label.textContent = 'Trung bình (2/4)';
+            label.style.color = '#F97316';
+          } else if (score === 3) {
+            bar.style.width = '75%';
+            bar.style.backgroundColor = '#FBBF24';
+            bar.style.boxShadow = '0 0 8px rgba(251, 191, 36, 0.4)';
+            label.textContent = 'Khá an toàn (3/4)';
+            label.style.color = '#FBBF24';
+          } else if (score === 4) {
+            bar.style.width = '100%';
+            bar.style.backgroundColor = '#10B981';
+            bar.style.boxShadow = '0 0 10px rgba(16, 185, 129, 0.5)';
+            label.textContent = 'Mạnh & Chuẩn an toàn (4/4) ★';
+            label.style.color = '#10B981';
+          }
+        }
+        return { score: score, hasSpace: hasSpace };
+      }
+
+      function updateCriterion(elemId, fulfilled) {
+        var el = document.getElementById(elemId);
+        if (!el) return;
+        var icon = el.querySelector('.crit-icon');
+        if (fulfilled) {
+          el.classList.add('fulfilled');
+          if (icon) icon.textContent = '✓';
+        } else {
+          el.classList.remove('fulfilled');
+          if (icon) icon.textContent = '○';
+        }
+      }
+
+      function onPasswordInput() {
+        var pInput = document.getElementById('regPassword');
+        var pwd = pInput ? pInput.value : '';
+        evaluatePasswordSecurity(pwd);
+        checkPasswordMatch();
+      }
+
+      function checkPasswordMatch() {
+        var p1 = document.getElementById('regPassword') ? document.getElementById('regPassword').value : '';
+        var p2 = document.getElementById('regConfirmPassword') ? document.getElementById('regConfirmPassword').value : '';
+        var notice = document.getElementById('pwdMatchNotice');
+        if (!notice) return;
+
+        if (!p2) {
+          notice.style.display = 'none';
+          return;
+        }
+        notice.style.display = 'block';
+        if (p1 === p2) {
+          notice.style.color = '#10B981';
+          notice.textContent = '✓ Mật khẩu trùng khớp';
+        } else {
+          notice.style.color = '#EF4444';
+          notice.textContent = '✕ Mật khẩu chưa trùng khớp';
+        }
+      }
+
+      function validateRegisterForm(e) {
+        var p1 = document.getElementById('regPassword') ? document.getElementById('regPassword').value : '';
+        var p2 = document.getElementById('regConfirmPassword') ? document.getElementById('regConfirmPassword').value : '';
+
+        var res = evaluatePasswordSecurity(p1);
+        if (res.hasSpace) {
+          alert('Mật khẩu không được chứa dấu cách (khoảng trắng). Vui lòng xóa dấu cách.');
+          if (e) e.preventDefault();
+          var p1Input = document.getElementById('regPassword');
+          if (p1Input) p1Input.focus();
+          return false;
+        }
+
+        if (res.score < 4) {
+          alert('Mật khẩu chưa đáp ứng đủ 4 tiêu chí bảo mật:\n• Ít nhất 8 ký tự\n• 1 chữ cái viết hoa (A-Z)\n• Có số (0-9)\n• 1 kí tự đặc biệt (!@#$...) (không tính dấu cách)');
+          if (e) e.preventDefault();
+          var p1Input = document.getElementById('regPassword');
+          if (p1Input) p1Input.focus();
+          return false;
+        }
+
+        if (p1 !== p2) {
+          alert('Mật khẩu và xác nhận mật khẩu không trùng khớp. Vui lòng kiểm tra lại.');
+          if (e) e.preventDefault();
+          var confirmInput = document.getElementById('regConfirmPassword');
+          if (confirmInput) confirmInput.focus();
+          return false;
+        }
+        return true;
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var btnLogin = document.getElementById('tabBtnLogin');
+        var btnReg = document.getElementById('tabBtnRegister');
+        if (btnLogin) {
+          btnLogin.addEventListener('click', function() { switchTab('login'); });
+        }
+        if (btnReg) {
+          btnReg.addEventListener('click', function() { switchTab('register'); });
+        }
+
+        if (window.location.pathname.indexOf('/register') !== -1 || window.location.hash === '#register' || window.location.search.indexOf('tab=register') !== -1) {
+          switchTab('register');
+        }
+
+        var regPwd = document.getElementById('regPassword');
+        if (regPwd && regPwd.value) {
+          evaluatePasswordSecurity(regPwd.value);
+        }
+      });
+    </script>
+  </div>
+</body>
+</html>

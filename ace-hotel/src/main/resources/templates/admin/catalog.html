@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/pms-layout :: layout(~{::title}, ~{::content})}">
+<head>
+  <title>Quản Trị Danh Mục &amp; Biểu Giá | ACE Hotel</title>
+</head>
+<body>
+  <div th:fragment="content">
+
+    <!-- Header & Mode Badge -->
+    <div class="flex items-center justify-between" style="margin-bottom: 1.5rem;">
+      <div>
+        <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Quản Lý Danh Mục &amp; Biểu Giá Phòng</h2>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); margin: 0;">
+          Cấu hình giá linh hoạt (Ngày thường T2–T5 &amp; Cuối tuần T6–CN), Phòng vật lý và 4 nhóm dịch vụ Room Folio.
+        </p>
+      </div>
+      <div>
+        <span sec:authorize="hasRole('ADMIN')" class="badge-status badge-available" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">
+          Toàn quyền Quản trị (Admin CRUD)
+        </span>
+        <span sec:authorize="!hasRole('ADMIN')" class="badge-status badge-reserved" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">
+          Chế độ Tra Cứu (Lễ Tân - Read Only)
+        </span>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs (Instant Client-Side Tabs: 0ms lag, No reload) -->
+    <div class="flex gap-2" style="border-bottom: 1px solid var(--border); margin-bottom: 1.75rem;">
+      <button type="button" id="tabBtn-room-types"
+              class="btn btn-sm catalog-tab-btn btn-primary"
+              onclick="switchCatalogTab('room-types')"
+              style="display: inline-flex; align-items: center; gap: 0.45rem;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="9" y1="22" x2="9" y2="18"></line><line x1="15" y1="22" x2="15" y2="18"></line></svg>
+        <span>1. Hạng Phòng &amp; Biểu Giá Động</span>
+      </button>
+      <button type="button" id="tabBtn-rooms"
+              class="btn btn-sm catalog-tab-btn btn-secondary"
+              onclick="switchCatalogTab('rooms')"
+              style="display: inline-flex; align-items: center; gap: 0.45rem;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8" cy="12" r="1.5"></circle></svg>
+        <span>2. Phòng Vật Lý &amp; Bảo Trì</span>
+      </button>
+      <button type="button" id="tabBtn-services"
+              class="btn btn-sm catalog-tab-btn btn-secondary"
+              onclick="switchCatalogTab('services')"
+              style="display: inline-flex; align-items: center; gap: 0.45rem;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg>
+        <span>3. Danh Mục 4 Nhóm Dịch Vụ</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: HẠNG PHÒNG & BIỂU GIÁ (Client-Side Tab Panel) -->
+    <div id="tabContent-room-types" class="catalog-tab-content">
+      <div class="grid grid-cols-3 gap-6">
+
+        <!-- Form Thêm / Cập nhật Hạng Phòng (Chỉ ADMIN) -->
+        <div class="card card-elevated" sec:authorize="hasRole('ADMIN')">
+          <h3 style="font-size: 1.1rem; color: var(--primary); margin-bottom: 1rem;">Thêm / Sửa Hạng Phòng</h3>
+          <form th:action="@{/admin/room-types/save}" method="post">
+            <input type="hidden" id="rtId" name="roomTypeId">
+
+            <div class="form-group">
+              <label class="form-label" for="rtName">Tên hạng phòng *</label>
+              <input type="text" id="rtName" name="name" class="form-control" placeholder="Ví dụ: Deluxe Suite" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rtCapacity">Sức chứa tối đa (Khách) *</label>
+              <input type="number" id="rtCapacity" name="capacity" class="form-control" min="1" value="2" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rtWeekdayPrice">Giá ngày thường T2–T5 (VNĐ) *</label>
+              <input type="number" id="rtWeekdayPrice" name="pricePerNight" class="form-control" min="1000" step="1000" placeholder="780000" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rtWeekendPrice">Giá cuối tuần T6–CN (VNĐ) *</label>
+              <input type="number" id="rtWeekendPrice" name="weekendPricePerNight" class="form-control" min="1000" step="1000" placeholder="950000" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rtDescription">Mô tả đặc trưng</label>
+              <textarea id="rtDescription" name="description" class="form-control" rows="2" placeholder="Nội thất sang trọng, tiện nghi cao cấp..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rtImageUrl">Đường dẫn ảnh minh họa</label>
+              <input type="text" id="rtImageUrl" name="imageUrl" class="form-control" value="/images/room-standard.png">
+            </div>
+
+            <div class="flex gap-2">
+              <button type="submit" class="btn btn-primary" style="flex: 1;">Lưu Hạng Phòng</button>
+              <button type="reset" class="btn btn-secondary" onclick="resetRtForm()">Làm mới</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Bảng Danh Sách Hạng Phòng -->
+        <div th:class="${#authorization.expression('hasRole(''ADMIN'')')} ? 'card col-span-2' : 'card col-span-3'" style="grid-column: span 2;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Bảng Giá 5 Hạng Phòng Hiện Hành</h3>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Hạng Phòng</th>
+                  <th>Sức Chứa</th>
+                  <th>Giá T2–T5 (Thường)</th>
+                  <th>Giá T6–CN (Cuối Tuần)</th>
+                  <th>Mô Tả</th>
+                  <th sec:authorize="hasRole('ADMIN')" style="text-align: right;">Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="rt : ${roomTypes}">
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <img th:src="${rt.imageUrl}" alt="Room" style="width: 42px; height: 30px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border);">
+                      <strong th:text="${rt.name}" style="color: var(--text);"></strong>
+                    </div>
+                  </td>
+                  <td><span th:text="${rt.capacity}"></span> khách</td>
+                  <td><span style="color: var(--primary); font-weight: 700;" th:text="${#numbers.formatDecimal(rt.pricePerNight, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span></td>
+                  <td><span style="color: var(--primary); font-weight: 700;" th:text="${#numbers.formatDecimal(rt.weekendPricePerNight, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span></td>
+                  <td><small style="color: var(--text-secondary);" th:text="${rt.description}"></small></td>
+                  <td sec:authorize="hasRole('ADMIN')" style="text-align: right;">
+                    <div class="flex justify-center gap-1">
+                      <button type="button" class="btn btn-secondary btn-sm"
+                              th:data-id="${rt.roomTypeId}"
+                              th:data-name="${rt.name}"
+                              th:data-cap="${rt.capacity}"
+                              th:data-weekday="${rt.pricePerNight}"
+                              th:data-weekend="${rt.weekendPricePerNight}"
+                              th:data-desc="${rt.description}"
+                              th:data-img="${rt.imageUrl}"
+                              onclick="editRt(this)">Sửa</button>
+                      <form th:action="@{/admin/room-types/{id}/delete(id=${rt.roomTypeId})}" method="post"
+                            data-confirm="Bạn có chắc chắn muốn xóa hạng phòng này?"
+                            data-confirm-title="Xác Nhận Xóa Hạng Phòng"
+                            data-confirm-desc="Không thể xóa hạng phòng nếu đã có phòng vật lý hoặc đơn đặt phòng liên kết."
+                            data-confirm-btn="Xóa Hạng Phòng"
+                            data-confirm-type="danger">
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: PHÒNG VẬT LÝ & BẢO TRÌ (Client-Side Tab Panel) -->
+    <div id="tabContent-rooms" class="catalog-tab-content" style="display: none;">
+      <div class="grid grid-cols-3 gap-6">
+
+        <!-- Form Thêm Phòng (Chỉ ADMIN) -->
+        <div class="card card-elevated" sec:authorize="hasRole('ADMIN')">
+          <h3 style="font-size: 1.1rem; color: var(--primary); margin-bottom: 1rem;">Thêm Phòng Mới</h3>
+          <form th:action="@{/admin/rooms/save}" method="post">
+            <input type="hidden" id="roomId" name="roomId">
+
+            <div class="form-group">
+              <label class="form-label" for="roomNumber">Số phòng *</label>
+              <input type="text" id="roomNumber" name="roomNumber" class="form-control" placeholder="Ví dụ: 105, 204" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="roomFloor">Tầng lầu *</label>
+              <input type="number" id="roomFloor" name="floor" class="form-control" min="1" value="1" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="roomTypeId">Thuộc hạng phòng *</label>
+              <select id="roomTypeId" name="roomTypeId" class="form-select" required>
+                <option th:each="t : ${roomTypes}" th:value="${t.roomTypeId}" th:text="${t.name + ' (' + #numbers.formatDecimal(t.pricePerNight, 0, 'COMMA', 0, 'POINT') + ' đ)'}"></option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Lưu Phòng Mới</button>
+          </form>
+        </div>
+
+        <!-- Bảng Danh Sách Phòng Vật Lý -->
+        <div th:class="${#authorization.expression('hasRole(''ADMIN'')')} ? 'card col-span-2' : 'card col-span-3'" style="grid-column: span 2;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Sơ Đồ 12 Phòng Vật Lý &amp; Trạng Thái Khai Thác</h3>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Số Phòng</th>
+                  <th>Tầng</th>
+                  <th>Hạng Phòng</th>
+                  <th>Trạng Thái</th>
+                  <th sec:authorize="hasRole('ADMIN')" style="text-align: right;">Bảo Trì / Xóa</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="r : ${rooms}">
+                  <td><strong style="font-size: 1.05rem; color: var(--primary);" th:text="'P.' + ${r.roomNumber}"></strong></td>
+                  <td>Tầng <span th:text="${r.floor}"></span></td>
+                  <td th:text="${r.roomType.name}"></td>
+                  <td>
+                    <span th:if="${r.status.name() == 'AVAILABLE'}" class="badge-status badge-available">AVAILABLE (Trống sạch)</span>
+                    <span th:if="${r.status.name() == 'OCCUPIED'}" class="badge-status badge-occupied">OCCUPIED (Đang ở)</span>
+                    <span th:if="${r.status.name() == 'DIRTY'}" class="badge-status badge-dirty">DIRTY (Chờ dọn)</span>
+                    <span th:if="${r.status.name() == 'MAINTENANCE'}" class="badge-status badge-maintenance">MAINTENANCE (Bảo trì)</span>
+                  </td>
+                  <td sec:authorize="hasRole('ADMIN')" style="text-align: right;">
+                    <div class="flex justify-center gap-1">
+                      <!-- Nút bật / tắt bảo trì -->
+                      <form th:action="@{/admin/rooms/{id}/toggle-maintenance(id=${r.roomId})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-sm"
+                                th:classappend="${r.status.name() == 'MAINTENANCE' ? 'btn-primary' : 'btn-secondary'}"
+                                th:disabled="${r.status.name() == 'OCCUPIED'}"
+                                th:title="${r.status.name() == 'OCCUPIED' ? 'Không thể bảo trì phòng đang có khách' : 'Bật/Tắt bảo trì'}">
+                          <span th:text="${r.status.name() == 'MAINTENANCE' ? 'Mở lại' : 'Bảo trì'}"></span>
+                        </button>
+                      </form>
+
+                      <!-- Nút xóa phòng -->
+                      <form th:action="@{/admin/rooms/{id}/delete(id=${r.roomId})}" method="post" style="display: inline;"
+                            data-confirm="Bạn có chắc chắn muốn xóa phòng vật lý này?"
+                            data-confirm-title="Xác Nhận Xóa Phòng"
+                            data-confirm-desc="Không thể xóa phòng đã có lịch sử đặt phòng. Thay vào đó bạn có thể chuyển sang trạng thái Bảo trì."
+                            data-confirm-btn="Xóa Phòng"
+                            data-confirm-type="danger">
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 3: DANH MỤC 4 NHÓM DỊCH VỤ (Client-Side Tab Panel) -->
+    <div id="tabContent-services" class="catalog-tab-content" style="display: none;">
+      <div class="grid grid-cols-3 gap-6">
+
+        <!-- Form Thêm Dịch Vụ (Chỉ ADMIN) -->
+        <div class="card card-elevated" sec:authorize="hasRole('ADMIN')">
+          <h3 style="font-size: 1.1rem; color: var(--primary); margin-bottom: 1rem;">Thêm / Sửa Dịch Vụ</h3>
+          <form th:action="@{/admin/services/save}" method="post">
+            <input type="hidden" id="srvId" name="serviceId">
+
+            <div class="form-group">
+              <label class="form-label" for="srvName">Tên dịch vụ / hàng hóa *</label>
+              <input type="text" id="srvName" name="name" class="form-control" placeholder="Ví dụ: Giặt ủi áo sơ mi" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="srvCategory">Nhóm dịch vụ Room Folio *</label>
+              <select id="srvCategory" name="category" class="form-select" required>
+                <option value="MINIBAR">MINIBAR (Đồ uống, snack trong phòng)</option>
+                <option value="LAUNDRY">LAUNDRY (Giặt ủi, là hấp trang phục)</option>
+                <option value="FB">FB (Ẩm thực phòng, bữa sáng bổ sung)</option>
+                <option value="DAMAGES">DAMAGES (Bồi thường tài sản hư hao)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="srvPrice">Đơn giá (VNĐ) *</label>
+              <input type="number" id="srvPrice" name="unitPrice" class="form-control" min="0" step="1000" placeholder="50000" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="srvUnit">Đơn vị tính *</label>
+              <input type="text" id="srvUnit" name="unit" class="form-control" placeholder="Ví dụ: Lon, Gói, Chiếc, Bộ" required>
+            </div>
+
+            <div class="flex gap-2">
+              <button type="submit" class="btn btn-primary" style="flex: 1;">Lưu Dịch Vụ</button>
+              <button type="reset" class="btn btn-secondary" onclick="resetSrvForm()">Làm mới</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Bảng Danh Sách Dịch Vụ -->
+        <div th:class="${#authorization.expression('hasRole(''ADMIN'')')} ? 'card col-span-2' : 'card col-span-3'" style="grid-column: span 2;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Danh Mục 4 Nhóm Dịch Vụ Lưu Trú</h3>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Tên Dịch Vụ</th>
+                  <th>Nhóm Danh Mục</th>
+                  <th>Đơn Giá (VNĐ)</th>
+                  <th>Đơn Vị</th>
+                  <th sec:authorize="hasRole('ADMIN')" style="text-align: right;">Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="s : ${services}">
+                  <td><strong th:text="${s.name}" style="color: var(--text);"></strong></td>
+                  <td>
+                    <span th:if="${s.category.name() == 'MINIBAR'}" style="color: #60A5FA; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#60A5FA;"></span>MINIBAR</span>
+                    <span th:if="${s.category.name() == 'LAUNDRY'}" style="color: #A78BFA; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#A78BFA;"></span>LAUNDRY</span>
+                    <span th:if="${s.category.name() == 'FB'}" style="color: #FDBF2D; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#FDBF2D;"></span>F&amp;B</span>
+                    <span th:if="${s.category.name() == 'DAMAGES'}" style="color: #F87171; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#F87171;"></span>DAMAGES</span>
+                  </td>
+                  <td><span style="color: var(--primary); font-weight: 700;" th:text="${#numbers.formatDecimal(s.unitPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span></td>
+                  <td th:text="${s.unit}"></td>
+                  <td sec:authorize="hasRole('ADMIN')" style="text-align: right;">
+                    <div class="flex justify-center gap-1">
+                      <button type="button" class="btn btn-secondary btn-sm"
+                              th:data-id="${s.serviceId}"
+                              th:data-name="${s.name}"
+                              th:data-cat="${s.category.name()}"
+                              th:data-price="${s.unitPrice}"
+                              th:data-unit="${s.unit}"
+                              onclick="editSrv(this)">Sửa</button>
+                      <form th:action="@{/admin/services/{id}/delete(id=${s.serviceId})}" method="post"
+                            data-confirm="Bạn có chắc chắn muốn xóa dịch vụ này khỏi danh mục?"
+                            data-confirm-title="Xác Nhận Xóa Dịch Vụ"
+                            data-confirm-desc="Không thể xóa dịch vụ nếu đã phát sinh trong lịch sử Room Folio của khách hàng."
+                            data-confirm-btn="Xóa Dịch Vụ"
+                            data-confirm-type="danger">
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SCRIPT ĐIỀU KHIỂN TỨC THÌ (Must be inside content fragment) -->
+    <script th:inline="javascript">
+      // Instant Client-Side Tab Switching (0ms lag, no page reload)
+      function switchCatalogTab(tabName) {
+        var tabIds = ['room-types', 'rooms', 'services'];
+        tabIds.forEach(function (id) {
+          var contentEl = document.getElementById('tabContent-' + id);
+          var btnEl = document.getElementById('tabBtn-' + id);
+          if (contentEl) {
+            contentEl.style.display = (id === tabName) ? 'block' : 'none';
+          }
+          if (btnEl) {
+            if (id === tabName) {
+              btnEl.classList.remove('btn-secondary');
+              btnEl.classList.add('btn-primary');
+            } else {
+              btnEl.classList.remove('btn-primary');
+              btnEl.classList.add('btn-secondary');
+            }
+          }
+        });
+
+        // Update URL query param smoothly without reloading the page
+        try {
+          var url = new URL(window.location.href);
+          url.searchParams.set('tab', tabName);
+          window.history.replaceState({ tab: tabName }, '', url.toString());
+        } catch (e) {}
+      }
+
+      // Read active tab on load from URL or server-injected activeTab
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var serverActive = /*[[${activeTab}]]*/ 'room-types';
+        var targetTab = params.get('tab') || serverActive || 'room-types';
+        if (targetTab === 'rooms' || targetTab === 'services' || targetTab === 'room-types') {
+          switchCatalogTab(targetTab);
+        }
+      })();
+
+      function editRt(btn) {
+        document.getElementById('rtId').value = btn.getAttribute('data-id');
+        document.getElementById('rtName').value = btn.getAttribute('data-name');
+        document.getElementById('rtCapacity').value = btn.getAttribute('data-cap');
+        document.getElementById('rtWeekdayPrice').value = btn.getAttribute('data-weekday');
+        document.getElementById('rtWeekendPrice').value = btn.getAttribute('data-weekend');
+        document.getElementById('rtDescription').value = btn.getAttribute('data-desc');
+        document.getElementById('rtImageUrl').value = btn.getAttribute('data-img');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function resetRtForm() {
+        document.getElementById('rtId').value = '';
+      }
+
+      function editSrv(btn) {
+        document.getElementById('srvId').value = btn.getAttribute('data-id');
+        document.getElementById('srvName').value = btn.getAttribute('data-name');
+        var srvCat = document.getElementById('srvCategory');
+        if (srvCat) {
+          srvCat.value = btn.getAttribute('data-cat');
+          srvCat.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        document.getElementById('srvPrice').value = btn.getAttribute('data-price');
+        document.getElementById('srvUnit').value = btn.getAttribute('data-unit');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function resetSrvForm() {
+        document.getElementById('srvId').value = '';
+      }
+    </script>
+
+  </div>
+</body>
+</html>

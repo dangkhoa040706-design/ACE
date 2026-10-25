@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/pms-layout :: layout(~{::title}, ~{::content})}">
+<head>
+  <title>Bàn Điều Hành Quản Trị Viên | ACE Hotel PMS</title>
+</head>
+<body>
+  <div th:fragment="content" style="padding: 0.85rem 1.25rem; max-width: 1720px; margin: 0 auto; box-sizing: border-box;">
+
+    <!-- ========================================================================= -->
+    <!-- 1. SLIM EXECUTIVE HEADER BAR (Cao 48px, Thay thế hoàn toàn banner to & phím tắt) -->
+    <!-- ========================================================================= -->
+    <div class="exec-slim-bar">
+      <!-- Left: Live Clock & Greeting -->
+      <div class="flex items-center gap-3" style="font-size: 0.84rem; overflow: hidden; white-space: nowrap;">
+        <span style="display: inline-flex; align-items: center; gap: 0.45rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span id="heroClockLive" class="tabular-num" style="color: #FDBF2D; font-weight: 700; letter-spacing: 0.3px;" th:text="${dashboard.currentDateText}">
+            Thứ Sáu, 23/10/2026 • 13:59
+          </span>
+        </span>
+        <span style="color: rgba(255, 255, 255, 0.2);">•</span>
+        <span style="color: var(--text-secondary); font-weight: 500;">
+          Xin chào, <strong style="color: var(--text); font-weight: 700;">Quản Trị Viên</strong>
+        </span>
+      </div>
+
+      <!-- Right: Action Buttons (Cài đặt & Báo cáo) -->
+      <div class="flex items-center gap-2" style="flex-shrink: 0;">
+        <a th:href="@{/admin/settings}" class="exec-btn-sm exec-btn-secondary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"></path><circle cx="7" cy="7" r="1"></circle></svg>
+          <span>Cài Đặt Biểu Giá</span>
+        </a>
+        <a th:href="@{/admin/reports}" class="exec-btn-sm exec-btn-gold">
+          <span>Phân Tích Doanh Thu Chi Tiết</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 2. BỘ 4 THẺ KPI MONOCHROMATIC OBSIDIAN & CHAMPAGNE GOLD (~118px)          -->
+    <!-- ========================================================================= -->
+    <div class="exec-kpi-grid">
+      
+      <!-- KPI 1: Công Suất Khai Thác (OR%) -->
+      <div class="exec-kpi-card">
+        <div class="flex justify-between items-center">
+          <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.6px;">
+            CÔNG SUẤT KHAI THÁC (OR%)
+          </span>
+          <span class="pms-role-badge badge-admin" style="font-size: 0.62rem; padding: 0.12rem 0.45rem;">MỤC TIÊU 85%</span>
+        </div>
+        <div style="font-size: 2rem; font-weight: 800; color: #FDBF2D; line-height: 1;">
+          <span class="tabular-num" th:text="${dashboard.occupancyRate}">45.5</span>%
+        </div>
+        <div>
+          <!-- Slim 4px progress bar -->
+          <div style="height: 4px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; margin-bottom: 0.35rem;">
+            <div style="height: 100%; background: #FDBF2D; border-radius: 999px; transition: width 0.6s ease;"
+                 th:style="'width: ' + ${dashboard.occupancyRate > 100 ? 100 : dashboard.occupancyRate} + '%;'"></div>
+          </div>
+          <div style="font-size: 0.72rem; color: var(--text-secondary);">
+            Đang khai thác <strong style="color: var(--text);" class="tabular-num" th:text="${dashboard.occupiedRooms}">5</strong> / <span class="tabular-num" th:text="${dashboard.sellableRooms}">11</span> phòng mở bán <span style="color: var(--text-muted);">(Trừ <span th:text="${dashboard.maintenanceRooms}">1</span> bảo trì)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI 2: Doanh Thu Hôm Nay (Trắng Ngọc Trai + đ vàng, BỎ xanh neon chói) -->
+      <div class="exec-kpi-card">
+        <div class="flex justify-between items-center">
+          <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.6px;">
+            DOANH THU HÔM NAY
+          </span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </div>
+        <div style="font-size: 1.85rem; font-weight: 800; color: #FFFFFF; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          <span class="tabular-num" th:text="${#numbers.formatDecimal(dashboard.todayRevenue, 0, 'POINT', 0, 'COMMA')}">2,656,500</span> <span style="font-size: 1.1rem; color: #FDBF2D; font-weight: 600;">đ</span>
+        </div>
+        <div style="font-size: 0.72rem; color: var(--text-secondary); line-height: 1.35;">
+          Lũy kế tháng: <strong style="color: #FDBF2D;" class="tabular-num" th:text="${#numbers.formatDecimal(dashboard.monthRevenue, 0, 'POINT', 0, 'COMMA')} + ' đ'">7.276.500 đ</strong>
+          <span style="color: var(--text-muted);"> • <span class="tabular-num" th:text="${dashboard.monthInvoicesCount}">2</span> HĐ quyết toán</span>
+        </div>
+      </div>
+
+      <!-- KPI 3: Nhịp Vận Hành Hôm Nay (3 Cột Số Học Tối Giản, BỎ 3 hộp màu) -->
+      <div class="exec-kpi-card">
+        <div class="flex justify-between items-center">
+          <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.6px;">
+            LƯU LƯỢNG KHÁCH HÔM NAY
+          </span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; align-items: center; text-align: center; margin: 0.15rem 0;">
+          <!-- Cột 1: Đến -->
+          <div>
+            <div style="font-size: 1.45rem; font-weight: 800; color: #E2E8F0;" class="tabular-num" th:text="${dashboard.arrivalsCount}">0</div>
+            <div style="font-size: 0.62rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-top: 2px;">KHÁCH ĐẾN</div>
+          </div>
+          <!-- Divider 1 -->
+          <div style="height: 28px; background: rgba(255,255,255,0.08);"></div>
+          <!-- Cột 2: Đi -->
+          <div>
+            <div style="font-size: 1.45rem; font-weight: 800; color: #FDBF2D;" class="tabular-num" th:text="${dashboard.departuresCount}">1</div>
+            <div style="font-size: 0.62rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-top: 2px;">KHÁCH ĐI</div>
+          </div>
+          <!-- Divider 2 -->
+          <div style="height: 28px; background: rgba(255,255,255,0.08);"></div>
+          <!-- Cột 3: Đang ở -->
+          <div>
+            <div style="font-size: 1.45rem; font-weight: 800; color: #FFFFFF;" class="tabular-num" th:text="${dashboard.inHouseCount}">5</div>
+            <div style="font-size: 0.62rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-top: 2px;">ĐANG LƯU TRÚ</div>
+          </div>
+        </div>
+        <div style="font-size: 0.68rem; color: var(--text-muted); text-align: center;">
+          Khách đến, đi &amp; đang lưu trú trong ngày
+        </div>
+      </div>
+
+      <!-- KPI 4: Cơ Cấu Quỹ Phòng (12 Phòng) -->
+      <div class="exec-kpi-card">
+        <div class="flex justify-between items-center">
+          <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.6px;">
+            CƠ CẤU QUỸ PHÒNG (12P)
+          </span>
+          <span style="font-size: 0.68rem; color: var(--text-secondary); font-weight: 700;">4 TẦNG LẦU</span>
+        </div>
+        <div style="font-size: 1.85rem; font-weight: 800; color: #10B981; line-height: 1;">
+          <span class="tabular-num" th:text="${dashboard.availableRooms}">5</span>
+          <span style="font-size: 1.05rem; color: var(--text-secondary); font-weight: 600;">/ 12</span>
+          <span style="font-size: 0.74rem; color: var(--text-secondary); font-weight: 500; margin-left: 0.35rem;">Trống sẵn sàng</span>
+        </div>
+        <div>
+          <!-- Spectrum 5px bar -->
+          <div style="height: 5px; display: flex; border-radius: 999px; overflow: hidden; gap: 2px; margin-bottom: 0.35rem; background: rgba(255,255,255,0.06);">
+            <div title="Trống sạch" th:style="'flex: ' + (${dashboard.availableRooms > 0 ? dashboard.availableRooms : 0.001}) + '; background: #10B981;'"></div>
+            <div title="Đang ở" th:style="'flex: ' + (${dashboard.occupiedRooms > 0 ? dashboard.occupiedRooms : 0.001}) + '; background: #FDBF2D;'"></div>
+            <div title="Chờ dọn" th:style="'flex: ' + (${dashboard.dirtyRooms > 0 ? dashboard.dirtyRooms : 0.001}) + '; background: #F97316;'"></div>
+            <div title="Bảo trì" th:style="'flex: ' + (${dashboard.maintenanceRooms > 0 ? dashboard.maintenanceRooms : 0.001}) + '; background: #64748B;'"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-secondary);">
+            <span><span style="color: #10B981; font-weight: 700;">●</span> Trống sạch: <strong class="tabular-num" th:text="${dashboard.availableRooms}">5</strong></span>
+            <span><span style="color: #FDBF2D; font-weight: 700;">●</span> Đang ở: <strong class="tabular-num" th:text="${dashboard.occupiedRooms}">5</strong></span>
+            <span><span style="color: #F97316; font-weight: 700;">●</span> Chờ dọn: <strong class="tabular-num" th:text="${dashboard.dirtyRooms}">1</strong></span>
+            <span><span style="color: #64748B; font-weight: 700;">●</span> Bảo trì: <strong class="tabular-num" th:text="${dashboard.maintenanceRooms}">1</strong></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 3. KHU VỰC CHÍNH: CHIA 2 KHỐI VỪA KHÍT MÀN HÌNH (5 Cols : 7 Cols)         -->
+    <!-- ========================================================================= -->
+    <div class="exec-main-split">
+      
+      <!-- KHỐI TRÁI (5/12): MA TRẬN KIẾN TRÚC 4 TẦNG LẦU CHUẨN (Đúng 3 phòng / tầng) -->
+      <div class="exec-card">
+        <div>
+          <div class="flex justify-between items-center" style="margin-bottom: 0.65rem;">
+            <h3 style="font-size: 0.88rem; font-weight: 800; color: #FDBF2D; margin: 0; display: flex; align-items: center; gap: 0.45rem; text-transform: uppercase; letter-spacing: 0.5px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path></svg>
+              <span>Ma Trận Kiến Trúc 4 Tầng Lầu</span>
+            </h3>
+            <a th:href="@{/staff/dashboard}" style="font-size: 0.72rem; color: #FDBF2D; text-decoration: none; font-weight: 700;">Sơ Đồ Phòng PMS →</a>
+          </div>
+
+          <!-- 4 Hàng Tầng Lầu (Mỗi tầng đúng 3 phòng: T1, T2, T3, T4) -->
+          <div th:each="entry : ${dashboard.roomsByFloor}" class="exec-floor-row">
+            <div class="exec-floor-badge" th:title="'Tầng ' + ${entry.key}">
+              <span th:text="'FL 0' + ${entry.key}">FL 01</span>
+              <span style="font-size: 0.6rem; opacity: 0.75; font-weight: normal; line-height: 1;" th:text="'Tầng ' + ${entry.key}">Tầng 1</span>
+            </div>
+            
+            <a th:each="rm : ${entry.value}"
+               th:href="@{/staff/dashboard}"
+               th:class="'mini-room-tile ' + 
+                         (${rm.status.name() == 'AVAILABLE'} ? 'status-available' : 
+                         (${rm.status.name() == 'OCCUPIED'} ? 'status-occupied' : 
+                         (${rm.status.name() == 'DIRTY'} ? 'status-dirty' : 'status-maintenance')))"
+               th:title="'Phòng ' + ${rm.roomNumber} + ' - ' + ${rm.roomType.name} + ' (' + ${rm.status.name()} + ')'">
+              <!-- Row 1: Số phòng + Status Dot -->
+              <div class="flex justify-between items-center">
+                <strong style="color: #FFFFFF; font-size: 0.88rem; font-weight: 700; font-family: 'JetBrains Mono', monospace;" th:text="'P.' + ${rm.roomNumber}">P.101</strong>
+                <span style="width: 7px; height: 7px; border-radius: 50%; display: inline-block;"
+                      th:style="'background-color: ' + 
+                                (${rm.status.name() == 'AVAILABLE'} ? '#10B981' : 
+                                (${rm.status.name() == 'OCCUPIED'} ? '#FDBF2D' : 
+                                (${rm.status.name() == 'DIRTY'} ? '#F97316' : '#64748B'))) + 
+                                '; box-shadow: 0 0 6px ' + 
+                                (${rm.status.name() == 'AVAILABLE'} ? '#10B981' : 
+                                (${rm.status.name() == 'OCCUPIED'} ? '#FDBF2D' : 
+                                (${rm.status.name() == 'DIRTY'} ? '#F97316' : '#64748B')))"></span>
+              </div>
+              <!-- Row 2: Tên hạng phòng + Nhãn trạng thái nhỏ -->
+              <div class="flex justify-between items-center" style="font-size: 0.65rem;">
+                <span style="color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65px;" th:text="${rm.roomType.name}">Standard</span>
+                <span style="font-weight: 700; text-transform: uppercase;"
+                      th:style="'color: ' + 
+                                (${rm.status.name() == 'AVAILABLE'} ? '#10B981' : 
+                                (${rm.status.name() == 'OCCUPIED'} ? '#FDBF2D' : 
+                                (${rm.status.name() == 'DIRTY'} ? '#F97316' : '#64748B')))">
+                  <span th:if="${rm.status.name() == 'AVAILABLE'}">TRỐNG</span>
+                  <span th:if="${rm.status.name() == 'OCCUPIED'}">ĐANG Ở</span>
+                  <span th:if="${rm.status.name() == 'DIRTY'}">CHỜ DỌN</span>
+                  <span th:if="${rm.status.name() == 'MAINTENANCE'}">BẢO TRÌ</span>
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Thanh Cảnh Báo Gọn 34px Ở Chân Khối Trái (Thay thế 2 hộp to thô) -->
+        <div th:if="${dashboard.dirtyRooms > 0 or dashboard.maintenanceRooms > 0}" class="exec-alert-strip">
+          <div class="flex items-center gap-2" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <span style="font-weight: 700;">⚠️</span>
+            <span>
+              <span th:if="${dashboard.dirtyRooms > 0}">
+                <strong class="tabular-num" th:text="${dashboard.dirtyRooms}">1</strong> phòng chờ dọn (<span th:each="d, iter : ${dashboard.dirtyRoomsList}"><span th:text="'P.' + ${d.roomNumber}">P.401</span><span th:if="${!iter.last}">, </span></span>)
+              </span>
+              <span th:if="${dashboard.dirtyRooms > 0 and dashboard.maintenanceRooms > 0}"> • </span>
+              <span th:if="${dashboard.maintenanceRooms > 0}">
+                <strong class="tabular-num" th:text="${dashboard.maintenanceRooms}">1</strong> phòng bảo trì
+              </span>
+            </span>
+          </div>
+          <a th:href="@{/staff/dashboard}" style="color: #F97316; font-weight: 700; text-decoration: underline; white-space: nowrap; margin-left: 0.5rem;">Đôn đốc ngay →</a>
+        </div>
+
+        <div th:if="${dashboard.dirtyRooms == 0 and dashboard.maintenanceRooms == 0}" class="exec-alert-strip is-all-clean">
+          <span>✓ Toàn bộ 12 buồng phòng sẵn sàng vận hành đạt chuẩn 5★</span>
+          <a th:href="@{/staff/dashboard}" style="color: #10B981; font-weight: 700; text-decoration: none;">Xem Sơ Đồ →</a>
+        </div>
+      </div>
+
+      <!-- KHỐI PHẢI (7/12): SỔ CÁI ĐƠN ĐẶT PHÒNG VIP MỚI NHẤT (Phong cách tài chính Linear/Stripe) -->
+      <div class="exec-card">
+        <div class="flex justify-between items-center" style="margin-bottom: 0.65rem;">
+          <h3 style="font-size: 0.88rem; font-weight: 800; color: #FDBF2D; margin: 0; display: flex; align-items: center; gap: 0.45rem; text-transform: uppercase; letter-spacing: 0.5px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            <span>Sổ Cái Đơn Đặt Phòng &amp; Giao Dịch Mới Nhất</span>
+          </h3>
+          <a th:href="@{/staff/dashboard}" style="font-size: 0.72rem; color: #FDBF2D; text-decoration: none; font-weight: 700;">Xem Tất Cả →</a>
+        </div>
+
+        <div style="overflow-x: auto; flex: 1;">
+          <table class="atelier-vip-table" style="font-size: 0.8rem;">
+            <thead>
+              <tr>
+                <th style="text-align: left; padding: 0.5rem 0.65rem;">Mã Đơn</th>
+                <th style="text-align: left; padding: 0.5rem 0.65rem;">Khách Hàng</th>
+                <th style="text-align: left; padding: 0.5rem 0.65rem;">Hạng Phòng</th>
+                <th style="text-align: left; padding: 0.5rem 0.65rem;">Lưu Trú</th>
+                <th style="text-align: right; padding: 0.5rem 0.65rem;">Cọc 30%</th>
+                <th style="text-align: right; padding: 0.5rem 0.65rem;">Trạng Thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="b : ${dashboard.recentBookings}">
+                <!-- Mã đơn: Không bao giờ gãy dòng -->
+                <td style="padding: 0.55rem 0.65rem; white-space: nowrap;">
+                  <span class="exec-table-code" th:text="${b.bookingCode}">BK-2401</span>
+                </td>
+                <!-- Khách hàng: Tên trắng + SĐT xám monospace -->
+                <td style="padding: 0.55rem 0.65rem;">
+                  <div style="font-weight: 600; color: #FFFFFF;" th:text="${b.customer != null ? b.customer.fullName : 'Khách vãng lai'}">Nguyễn Minh Anh</div>
+                  <div style="font-size: 0.7rem; color: #94A3B8; font-family: 'JetBrains Mono', monospace;" th:if="${b.customer != null and b.customer.phone != null}" th:text="${b.customer.phone}">0903...</div>
+                </td>
+                <!-- Hạng phòng & Phòng -->
+                <td style="padding: 0.55rem 0.65rem; white-space: nowrap;">
+                  <span style="color: var(--text); font-weight: 500;" th:text="${b.roomType != null ? b.roomType.name : 'N/A'}">Deluxe</span>
+                  <span th:if="${b.room != null}" class="exec-room-pill" th:text="'P.' + ${b.room.roomNumber}">P.301</span>
+                </td>
+                <!-- Lưu trú -->
+                <td style="padding: 0.55rem 0.65rem; white-space: nowrap; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #CBD5E1;">
+                  <span th:text="${#temporals.format(b.checkInDate, 'dd/MM')}">23/10</span> → 
+                  <span th:text="${#temporals.format(b.checkOutDate, 'dd/MM')}">25/10</span>
+                </td>
+                <!-- Cọc 30% -->
+                <td style="padding: 0.55rem 0.65rem; text-align: right; white-space: nowrap;">
+                  <span th:if="${b.depositAmount != null and b.depositAmount > 0}" style="color: #FFFFFF; font-weight: 700;" class="tabular-num">
+                    <span th:text="${#numbers.formatDecimal(b.depositAmount, 0, 'POINT', 0, 'COMMA')}">300,000</span> <span style="font-size: 0.75rem; color: #FDBF2D;">đ</span>
+                  </span>
+                  <span th:if="${b.depositAmount == null or b.depositAmount == 0}" style="color: #64748B; font-size: 0.75rem;">
+                    0 đ <small>(Walk-in)</small>
+                  </span>
+                </td>
+                <!-- Trạng thái -->
+                <td style="padding: 0.55rem 0.65rem; text-align: right; white-space: nowrap;">
+                  <span th:if="${b.status.name() == 'RESERVED'}" class="pms-role-badge badge-admin" style="font-size: 0.64rem; padding: 0.15rem 0.45rem;">ĐÃ ĐẶT (30%)</span>
+                  <span th:if="${b.status.name() == 'CHECKED_IN'}" class="pms-role-badge" style="font-size: 0.64rem; padding: 0.15rem 0.45rem; background: rgba(253, 191, 45, 0.15); color: #FDBF2D; border: 1px solid rgba(253, 191, 45, 0.35);">ĐANG Ở</span>
+                  <span th:if="${b.status.name() == 'CHECKED_OUT'}" class="pms-role-badge" style="font-size: 0.64rem; padding: 0.15rem 0.45rem; background: rgba(100, 116, 139, 0.15); color: #94A3B8; border: 1px solid rgba(100, 116, 139, 0.3);">HOÀN TẤT</span>
+                  <span th:if="${b.status.name() == 'CANCELLED'}" class="pms-role-badge" style="font-size: 0.64rem; padding: 0.15rem 0.45rem; background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.3);">ĐÃ HỦY</span>
+                </td>
+              </tr>
+              <tr th:if="${dashboard.recentBookings == null or #lists.isEmpty(dashboard.recentBookings)}">
+                <td colspan="6" style="text-align: center; padding: 1.5rem; color: var(--text-secondary);">
+                  <div>Chưa phát sinh giao dịch đặt phòng nào trong ngày hôm nay.</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- REALTIME CLOCK SCRIPT (Inside content fragment for Thymeleaf preservation) -->
+    <!-- ========================================================================= -->
+    <script>
+      (function () {
+        function updateExecutiveClock() {
+          var days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+          var now = new Date();
+          var dayName = days[now.getDay()];
+          var d = String(now.getDate()).padStart(2, '0');
+          var m = String(now.getMonth() + 1).padStart(2, '0');
+          var y = now.getFullYear();
+          var hh = String(now.getHours()).padStart(2, '0');
+          var mm = String(now.getMinutes()).padStart(2, '0');
+          var ss = String(now.getSeconds()).padStart(2, '0');
+
+          var clockEl = document.getElementById('heroClockLive');
+          if (clockEl) {
+            clockEl.textContent = dayName + ', ' + d + '/' + m + '/' + y + ' • ' + hh + ':' + mm + ':' + ss;
+          }
+        }
+
+        setInterval(updateExecutiveClock, 1000);
+        updateExecutiveClock();
+      })();
+    </script>
+
+  </div>
+</body>
+</html>

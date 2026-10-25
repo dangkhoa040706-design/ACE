@@ -1,0 +1,45 @@
+/* =========================================================================
+   ACE HOTEL DESIGN SYSTEM - PRINT STYLESHEET (print.css)
+   ========================================================================= */
+
+@media print {
+  .sidebar,
+  .topbar,
+  .navbar,
+  .footer,
+  .no-print,
+  .btn,
+  .flash-alert,
+  .theme-toggle-btn {
+    display: none !important;
+  }
+
+  body,
+  .pms-main,
+  .invoice-print-card {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .table th {
+    background-color: #F1F5F9 !important;
+    color: #000000 !important;
+    border-bottom: 2px solid #CBD5E1 !important;
+  }
+
+  .table td {
+    border-bottom: 1px solid #E2E8F0 !important;
+    color: #000000 !important;
+  }
+
+  .badge-status {
+    border: 1px solid #94A3B8 !important;
+    color: #000000 !important;
+    background: #F8FAFC !important;
+  }
+}

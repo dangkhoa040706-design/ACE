@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- ========================================================================= -->
+<!-- FRAGMENT: FOLIO QUICK MODAL POPUP FOR STAFF DASHBOARD                     -->
+<!-- ========================================================================= -->
+<div th:fragment="folioModal" class="folio-modal-wrapper">
+
+  <!-- 1. Header Bar -->
+  <div class="folio-modal-header">
+    <div class="flex items-center gap-3">
+      <div class="folio-modal-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2">
+          <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+          <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #FFFFFF; display: flex; align-items: center; gap: 0.4rem;">
+            <span>Room Folio:</span>
+            <span style="color: #FDBF2D;" th:text="'Phòng ' + ${booking.room != null ? booking.room.roomNumber : 'N/A'}">Phòng 101</span>
+          </h3>
+          <span class="badge badge-info" style="font-size: 0.72rem; padding: 0.15rem 0.5rem;" th:text="${booking.roomType.name}">Standard</span>
+          <span class="badge badge-success" style="font-size: 0.72rem; padding: 0.15rem 0.5rem;">ĐANG LƯU TRÚ</span>
+        </div>
+        <div style="font-size: 0.8rem; color: #94A3B8; margin-top: 0.25rem;">
+          Mã đơn: <strong style="color: #FDBF2D; font-family: monospace;" th:text="${booking.bookingCode}">BK-680566D1</strong> •
+          Khách hàng: <strong style="color: #FFFFFF;" th:text="${booking.customer.fullName}">Khách Walk-In Test</strong> •
+          Nhận phòng: <span th:text="${booking.actualCheckIn != null ? #temporals.format(booking.actualCheckIn, 'dd/MM/yyyy HH:mm') : 'N/A'}">23/10/2026 14:12</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <a th:href="@{'/staff/bookings/' + ${booking.bookingId} + '/check-out'}" class="btn btn-primary btn-sm" style="font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.4rem 0.75rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        <span>Check-out Quyết toán</span>
+      </a>
+      <button type="button" class="folio-modal-close" onclick="closeFolioModal()" title="Đóng popup (Esc)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Thông báo trạng thái nhanh bên trong popup -->
+  <div id="folioModalAlert" style="display: none; padding: 0.6rem 0.9rem; border-radius: 8px; font-size: 0.82rem; margin-bottom: 0.85rem;"></div>
+
+  <!-- 2. Form Ghi Nhận Dịch Vụ Mới Vào Sổ Cái Phòng -->
+  <div class="folio-service-box">
+    <div class="flex justify-between items-center" style="margin-bottom: 0.65rem;">
+      <h4 style="font-size: 0.88rem; font-weight: 700; color: #FDBF2D; margin: 0; display: flex; align-items: center; gap: 0.4rem; text-transform: uppercase; letter-spacing: 0.4px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>Ghi Nhận Dịch Vụ Mới Vào Sổ Cái Phòng</span>
+      </h4>
+      <span style="font-size: 0.72rem; color: #94A3B8;">4 Nhóm: Minibar, Giặt ủi, Ẩm thực, Đền bù</span>
+    </div>
+
+    <form id="folioAddServiceForm"
+          th:action="@{'/staff/bookings/' + ${booking.bookingId} + '/folio'}"
+          method="post"
+          onsubmit="return submitFolioService(event, this)">
+      <div class="flex flex-wrap gap-2 items-end">
+        <!-- Dropdown Dịch Vụ -->
+        <div style="flex: 3; min-width: 250px;">
+          <label style="font-size: 0.75rem; color: #CBD5E1; font-weight: 600; display: block; margin-bottom: 0.25rem;">
+            Chọn Dịch Vụ / Hàng Hóa Phát Sinh <span style="color: #EF4444;">*</span>
+          </label>
+          <select name="serviceId" class="form-control" required style="font-size: 0.82rem; height: 38px;">
+            <option value="" disabled selected>-- Chọn mặt hàng từ danh mục 4 nhóm --</option>
+            <option th:each="s : ${services}" th:value="${s.serviceId}"
+                    th:text="'[' + ${s.category.name()} + '] ' + ${s.name} + ' — ' + ${#numbers.formatDecimal(s.unitPrice, 0, 'COMMA', 0, 'POINT')} + 'đ / ' + ${s.unit}">
+              [MINIBAR] Nước khoáng Lavie 500ml — 20,000đ / Chai
+            </option>
+          </select>
+        </div>
+
+        <!-- Số Lượng -->
+        <div style="flex: 1; min-width: 90px; max-width: 120px;">
+          <label style="font-size: 0.75rem; color: #CBD5E1; font-weight: 600; display: block; margin-bottom: 0.25rem;">
+            Số Lượng <span style="color: #EF4444;">*</span>
+          </label>
+          <input type="number" name="quantity" class="form-control" value="1" min="1" max="99" required style="font-size: 0.82rem; height: 38px; text-align: center; font-weight: 700;">
+        </div>
+
+        <!-- Nút Ghi Sổ -->
+        <div>
+          <button type="submit" id="btnSubmitFolioService" class="btn btn-primary" style="height: 38px; font-size: 0.82rem; font-weight: 700; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.35rem;">
+            <span>+ Ghi vào Folio</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- 3. Bảng Sổ Cái Dịch Vụ Đã Sử Dụng -->
+  <div class="folio-table-wrapper">
+    <div class="flex items-center justify-between" style="margin-bottom: 0.65rem;">
+      <h4 style="font-size: 0.88rem; font-weight: 700; color: #FFFFFF; margin: 0; display: flex; align-items: center; gap: 0.4rem;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+        <span>Sổ Cái Dịch Vụ Lưu Trú Đã Sử Dụng (<span th:text="${serviceOrders.size()}">0</span> khoản)</span>
+      </h4>
+      <div style="font-size: 0.82rem; color: #CBD5E1;">
+        Tổng tiền dịch vụ:
+        <strong style="color: #FDBF2D; font-size: 1.05rem; font-family: monospace;"
+                th:text="${#numbers.formatDecimal(serviceChargeTotal, 0, 'COMMA', 0, 'POINT') + ' đ'}">0 đ</strong>
+        <span style="font-size: 0.7rem; color: #94A3B8;">(chưa gồm SVC 5% &amp; VAT 10%)</span>
+      </div>
+    </div>
+
+    <!-- Trạng thái trống -->
+    <div th:if="${serviceOrders.isEmpty()}" style="text-align: center; padding: 2rem 1rem; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); border-radius: 8px; color: #94A3B8; font-size: 0.82rem;">
+      Phòng này chưa có phát sinh dịch vụ Minibar, Giặt ủi, Ẩm thực hoặc Đền bù tài sản nào.
+    </div>
+
+    <!-- Bảng danh sách khi có dữ liệu -->
+    <div th:if="${!serviceOrders.isEmpty()}" style="max-height: 240px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
+      <table class="table" style="width: 100%; margin: 0; font-size: 0.8rem;">
+        <thead style="position: sticky; top: 0; background: #0E121B; z-index: 1;">
+          <tr>
+            <th style="width: 36px; text-align: center;">STT</th>
+            <th>Nhóm</th>
+            <th>Tên Mặt Hàng</th>
+            <th>Thời Gian</th>
+            <th>Nhân Viên</th>
+            <th style="text-align: center; width: 45px;">SL</th>
+            <th style="text-align: right;">Đơn Giá</th>
+            <th style="text-align: right;">Thành Tiền</th>
+            <th style="text-align: center; width: 50px;">Xóa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="item, stat : ${serviceOrders}">
+            <td style="text-align: center; color: #94A3B8;" th:text="${stat.count}">1</td>
+            <td>
+              <span class="badge" style="font-size: 0.65rem; padding: 0.12rem 0.4rem;"
+                    th:classappend="${item.service.category.name() == 'MINIBAR' ? 'badge-info' :
+                                    (item.service.category.name() == 'LAUNDRY' ? 'badge-secondary' :
+                                    (item.service.category.name() == 'FB' ? 'badge-warning' : 'badge-error'))}"
+                    th:text="${item.service.category.name()}">MINIBAR</span>
+            </td>
+            <td><strong style="color: #FFFFFF;" th:text="${item.service.name}">Nước Lavie</strong></td>
+            <td style="color: #94A3B8; font-family: monospace; font-size: 0.74rem;" th:text="${#temporals.format(item.orderedAt, 'dd/MM HH:mm')}">14:12</td>
+            <td style="color: #94A3B8;" th:text="${item.createdBy != null ? item.createdBy.fullName : 'Lễ tân'}">Lễ tân</td>
+            <td style="text-align: center; font-weight: 700; color: #FFFFFF;" th:text="${item.quantity}">1</td>
+            <td style="text-align: right; font-family: monospace; color: #94A3B8;" th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}">20,000 đ</td>
+            <td style="text-align: right; font-family: monospace; font-weight: 700; color: #FDBF2D;" th:text="${#numbers.formatDecimal(item.lineTotal, 0, 'COMMA', 0, 'POINT') + ' đ'}">20,000 đ</td>
+            <td style="text-align: center;">
+              <button type="button"
+                      class="btn btn-sm btn-danger"
+                      style="padding: 0.15rem 0.45rem; font-size: 0.72rem; line-height: 1; border-radius: 4px;"
+                      th:data-booking-id="${booking.bookingId}"
+                      th:data-order-id="${item.orderId}"
+                      th:data-item-name="${item.service.name}"
+                      onclick="deleteFolioService(this.getAttribute('data-booking-id'), this.getAttribute('data-order-id'), this.getAttribute('data-item-name'))"
+                      title="Xóa khoản dịch vụ này khỏi Folio">
+                ✕
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. Footer Bar -->
+  <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08);">
+    <button type="button" class="btn btn-secondary btn-sm" onclick="closeFolioModal()">
+      <span>Đóng</span>
+    </button>
+    <a th:href="@{'/staff/bookings/' + ${booking.bookingId} + '/check-out'}" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+      <span>Chuyển sang Check-out Quyết toán →</span>
+    </a>
+  </div>
+
+</div>
+
+</body>
+</html>
