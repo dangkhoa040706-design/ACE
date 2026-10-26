@@ -18,9 +18,59 @@ function toggleAceTheme() {
   try {
     var current = document.documentElement.getAttribute('data-theme') || 'dark';
     var next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('ace-theme', next);
+    applyAceThemeDirect(next);
   } catch (e) {}
+}
+
+// Áp dụng theme trực tiếp ('dark' hoặc 'light') & đồng bộ UI toàn diện
+function applyAceThemeDirect(themeName) {
+  try {
+    var theme = (themeName === 'light' || themeName === 'dark') ? themeName : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('ace-theme', theme);
+    syncAceThemeUI(theme);
+  } catch (e) {}
+}
+
+// Đồng bộ trạng thái visual của các nút bấm theme trong Dropdown và Header
+function syncAceThemeUI(currentTheme) {
+  try {
+    var theme = currentTheme || document.documentElement.getAttribute('data-theme') || localStorage.getItem('ace-theme') || 'dark';
+    var btnDark = document.getElementById('btnThemeDark');
+    var btnLight = document.getElementById('btnThemeLight');
+    var tagStatus = document.getElementById('pmsThemeStatusTag');
+
+    if (btnDark) {
+      if (theme === 'dark') {
+        btnDark.classList.add('active');
+      } else {
+        btnDark.classList.remove('active');
+      }
+    }
+
+    if (btnLight) {
+      if (theme === 'light') {
+        btnLight.classList.add('active');
+      } else {
+        btnLight.classList.remove('active');
+      }
+    }
+
+    if (tagStatus) {
+      tagStatus.textContent = theme === 'dark' ? 'Chế độ Tối' : 'Chế độ Sáng';
+    }
+  } catch (e) {}
+}
+
+// Tự động đồng bộ UI khi tải trang
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      syncAceThemeUI();
+    });
+  } else {
+    syncAceThemeUI();
+  }
 }
 
 /**

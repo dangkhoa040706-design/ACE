@@ -186,6 +186,45 @@
       color: #FFFFFF;
     }
 
+    /* Nút Bật Camera Quét QR trên Telemetry Action Bar */
+    .btn-scan-qr {
+      padding: 0.42rem 0.85rem;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: rgba(253, 191, 45, 0.12);
+      border: 1px solid rgba(253, 191, 45, 0.45);
+      color: #FDBF2D;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-scan-qr:hover {
+      background: #FDBF2D;
+      color: #0A0A0A;
+      box-shadow: 0 2px 10px rgba(253, 191, 45, 0.35);
+      transform: translateY(-1px);
+    }
+    :root[data-theme="light"] .btn-scan-qr {
+      background: rgba(180, 83, 9, 0.08);
+      border-color: rgba(180, 83, 9, 0.35);
+      color: #B45309;
+    }
+    :root[data-theme="light"] .btn-scan-qr:hover {
+      background: #B45309;
+      color: #FFFFFF;
+    }
+
+    .qr-scanner-wrapper {
+      position: relative;
+      margin: 0.5rem 0;
+    }
+      color: #FFFFFF;
+    }
+
     /* 2. Split Command Cockpit Grid */
     .cockpit-main-grid {
       display: grid;
@@ -752,7 +791,7 @@
         </button>
       </div>
 
-      <!-- Cụm Phải: Tra Cứu QR Nhanh & Đón Khách Walk-in -->
+      <!-- Cụm Phải: Tra Cứu QR Nhanh, Nút Quét Camera QR & Đón Khách Walk-in -->
       <div class="telemetry-actions-group">
         <form th:action="@{/staff/check-in}" method="get" class="search-qr-box" style="margin: 0;">
           <span class="search-qr-icon">
@@ -765,6 +804,11 @@
             <span>Tra cứu</span>
           </button>
         </form>
+
+        <button type="button" class="btn-scan-qr" onclick="openQrScannerModal()" title="Bật camera để quét mã QR từ phiếu xác nhận đặt trước của khách">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          <span>Quét QR</span>
+        </button>
 
         <a th:href="@{/staff/walk-in}" class="btn-walkin-action">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1183,7 +1227,220 @@
       }
       alertBox.textContent = message;
     }
+
+    // ==========================================
+    // Camera QR Code Scanner Controller
+    // ==========================================
+    var html5QrCodeScanner = null;
+    var isCameraRunning = false;
+
+    function openQrScannerModal() {
+      var backdrop = document.getElementById('qrScannerModalBackdrop');
+      backdrop.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #FDBF2D;">Đang kết nối camera...</span> Vui lòng bấm "Cho phép" (Allow) nếu trình duyệt hỏi quyền camera.';
+
+      startQrCamera();
+    }
+
+    function closeQrScannerModal() {
+      stopQrCamera(function() {
+        var backdrop = document.getElementById('qrScannerModalBackdrop');
+        if (backdrop) backdrop.classList.remove('is-open');
+        document.body.style.overflow = '';
+      });
+    }
+
+    function handleQrScannerBackdropClick(event) {
+      if (event.target.id === 'qrScannerModalBackdrop') {
+        closeQrScannerModal();
+      }
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        var backdrop = document.getElementById('qrScannerModalBackdrop');
+        if (backdrop && backdrop.classList.contains('is-open')) {
+          closeQrScannerModal();
+        }
+      }
+    });
+
+    function startQrCamera() {
+      if (typeof Html5Qrcode === 'undefined') {
+        document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #EF4444;">Không tìm thấy thư viện quét mã QR. Vui lòng thử lại.</span>';
+        return;
+      }
+
+      if (!html5QrCodeScanner) {
+        html5QrCodeScanner = new Html5Qrcode("qrReader");
+      }
+
+      var config = {
+        fps: 15,
+        qrbox: { width: 230, height: 230 },
+        aspectRatio: 1.0
+      };
+
+      html5QrCodeScanner.start(
+        { facingMode: "environment" },
+        config,
+        onQrCodeScanned,
+        onQrScanError
+      )
+      .then(function() {
+        isCameraRunning = true;
+        document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #10B981;">● Camera đang hoạt động</span> — Hướng mã QR vào khung ngắm';
+      })
+      .catch(function(err) {
+        Html5Qrcode.getCameras().then(function(cameras) {
+          if (cameras && cameras.length) {
+            html5QrCodeScanner.start(
+              cameras[0].id,
+              config,
+              onQrCodeScanned,
+              onQrScanError
+            ).then(function() {
+              isCameraRunning = true;
+              document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #10B981;">● Camera đang hoạt động</span> — Hướng mã QR vào khung ngắm';
+            }).catch(function(err2) {
+              handleCameraError(err2);
+            });
+          } else {
+            handleCameraError(err);
+          }
+        }).catch(function() {
+          handleCameraError(err);
+        });
+      });
+    }
+
+    function handleCameraError(err) {
+      isCameraRunning = false;
+      document.getElementById('qrScannerStatus').innerHTML = `
+        <div style="color: #EF4444; font-weight: 600; margin-bottom: 0.35rem;">Không thể truy cập camera</div>
+        <div style="color: #94A3B8; font-size: 0.74rem;">${err.message || 'Thiết bị không có camera hoặc quyền bị từ chối.'}</div>
+        <div style="color: #FDBF2D; font-size: 0.74rem; margin-top: 0.25rem;">Bạn có thể bấm nút "Tải ảnh bill từ máy" bên dưới để quét từ ảnh bill có sẵn.</div>
+      `;
+    }
+
+    function stopQrCamera(callback) {
+      if (html5QrCodeScanner && isCameraRunning) {
+        html5QrCodeScanner.stop().then(function() {
+          isCameraRunning = false;
+          if (callback) callback();
+        }).catch(function() {
+          isCameraRunning = false;
+          if (callback) callback();
+        });
+      } else {
+        if (callback) callback();
+      }
+    }
+
+    function onQrCodeScanned(decodedText, decodedResult) {
+      if (!decodedText) return;
+
+      var bookingCode = null;
+      var match = decodedText.match(/BK-[A-Z0-9]+/i);
+      if (match) {
+        bookingCode = match[0].toUpperCase();
+      } else {
+        bookingCode = decodedText.trim();
+      }
+
+      if (bookingCode) {
+        document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #10B981; font-weight: 700;">✓ Đã nhận diện mã: ' + bookingCode + '</span>. Đang chuyển sang Check-in...';
+        
+        stopQrCamera(function() {
+          var backdrop = document.getElementById('qrScannerModalBackdrop');
+          if (backdrop) backdrop.classList.remove('is-open');
+          document.body.style.overflow = '';
+
+          // Tự động điều hướng sang Check-in với mã booking vừa quét
+          window.location.href = '/staff/check-in?code=' + encodeURIComponent(bookingCode);
+        });
+      }
+    }
+
+    function onQrScanError(errorMessage) {
+      // Quét liên tục từng frame
+    }
+
+    function handleQrFileUpload(input) {
+      if (!input.files || input.files.length === 0) return;
+      var file = input.files[0];
+
+      if (!html5QrCodeScanner) {
+        html5QrCodeScanner = new Html5Qrcode("qrReader");
+      }
+
+      stopQrCamera(function() {
+        document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #FDBF2D;">Đang quét mã QR từ tệp ảnh...</span>';
+        html5QrCodeScanner.scanFile(file, true)
+          .then(function(decodedText) {
+            onQrCodeScanned(decodedText, null);
+          })
+          .catch(function(err) {
+            document.getElementById('qrScannerStatus').innerHTML = '<span style="color: #EF4444;">Không tìm thấy mã QR hợp lệ trong ảnh này. Vui lòng thử ảnh bill khác.</span>';
+          });
+      });
+    }
   </script>
+
+  <!-- ========================================================================= -->
+  <!-- POPUP MODAL: CAMERA QR CODE SCANNER (QUÉT MÃ QR CHECK-IN NHANH)           -->
+  <!-- ========================================================================= -->
+  <div id="qrScannerModalBackdrop" class="folio-modal-backdrop" onclick="handleQrScannerBackdropClick(event)">
+    <div class="folio-modal-dialog" style="max-width: 500px; padding: 1.5rem;" role="dialog" aria-modal="true">
+      <!-- Modal Header -->
+      <div class="folio-modal-header" style="margin-bottom: 0.85rem; padding-bottom: 0.75rem;">
+        <div class="flex items-center gap-3">
+          <div class="folio-modal-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #FFFFFF;">
+              Quét Mã QR Check-In
+            </h3>
+            <div style="font-size: 0.76rem; color: #94A3B8; margin-top: 2px;">
+              Hướng camera vào mã QR trên phiếu xác nhận đặt trước của khách
+            </div>
+          </div>
+        </div>
+        <button type="button" class="folio-modal-close" onclick="closeQrScannerModal()" title="Đóng camera (Esc)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Viewfinder Container -->
+      <div class="qr-scanner-wrapper">
+        <div id="qrReader" style="width: 100%; border-radius: 10px; overflow: hidden; background: #000; min-height: 250px;"></div>
+        
+        <!-- Camera Loading or Error Notice -->
+        <div id="qrScannerStatus" style="font-size: 0.78rem; color: #CBD5E1; text-align: center; margin-top: 0.65rem;">
+          Đang khởi tạo camera...
+        </div>
+      </div>
+
+      <!-- Footer Actions: Camera Toggle & File Upload Fallback -->
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08);">
+        <!-- Upload ảnh bill fallback -->
+        <label class="btn btn-secondary btn-sm" style="cursor: pointer; margin: 0; display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.76rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <span>Tải ảnh bill từ máy</span>
+          <input type="file" id="qrFileInput" accept="image/*" style="display: none;" onchange="handleQrFileUpload(this)">
+        </label>
+
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeQrScannerModal()">
+          <span>Đóng Camera</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thư viện Quét mã QR offline -->
+  <script th:src="@{/js/html5-qrcode.min.js}"></script>
 
 </section>
 </body>

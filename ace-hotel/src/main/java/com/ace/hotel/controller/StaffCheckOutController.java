@@ -60,13 +60,14 @@ public class StaffCheckOutController {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Không tìm thấy đơn đặt phòng ID: " + id));
 
-        if (booking.getStatus() == BookingStatus.CHECKED_OUT) {
+        boolean isAlreadyCheckedOut = (booking.getStatus() == BookingStatus.CHECKED_OUT);
+        boolean isNotCheckedIn = (booking.getStatus() != BookingStatus.CHECKED_IN && !isAlreadyCheckedOut);
+        if (isAlreadyCheckedOut) {
             invoiceRepository.findByBooking_BookingId(id)
                     .ifPresent(inv -> model.addAttribute("existingInvoiceId", inv.getInvoiceId()));
-            model.addAttribute("isAlreadyCheckedOut", true);
-        } else if (booking.getStatus() != BookingStatus.CHECKED_IN) {
-            model.addAttribute("isNotCheckedIn", true);
         }
+        model.addAttribute("isAlreadyCheckedOut", isAlreadyCheckedOut);
+        model.addAttribute("isNotCheckedIn", isNotCheckedIn);
 
         CheckOutSummaryDto summary = checkOutService.prepareCheckOutSummary(id, lateFee);
 
