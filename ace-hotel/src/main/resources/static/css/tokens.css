@@ -1,74 +1,97 @@
 /* =========================================================================
    ACE HOTEL DESIGN SYSTEM - CSS CUSTOM PROPERTIES (tokens.css)
+   Linear / Raycast Luxury Theme (Obsidian Slate & Muted Champagne)
    ========================================================================= */
 
 :root,
 :root[data-theme="dark"] {
-  /* Nền & Bề mặt (Dark Mode - Mặc định) */
-  --bg: #000000;
-  --surface: #121212;
-  --elevated: #1C1C1C;
-  --border: #2A2A2A;
+  /* Nền & Bề mặt 4 Tầng (Obsidian Slate Elevation Scale) */
+  --bg: #0B0F17;                 /* Level 0: Nền canvas than chì sâu thẳm */
+  --bg-subtle: #080C14;          /* Level 0.5: Nền thanh cuộn / vùng trũng */
+  --surface: #111827;            /* Level 1: Khối Card chính, Container */
+  --surface-elevated: #162032;   /* Level 2: Thẻ KPI con, Ô phòng, Header lồng */
+  --surface-hover: #1E2B42;      /* Level 3: Trạng thái Hover, Dropdown, Modal */
+  --elevated: #162032;
 
-  /* Màu thương hiệu ACE Gold */
-  --primary: #FDBF2D;
-  --primary-hover: #FFD056;
-  --primary-pressed: #E5A90F;
-  --primary-soft: #2A2208;
-  --on-primary: #0A0A0A;
+  /* Hệ thống Viền Đa Lớp & Bắt Sáng Vi Mô (Micro-Borders & Bevel Glow) */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --card-top-bevel: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.25);
+  --card-shadow-hover: 0 10px 30px -4px rgba(0, 0, 0, 0.65), 0 0 16px rgba(229, 192, 123, 0.12);
 
-  /* Chữ */
-  --text: #FFFFFF;
-  --text-secondary: #A1A1AA;
-  --text-muted: #71717A;
-  --primary-text: #FDBF2D;
+  /* Màu thương hiệu Muted Warm Champagne Gold (Thay thế vàng nghệ gắt) */
+  --primary: #E5C07B;
+  --primary-hover: #F3D28E;
+  --primary-pressed: #CFA459;
+  --primary-soft: rgba(229, 192, 123, 0.12);
+  --primary-border: rgba(229, 192, 123, 0.32);
+  --primary-glow: 0 0 16px rgba(229, 192, 123, 0.2);
+  --on-primary: #0B0F17;
+
+  /* Chữ & Phân Cấp Typography Chuẩn Editorial */
+  --text: #F8FAFC;               /* Tiêu đề & giá trị quan trọng (Pearl White) */
+  --text-secondary: #94A3B8;     /* Nhãn, phụ đề, giải thích (Slate 400) */
+  --text-muted: #64748B;         /* Chú thích nhỏ, watermark (Slate 500) */
+  --primary-text: #E5C07B;
 
   /* 6 Trạng thái Phòng & Booking (Dark Mode) */
-  --st-free: #22C55E;           /* AVAILABLE - Trống sạch */
-  --st-free-bg: rgba(34, 197, 94, 0.14);
-  --st-reserved: #A78BFA;       /* RESERVED - Đã đặt & Cọc 30% */
+  --st-free: #10B981;            /* AVAILABLE - Trống sạch (Emerald) */
+  --st-free-bg: rgba(16, 185, 129, 0.14);
+  --st-reserved: #A78BFA;        /* RESERVED - Đã đặt & Cọc 30% (Violet) */
   --st-reserved-bg: rgba(167, 139, 250, 0.14);
-  --st-occupied: #60A5FA;       /* OCCUPIED - Đang ở */
-  --st-occupied-bg: rgba(96, 165, 250, 0.14);
-  --st-dirty: #F59E0B;          /* DIRTY - Chờ dọn dẹp */
+  --st-occupied: #38BDF8;        /* OCCUPIED - Đang ở (Sapphire Ice) */
+  --st-occupied-bg: rgba(56, 189, 248, 0.14);
+  --st-dirty: #F59E0B;           /* DIRTY - Chờ dọn dẹp (Warm Amber) */
   --st-dirty-bg: rgba(245, 158, 11, 0.16);
-  --st-overdue: #F87171;        /* OVERDUE - Quá hạn */
+  --st-overdue: #F87171;         /* OVERDUE - Quá hạn */
   --st-overdue-bg: rgba(248, 113, 113, 0.16);
-  --st-maint: #9CA3AF;          /* MAINTENANCE - Bảo trì */
-  --st-maint-bg: rgba(156, 163, 175, 0.14);
+  --st-maint: #64748B;           /* MAINTENANCE - Bảo trì */
+  --st-maint-bg: rgba(100, 116, 139, 0.14);
 }
 
 :root[data-theme="light"] {
-  /* Nền & Bề mặt (Light Mode) */
-  --bg: #F7F6F2;
-  --surface: #FFFFFF;
-  --elevated: #FFFFFF;
-  --border: #E6E3DA;
+  /* Nền & Bề mặt (Light Mode - Linear / Apple Luxury Editorial) */
+  --bg: #E2E8F0;                 /* Nền canvas Slate 200 xám đá ấm dịu mắt, triệt tiêu hoàn toàn cảm giác chói mắt */
+  --bg-subtle: #CBD5E1;          /* Vùng trũng / đường phân cách */
+  --surface: #FFFFFF;            /* Bề mặt Card trắng cao cấp nổi khối rõ rệt trên nền xám Slate */
+  --surface-elevated: #F8FAFC;   /* Thẻ con, ô buồng phòng, vùng lồng */
+  --surface-hover: #EDF2F7;
+  --elevated: #F1F5F9;
+  --border: #CBD5E1;             /* Đường viền Slate 300 rõ nét, dứt khoát */
+  --border-subtle: #E2E8F0;
+  --border-strong: #64748B;
+  --card-top-bevel: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  --card-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 8px 24px -4px rgba(15, 23, 42, 0.06);
+  --card-shadow-hover: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 12px 28px -4px rgba(15, 23, 42, 0.12);
 
-  /* Màu thương hiệu ACE Gold */
-  --primary: #FDBF2D;
-  --primary-hover: #E5A90F;
-  --primary-pressed: #C98F00;
-  --primary-soft: #FFF4D1;
-  --on-primary: #0A0A0A;
+  /* Màu thương hiệu Warm Cognac Amber Gold (Tương phản cao, chuẩn sang trọng trên nền sáng) */
+  --primary: #B45309;
+  --primary-hover: #92400E;
+  --primary-pressed: #78350F;
+  --primary-soft: rgba(180, 83, 9, 0.1);
+  --primary-border: rgba(180, 83, 9, 0.35);
+  --primary-glow: 0 0 12px rgba(180, 83, 9, 0.15);
+  --on-primary: #FFFFFF;
 
-  /* Chữ */
-  --text: #0A0A0A;
-  --text-secondary: #52525B;
-  --text-muted: #71717A;
-  --primary-text: #B45309;      /* Vàng nâu đậm đủ độ tương phản trên nền sáng */
+  /* Chữ & Phân Cấp Typography Chuẩn Editorial */
+  --text: #0F172A;               /* Tiêu đề & giá trị quan trọng (Đen than chì sâu thẳm, cực nét) */
+  --text-secondary: #334155;     /* Nhãn & phụ đề (Slate 700, sắc sảo, không bị mờ) */
+  --text-muted: #64748B;         /* Chú thích nhỏ (Slate 500) */
+  --primary-text: #B45309;       /* Vàng nâu hổ phách quý tộc */
 
   /* 6 Trạng thái Phòng & Booking (Light Mode) */
-  --st-free: #15803D;
+  --st-free: #059669;            /* AVAILABLE - Xanh ngọc lục bảo */
   --st-free-bg: #DCFCE7;
-  --st-reserved: #7C3AED;
-  --st-reserved-bg: #F3E8FF;
-  --st-occupied: #2563EB;
-  --st-occupied-bg: #DBEAFE;
-  --st-dirty: #D97706;
+  --st-reserved: #7C3AED;        /* RESERVED - Tím hoàng gia */
+  --st-reserved-bg: #F5F3FF;
+  --st-occupied: #0284C7;        /* OCCUPIED - Sapphire Ice */
+  --st-occupied-bg: #E0F2FE;
+  --st-dirty: #D97706;           /* DIRTY - Hổ phách */
   --st-dirty-bg: #FEF3C7;
-  --st-overdue: #DC2626;
+  --st-overdue: #DC2626;         /* OVERDUE - Đỏ tươi */
   --st-overdue-bg: #FEE2E2;
-  --st-maint: #6B7280;
-  --st-maint-bg: #F3F4F6;
+  --st-maint: #475569;           /* MAINTENANCE - Xám đá */
+  --st-maint-bg: #E2E8F0;
 }

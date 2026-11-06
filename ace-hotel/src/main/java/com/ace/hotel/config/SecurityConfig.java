@@ -39,7 +39,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // 1. Tài nguyên tĩnh & Trang công khai
-                .requestMatchers("/", "/login", "/register", "/booking/search", "/error",
+                .requestMatchers("/", "/login", "/register", "/booking", "/booking/search", "/error",
                                  "/css/**", "/js/**", "/images/**", "/videos/**", "/fonts/**").permitAll()
 
                 // 2. Phân hệ Quản trị (Chỉ ADMIN mới được POST/xem báo cáo; Lễ tân được GET xem bảng giá)

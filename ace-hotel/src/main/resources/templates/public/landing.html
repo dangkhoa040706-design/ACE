@@ -382,7 +382,7 @@
           <div class="hero-badge">03 / 05 • SMART QR CHECK-IN</div>
           <h1 class="hero-title">Giữ Chỗ Chắc Chắn Với <span class="gold-accent">30% Cọc &amp; Mã QR</span></h1>
           <p class="hero-desc">
-            Khóa suất phòng thực tế theo tồn kho Quota thời gian thực. Nhận ngay Phiếu xác nhận QR và gán phòng sạch tại sảnh chỉ trong 15 giây.
+            Xác nhận giữ phòng tức thì theo tình trạng phòng trống thực tế. Nhận ngay Phiếu xác nhận QR và hoàn tất nhận phòng tại sảnh chỉ trong 30 giây.
           </p>
           <div class="hero-actions">
             <a th:href="@{/booking/search}" class="hero-btn-primary">
@@ -2237,10 +2237,10 @@
       <div class="container">
         <!-- Header Section 3 -->
         <div class="folio-header">
-          <span class="folio-badge">03 / 05 • EXTRAS &amp; ROOM FOLIO</span>
-          <h2 class="folio-title">Hệ Sinh Thái Room Folio &amp; <span class="gold-accent">Tiện Nghi Thượng Hạng</span></h2>
+          <span class="folio-badge">03 / 05 • EXTRAS &amp; TIỆN NGHI CAO CẤP</span>
+          <h2 class="folio-title">Hệ Sinh Thái Dịch Vụ &amp; <span class="gold-accent">Tiện Nghi Thượng Hạng</span></h2>
           <p class="folio-desc">
-            Chữ <strong>"E" (Extras)</strong> trong ACE Hotel — Ẩm thực 24/7, minibar ướp lạnh và giặt ủi 4h với sổ cái Room Folio đóng băng đơn giá (Quy tắc BR5).
+            Chữ <strong>"E" (Extras)</strong> trong ACE Hotel — Ẩm thực 24/7, minibar ướp lạnh và giặt ủi 4h với đơn giá niêm yết minh bạch, cam kết giữ nguyên đơn giá suốt kỳ nghỉ.
           </p>
         </div>
 
@@ -2283,7 +2283,7 @@
             <div class="folio-nav-item" data-index="1" data-badge="● CURATED MINIBAR CELLAR">
               <div class="folio-nav-header">
                 <span class="folio-nav-num">02 / MINIBAR</span>
-                <span class="folio-nav-tag">Đóng Băng Giá BR5</span>
+                <span class="folio-nav-tag">Đơn Giá Cố Định</span>
               </div>
               <h3 class="folio-nav-title">Curated In-Room Minibar</h3>
               
@@ -2300,7 +2300,7 @@
                   </div>
                 </div>
                 <div class="folio-item-footer">
-                  <span class="folio-guarantee-note">✓ Khóa giá lịch sử check-in (BR5)</span>
+                  <span class="folio-guarantee-note">✓ Cam kết không phụ thu phát sinh</span>
                   <button type="button" class="folio-interactive-btn" onclick="openAceServiceModal('minibar')">
                     <span>Khám Phá Minibar →</span>
                   </button>
@@ -2450,14 +2450,14 @@
         </div>
       </div>
 
-      <!-- Modal 2: Bảng Niêm Yết Minibar & Giá BR5 -->
+      <!-- Modal 2: Bảng Niêm Yết Minibar -->
       <div class="ace-service-modal-backdrop" id="modal-minibar" onclick="if(event.target === this) closeAceServiceModal()">
         <div class="ace-service-modal-card">
           <button class="ace-modal-close-btn" onclick="closeAceServiceModal()">&times;</button>
           <div class="ace-modal-header">
             <span class="ace-modal-tag">● TỦ RƯỢU &amp; MINIBAR ƯỚP LẠNH</span>
-            <h3 class="ace-modal-title">Bảng Niêm Yết Minibar &amp; Quy Tắc Đóng Băng Giá (BR5)</h3>
-            <p class="ace-modal-desc">Đơn giá minibar được chụp lại và khóa cố định (Price Snapshot) tại thời điểm check-in. Khách không bao giờ phải chịu tăng giá trong kỳ nghỉ.</p>
+            <h3 class="ace-modal-title">Bảng Niêm Yết Dịch Vụ Minibar &amp; Cam Kết Giá Chuẩn 5 Sao</h3>
+            <p class="ace-modal-desc">Đơn giá minibar được cố định minh bạch tại thời điểm nhận phòng. Quý khách hoàn toàn yên tâm thưởng thức mà không lo phụ phí ẩn trong kỳ nghỉ.</p>
           </div>
           <div class="ace-modal-list">
             <div class="ace-modal-item">
@@ -2490,7 +2490,7 @@
             </div>
           </div>
           <div class="ace-modal-footer">
-            <span style="font-size: 0.78rem; color: #10B981; font-weight: 700;">✓ Quy tắc BR5: Đóng băng đơn giá lịch sử – Không phụ thu</span>
+            <span style="font-size: 0.78rem; color: #10B981; font-weight: 700;">✓ Cam kết: Đơn giá niêm yết minh bạch – Không phụ thu</span>
             <a th:href="@{/booking/search}" class="ace-modal-cta">
               <span>Tìm Phòng &amp; Đặt Cọc 30%</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
@@ -3219,12 +3219,12 @@
             </div>
           </div>
 
-          <!-- Ô 3 — Bảo Chứng Giữ Chỗ Quota (span 4) -->
+          <!-- Ô 3 — Bảo Chứng Giữ Chỗ Tức Thì (span 4) -->
           <div class="bento-card bento-card-quota">
             <div>
               <div class="bento-card-header">
-                <span class="bento-card-label">● QUOTA ENGINE</span>
-                <div class="bento-card-icon" title="Quota Guarantee">
+                <span class="bento-card-label">● ĐẶT PHÒNG TỨC THÌ</span>
+                <div class="bento-card-icon" title="Cam Kết Giữ Phòng">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                     <rect x="9" y="10" width="6" height="5" rx="1"></rect>
@@ -3237,14 +3237,14 @@
                   <span class="bento-monumental-number-sm">30% Cọc</span>
                   <span class="bento-tag-badge">0% Overbooking</span>
                 </div>
-                <h3 class="bento-card-title">Khóa Chặt Suất Phòng Thực Tế</h3>
+                <h3 class="bento-card-title">Khóa Giữ Phòng Thực Tế 100%</h3>
                 <p class="bento-card-desc">
-                  Mỗi đơn đặt phòng trực tuyến khóa trực tiếp vào quỹ phòng kinh doanh khả dụng (loại trừ phòng MAINTENANCE), đảm bảo luôn có phòng chờ đón bạn.
+                  Mỗi đơn đặt phòng trực tuyến khóa trực tiếp vào quỹ phòng kinh doanh khả dụng (loại trừ phòng đang bảo trì), đảm bảo luôn có phòng chờ đón bạn.
                 </p>
               </div>
             </div>
             <div class="bento-card-footer">
-              <span class="bento-status-pill">✓ Hỗ trợ cả khách Walk-in 0đ cọc tại quầy (BR1 &amp; BR4)</span>
+              <span class="bento-status-pill">✓ Hỗ trợ đón khách trực tiếp tại sảnh với quy trình nhận phòng nhanh</span>
             </div>
           </div>
 
@@ -3270,12 +3270,12 @@
                 </div>
                 <h3 class="bento-card-title">Kiểm Định Buồng Phòng Khép Kín</h3>
                 <p class="bento-card-desc">
-                  Phòng vừa trả lập tức chuyển sang trạng thái DIRTY (Chờ dọn dẹp) và bị khóa gán khách mới cho đến khi hoàn tất quy trình vệ sinh chuẩn 5 sao.
+                  Phòng vừa trả lập tức chuyển sang trạng thái Chờ dọn dẹp và được vệ sinh, khử khuẩn toàn diện theo quy chuẩn 5 sao trước khi bàn giao cho lượt khách mới.
                 </p>
               </div>
             </div>
             <div class="bento-card-footer">
-              <span class="bento-status-pill">✓ Chốt chặn an toàn trạng thái phòng (BR2 &amp; BR7)</span>
+              <span class="bento-status-pill">✓ Quy trình vệ sinh &amp; khử trùng buồng phòng 5 sao trước khi bàn giao</span>
             </div>
           </div>
 
@@ -3299,14 +3299,14 @@
                   <span class="bento-monumental-number-sm">5% + 10%</span>
                   <span class="bento-tag-badge">Biểu Giá ++</span>
                 </div>
-                <h3 class="bento-card-title">Đóng Băng Giá &amp; Quyết Toán Rõ Ràng</h3>
+                <h3 class="bento-card-title">Niêm Yết Minh Bạch &amp; Quyết Toán Rõ Ràng</h3>
                 <p class="bento-card-desc">
-                  Đơn giá Room Folio được đóng băng ngay lúc gọi (Price Snapshot). Hóa đơn VAT bóc tách minh bạch 5% Phí phục vụ, 10% VAT và tự động trừ tiền cọc.
+                  Đơn giá dịch vụ được niêm yết minh bạch. Hóa đơn VAT bóc tách rõ ràng 5% Phí phục vụ, 10% VAT và tự động khấu trừ tiền cọc.
                 </p>
               </div>
             </div>
             <div class="bento-card-footer">
-              <span class="bento-status-pill">✓ Làm tròn số nguyên BIGINT chính xác tuyệt đối (BR5 &amp; BR6)</span>
+              <span class="bento-status-pill">✓ Minh bạch tài chính tuyệt đối, chuẩn xác tới từng đồng lẻ</span>
             </div>
           </div>
 
@@ -3833,7 +3833,7 @@
                 <div class="journey-card-header-left">
                   <span class="journey-step-num">01</span>
                   <span class="journey-step-sep">•</span>
-                  <span class="journey-step-name">CHỌN HẠNG PHÒNG &amp; KIỂM TRA QUOTA THỰC TẾ</span>
+                  <span class="journey-step-name">CHỌN HẠNG PHÒNG &amp; KIỂM TRA PHÒNG TRỐNG</span>
                 </div>
                 <div class="journey-card-header-right">
                   <span class="journey-step-tag">BƯỚC 01/03</span>
@@ -3843,9 +3843,9 @@
               <!-- Card Body Content: 2 Columns -->
               <div class="journey-card-body">
                 <div class="journey-card-text-col">
-                  <h3 class="journey-card-heading">Minh Bạch Quota Khả Dụng &amp; Biểu Giá Động T2–CN</h3>
+                  <h3 class="journey-card-heading">Minh Bạch Phòng Trống &amp; Biểu Giá Nghỉ Dưỡng</h3>
                   <p class="journey-card-lead">
-                    Tra cứu thời gian thực quỹ phòng kinh doanh thực tế (loại trừ 100% phòng bảo trì MAINTENANCE). Biểu giá tự động điều chỉnh linh hoạt theo ngày thường và cuối tuần với cam kết không phụ phí ẩn.
+                    Tra cứu thời gian thực quỹ phòng kinh doanh thực tế (loại trừ 100% phòng đang bảo trì). Biểu giá tự động điều chỉnh linh hoạt theo ngày thường và cuối tuần với cam kết không phụ phí ẩn.
                   </p>
                   <div class="journey-feature-list">
                     <div class="journey-feature-item">
@@ -3857,7 +3857,7 @@
                     <div class="journey-feature-item">
                       <span class="journey-feature-bullet">✦</span>
                       <div>
-                        <strong>Quota Engine thời gian thực:</strong> Khóa phòng chính xác, loại trừ bảo trì.
+                        <strong>Kiểm tra phòng thời gian thực:</strong> Khóa giữ phòng chính xác, loại trừ bảo trì.
                       </div>
                     </div>
                     <div class="journey-feature-item">
@@ -3878,9 +3878,9 @@
                 <!-- Dedicated Photo Frame Right -->
                 <div class="journey-card-media-col">
                   <div class="journey-photo-frame">
-                    <img th:src="@{/images/quytrinh1.png}" src="/images/quytrinh1.png" alt="Chọn Hạng Phòng &amp; Kiểm Tra Quota Thực Tế" class="journey-photo-img">
+                    <img th:src="@{/images/quytrinh1.png}" src="/images/quytrinh1.png" alt="Chọn Hạng Phòng &amp; Kiểm Tra Phòng Trống" class="journey-photo-img">
                     <div class="journey-photo-badge">
-                      <span>✦ Bước 1: Quota &amp; Đặt Phòng</span>
+                      <span>✦ Bước 1: Chọn Phòng &amp; Đặt Giữ Chỗ</span>
                     </div>
                   </div>
                 </div>
@@ -3906,15 +3906,15 @@
               <!-- Card Body Content: 2 Columns -->
               <div class="journey-card-body">
                 <div class="journey-card-text-col">
-                  <h3 class="journey-card-heading">Ký Quỹ 30% Khóa Suất &amp; Nhận Phiếu Xác Nhận Bảo Mật</h3>
+                  <h3 class="journey-card-heading">Ký Quỹ 30% Giữ Phòng &amp; Nhận Phiếu Xác Nhận Bảo Mật</h3>
                   <p class="journey-card-lead">
-                    Thanh toán ký quỹ 30% trực tuyến an toàn qua Cổng thanh toán bảo mật. Hệ thống lập tức khóa chặt suất phòng trên Quota Engine và tự động phát hành Phiếu xác nhận đặt phòng kèm Mã QR Offline độc bản.
+                    Thanh toán ký quỹ 30% trực tuyến an toàn qua Cổng thanh toán bảo mật. Hệ thống lập tức khóa giữ phòng an toàn và tự động phát hành Phiếu xác nhận đặt phòng kèm Mã QR Offline độc bản.
                   </p>
                   <div class="journey-feature-list">
                     <div class="journey-feature-item">
                       <span class="journey-feature-bullet">✦</span>
                       <div>
-                        <strong>Bảo chứng 0% Overbooking:</strong> Suất phòng thực tế được khóa lập tức trên hệ thống.
+                        <strong>Bảo chứng 0% Overbooking:</strong> Phòng nghỉ thực tế được khóa lập tức trên hệ thống.
                       </div>
                     </div>
                     <div class="journey-feature-item">

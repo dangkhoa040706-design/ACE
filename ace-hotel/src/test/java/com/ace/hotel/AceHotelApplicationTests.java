@@ -23,9 +23,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -81,6 +87,9 @@ class AceHotelApplicationTests {
 
     @Autowired
     private ReportService reportService;
+
+    @Autowired
+    private CustomerService customerService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -713,6 +722,126 @@ class AceHotelApplicationTests {
         BusinessException ex = assertThrows(BusinessException.class,
                 () -> bookingService.createOnlineBookingWithDeposit(overloadReq, khach));
         assertTrue(ex.getMessage().contains("sức chứa") || ex.getMessage().contains("tối đa"));
+    }
+
+    @Test
+    @DisplayName("Kiểm tra CustomerService tính toán số liệu thống kê hội viên và cấp bậc Loyalty Tier")
+    void testCustomerService_DashboardMetricsAndLoyalty() {
+        User khach = userRepository.findByUsername("khach").orElseThrow();
+        CustomerDashboardDto dashboard = customerService.getCustomerDashboardData(khach);
+
+        assertNotNull(dashboard);
+        assertNotNull(dashboard.getCustomer());
+        assertEquals("khach", dashboard.getUser().getUsername());
+        assertTrue(dashboard.getMemberCode().startsWith("ACE-VIP-"));
+        assertNotNull(dashboard.getLoyaltyTier());
+        assertTrue(dashboard.getLoyaltyTierLevel() >= 1 && dashboard.getLoyaltyTierLevel() <= 3);
+        assertTrue(dashboard.getTotalBookings() >= 1, "Tài khoản khach phải có ít nhất 1 đơn đặt phòng mẫu");
+        assertNotNull(dashboard.getAllBookings());
+        assertNotNull(dashboard.getUpcomingBookings());
+        assertNotNull(dashboard.getInHouseBookings());
+    }
+
+    @Test
+    @DisplayName("Kiểm tra cập nhật hồ sơ khách hàng (Customer Profile) và đổi mật khẩu an toàn")
+    void testCustomerService_UpdateProfileAndChangePassword() {
+        long nowTs = System.currentTimeMillis();
+        User testUser = new User();
+        testUser.setUsername("user_cust_test_" + nowTs);
+        testUser.setPasswordHash(passwordEncoder.encode("CurrentPass@123"));
+        testUser.setFullName("Nguyễn Văn Hội Viên Test");
+        testUser.setRole(Role.CUSTOMER);
+        final User savedUser = userRepository.save(testUser);
+
+        CustomerProfileDto updateDto = new CustomerProfileDto();
+        updateDto.setFullName("Nguyễn Văn Hội Viên Đã Cập Nhật");
+        updateDto.setPhone("09" + String.format("%08d", (nowTs % 100000000L)));
+        updateDto.setIdNumber(String.format("%012d", nowTs));
+        updateDto.setDateOfBirth(LocalDate.of(1997, 5, 20));
+        updateDto.setEmail("hoivien." + nowTs + "@example.com");
+
+        Customer updatedCust = customerService.updateProfile(savedUser.getUserId(), updateDto);
+        assertEquals("Nguyễn Văn Hội Viên Đã Cập Nhật", updatedCust.getFullName());
+        assertEquals(updateDto.getPhone(), updatedCust.getPhone());
+        assertEquals(updateDto.getIdNumber(), updatedCust.getIdNumber());
+        assertEquals(updateDto.getEmail(), updatedCust.getEmail());
+
+        // Kiểm tra chặn cập nhật tuổi dưới 18
+        updateDto.setDateOfBirth(LocalDate.now().minusYears(16));
+        BusinessException exAge = assertThrows(BusinessException.class,
+                () -> customerService.updateProfile(savedUser.getUserId(), updateDto));
+        assertTrue(exAge.getMessage().contains("18 tuổi"));
+
+        // Kiểm tra đổi mật khẩu: sai mật khẩu hiện tại
+        CustomerProfileDto pwdDto = new CustomerProfileDto();
+        pwdDto.setCurrentPassword("WrongCurrentPass@123");
+        pwdDto.setNewPassword("NewSecurePass@999");
+        pwdDto.setConfirmNewPassword("NewSecurePass@999");
+        BusinessException exWrongCurrent = assertThrows(BusinessException.class,
+                () -> customerService.changePassword(savedUser.getUserId(), pwdDto));
+        assertTrue(exWrongCurrent.getMessage().contains("không chính xác"));
+
+        // Kiểm tra đổi mật khẩu: thành công
+        pwdDto.setCurrentPassword("CurrentPass@123");
+        customerService.changePassword(savedUser.getUserId(), pwdDto);
+        User refreshedUser = userRepository.findById(savedUser.getUserId()).orElseThrow();
+        assertTrue(passwordEncoder.matches("NewSecurePass@999", refreshedUser.getPasswordHash()));
+    }
+
+    @Test
+    @DisplayName("Kiểm tra MockMvc Render View /customer/dashboard với customer-layout chuyên biệt")
+    void testCustomerDashboardViewRenderingWithNewCustomerLayout() throws Exception {
+        mockMvc.perform(get("/customer/dashboard").with(user("khach").roles("CUSTOMER")))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    assertTrue(content.contains("ACE HOTEL") || content.contains("Bàn Điều Khiển Hội Viên"));
+                    assertTrue(content.contains("Mã thành viên") || content.contains("ACE-VIP-"));
+                });
+    }
+
+    @Test
+    @DisplayName("Kiểm tra Route /booking chuyển hướng chính xác sang /booking/search")
+    void testCustomerBookingRedirect() throws Exception {
+        mockMvc.perform(get("/booking"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/booking/search"));
+    }
+
+    @Test
+    @DisplayName("Kiểm tra API Live Folio Data cho khách hàng sở hữu đơn đang lưu trú")
+    void testCustomerFolioDataEndpoint() throws Exception {
+        mockMvc.perform(get("/customer/bookings/2401/folio-data").with(user("khach").roles("CUSTOMER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.bookingCode").value("BK-2401"))
+                .andExpect(jsonPath("$.roomCharge").exists())
+                .andExpect(jsonPath("$.depositPaid").exists())
+                .andExpect(jsonPath("$.balanceDue").exists());
+    }
+
+    @Test
+    @DisplayName("Kiểm tra Yêu cầu Trả phòng nhanh Express Check-out của khách hàng")
+    void testCustomerExpressCheckoutRequest() throws Exception {
+        mockMvc.perform(post("/customer/bookings/2401/request-checkout")
+                        .with(user("khach").roles("CUSTOMER"))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/customer/dashboard"))
+                .andExpect(flash().attributeExists("successMessage"));
+    }
+
+    @Test
+    @DisplayName("Kiểm tra Trang Đặt Phòng trả về booking-portal cho Khách Hàng và search-deposit cho Khách vãng lai")
+    void testCustomerBookingPortalViewForCustomerAndGuest() throws Exception {
+        // Khách vãng lai chưa đăng nhập -> dùng view public search-deposit
+        mockMvc.perform(get("/booking/search"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/search-deposit"));
+
+        // Khách hàng đã đăng nhập -> dùng view portal customer/booking-portal
+        mockMvc.perform(get("/booking/search").with(user("khach").roles("CUSTOMER")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/booking-portal"));
     }
 }
 

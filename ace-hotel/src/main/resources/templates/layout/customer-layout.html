@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="layout(title, content)">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:replace="${title}">Cổng Hội Viên ACE Elite - ACE Hotel</title>
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+
+  <!-- Anti-FOUC theme & splash script inline -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('ace-theme');
+        var theme = (saved === 'light' || saved === 'dark') ? saved : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+  <!-- ACE Design System Stylesheets -->
+  <link rel="stylesheet" th:href="@{/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/components.css}">
+
+  <style>
+    /* =========================================================================
+       ACE CUSTOMER PORTAL EXECUTIVE HEADER BAR & APP SHELL (ĐỒNG BỘ 100% PMS)
+       ========================================================================= */
+    .pms-app-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg);
+      transition: background-color 0.25s ease;
+    }
+
+    /* Executive Top Header Bar (Trifecta Layout 64px) */
+    .pms-executive-header {
+      height: 64px;
+      background: rgba(11, 15, 23, 0.90);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    :root[data-theme="light"] .pms-executive-header {
+      background: #FFFFFF;
+      border-bottom: 1px solid #CBD5E1;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+    }
+
+    .pms-header-inner {
+      max-width: 1720px;
+      margin: 0 auto;
+      height: 100%;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+    }
+
+    /* Zone 1: Brand Group & Station Badge */
+    .pms-header-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .pms-header-logo-frame {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 6px;
+      border-radius: 8px;
+      background: #162032;
+      border: 1px solid rgba(229, 192, 123, 0.28);
+      box-shadow: 0 0 10px rgba(229, 192, 123, 0.1);
+      transition: all 0.25s ease;
+    }
+
+    :root[data-theme="light"] .pms-header-logo-frame {
+      background: #0F172A;
+      border-color: #D97706;
+      box-shadow: 0 2px 8px rgba(180, 83, 9, 0.2);
+    }
+
+    .pms-header-brand-group:hover .pms-header-logo-frame {
+      border-color: #E5C07B;
+      box-shadow: 0 0 16px rgba(229, 192, 123, 0.25);
+      transform: scale(1.02);
+    }
+
+    .pms-header-logo-img {
+      height: 30px;
+      width: auto;
+      display: block;
+    }
+
+    .pms-header-brand-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.12rem;
+    }
+
+    .pms-header-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: #E5C07B;
+      line-height: 1.1;
+      font-family: 'Cinzel', 'Playfair Display', serif, system-ui;
+    }
+
+    :root[data-theme="light"] .pms-header-title {
+      color: #B45309;
+    }
+
+    .pms-header-station-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 0.12rem 0.5rem;
+      border-radius: 9999px;
+      display: inline-block;
+      width: fit-content;
+      line-height: 1;
+      background: rgba(229, 192, 123, 0.12);
+      color: #E5C07B;
+      border: 1px solid rgba(229, 192, 123, 0.3);
+    }
+
+    :root[data-theme="light"] .pms-header-station-badge {
+      background: rgba(180, 83, 9, 0.1);
+      color: #B45309;
+      border-color: rgba(180, 83, 9, 0.3);
+    }
+
+    /* Zone 2: Center Primary Navigation (Segmented Floating Nav Pills) */
+    .pms-header-nav {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .pms-nav-pills {
+      list-style: none;
+      margin: 0;
+      padding: 0.25rem 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9999px;
+      backdrop-filter: blur(10px);
+    }
+
+    :root[data-theme="light"] .pms-nav-pills {
+      background: #E2E8F0;
+      border: 1px solid #CBD5E1;
+    }
+
+    .pms-nav-item {
+      margin: 0;
+      padding: 0;
+    }
+
+    .pms-nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.42rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .pms-nav-icon {
+      flex-shrink: 0;
+      transition: transform 0.2s ease, stroke 0.2s ease;
+    }
+
+    .pms-nav-link:hover {
+      color: #E5C07B;
+      background: rgba(229, 192, 123, 0.08);
+      transform: translateY(-1px);
+    }
+
+    :root[data-theme="light"] .pms-nav-link {
+      color: #334155;
+    }
+
+    :root[data-theme="light"] .pms-nav-link:hover {
+      color: #0F172A;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .pms-nav-link.active {
+      background: linear-gradient(180deg, rgba(229, 192, 123, 0.18) 0%, rgba(229, 192, 123, 0.08) 100%);
+      border-color: rgba(229, 192, 123, 0.45);
+      color: #F8FAFC;
+      font-weight: 700;
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12), 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    :root[data-theme="light"] .pms-nav-link.active {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      color: #0F172A;
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.1);
+    }
+
+    .pms-nav-link.active .pms-nav-icon {
+      stroke: #E5C07B;
+    }
+
+    :root[data-theme="light"] .pms-nav-link.active .pms-nav-icon {
+      stroke: #B45309;
+    }
+
+    /* Zone 3: Right Utilities & User Profile Dropdown Suite */
+    .pms-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    /* Profile Dropdown Capsule */
+    .pms-profile-dropdown-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .pms-profile-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.32rem 0.85rem 0.32rem 0.38rem;
+      border-radius: 9999px;
+      background: #162032;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    :root[data-theme="light"] .pms-profile-trigger {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      color: #0F172A;
+    }
+
+    .pms-profile-trigger:hover,
+    .pms-profile-trigger.is-active {
+      border-color: #E5C07B;
+      background: rgba(229, 192, 123, 0.12);
+      box-shadow: 0 0 14px rgba(229, 192, 123, 0.2);
+      transform: translateY(-1px);
+    }
+
+    :root[data-theme="light"] .pms-profile-trigger:hover,
+    :root[data-theme="light"] .pms-profile-trigger.is-active {
+      border-color: #B45309;
+      background: #F8FAFC;
+      box-shadow: 0 2px 8px rgba(180, 83, 9, 0.15);
+    }
+
+    .pms-avatar-ring {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(229, 192, 123, 0.25) 0%, rgba(207, 164, 89, 0.35) 100%);
+      border: 1px solid #E5C07B;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #E5C07B;
+      letter-spacing: 0.5px;
+    }
+
+    :root[data-theme="light"] .pms-avatar-ring {
+      background: #0F172A;
+      border-color: #D97706;
+      color: #E5C07B;
+    }
+      border-color: #B45309;
+      color: #B45309;
+    }
+
+    .pms-trigger-title {
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pms-trigger-caret {
+      color: var(--text-secondary);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pms-profile-trigger.is-active .pms-trigger-caret {
+      transform: rotate(180deg);
+      color: #E5C07B;
+    }
+
+    /* Floating Dropdown Card */
+    .pms-profile-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 300px;
+      max-width: calc(100vw - 2rem);
+      background: #111827;
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12), 0 20px 45px rgba(0, 0, 0, 0.65);
+      padding: 0.75rem;
+      z-index: 1050;
+    }
+
+    :root[data-theme="light"] .pms-profile-dropdown {
+      background: rgba(255, 255, 255, 0.97);
+      border-color: rgba(0, 0, 0, 0.1);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    .pms-profile-dropdown.is-open {
+      display: block;
+    }
+
+    .pms-dropdown-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0.5rem 0.65rem;
+    }
+
+    .pms-dropdown-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(229, 192, 123, 0.25) 0%, rgba(207, 164, 89, 0.35) 100%);
+      border: 1.5px solid #E5C07B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #E5C07B;
+      flex-shrink: 0;
+    }
+
+    .pms-dropdown-actor-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      overflow: hidden;
+    }
+
+    .pms-dropdown-actor-name {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pms-dropdown-actor-sub {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+    }
+
+    .pms-role-badge {
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 0.12rem 0.42rem;
+      border-radius: 4px;
+      line-height: 1;
+      background: rgba(253, 191, 45, 0.15);
+      color: #FDBF2D;
+      border: 1px solid rgba(253, 191, 45, 0.35);
+    }
+
+    .pms-dropdown-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.35rem 0;
+    }
+
+    .pms-dropdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.55rem 0.65rem;
+      border-radius: 7px;
+      font-size: 0.83rem;
+      font-weight: 500;
+      color: var(--text);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.18s ease;
+      box-sizing: border-box;
+    }
+
+    .pms-dropdown-item:hover {
+      background: rgba(229, 192, 123, 0.1);
+      color: #E5C07B;
+    }
+
+    :root[data-theme="light"] .pms-dropdown-item:hover {
+      background: rgba(180, 83, 9, 0.08);
+      color: #B45309;
+    }
+
+    .pms-dropdown-date-item {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      margin-bottom: 0.35rem;
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.5rem;
+    }
+
+    /* Segmented Theme Switcher Inside Dropdown */
+    .pms-dropdown-theme-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 9px;
+      padding: 0.5rem 0.65rem;
+      margin: 0.35rem 0;
+    }
+
+    .pms-dropdown-theme-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.45rem;
+      font-size: 0.78rem;
+    }
+
+    .pms-theme-title {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .pms-theme-status-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.1rem 0.45rem;
+      border-radius: 9999px;
+      background: rgba(229, 192, 123, 0.15);
+      color: #E5C07B;
+      border: 1px solid rgba(229, 192, 123, 0.3);
+    }
+
+    .pms-theme-segmented-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.35rem;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .pms-theme-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pms-theme-btn.active {
+      background: #1E293B;
+      color: #E5C07B;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    :root[data-theme="light"] .pms-theme-btn.active {
+      background: #FFFFFF;
+      color: #B45309;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .pms-dropdown-logout-btn {
+      color: #EF4444 !important;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      justify-content: flex-start;
+      margin-top: 0.25rem;
+    }
+
+    .pms-dropdown-logout-btn:hover {
+      background: rgba(239, 68, 68, 0.12) !important;
+      color: #EF4444 !important;
+    }
+
+    /* Mobile Drawer */
+    .pms-mobile-toggle {
+      display: none;
+      background: none;
+      border: 1px solid rgba(253, 191, 45, 0.25);
+      cursor: pointer;
+      padding: 6px;
+      flex-direction: column;
+      gap: 5px;
+      justify-content: center;
+      align-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+
+    .pms-mobile-toggle .bar {
+      width: 20px;
+      height: 2px;
+      background: #FDBF2D;
+      border-radius: 2px;
+    }
+
+    .pms-mobile-drawer {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      width: 100%;
+      background: rgba(10, 13, 20, 0.98);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-bottom: 1px solid rgba(253, 191, 45, 0.25);
+      padding: 1rem 1.25rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      z-index: 999;
+      box-sizing: border-box;
+    }
+
+    .pms-mobile-drawer.is-open {
+      display: block;
+    }
+
+    .pms-mobile-nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .pms-mobile-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.6rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .pms-mobile-nav-link.active {
+      background: rgba(253, 191, 45, 0.15);
+      color: #FDBF2D;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1080px) {
+      .pms-header-nav {
+        display: none;
+      }
+      .pms-mobile-toggle {
+        display: flex;
+      }
+    }
+
+    /* Footer */
+    .customer-portal-footer {
+      margin-top: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(8, 11, 18, 0.7);
+      padding: 1.5rem 0;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    :root[data-theme="light"] .customer-portal-footer {
+      background: rgba(248, 250, 252, 0.9);
+      border-top-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .customer-footer-inner {
+      max-width: 1720px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="pms-app-shell">
+
+    <!-- Executive Top Header Bar (Trifecta Layout 64px - Đồng bộ Admin & Nhân viên) -->
+    <header class="pms-executive-header">
+      <div class="pms-header-inner">
+
+        <!-- Zone 1: Left Brand & Station Badge -->
+        <div style="display: flex; align-items: center; gap: 0.85rem;">
+          <!-- Mobile Hamburger Toggle (< 1080px) -->
+          <button type="button" class="pms-mobile-toggle" id="pmsMobileToggle" aria-label="Mở Menu Điều Hành">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+
+          <a th:href="@{/customer/dashboard}" class="pms-header-brand-group">
+            <span class="pms-header-logo-frame">
+              <img th:src="@{/images/2_logo-ACE_khong-nen.png}" alt="ACE HOTEL" class="pms-header-logo-img">
+            </span>
+            <div class="pms-header-brand-meta">
+              <span class="pms-header-title">ACE HOTEL</span>
+              <span class="pms-header-station-badge">HỘI VIÊN ELITE</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Zone 2: Center Primary Navigation (Segmented Floating Nav) -->
+        <nav class="pms-header-nav">
+          <ul class="pms-nav-pills">
+            <!-- 1. Trang Chủ -->
+            <li class="pms-nav-item">
+              <a th:href="@{/customer/dashboard}" class="pms-nav-link" id="navCustomerHome">
+                <svg class="pms-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Trang Chủ</span>
+              </a>
+            </li>
+
+            <!-- 2. Đặt Phòng -->
+            <li class="pms-nav-item">
+              <a th:href="@{/booking/search}" class="pms-nav-link" id="navCustomerBook">
+                <svg class="pms-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Đặt Phòng</span>
+              </a>
+            </li>
+
+            <!-- 3. Đơn Đã Đặt -->
+            <li class="pms-nav-item">
+              <a th:href="@{/customer/dashboard#myBookingsSection}" class="pms-nav-link" id="navCustomerBookings">
+                <svg class="pms-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span>Đơn Đã Đặt</span>
+              </a>
+            </li>
+
+            <!-- 4. Quay Lại Trang Ngoài -->
+            <li class="pms-nav-item">
+              <a th:href="@{/}" class="pms-nav-link" id="navCustomerLanding" title="Quay lại Landing Page quảng bá khách sạn">
+                <svg class="pms-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                </svg>
+                <span>Quay Lại Trang Ngoài</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Zone 3: Right Utilities & User Profile Dropdown Suite -->
+        <div class="pms-header-actions">
+          <div class="pms-profile-dropdown-wrapper" id="pmsProfileWrapper">
+            <button type="button" class="pms-profile-trigger" id="pmsProfileTrigger" aria-expanded="false" aria-haspopup="true" title="Tài khoản cá nhân" aria-label="Tài khoản cá nhân">
+              <span class="pms-avatar-ring">
+                <span>KH</span>
+              </span>
+              <span class="pms-trigger-title" th:text="${currentUser != null ? (currentUser.fullName != null ? currentUser.fullName : currentUser.username) : 'Khách Hàng'}">Khách Hàng</span>
+              <svg class="pms-trigger-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+
+            <!-- Dropdown Menu Sổ Xuống -->
+            <div class="pms-profile-dropdown" id="pmsProfileMenu">
+              <!-- Mục 1: Họ tên actor & vai trò của actor -->
+              <div class="pms-dropdown-header">
+                <div class="pms-dropdown-avatar">
+                  <span>KH</span>
+                </div>
+                <div class="pms-dropdown-actor-meta">
+                  <div class="pms-dropdown-actor-name" th:text="${currentUser != null ? (currentUser.fullName != null ? currentUser.fullName : currentUser.username) : 'Khách Hàng'}">Khách Hàng</div>
+                  <div class="pms-dropdown-actor-sub">
+                    <span style="color: var(--text-secondary);">@<span th:text="${currentUser != null ? currentUser.username : 'khach'}">khach</span></span>
+                    <span class="pms-role-badge">Hội Viên VIP</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pms-dropdown-divider"></div>
+
+              <!-- Mục 2: Thứ ngày tháng năm -->
+              <div class="pms-dropdown-item pms-dropdown-date-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span id="liveDateDropdown">Thứ Sáu, 06/11/2026</span>
+              </div>
+
+              <!-- Mục 2.5: Bộ chuyển đổi giao diện Sáng / Tối (Segmented Control) -->
+              <div class="pms-dropdown-theme-card">
+                <div class="pms-dropdown-theme-header">
+                  <span class="pms-theme-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+                    </svg>
+                    <span>Giao diện hệ thống</span>
+                  </span>
+                  <span class="pms-theme-status-tag" id="pmsThemeStatusTag">Chế độ Tối</span>
+                </div>
+                <div class="pms-theme-segmented-group">
+                  <button type="button" class="pms-theme-btn" id="btnThemeDark" onclick="applyAceThemeDirect('dark')" title="Chuyển sang Chế độ Tối">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <span>Tối</span>
+                  </button>
+                  <button type="button" class="pms-theme-btn" id="btnThemeLight" onclick="applyAceThemeDirect('light')" title="Chuyển sang Chế độ Sáng">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>
+                    <span>Sáng</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Mục 3: Hồ sơ & Bảo mật -->
+              <button type="button" class="pms-dropdown-item" onclick="triggerProfileModal()">
+                <div class="flex items-center gap-2">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  <span>Hồ Sơ &amp; Bảo Mật</span>
+                </div>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+
+              <!-- Mục 3.5: Đơn Đặt Phòng Của Tôi -->
+              <a th:href="@{/customer/dashboard#myBookingsSection}" class="pms-dropdown-item">
+                <div class="flex items-center gap-2">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                  <span>Đơn Đặt Phòng Của Tôi</span>
+                </div>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </a>
+
+              <div class="pms-dropdown-divider"></div>
+
+              <!-- Mục 4: Đăng Xuất -->
+              <form th:action="@{/logout}" method="post" style="margin: 0; width: 100%;">
+                <button type="submit" class="pms-dropdown-item pms-dropdown-logout-btn">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line>
+                  </svg>
+                  <span>Đăng xuất hệ thống</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Mobile Drawer Dropdown (< 1080px) -->
+      <div class="pms-mobile-drawer" id="pmsMobileDrawer">
+        <ul class="pms-mobile-nav-list">
+          <li>
+            <a th:href="@{/customer/dashboard}" class="pms-mobile-nav-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              <span>Trang Chủ</span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/booking/search}" class="pms-mobile-nav-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>Đặt Phòng</span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/customer/dashboard#myBookingsSection}" class="pms-mobile-nav-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <span>Đơn Đã Đặt</span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/}" class="pms-mobile-nav-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+              <span>Quay Lại Trang Ngoài</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- Main Workspace Content Area -->
+    <main style="flex: 1 0 auto;">
+      <div th:replace="${content}"></div>
+    </main>
+
+    <!-- Executive Footer -->
+    <footer class="customer-portal-footer">
+      <div class="customer-footer-inner">
+        <div class="flex items-center gap-2">
+          <strong style="color: #FDBF2D;">ACE HOTEL FLAGSHIP</strong>
+          <span>• Accommodation, Check-in &amp; Extras</span>
+        </div>
+        <div>
+          <span>Dịch vụ hỗ trợ &amp; Trợ lý Concierge 24/7: </span>
+          <strong style="color: var(--text);">1900 8888 (Nội bộ: 0)</strong>
+        </div>
+        <div>
+          <span>Bản quyền &copy; 2026 ACE Hotel. Bảo lưu mọi quyền.</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Scripts -->
+  <script th:src="@{/js/theme.js}"></script>
+  <script th:src="@{/js/ace-notifications.js}"></script>
+  <script th:src="@{/js/qr-generator.js}"></script>
+
+  <script>
+    // Header & Profile Dropdown Controller
+    (function () {
+      var profileTrigger = document.getElementById('pmsProfileTrigger');
+      var profileMenu = document.getElementById('pmsProfileMenu');
+      var profileWrapper = document.getElementById('pmsProfileWrapper');
+
+      if (profileTrigger && profileMenu) {
+        profileTrigger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var isOpen = profileMenu.classList.contains('is-open');
+          if (isOpen) {
+            profileMenu.classList.remove('is-open');
+            profileTrigger.classList.remove('is-active');
+            profileTrigger.setAttribute('aria-expanded', 'false');
+          } else {
+            profileMenu.classList.add('is-open');
+            profileTrigger.classList.add('is-active');
+            profileTrigger.setAttribute('aria-expanded', 'true');
+            syncAceThemeUI();
+          }
+        });
+
+        document.addEventListener('click', function (e) {
+          if (profileWrapper && !profileWrapper.contains(e.target)) {
+            profileMenu.classList.remove('is-open');
+            profileTrigger.classList.remove('is-active');
+            profileTrigger.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      // Live Date Formatting
+      var liveDateEl = document.getElementById('liveDateDropdown');
+      if (liveDateEl) {
+        var now = new Date();
+        var days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+        var dayName = days[now.getDay()];
+        var d = String(now.getDate()).padStart(2, '0');
+        var m = String(now.getMonth() + 1).padStart(2, '0');
+        var y = now.getFullYear();
+        liveDateEl.textContent = dayName + ', ' + d + '/' + m + '/' + y;
+      }
+
+      // Highlight Active Nav Item
+      var p = window.location.pathname;
+      var hash = window.location.hash;
+      var navHome = document.getElementById('navCustomerHome');
+      var navBook = document.getElementById('navCustomerBook');
+      var navBookings = document.getElementById('navCustomerBookings');
+
+      if (p.indexOf('/booking/search') === 0 && navBook) {
+        navBook.classList.add('active');
+      } else if (p.indexOf('/customer/dashboard') === 0 && navHome) {
+        navHome.classList.add('active');
+      }
+
+      // Mobile Drawer Toggle
+      var toggle = document.getElementById('pmsMobileToggle');
+      var drawer = document.getElementById('pmsMobileDrawer');
+      if (toggle && drawer) {
+        toggle.addEventListener('click', function() {
+          drawer.classList.toggle('is-open');
+        });
+      }
+    })();
+
+    // Helper to open Profile Modal if available
+    function triggerProfileModal() {
+      var profileMenu = document.getElementById('pmsProfileMenu');
+      var profileTrigger = document.getElementById('pmsProfileTrigger');
+      if (profileMenu && profileTrigger) {
+        profileMenu.classList.remove('is-open');
+        profileTrigger.classList.remove('is-active');
+      }
+      if (typeof openProfileModal === 'function') {
+        openProfileModal();
+      } else {
+        window.location.href = '/customer/dashboard?tab=profile';
+      }
+    }
+
+    // Direct Theme Setter
+    function applyAceThemeDirect(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      try {
+        localStorage.setItem('ace-theme', theme);
+      } catch (e) {}
+      syncAceThemeUI();
+    }
+
+    function syncAceThemeUI() {
+      var current = document.documentElement.getAttribute('data-theme') || 'dark';
+      var tag = document.getElementById('pmsThemeStatusTag');
+      var btnDark = document.getElementById('btnThemeDark');
+      var btnLight = document.getElementById('btnThemeLight');
+
+      if (tag) tag.textContent = (current === 'light') ? 'Chế độ Sáng' : 'Chế độ Tối';
+      if (btnDark) btnDark.classList.toggle('active', current === 'dark');
+      if (btnLight) btnLight.classList.toggle('active', current === 'light');
+    }
+  </script>
+
+  <!-- External Component Scripts -->
+  <script th:src="@{/js/theme.js}"></script>
+  <script th:src="@{/js/ace-loading.js}"></script>
+  <script th:src="@{/js/ace-notifications.js}"></script>
+  <script th:src="@{/js/qr-generator.js}"></script>
+</body>
+</html>

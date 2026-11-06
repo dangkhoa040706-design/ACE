@@ -522,8 +522,12 @@
           </li>
 
           <!-- Liên kết Customer Portal khi đăng nhập vai trò CUSTOMER -->
+          <!-- Liên kết Customer Portal khi đăng nhập vai trò CUSTOMER -->
           <li sec:authorize="hasRole('CUSTOMER')">
-            <a th:href="@{/customer/dashboard}" class="nav-link nav-role-pill">Đơn đặt của tôi</a>
+            <a th:href="@{/customer/dashboard}" class="nav-link nav-customer-vip-pill" style="background: rgba(253, 191, 45, 0.16); color: #FDBF2D; border: 1px solid rgba(253, 191, 45, 0.4); border-radius: 9999px; padding: 0.38rem 0.95rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: 0 0 12px rgba(253, 191, 45, 0.2);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              <span>Bàn Điều Khiển Hội Viên</span>
+            </a>
           </li>
 
           <!-- Chuyển sang PMS cho nhân viên / quản lý nếu đã login -->
@@ -595,7 +599,7 @@
           </a>
         </li>
         <li sec:authorize="hasRole('CUSTOMER')">
-          <a th:href="@{/customer/dashboard}" class="mobile-nav-link" onclick="closeMobileMenu()">Đơn đặt của tôi</a>
+          <a th:href="@{/customer/dashboard}" class="mobile-nav-link" style="color: #FDBF2D; font-weight: 700;" onclick="closeMobileMenu()">★ Bàn Điều Khiển Hội Viên</a>
         </li>
         <li sec:authorize="hasAnyRole('RECEPTIONIST', 'ADMIN')">
           <a th:href="@{/staff/dashboard}" class="mobile-nav-link" style="color: #60A5FA;" onclick="closeMobileMenu()">Bàn Lễ Tân PMS</a>

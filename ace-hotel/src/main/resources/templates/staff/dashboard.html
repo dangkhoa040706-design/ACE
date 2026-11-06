@@ -17,8 +17,8 @@
 
     /* 1. Command & Telemetry Bar */
     .command-telemetry-bar {
-      background: rgba(13, 18, 28, 0.92);
-      border: 1px solid rgba(253, 191, 45, 0.2);
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 10px;
       padding: 0.65rem 1rem;
       display: flex;
@@ -26,7 +26,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 0.85rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 4px 20px rgba(0, 0, 0, 0.35);
     }
     :root[data-theme="light"] .command-telemetry-bar {
       background: rgba(255, 255, 255, 0.97);
@@ -57,14 +57,14 @@
       user-select: none;
     }
     .filter-pill:hover {
-      border-color: rgba(253, 191, 45, 0.4);
+      border-color: rgba(229, 192, 123, 0.4);
       color: var(--text);
     }
     .filter-pill.is-active {
-      background: rgba(253, 191, 45, 0.15);
-      border-color: #FDBF2D;
-      color: #FDBF2D;
-      box-shadow: 0 0 10px rgba(253, 191, 45, 0.25);
+      background: rgba(229, 192, 123, 0.15);
+      border-color: #E5C07B;
+      color: #E5C07B;
+      box-shadow: 0 0 10px rgba(229, 192, 123, 0.25);
     }
     :root[data-theme="light"] .filter-pill {
       background: rgba(0, 0, 0, 0.03);
@@ -91,7 +91,7 @@
     }
     .dot-all { background: #E2E8F0; }
     .dot-free { background: #10B981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6); }
-    .dot-occupied { background: #3B82F6; box-shadow: 0 0 6px rgba(59, 130, 246, 0.6); }
+    .dot-occupied { background: #38BDF8; box-shadow: 0 0 6px rgba(56, 189, 248, 0.6); }
     .dot-dirty { background: #F59E0B; box-shadow: 0 0 6px rgba(245, 158, 11, 0.6); }
     .dot-maint { background: #94A3B8; }
 
@@ -113,7 +113,7 @@
       border-radius: 7px;
       width: 250px;
       background: rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(253, 191, 45, 0.25);
+      border: 1px solid rgba(229, 192, 123, 0.25);
       color: var(--text);
       transition: all 0.2s ease;
     }
@@ -123,8 +123,8 @@
     }
     .search-qr-box input:focus {
       outline: none;
-      border-color: #FDBF2D;
-      box-shadow: 0 0 10px rgba(253, 191, 45, 0.3);
+      border-color: #E5C07B;
+      box-shadow: 0 0 10px rgba(229, 192, 123, 0.3);
       width: 280px;
     }
     .search-qr-icon {
@@ -141,8 +141,8 @@
       border-radius: 7px;
       font-size: 0.82rem;
       font-weight: 700;
-      background: #FDBF2D;
-      color: #0A0A0A;
+      background: #E5C07B;
+      color: #0B0F17;
       border: none;
       cursor: pointer;
       display: inline-flex;
@@ -152,8 +152,8 @@
       white-space: nowrap;
     }
     .btn-search-qr:hover {
-      background: #E5AC28;
-      box-shadow: 0 2px 10px rgba(253, 191, 45, 0.35);
+      background: #F3D28E;
+      box-shadow: 0 2px 10px rgba(229, 192, 123, 0.35);
     }
 
     .btn-walkin-action {
@@ -161,9 +161,9 @@
       border-radius: 7px;
       font-size: 0.82rem;
       font-weight: 700;
-      background: rgba(253, 191, 45, 0.1);
-      border: 1px solid rgba(253, 191, 45, 0.45);
-      color: #FDBF2D;
+      background: rgba(229, 192, 123, 0.1);
+      border: 1px solid rgba(229, 192, 123, 0.45);
+      color: #E5C07B;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
@@ -172,9 +172,9 @@
       white-space: nowrap;
     }
     .btn-walkin-action:hover {
-      background: #FDBF2D;
-      color: #0A0A0A;
-      box-shadow: 0 2px 10px rgba(253, 191, 45, 0.35);
+      background: #E5C07B;
+      color: #0B0F17;
+      box-shadow: 0 2px 10px rgba(229, 192, 123, 0.35);
     }
     :root[data-theme="light"] .btn-walkin-action {
       background: rgba(180, 83, 9, 0.08);
@@ -192,9 +192,9 @@
       border-radius: 7px;
       font-size: 0.82rem;
       font-weight: 700;
-      background: rgba(253, 191, 45, 0.12);
-      border: 1px solid rgba(253, 191, 45, 0.45);
-      color: #FDBF2D;
+      background: rgba(229, 192, 123, 0.12);
+      border: 1px solid rgba(229, 192, 123, 0.45);
+      color: #E5C07B;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -203,9 +203,9 @@
       white-space: nowrap;
     }
     .btn-scan-qr:hover {
-      background: #FDBF2D;
-      color: #0A0A0A;
-      box-shadow: 0 2px 10px rgba(253, 191, 45, 0.35);
+      background: #E5C07B;
+      color: #0B0F17;
+      box-shadow: 0 2px 10px rgba(229, 192, 123, 0.35);
       transform: translateY(-1px);
     }
     :root[data-theme="light"] .btn-scan-qr {
@@ -254,8 +254,8 @@
     .floor-badge {
       width: 54px;
       flex-shrink: 0;
-      background: rgba(13, 18, 28, 0.85);
-      border: 1px solid rgba(253, 191, 45, 0.22);
+      background: #162032;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
       display: flex;
       flex-direction: column;
@@ -264,6 +264,7 @@
       padding: 0.5rem 0.2rem;
       text-align: center;
       user-select: none;
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
     }
     :root[data-theme="light"] .floor-badge {
       background: rgba(255, 255, 255, 0.95);
@@ -275,7 +276,7 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 0.82rem;
       font-weight: 800;
-      color: #FDBF2D;
+      color: #E2E8F0;
       letter-spacing: 0.5px;
       line-height: 1.1;
     }
@@ -299,9 +300,9 @@
 
     /* Room Keycard - Linear Luxury Cockpit Card */
     .room-keycard {
-      background: #0E131F;
-      border: 1px solid rgba(253, 191, 45, 0.16);
-      border-radius: 8px;
+      background: linear-gradient(180deg, #162032 0%, #111827 100%);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 10px;
       padding: 0.65rem 0.75rem;
       display: flex;
       flex-direction: column;
@@ -310,16 +311,34 @@
       transition: opacity 0.25s ease, filter 0.25s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
       font-variant-numeric: tabular-nums;
       position: relative;
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 4px 16px -2px rgba(0, 0, 0, 0.45);
     }
     :root[data-theme="light"] .room-keycard {
       background: #FFFFFF;
-      border: 1px solid rgba(230, 227, 218, 0.95);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      border: 1px solid #CBD5E1;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    }
+    :root[data-theme="light"] .room-keycard[data-status="AVAILABLE"] {
+      background: #DCFCE7 !important;
+      border: 1.5px solid #4ADE80 !important;
+    }
+    :root[data-theme="light"] .room-keycard[data-status="OCCUPIED"] {
+      background: #E0F2FE !important;
+      border: 1.5px solid #38BDF8 !important;
+    }
+    :root[data-theme="light"] .room-keycard[data-status="DIRTY"] {
+      background: #FEF3C7 !important;
+      border: 1.5px solid #F59E0B !important;
+    }
+    :root[data-theme="light"] .room-keycard[data-status="MAINTENANCE"] {
+      background: #E2E8F0 !important;
+      border: 1.5px solid #94A3B8 !important;
     }
 
     .room-keycard:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      border-color: rgba(229, 192, 123, 0.45);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15), 0 8px 24px -4px rgba(0, 0, 0, 0.6), 0 0 14px rgba(229, 192, 123, 0.12);
     }
     :root[data-theme="light"] .room-keycard:hover {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
@@ -355,7 +374,7 @@
     .keycard-type-tag {
       font-size: 0.68rem;
       font-weight: 700;
-      color: #FDBF2D;
+      color: #E5C07B;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -380,13 +399,13 @@
       color: #10B981;
     }
     .pill-occupied {
-      background: rgba(59, 130, 246, 0.12);
-      border: 1px solid rgba(59, 130, 246, 0.35);
-      color: #60A5FA;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38BDF8;
     }
     :root[data-theme="light"] .pill-occupied {
-      color: #2563EB;
-      border-color: rgba(37, 99, 235, 0.35);
+      color: #0284C7;
+      border-color: rgba(2, 132, 199, 0.35);
     }
     .pill-dirty {
       background: rgba(245, 158, 11, 0.12);
@@ -461,7 +480,7 @@
     .keycard-code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-weight: 700;
-      color: #FDBF2D;
+      color: #E5C07B;
     }
     :root[data-theme="light"] .keycard-code {
       color: #B45309;
@@ -514,9 +533,9 @@
       color: var(--text-secondary);
     }
     .btn-kc-folio:hover {
-      background: rgba(253, 191, 45, 0.12);
-      border-color: #FDBF2D;
-      color: #FDBF2D;
+      background: rgba(229, 192, 123, 0.12);
+      border-color: #E5C07B;
+      color: #E5C07B;
     }
     :root[data-theme="light"] .btn-kc-folio {
       background: rgba(0, 0, 0, 0.04);
@@ -531,13 +550,14 @@
 
     .btn-kc-checkout {
       flex: 1;
-      background: linear-gradient(135deg, #FDBF2D 0%, #D97706 100%);
-      border: 1px solid #FDBF2D;
-      color: #0A0A0A;
+      background: linear-gradient(180deg, #E5C07B 0%, #D4AF37 100%);
+      border: 1px solid #E5C07B;
+      color: #0B0F17;
+      font-weight: 700;
     }
     .btn-kc-checkout:hover {
-      background: #E5AC28;
-      box-shadow: 0 2px 8px rgba(253, 191, 45, 0.35);
+      background: #F3D28E;
+      box-shadow: 0 2px 8px rgba(229, 192, 123, 0.35);
     }
 
     .btn-kc-clean {
@@ -561,8 +581,8 @@
 
     /* Right Column: Live Reserved Queue Dock */
     .reserved-dock {
-      background: rgba(13, 18, 28, 0.92);
-      border: 1px solid rgba(253, 191, 45, 0.2);
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.09);
       border-radius: 10px;
       padding: 0.85rem 1rem;
       display: flex;
@@ -570,6 +590,7 @@
       gap: 0.75rem;
       position: sticky;
       top: 66px;
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(0, 0, 0, 0.35);
     }
     :root[data-theme="light"] .reserved-dock {
       background: rgba(255, 255, 255, 0.97);
@@ -597,9 +618,9 @@
       font-weight: 700;
       padding: 0.15rem 0.5rem;
       border-radius: 9999px;
-      background: rgba(253, 191, 45, 0.15);
-      border: 1px solid rgba(253, 191, 45, 0.35);
-      color: #FDBF2D;
+      background: rgba(229, 192, 123, 0.15);
+      border: 1px solid rgba(229, 192, 123, 0.35);
+      color: #E5C07B;
     }
     :root[data-theme="light"] .dock-badge-count {
       background: rgba(180, 83, 9, 0.1);
@@ -711,7 +732,7 @@
       box-shadow: 0 2px 8px rgba(253, 191, 45, 0.35);
     }
 
-    /* Occupancy Telemetry Widget (BR8) */
+    /* Occupancy Telemetry Widget */
     .or-telemetry-widget {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1009,7 +1030,7 @@
           </div>
         </div>
 
-        <!-- Telemetry Widget: Chuẩn Công Suất Khai Thác (BR8) -->
+        <!-- Telemetry Widget: Chuẩn Công Suất Khai Thác Buồng Phòng -->
         <div class="or-telemetry-widget"
              th:with="sellableRooms=${rooms.size() - maintenanceCount},
                       orRatio=${sellableRooms > 0 ? (occupiedCount * 100.0 / sellableRooms) : 0}">

@@ -30,7 +30,7 @@ public final class MessageConstants {
     public static final String MSG_19 = "Đã hủy đơn đặt phòng giữ chỗ %s thành công.";
     public static final String MSG_20 = "Ngày trả phòng phải sau ngày nhận phòng ít nhất 1 đêm.";
     public static final String MSG_21 = "Không còn hạng phòng trống phù hợp trong khoảng ngày và số lượng khách đã chọn.";
-    public static final String MSG_22 = "Hạng phòng này vừa hết suất trống trong khoảng ngày bạn chọn. Vui lòng chọn hạng phòng khác.";
+    public static final String MSG_22 = "Hạng phòng này vừa hết phòng trống trong khoảng thời gian quý khách chọn. Vui lòng chọn hạng phòng khác hoặc thay đổi ngày lưu trú.";
     public static final String MSG_23 = "Chỉ có thể hủy đơn đặt phòng khi đang ở trạng thái Đã xác nhận giữ chỗ (RESERVED).";
 
     // UC04: Quản lý Check-in, Gán phòng sạch & Tiếp nhận Walk-in 0đ cọc
