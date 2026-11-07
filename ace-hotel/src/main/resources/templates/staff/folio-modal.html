@@ -36,7 +36,7 @@
     <div class="flex items-center gap-2">
       <a th:href="@{'/staff/bookings/' + ${booking.bookingId} + '/check-out'}" class="btn btn-primary btn-sm" style="font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.4rem 0.75rem;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-        <span>Check-out Quyết toán</span>
+        <span>Trả Phòng &amp; Quyết Toán</span>
       </a>
       <button type="button" class="folio-modal-close" onclick="closeFolioModal()" title="Đóng popup (Esc)">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -52,9 +52,9 @@
     <div class="flex justify-between items-center" style="margin-bottom: 0.65rem;">
       <h4 style="font-size: 0.88rem; font-weight: 700; color: #FDBF2D; margin: 0; display: flex; align-items: center; gap: 0.4rem; text-transform: uppercase; letter-spacing: 0.4px;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-        <span>Ghi Nhận Dịch Vụ Mới Vào Sổ Cái Phòng</span>
+        <span>Thêm Dịch Vụ Mới</span>
       </h4>
-      <span style="font-size: 0.72rem; color: #94A3B8;">4 Nhóm: Minibar, Giặt ủi, Ẩm thực, Đền bù</span>
+      <span style="font-size: 0.72rem; color: #94A3B8;">Minibar, Giặt ủi, Ẩm thực, Bồi thường</span>
     </div>
 
     <form id="folioAddServiceForm"
@@ -68,7 +68,7 @@
             Chọn Dịch Vụ / Hàng Hóa Phát Sinh <span style="color: #EF4444;">*</span>
           </label>
           <select name="serviceId" class="form-control" required style="font-size: 0.82rem; height: 38px;">
-            <option value="" disabled selected>-- Chọn mặt hàng từ danh mục 4 nhóm --</option>
+            <option value="" disabled selected>-- Chọn dịch vụ / hàng hóa --</option>
             <option th:each="s : ${services}" th:value="${s.serviceId}"
                     th:text="'[' + ${s.category.name()} + '] ' + ${s.name} + ' — ' + ${#numbers.formatDecimal(s.unitPrice, 0, 'COMMA', 0, 'POINT')} + 'đ / ' + ${s.unit}">
               [MINIBAR] Nước khoáng Lavie 500ml — 20,000đ / Chai
@@ -87,7 +87,7 @@
         <!-- Nút Ghi Sổ -->
         <div>
           <button type="submit" id="btnSubmitFolioService" class="btn btn-primary" style="height: 38px; font-size: 0.82rem; font-weight: 700; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.35rem;">
-            <span>+ Ghi vào Folio</span>
+            <span>+ Thêm dịch vụ</span>
           </button>
         </div>
       </div>
@@ -99,19 +99,19 @@
     <div class="flex items-center justify-between" style="margin-bottom: 0.65rem;">
       <h4 style="font-size: 0.88rem; font-weight: 700; color: #FFFFFF; margin: 0; display: flex; align-items: center; gap: 0.4rem;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-        <span>Sổ Cái Dịch Vụ Lưu Trú Đã Sử Dụng (<span th:text="${serviceOrders.size()}">0</span> khoản)</span>
+        <span>Danh Sách Dịch Vụ Đã Dùng (<span th:text="${serviceOrders.size()}">0</span> khoản)</span>
       </h4>
       <div style="font-size: 0.82rem; color: #CBD5E1;">
         Tổng tiền dịch vụ:
         <strong style="color: #FDBF2D; font-size: 1.05rem; font-family: monospace;"
                 th:text="${#numbers.formatDecimal(serviceChargeTotal, 0, 'COMMA', 0, 'POINT') + ' đ'}">0 đ</strong>
-        <span style="font-size: 0.7rem; color: #94A3B8;">(chưa gồm SVC 5% &amp; VAT 10%)</span>
+        <span style="font-size: 0.7rem; color: #94A3B8;">(chưa gồm phí &amp; VAT)</span>
       </div>
     </div>
 
     <!-- Trạng thái trống -->
     <div th:if="${serviceOrders.isEmpty()}" style="text-align: center; padding: 2rem 1rem; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); border-radius: 8px; color: #94A3B8; font-size: 0.82rem;">
-      Phòng này chưa có phát sinh dịch vụ Minibar, Giặt ủi, Ẩm thực hoặc Đền bù tài sản nào.
+      Phòng này chưa có phát sinh dịch vụ Minibar, Giặt ủi, Ẩm thực hoặc Bồi thường tài sản nào.
     </div>
 
     <!-- Bảng danh sách khi có dữ liệu -->

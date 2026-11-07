@@ -57,8 +57,8 @@ INSERT INTO services (service_id, name, category, unit_price, unit) VALUES
   (4, 'Giặt hấp / Giặt khô Áo Vest',            'LAUNDRY', 150000, 'Chiếc'),
   (5, 'Bữa sáng Buffet gọi thêm',               'FB',      100000, 'Suất'),
   (6, 'Phục vụ món nóng tại phòng (In-room)',   'FB',      220000, 'Phần'),
-  (7, 'Đền bù vỡ ly thủy tinh / cốc sứ',        'DAMAGES', 100000, 'Cái'),
-  (8, 'Đền bù mất thẻ từ chìa khóa phòng',      'DAMAGES', 200000, 'Thẻ');
+  (7, 'Bồi thường vỡ ly thủy tinh / cốc sứ',   'DAMAGES', 100000, 'Cái'),
+  (8, 'Bồi thường mất thẻ từ chìa khóa phòng', 'DAMAGES', 200000, 'Thẻ');
 
 ALTER TABLE services ALTER COLUMN service_id RESTART WITH 20;
 

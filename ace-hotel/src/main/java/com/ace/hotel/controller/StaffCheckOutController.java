@@ -69,7 +69,8 @@ public class StaffCheckOutController {
         model.addAttribute("isAlreadyCheckedOut", isAlreadyCheckedOut);
         model.addAttribute("isNotCheckedIn", isNotCheckedIn);
 
-        CheckOutSummaryDto summary = checkOutService.prepareCheckOutSummary(id, lateFee);
+        Long safeLateFee = lateFee != null ? Math.max(0L, lateFee) : null;
+        CheckOutSummaryDto summary = checkOutService.prepareCheckOutSummary(id, safeLateFee);
 
         model.addAttribute("summary", summary);
         model.addAttribute("booking", booking);
@@ -89,7 +90,8 @@ public class StaffCheckOutController {
                                   RedirectAttributes redirectAttributes) {
         try {
             User staff = getStaff(userDetails);
-            Invoice invoice = checkOutService.confirmCheckOutAndPay(id, lateCheckoutFee, paymentMethod, staff);
+            long safeLateFee = Math.max(0L, lateCheckoutFee != null ? lateCheckoutFee : 0L);
+            Invoice invoice = checkOutService.confirmCheckOutAndPay(id, safeLateFee, paymentMethod, staff);
             String roomNum = invoice.getBooking().getRoom() != null ? invoice.getBooking().getRoom().getRoomNumber() : "N/A";
             redirectAttributes.addFlashAttribute("successMessage",
                     String.format(MessageConstants.MSG_29, invoice.getInvoiceId(), roomNum));

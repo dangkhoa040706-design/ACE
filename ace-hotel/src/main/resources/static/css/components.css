@@ -784,6 +784,15 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 0;
 }
 
+/* Ensure customer dashboard modals are always visible with high z-index */
+#profileModal,
+#qrModal,
+#folioModal,
+#bookingCelebrationModal {
+  opacity: 1 !important;
+  z-index: 999999 !important;
+}
+
 .ace-modal-dialog {
   width: 100%;
   max-width: 460px;
@@ -2373,14 +2382,17 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* Customer Portal Welcome Banner Theme Adaptive */
 .customer-welcome-banner {
-  border: 1px solid rgba(229, 192, 123, 0.28);
-  background: linear-gradient(135deg, rgba(14, 20, 31, 0.95), rgba(8, 11, 18, 0.98));
+  border: 1px solid rgba(229, 192, 123, 0.35);
+  background: linear-gradient(135deg, rgba(20, 28, 46, 0.85) 0%, rgba(11, 16, 26, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 :root[data-theme="light"] .customer-welcome-banner {
   background: #FFFFFF;
   border: 1px solid #CBD5E1;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 8px 24px -4px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
 }
 
 /* =========================================================================
@@ -2414,7 +2426,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   }
 }
 
-/* 2. Thẻ Hội Viên VIP Black-Gold (Chuẩn Tỷ Lệ ISO/IEC 7810 1.58 : 1) */
+/* 2. Thẻ Hội Viên VIP Black-Gold & Halo Pedestal */
 .luxury-vip-card-wrapper {
   display: flex;
   align-items: center;
@@ -2422,41 +2434,79 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   height: 100%;
 }
 
+.vip-card-pedestal {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Backlight Aura Glow */
+.vip-card-pedestal::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 28px;
+  background: radial-gradient(circle at 50% 50%, rgba(253, 191, 45, 0.28) 0%, rgba(217, 119, 6, 0.12) 50%, transparent 75%);
+  filter: blur(16px);
+  z-index: 1;
+  pointer-events: none;
+  transition: all 0.35s ease;
+}
+
 .luxury-vip-card {
+  position: relative;
+  z-index: 2;
   width: 100%;
   max-width: 440px;
   aspect-ratio: 1.586 / 1;
-  border-radius: 18px;
+  border-radius: 20px;
   padding: 1.6rem 1.8rem;
-  background: linear-gradient(145deg, #161D2B 0%, #0A0E17 100%);
-  border: 1.5px solid rgba(229, 192, 123, 0.45);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  position: relative;
+  background: linear-gradient(135deg, #242B3E 0%, #121726 38%, #1A2132 68%, #2F2516 100%);
+  border: 1.8px solid #FDBF2D;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65), 0 0 25px rgba(253, 191, 45, 0.25), inset 0 1px 2px rgba(255, 240, 200, 0.5), inset 0 -1px 3px rgba(0, 0, 0, 0.7);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+/* Holographic Metallic Luster Sweep across card */
+.luxury-vip-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 25%, rgba(253, 191, 45, 0.12) 40%, rgba(255, 255, 255, 0.32) 50%, rgba(253, 191, 45, 0.12) 60%, transparent 75%);
+  pointer-events: none;
+  z-index: 1;
+  transition: transform 0.6s ease;
 }
 
 .luxury-vip-card:hover {
-  transform: translateY(-3px) scale(1.01);
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.7), 0 0 20px rgba(229, 192, 123, 0.25);
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(253, 191, 45, 0.4), inset 0 1px 3px rgba(255, 240, 200, 0.7);
+}
+
+.luxury-vip-card:hover::before {
+  transform: translateX(35px);
 }
 
 :root[data-theme="light"] .luxury-vip-card {
-  background: linear-gradient(145deg, #0F172A 0%, #020617 100%);
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 50%, #1A1712 100%);
   border-color: #D97706;
-  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.35), 0 0 20px rgba(217, 119, 6, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.4);
 }
 
 .vip-card-watermark {
   position: absolute;
-  bottom: -20px;
-  right: -20px;
-  opacity: 0.08;
+  bottom: -25px;
+  right: -25px;
+  opacity: 0.12;
   pointer-events: none;
-  width: 200px;
+  width: 210px;
 }
 
 .vip-chip-container {
@@ -2467,12 +2517,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .vip-emv-chip {
-  width: 40px;
-  height: 30px;
-  border-radius: 5px;
-  background: linear-gradient(135deg, #FDE047 0%, #CA8A04 60%, #A16207 100%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 2px 5px rgba(0, 0, 0, 0.3);
+  width: 44px;
+  height: 32px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #FFF08A 0%, #EAB308 50%, #A16207 100%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.8), 0 2px 6px rgba(0, 0, 0, 0.4);
   position: relative;
 }
 
@@ -2480,17 +2530,17 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   content: '';
   position: absolute;
   inset: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.28);
   border-radius: 3px;
 }
 
 .vip-member-number {
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
-  font-size: 1.3rem;
+  font-family: 'Courier New', monospace;
+  font-size: 1.35rem;
   font-weight: 800;
-  color: #FFFFFF;
+  color: #FDBF2D;
   letter-spacing: 3.5px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9), 0 0 14px rgba(253, 191, 45, 0.5);
 }
 
 /* 3. Bento Stat Cards (4 Ô Chỉ Số Nổi Khối Kính Mờ) */
@@ -2507,14 +2557,105 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .bento-stat-box {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(229, 192, 123, 0.18);
   border-radius: 12px;
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+}
+
+.bento-stat-box:hover {
+  border-color: rgba(229, 192, 123, 0.45);
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme="light"] .bento-stat-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+:root[data-theme="light"] .bento-stat-box:hover {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+}
+
+/* 4. Section Framework (Rạch Ròi 4 Phân Khu) */
+.portal-section {
+  position: relative;
+}
+
+.section-eyebrow-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.section-eyebrow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(229, 192, 123, 0.15) 0%, rgba(217, 119, 6, 0.1) 100%);
+  border: 1px solid rgba(229, 192, 123, 0.4);
+  color: #E5C07B;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+:root[data-theme="light"] .section-eyebrow-badge {
+  background: rgba(180, 83, 9, 0.08);
+  border-color: rgba(180, 83, 9, 0.3);
+  color: #B45309;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3.5rem 0;
+  position: relative;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(229, 192, 123, 0.35), transparent);
+}
+
+:root[data-theme="light"] .section-divider::before,
+:root[data-theme="light"] .section-divider::after {
+  background: linear-gradient(90deg, transparent, rgba(180, 83, 9, 0.25), transparent);
+}
+
+.section-divider-glyph {
+  padding: 0 1.25rem;
+  color: #FDBF2D;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(253, 191, 45, 0.6);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+:root[data-theme="light"] .section-divider-glyph {
+  color: #B45309;
+  text-shadow: none;
 }
 
 .bento-stat-box:hover {
@@ -2735,6 +2876,103 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 :root[data-theme="light"] .modal-tab-btn.active {
   color: #B45309;
   border-bottom-color: #B45309;
+}
+
+/* =========================================================================
+   MICRO LUXURY SCROLLBAR (5px) FOR DIALOGS, MODALS, TABLES & INNER CONTAINERS
+   ========================================================================= */
+.customer-profile-dialog,
+.table-responsive,
+.pms-table-container,
+.folio-service-list,
+.ace-select-options-list,
+.modal-dialog-scrollable,
+.mobile-nav-drawer,
+.pms-mobile-drawer {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(229, 192, 123, 0.45) rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme="light"] .customer-profile-dialog,
+:root[data-theme="light"] .table-responsive,
+:root[data-theme="light"] .pms-table-container,
+:root[data-theme="light"] .folio-service-list,
+:root[data-theme="light"] .ace-select-options-list,
+:root[data-theme="light"] .modal-dialog-scrollable,
+:root[data-theme="light"] .mobile-nav-drawer,
+:root[data-theme="light"] .pms-mobile-drawer {
+  scrollbar-color: rgba(180, 83, 9, 0.45) #E2E8F0;
+}
+
+.customer-profile-dialog::-webkit-scrollbar,
+.table-responsive::-webkit-scrollbar,
+.pms-table-container::-webkit-scrollbar,
+.folio-service-list::-webkit-scrollbar,
+.ace-select-options-list::-webkit-scrollbar,
+.modal-dialog-scrollable::-webkit-scrollbar,
+.mobile-nav-drawer::-webkit-scrollbar,
+.pms-mobile-drawer::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.customer-profile-dialog::-webkit-scrollbar-track,
+.table-responsive::-webkit-scrollbar-track,
+.pms-table-container::-webkit-scrollbar-track,
+.folio-service-list::-webkit-scrollbar-track,
+.ace-select-options-list::-webkit-scrollbar-track,
+.modal-dialog-scrollable::-webkit-scrollbar-track,
+.mobile-nav-drawer::-webkit-scrollbar-track,
+.pms-mobile-drawer::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 9999px;
+}
+
+:root[data-theme="light"] .customer-profile-dialog::-webkit-scrollbar-track,
+:root[data-theme="light"] .table-responsive::-webkit-scrollbar-track,
+:root[data-theme="light"] .pms-table-container::-webkit-scrollbar-track,
+:root[data-theme="light"] .folio-service-list::-webkit-scrollbar-track,
+:root[data-theme="light"] .ace-select-options-list::-webkit-scrollbar-track,
+:root[data-theme="light"] .modal-dialog-scrollable::-webkit-scrollbar-track,
+:root[data-theme="light"] .mobile-nav-drawer::-webkit-scrollbar-track,
+:root[data-theme="light"] .pms-mobile-drawer::-webkit-scrollbar-track {
+  background: #E2E8F0;
+}
+
+.customer-profile-dialog::-webkit-scrollbar-thumb,
+.table-responsive::-webkit-scrollbar-thumb,
+.pms-table-container::-webkit-scrollbar-thumb,
+.folio-service-list::-webkit-scrollbar-thumb,
+.ace-select-options-list::-webkit-scrollbar-thumb,
+.modal-dialog-scrollable::-webkit-scrollbar-thumb,
+.mobile-nav-drawer::-webkit-scrollbar-thumb,
+.pms-mobile-drawer::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #FDBF2D 0%, #D97706 100%);
+  border-radius: 9999px;
+  box-shadow: 0 0 6px rgba(253, 191, 45, 0.35);
+}
+
+.customer-profile-dialog::-webkit-scrollbar-thumb:hover,
+.table-responsive::-webkit-scrollbar-thumb:hover,
+.pms-table-container::-webkit-scrollbar-thumb:hover,
+.folio-service-list::-webkit-scrollbar-thumb:hover,
+.ace-select-options-list::-webkit-scrollbar-thumb:hover,
+.modal-dialog-scrollable::-webkit-scrollbar-thumb:hover,
+.mobile-nav-drawer::-webkit-scrollbar-thumb:hover,
+.pms-mobile-drawer::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FDE047 0%, #F59E0B 100%);
+  box-shadow: 0 0 10px rgba(253, 191, 45, 0.6);
+}
+
+:root[data-theme="light"] .customer-profile-dialog::-webkit-scrollbar-thumb,
+:root[data-theme="light"] .table-responsive::-webkit-scrollbar-thumb,
+:root[data-theme="light"] .pms-table-container::-webkit-scrollbar-thumb,
+:root[data-theme="light"] .folio-service-list::-webkit-scrollbar-thumb,
+:root[data-theme="light"] .ace-select-options-list::-webkit-scrollbar-thumb,
+:root[data-theme="light"] .modal-dialog-scrollable::-webkit-scrollbar-thumb,
+:root[data-theme="light"] .mobile-nav-drawer::-webkit-scrollbar-thumb,
+:root[data-theme="light"] .pms-mobile-drawer::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #D97706 0%, #B45309 100%);
 }
 
 

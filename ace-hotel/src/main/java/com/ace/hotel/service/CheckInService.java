@@ -73,10 +73,16 @@ public class CheckInService {
             ));
         }
 
-        // Cập nhật CCCD nếu có
+        // Cập nhật CCCD nếu có (chống xung đột Unique Constraint gây lỗi 500)
         if (idNumber != null && !idNumber.isBlank()) {
             Customer customer = booking.getCustomer();
-            customer.setIdNumber(idNumber.trim());
+            String trimmedId = idNumber.trim();
+            customerRepository.findByIdNumber(trimmedId).ifPresent(other -> {
+                if (!other.getCustomerId().equals(customer.getCustomerId())) {
+                    throw new BusinessException("Số CCCD/Hộ chiếu này đã được đăng ký cho hồ sơ khách hàng khác (" + other.getFullName() + ")!");
+                }
+            });
+            customer.setIdNumber(trimmedId);
             customerRepository.save(customer);
         }
 
@@ -84,7 +90,7 @@ public class CheckInService {
         booking.setRoom(room);
         booking.setStatus(BookingStatus.CHECKED_IN);
         booking.setActualCheckIn(LocalDateTime.now());
-        booking.setEarlyCheckinFee(earlyCheckinFee != null ? earlyCheckinFee : 0L);
+        booking.setEarlyCheckinFee(earlyCheckinFee != null ? Math.max(0L, earlyCheckinFee) : 0L);
         if (staff != null && booking.getCreatedBy() == null) {
             booking.setCreatedBy(staff);
         }
@@ -138,26 +144,42 @@ public class CheckInService {
 
         // Tìm hoặc tạo khách hàng Walk-in (user_id = null)
         Customer customer = null;
-        if (dto.getIdNumber() != null && !dto.getIdNumber().isBlank()) {
-            customer = customerRepository.findByIdNumber(dto.getIdNumber().trim()).orElse(null);
+        String trimmedId = (dto.getIdNumber() != null && !dto.getIdNumber().isBlank()) ? dto.getIdNumber().trim() : null;
+        String trimmedPhone = (dto.getPhone() != null && !dto.getPhone().isBlank()) ? dto.getPhone().trim() : null;
+
+        if (trimmedId != null) {
+            customer = customerRepository.findByIdNumber(trimmedId).orElse(null);
         }
-        if (customer == null && dto.getPhone() != null && !dto.getPhone().isBlank()) {
-            customer = customerRepository.findByPhone(dto.getPhone().trim()).orElse(null);
+        if (customer == null && trimmedPhone != null) {
+            customer = customerRepository.findByPhone(trimmedPhone).orElse(null);
         }
         if (customer == null) {
             customer = new Customer();
             customer.setFullName(dto.getFullName().trim());
-            customer.setPhone(dto.getPhone().trim());
-            customer.setIdNumber(dto.getIdNumber() != null ? dto.getIdNumber().trim() : null);
+            customer.setPhone(trimmedPhone);
+            customer.setIdNumber(trimmedId);
             customer.setUser(null);
             customer = customerRepository.save(customer);
         } else {
-            // Cập nhật thông tin nếu có bổ sung
-            customer.setFullName(dto.getFullName().trim());
-            customer.setPhone(dto.getPhone().trim());
-            if (dto.getIdNumber() != null && !dto.getIdNumber().isBlank()) {
-                customer.setIdNumber(dto.getIdNumber().trim());
+            // Chống xung đột Unique Constraint khi cập nhật hồ sơ khách hàng đã có
+            Long currentCustId = customer.getCustomerId();
+            if (trimmedId != null) {
+                customerRepository.findByIdNumber(trimmedId).ifPresent(other -> {
+                    if (!other.getCustomerId().equals(currentCustId)) {
+                        throw new BusinessException("Số CCCD/Hộ chiếu này đã được đăng ký cho hồ sơ khách hàng khác (" + other.getFullName() + ")!");
+                    }
+                });
+                customer.setIdNumber(trimmedId);
             }
+            if (trimmedPhone != null) {
+                customerRepository.findByPhone(trimmedPhone).ifPresent(other -> {
+                    if (!other.getCustomerId().equals(currentCustId)) {
+                        throw new BusinessException("Số điện thoại này đã được đăng ký cho hồ sơ khách hàng khác (" + other.getFullName() + ")!");
+                    }
+                });
+                customer.setPhone(trimmedPhone);
+            }
+            customer.setFullName(dto.getFullName().trim());
             customer = customerRepository.save(customer);
         }
 

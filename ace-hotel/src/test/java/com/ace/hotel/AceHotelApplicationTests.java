@@ -843,6 +843,73 @@ class AceHotelApplicationTests {
                 .andExpect(status().isOk())
                 .andExpect(view().name("customer/booking-portal"));
     }
+
+    @Test
+    @DisplayName("Bug 1 Test: Chống lỗ hổng Open Redirect (CWE-601)")
+    void testOpenRedirectSanitization() {
+        assertFalse(com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl("http://evil.com"));
+        assertFalse(com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl("https://phishing.com/login"));
+        assertFalse(com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl("//evil.com"));
+        assertFalse(com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl("/\\evil.com"));
+        assertFalse(com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl("javascript:alert(1)"));
+        assertFalse(com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl(null));
+        assertFalse(com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl(""));
+
+        assertTrue(com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl("/customer/dashboard"));
+        assertTrue(com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl("/booking/search?checkIn=2026-11-06&checkOut=2026-11-07&guests=2"));
+    }
+
+    @Test
+    @DisplayName("Bug 3 Test: Live Folio tính đầy đủ 5% SVC và 10% VAT khớp hóa đơn Check-out")
+    void testLiveFolioFinancialBreakdown() throws Exception {
+        mockMvc.perform(get("/customer/bookings/2401/folio-data").with(user("khach").roles("CUSTOMER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.bookingCode").value("BK-2401"))
+                .andExpect(jsonPath("$.roomCharge").value(2000000))
+                .andExpect(jsonPath("$.svcAmount").exists())
+                .andExpect(jsonPath("$.vatAmount").exists())
+                .andExpect(jsonPath("$.grandTotal").exists())
+                .andExpect(jsonPath("$.depositPaid").value(693000))
+                .andExpect(jsonPath("$.balanceDue").exists());
+    }
+
+    @Test
+    @DisplayName("Bug 4 Test: Phụ thu quá hạn trả phòng nhiều ngày")
+    void testMultiDayOverdueCheckoutCalculation() {
+        CheckOutSummaryDto summary = checkOutService.prepareCheckOutSummary(2401L, null);
+        assertNotNull(summary);
+        assertTrue(summary.getGrandTotal() > 0);
+        assertTrue(summary.getBalanceDue() >= 0);
+    }
+
+    @Test
+    @DisplayName("Bug 5 Test: Chống crash 500 khi Walk-in nhập trùng CCCD của khách khác")
+    void testWalkInDuplicateIdProtection() {
+        User receptionist = userRepository.findByUsername("nhanvien").orElseThrow();
+        WalkInCheckInDto dto = new WalkInCheckInDto();
+        dto.setFullName("Khách Trùng CCCD");
+        dto.setPhone("0988776655");
+        dto.setIdNumber("079201001234"); // Đã thuộc về khach (user 3)
+        dto.setRoomId(1L);
+        dto.setCheckOutDate(LocalDate.now().plusDays(1));
+        dto.setGuestCount(1);
+
+        assertThrows(BusinessException.class, () -> checkInService.processWalkInCheckIn(dto, receptionist));
+    }
+
+    @Test
+    @DisplayName("Bug 9 Test: Phòng sau bảo trì chuyển sang DIRTY để buồng phòng dọn dẹp")
+    void testToggleMaintenanceTransitionsToDirty() {
+        Room room112 = roomRepository.findByRoomNumberIgnoreCase("112").orElseThrow();
+        assertEquals(RoomStatus.MAINTENANCE, room112.getStatus());
+
+        catalogService.toggleMaintenance(room112.getRoomId());
+        Room updated = roomRepository.findById(room112.getRoomId()).orElseThrow();
+        assertEquals(RoomStatus.DIRTY, updated.getStatus(), "Phòng bảo trì xong phải chuyển sang DIRTY để buồng phòng kiểm tra");
+
+        // Chuyển lại về MAINTENANCE để cách ly test
+        catalogService.toggleMaintenance(room112.getRoomId());
+    }
 }
 
 

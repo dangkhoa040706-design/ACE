@@ -1201,10 +1201,10 @@
               Toàn quyền Quản trị: Xem báo cáo doanh thu &amp; OR%, Quản lý cấu hình biểu giá hạng phòng &amp; dịch vụ, Giám sát sơ đồ phòng PMS.
             </div>
             <div sec:authorize="hasRole('RECEPTIONIST')">
-              Nghiệp vụ tiền sảnh PMS: Quản lý sơ đồ phòng, Check-in QR khách đặt trước, Nhận khách Walk-in, Check-out đối soát hóa đơn &amp; mini-bar, Quản lý Folio dịch vụ.
+              Nghiệp vụ tiền sảnh PMS: Quản lý sơ đồ phòng, Check-in QR khách đặt trước, Nhận khách trực tiếp, Check-out đối soát hóa đơn, Quản lý dịch vụ phòng.
             </div>
             <div sec:authorize="hasRole('CUSTOMER')">
-              Cổng đặt phòng trực tuyến: Tra cứu hạng phòng, Thanh toán cọc giữ chỗ 30%, Quản lý danh sách đơn đặt phòng cá nhân.
+              Cổng đặt phòng trực tuyến: Tra cứu hạng phòng, Đặt cọc trực tuyến, Quản lý danh sách đơn đặt phòng cá nhân.
             </div>
           </div>
         </div>
@@ -1213,7 +1213,7 @@
           <span style="color: var(--text-secondary);">Trạng thái tài khoản:</span>
           <span style="color: #10B981; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;">
             <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
-            <span>Đang hoạt động (Active)</span>
+            <span>Đang hoạt động</span>
           </span>
         </div>
       </div>
@@ -1221,7 +1221,7 @@
       <!-- Modal Footer -->
       <div style="margin-top: 1.5rem; text-align: right; border-top: 1px solid var(--border); padding-top: 1rem;">
         <button type="button" class="btn btn-secondary" onclick="closeAccountDetailModal()" style="padding: 0.55rem 1.35rem;">
-          Đóng Cửa Sổ
+          Đóng
         </button>
       </div>
     </div>

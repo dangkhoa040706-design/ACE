@@ -131,28 +131,28 @@
     <!-- Financial Totals Block -->
     <div style="margin-left: auto; max-width: 420px; border-top: 2px solid var(--border); padding-top: 0.75rem;">
       <div class="flex items-center justify-between" style="padding: 0.35rem 0; font-size: 0.9rem;">
-        <span style="font-weight: 600;">Tổng chi phí gốc (Subtotal):</span>
+        <span style="font-weight: 600;">Tổng chi phí gốc:</span>
         <strong th:text="${#numbers.formatDecimal(invoice.subtotal, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">2,300,000 VNĐ</strong>
       </div>
       <div class="flex items-center justify-between" style="padding: 0.35rem 0; font-size: 0.9rem; color: var(--text-secondary);">
-        <span>Phí phục vụ (SVC 5%):</span>
+        <span>Phí phục vụ (5%):</span>
         <span th:text="${#numbers.formatDecimal(invoice.serviceChargeAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">115,000 VNĐ</span>
       </div>
       <div class="flex items-center justify-between" style="padding: 0.35rem 0; font-size: 0.9rem; color: var(--text-secondary);">
-        <span>Thuế GTGT (VAT 10%):</span>
+        <span>Thuế GTGT (10%):</span>
         <span th:text="${#numbers.formatDecimal(invoice.vatAmount, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">241,500 VNĐ</span>
       </div>
       <div class="flex items-center justify-between" style="padding: 0.5rem 0; font-size: 1.1rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 0.35rem 0;">
-        <span style="font-weight: 800; color: #FDBF2D;">TỔNG CỘNG HÓA ĐƠN (++):</span>
+        <span style="font-weight: 800; color: #FDBF2D;">TỔNG CỘNG HÓA ĐƠN:</span>
         <strong style="color: #FDBF2D; font-size: 1.25rem;"
                 th:text="${#numbers.formatDecimal(invoice.grandTotal, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">2,656,500 VNĐ</strong>
       </div>
       <div class="flex items-center justify-between" style="padding: 0.35rem 0; font-size: 0.9rem; color: var(--st-free);">
-        <span style="font-weight: 600;">Khấu trừ tiền cọc đã đóng:</span>
+        <span style="font-weight: 600;">Tiền cọc đã thanh toán:</span>
         <strong th:text="'- ' + ${#numbers.formatDecimal(invoice.depositDeducted, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">- 693,000 VNĐ</strong>
       </div>
       <div class="flex items-center justify-between" style="padding: 0.75rem 0; font-size: 1.2rem; border-top: 2px solid var(--st-free); margin-top: 0.35rem;">
-        <span style="font-weight: 900; color: var(--text);">THỰC THU TẠI QUẦY:</span>
+        <span style="font-weight: 900; color: var(--text);">SỐ TIỀN CẦN THANH TOÁN:</span>
         <strong style="font-size: 1.45rem; color: #FDBF2D; font-weight: 900;"
                 th:text="${#numbers.formatDecimal(invoice.balanceDue, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}">1,963,500 VNĐ</strong>
       </div>

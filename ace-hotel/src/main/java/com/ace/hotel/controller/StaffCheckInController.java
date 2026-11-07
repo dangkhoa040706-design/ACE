@@ -105,7 +105,8 @@ public class StaffCheckInController {
                                  RedirectAttributes redirectAttributes) {
         try {
             User staff = getStaff(userDetails);
-            Booking booking = checkInService.assignAndCheckIn(bookingId, roomId, earlyCheckinFee, idNumber, staff);
+            long safeEarlyFee = Math.max(0L, earlyCheckinFee != null ? earlyCheckinFee : 0L);
+            Booking booking = checkInService.assignAndCheckIn(bookingId, roomId, safeEarlyFee, idNumber, staff);
             redirectAttributes.addFlashAttribute("successMessage",
                     String.format(MessageConstants.MSG_24, booking.getRoom().getRoomNumber(), booking.getBookingCode()));
             return "redirect:/staff/dashboard";

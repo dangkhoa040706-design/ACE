@@ -631,30 +631,77 @@
       }
     }
 
-    /* Footer */
+    /* Executive Brand 5-Star Footer for Customer Portal */
     .customer-portal-footer {
       margin-top: auto;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      background: rgba(8, 11, 18, 0.7);
-      padding: 1.5rem 0;
-      font-size: 0.8rem;
+      border-top: 1px solid rgba(229, 192, 123, 0.25);
+      background: rgba(10, 14, 22, 0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 3rem 0 2rem;
       color: var(--text-secondary);
+      font-size: 0.875rem;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
     }
 
     :root[data-theme="light"] .customer-portal-footer {
-      background: rgba(248, 250, 252, 0.9);
-      border-top-color: rgba(0, 0, 0, 0.06);
+      background: #FFFFFF;
+      border-top: 1px solid #CBD5E1;
+      box-shadow: 0 -2px 10px rgba(15, 23, 42, 0.04);
+      color: #64748B;
     }
 
     .customer-footer-inner {
-      max-width: 1720px;
+      max-width: 1520px;
       margin: 0 auto;
       padding: 0 1.5rem;
+    }
+
+    .customer-footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .customer-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+    }
+
+    .customer-footer-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #E5C07B;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    :root[data-theme="light"] .customer-footer-title {
+      color: #B45309;
+    }
+
+    .customer-footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    :root[data-theme="light"] .customer-footer-bottom {
+      border-top-color: #E2E8F0;
+      color: #94A3B8;
     }
   </style>
 </head>
@@ -865,19 +912,65 @@
       <div th:replace="${content}"></div>
     </main>
 
-    <!-- Executive Footer -->
+    <!-- Executive 5-Star Brand Footer -->
     <footer class="customer-portal-footer">
       <div class="customer-footer-inner">
-        <div class="flex items-center gap-2">
-          <strong style="color: #FDBF2D;">ACE HOTEL FLAGSHIP</strong>
-          <span>• Accommodation, Check-in &amp; Extras</span>
+        <div class="customer-footer-grid">
+          <!-- Col 1: Brand & Slogan -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.15rem;">
+              <span class="pms-header-logo-frame" style="padding: 4px 8px;">
+                <img th:src="@{/images/3_logo-ACE-co-ten_khong-nen.png}" alt="ACE HOTEL" style="height: 38px; width: auto; display: block;">
+              </span>
+            </div>
+            <p style="font-size: 0.875rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 0.85rem;">
+              <strong style="color: #FDBF2D;">Accommodation, Check-in &amp; Extras</strong> — Trải nghiệm nghỉ dưỡng 5 sao thượng lưu, công nghệ vận hành chuẩn mực và dịch vụ tận tâm.
+            </p>
+            <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+              Đặc quyền hội viên ACE Elite: Đặt phòng trực tuyến • Mã QR không chạm • Live Folio 24/7
+            </div>
+          </div>
+
+          <!-- Col 2: Policy & Hours -->
+          <div>
+            <h4 class="customer-footer-title">
+              <span>✦</span> Chính Sách &amp; Giờ Giấc
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.875rem; color: var(--text-secondary);">
+              <div>• Giờ nhận phòng tiêu chuẩn: <strong style="color: var(--text);">Từ 14:00</strong></div>
+              <div>• Giờ trả phòng tiêu chuẩn: <strong style="color: var(--text);">Trước 12:00</strong></div>
+              <div>• Chuẩn mực minh bạch biểu giá: <strong style="color: #E5C07B;">5% Phí phục vụ (SVC) + 10% VAT</strong></div>
+              <div>• Cam kết giữ phòng: <strong style="color: var(--text);">0% Overbooking • Ký quỹ 30% giữ phòng tức thì</strong></div>
+            </div>
+          </div>
+
+          <!-- Col 3: Concierge & Reception Desk 24/7 -->
+          <div>
+            <h4 class="customer-footer-title">
+              <span>✦</span> Trợ Lý Concierge &amp; Lễ Tân 24/7
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.875rem; color: var(--text-secondary);">
+              <div>Hotline Tổng đài 24/7: <strong style="color: #FDBF2D;">0903723342</strong> <span style="font-size: 0.8rem; color: var(--text-muted);">(Nhánh nội bộ: 0)</span></div>
+              <div>Email Hỗ Trợ: <strong style="color: var(--text);">dangkhoa040706@gmail.com</strong></div>
+              <div>Địa chỉ Khách sạn: <span>19 Nguyễn Hữu Thọ, Phường Tân Hưng, Quận 7, TP. Hồ Chí Minh</span></div>
+              <div style="margin-top: 0.35rem;">
+                <span class="badge-status" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4); font-size: 0.725rem; font-weight: 700;">
+                  ● HỆ THỐNG TRỰC TUYẾN SẴN SÀNG 24/7
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <span>Dịch vụ hỗ trợ &amp; Trợ lý Concierge 24/7: </span>
-          <strong style="color: var(--text);">1900 8888 (Nội bộ: 0)</strong>
-        </div>
-        <div>
-          <span>Bản quyền &copy; 2026 ACE Hotel. Bảo lưu mọi quyền.</span>
+
+        <div class="customer-footer-bottom">
+          <div>
+            &copy; 2026 ACE Hotel Flagship. Bảo lưu mọi quyền. Đồ án Môn học 502050 - Công nghệ Thông tin.
+          </div>
+          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <span>Chính Sách Bảo Mật</span>
+            <span>Điều Khoản Lưu Trú</span>
+            <span>Quy Chuẩn Hội Viên Elite</span>
+          </div>
         </div>
       </div>
     </footer>

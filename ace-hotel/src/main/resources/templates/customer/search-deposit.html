@@ -15,29 +15,29 @@
       </h3>
       <form th:action="@{/booking/search}" method="get" class="grid grid-cols-4 gap-4 items-center">
         <div class="form-group" style="margin: 0;">
-          <label class="form-label" style="font-size: 0.825rem; color: var(--primary);">Ngày nhận phòng (Check-in)</label>
+          <label class="form-label" style="font-size: 0.825rem; color: var(--primary);">Ngày nhận phòng</label>
           <input type="date" name="checkIn" th:value="${checkIn}" class="form-control" required>
         </div>
         <div class="form-group" style="margin: 0;">
-          <label class="form-label" style="font-size: 0.825rem; color: var(--primary);">Ngày trả phòng (Check-out)</label>
+          <label class="form-label" style="font-size: 0.825rem; color: var(--primary);">Ngày trả phòng</label>
           <input type="date" name="checkOut" th:value="${checkOut}" class="form-control" required>
         </div>
         <div class="form-group" style="margin: 0;">
           <label class="form-label" style="font-size: 0.825rem; color: var(--primary);">Số lượng khách</label>
           <select name="guests" class="form-select">
             <option value="1" th:selected="${guests == 1}">1 Khách</option>
-            <option value="2" th:selected="${guests == 2}">2 Khách (Tiêu chuẩn)</option>
+            <option value="2" th:selected="${guests == 2}">2 Khách</option>
             <option value="3" th:selected="${guests == 3}">3 Khách</option>
-            <option value="4" th:selected="${guests == 4}">4 Khách (Gia đình / Suite)</option>
-            <option value="5" th:selected="${guests == 5}">5 Khách (Cần thuê nhiều phòng)</option>
-            <option value="6" th:selected="${guests == 6}">6 Khách (Cần thuê nhiều phòng)</option>
-            <option value="8" th:selected="${guests == 8}">8 Khách (Đoàn lớn)</option>
-            <option value="10" th:selected="${guests == 10}">10+ Khách (Đoàn lớn)</option>
+            <option value="4" th:selected="${guests == 4}">4 Khách</option>
+            <option value="5" th:selected="${guests == 5}">5 Khách</option>
+            <option value="6" th:selected="${guests == 6}">6 Khách</option>
+            <option value="8" th:selected="${guests == 8}">8 Khách</option>
+            <option value="10" th:selected="${guests == 10}">10+ Khách</option>
           </select>
         </div>
         <div style="margin-top: 1.35rem;">
           <button type="submit" class="btn btn-primary" style="width: 100%; height: 42px;">
-            Tìm Phòng Trống &amp; Cập Nhật Giá
+            Tìm phòng trống
           </button>
         </div>
       </form>
@@ -130,11 +130,11 @@
                   <strong style="color: var(--text); font-size: 0.95rem;" th:text="${#numbers.formatDecimal(q.roomCharge, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
                 </div>
                 <div>
-                  <div style="font-size: 0.75rem; color: var(--text-secondary);">Thuế &amp; Phí (5% SVC + 10% VAT):</div>
+                  <div style="font-size: 0.75rem; color: var(--text-secondary);">Thuế &amp; Phí (5% SVC, 10% VAT):</div>
                   <strong style="color: var(--text); font-size: 0.95rem;" th:text="${#numbers.formatDecimal(q.estSvc + q.estVat, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
                 </div>
                 <div>
-                  <div style="font-size: 0.75rem; color: var(--text-secondary);">Tổng giá trị gói phòng (++):</div>
+                  <div style="font-size: 0.75rem; color: var(--text-secondary);">Tổng cộng tiền phòng:</div>
                   <strong style="color: var(--primary); font-size: 1.15rem;" th:text="${#numbers.formatDecimal(q.estGrandTotal, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
                 </div>
               </div>
@@ -176,7 +176,7 @@
                         th:data-deposit="${q.depositAmount}"
                         th:data-remain="${q.remainingAtCounter}"
                         onclick="openDepositModal(this)">
-                  Tiếp Tục Đặt Phòng &amp; Thanh Toán Cọc 30% →
+                  Đặt phòng &amp; Cọc 30% →
                 </button>
               </div>
             </div>
@@ -191,7 +191,7 @@
       <div class="modal-content">
         <div class="flex justify-between items-center" style="border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.25rem;">
           <h3 style="color: var(--primary); font-size: 1.25rem; margin: 0;">
-            Xác Nhận Đặt Phòng &amp; Thanh Toán Cọc 30%
+            Xác Nhận Đặt Cọc 30%
           </h3>
           <button type="button" onclick="closeDepositModal()" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">✕</button>
         </div>
@@ -216,15 +216,15 @@
               <strong id="modalRoomCharge"></strong>
             </div>
             <div class="flex justify-between" style="font-size: 0.875rem; margin-bottom: 0.4rem;">
-              <span style="color: var(--text-secondary);">Phí phục vụ (SVC 5%):</span>
+              <span style="color: var(--text-secondary);">Phí phục vụ (5%):</span>
               <strong id="modalSvc"></strong>
             </div>
             <div class="flex justify-between" style="font-size: 0.875rem; margin-bottom: 0.6rem;">
-              <span style="color: var(--text-secondary);">Thuế GTGT (VAT 10%):</span>
+              <span style="color: var(--text-secondary);">Thuế GTGT (10%):</span>
               <strong id="modalVat"></strong>
             </div>
             <div class="flex justify-between items-center" style="border-top: 1px dashed var(--border); padding-top: 0.6rem; margin-bottom: 0.85rem;">
-              <span style="font-size: 0.95rem; font-weight: 600;">Tổng giá trị gói phòng (++):</span>
+              <span style="font-size: 0.95rem; font-weight: 600;">Tổng cộng tiền phòng:</span>
               <strong id="modalGrandTotal" style="font-size: 1.15rem; color: var(--text);"></strong>
             </div>
 
@@ -238,7 +238,7 @@
                 <span id="modalDepositAmount" style="font-size: 1.25rem; font-weight: 800; color: var(--primary-text);"></span>
               </div>
               <div class="flex justify-between items-center" style="font-size: 0.8rem; color: var(--text-secondary);">
-                <span>Số tiền 70% còn lại thanh toán khi Check-out:</span>
+                <span>Số tiền 70% còn lại thanh toán khi trả phòng:</span>
                 <span id="modalRemaining" style="font-weight: 600; color: var(--text);"></span>
               </div>
             </div>
@@ -272,14 +272,12 @@
             </button>
             <button type="submit" class="btn btn-primary" style="flex: 2; display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span>Xác Nhận &amp; Thanh Toán Cọc 30%</span>
+              <span>Xác Nhận Đặt Cọc</span>
             </button>
           </div>
         </form>
       </div>
     </div>
-
-  </div>
 
   <script>
     function formatMoney(num) {
@@ -310,5 +308,6 @@
       modal.classList.remove('active');
     }
   </script>
+  </div>
 </body>
 </html>

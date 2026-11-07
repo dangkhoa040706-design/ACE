@@ -154,6 +154,11 @@ public class ReportService {
         if (toDate == null) {
             toDate = LocalDate.now();
         }
+        if (fromDate.isAfter(toDate)) {
+            LocalDate temp = fromDate;
+            fromDate = toDate;
+            toDate = temp;
+        }
 
         AdminReportDto report = new AdminReportDto();
         report.setFromDate(fromDate);

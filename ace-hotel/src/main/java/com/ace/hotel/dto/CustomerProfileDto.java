@@ -1,5 +1,6 @@
 package com.ace.hotel.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 public class CustomerProfileDto {
@@ -7,7 +8,10 @@ public class CustomerProfileDto {
     private String fullName;
     private String phone;
     private String idNumber;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateOfBirth;
+
     private String email;
 
     // Đổi mật khẩu

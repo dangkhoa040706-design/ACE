@@ -33,17 +33,17 @@ public final class MessageConstants {
     public static final String MSG_22 = "Hạng phòng này vừa hết phòng trống trong khoảng thời gian quý khách chọn. Vui lòng chọn hạng phòng khác hoặc thay đổi ngày lưu trú.";
     public static final String MSG_23 = "Chỉ có thể hủy đơn đặt phòng khi đang ở trạng thái Đã xác nhận giữ chỗ (RESERVED).";
 
-    // UC04: Quản lý Check-in, Gán phòng sạch & Tiếp nhận Walk-in 0đ cọc
-    public static final String MSG_24 = "Check-in thành công! Đã gán Phòng %s (Sạch) cho đơn đặt %s và kích hoạt Room Folio.";
-    public static final String MSG_25 = "Tiếp nhận khách vãng lai (Walk-in) thành công! Đã nhận Phòng %s (Tiền cọc: 0đ – Quyết toán 100%% khi trả phòng).";
-    public static final String MSG_26 = "Không tìm thấy mã đặt phòng %s hoặc đơn không ở trạng thái chờ nhận phòng (RESERVED).";
-    public static final String MSG_27 = "Hiện chưa có phòng vật lý nào thuộc hạng phòng này ở trạng thái Trống sạch (AVAILABLE). Vui lòng xác nhận dọn sạch phòng DIRTY trước khi gán!";
-    public static final String MSG_28 = "Phòng %s vừa được gán cho khách khác hoặc không ở trạng thái sạch (AVAILABLE).";
+    // UC04: Quản lý Check-in & Tiếp nhận khách vãng lai
+    public static final String MSG_24 = "Nhận phòng thành công. Đã bàn giao Phòng %s cho đơn đặt %s.";
+    public static final String MSG_25 = "Tiếp nhận khách vãng lai thành công. Đã bàn giao Phòng %s.";
+    public static final String MSG_26 = "Không tìm thấy mã đặt phòng %s hoặc đơn không ở trạng thái chờ nhận phòng.";
+    public static final String MSG_27 = "Hiện chưa có phòng vật lý nào thuộc hạng phòng này ở trạng thái sẵn sàng. Vui lòng xác nhận dọn sạch phòng trước khi bàn giao.";
+    public static final String MSG_28 = "Phòng %s vừa được bàn giao cho khách khác hoặc chưa sẵn sàng đón khách.";
 
-    // UC05: Check-out, Quyết toán ++ & Dọn phòng DIRTY
-    public static final String MSG_29 = "Quyết toán trả phòng thành công! Đã lập Hóa đơn VAT #%s và chuyển Phòng %s sang trạng thái Chờ dọn dẹp (DIRTY).";
-    public static final String MSG_30 = "Đã xác nhận dọn vệ sinh hoàn tất! Phòng %s đã chuyển về trạng thái Trống sạch (AVAILABLE), sẵn sàng đón khách mới.";
-    public static final String MSG_31 = "Chỉ có thể thực hiện quyết toán trả phòng cho đơn đang ở trạng thái Đang lưu trú (CHECKED_IN).";
+    // UC05: Check-out & Quyết toán
+    public static final String MSG_29 = "Quyết toán trả phòng thành công. Đã xuất Hóa đơn #%s cho Phòng %s.";
+    public static final String MSG_30 = "Đã hoàn tất dọn phòng. Phòng %s đã sẵn sàng đón khách mới.";
+    public static final String MSG_31 = "Chỉ có thể thực hiện quyết toán trả phòng cho đơn đang lưu trú.";
 
     // UC06: Ghi nhận dịch vụ lưu trú vào Room Folio
     public static final String MSG_32 = "Đã ghi nhận dịch vụ vào Room Folio của Phòng %s thành công.";

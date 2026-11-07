@@ -342,6 +342,43 @@
       color: #EF4444;
     }
 
+    .btn-nav-profile {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: rgba(229, 192, 123, 0.12);
+      border: 1px solid rgba(229, 192, 123, 0.35);
+      color: #E5C07B;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .btn-nav-profile:hover {
+      background: rgba(229, 192, 123, 0.22);
+      border-color: #E5C07B;
+      color: #FFFFFF;
+      box-shadow: 0 0 12px rgba(229, 192, 123, 0.3);
+      transform: translateY(-1px);
+    }
+
+    :root[data-theme="light"] .btn-nav-profile {
+      background: rgba(180, 83, 9, 0.08);
+      border-color: rgba(180, 83, 9, 0.3);
+      color: #B45309;
+    }
+
+    :root[data-theme="light"] .btn-nav-profile:hover {
+      background: rgba(180, 83, 9, 0.16);
+      border-color: #B45309;
+      color: #78350F;
+      box-shadow: 0 2px 8px rgba(180, 83, 9, 0.15);
+    }
+
     /* Mobile Hamburger Button */
     .mobile-nav-toggle {
       display: none;
@@ -513,20 +550,19 @@
           <li><a th:href="@{/#cau-chuyen}" class="nav-link" data-section="cau-chuyen">Câu chuyện</a></li>
           <li><a th:href="@{/#quy-trinh}" class="nav-link" data-section="quy-trinh">Quy trình</a></li>
           
-          <!-- Booking Capsule CTA -->
-          <li>
+          <!-- Booking Capsule CTA (Khách vãng lai / chưa đăng nhập Customer) -->
+          <li sec:authorize="!hasRole('CUSTOMER')">
             <a th:href="@{/booking/search}" class="nav-booking-capsule">
               <span class="nav-booking-star">★</span>
               <span>Đặt Phòng (Cọc 30%)</span>
             </a>
           </li>
 
-          <!-- Liên kết Customer Portal khi đăng nhập vai trò CUSTOMER -->
-          <!-- Liên kết Customer Portal khi đăng nhập vai trò CUSTOMER -->
+          <!-- Nút Hợp Nhất khi đã đăng nhập: Cổng Hội Viên -->
           <li sec:authorize="hasRole('CUSTOMER')">
-            <a th:href="@{/customer/dashboard}" class="nav-link nav-customer-vip-pill" style="background: rgba(253, 191, 45, 0.16); color: #FDBF2D; border: 1px solid rgba(253, 191, 45, 0.4); border-radius: 9999px; padding: 0.38rem 0.95rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem; box-shadow: 0 0 12px rgba(253, 191, 45, 0.2);">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-              <span>Bàn Điều Khiển Hội Viên</span>
+            <a th:href="@{/customer/dashboard}" class="nav-booking-capsule">
+              <span class="nav-booking-star">★</span>
+              <span>Cổng Hội Viên</span>
             </a>
           </li>
 
@@ -567,6 +603,12 @@
 
         <!-- Trạng thái Đã đăng nhập -->
         <div sec:authorize="isAuthenticated()" class="nav-user-logged">
+          <!-- Phím tắt Hồ Sơ & Mật Khẩu dành cho Khách Hàng -->
+          <a sec:authorize="hasRole('CUSTOMER')" th:href="@{/customer/dashboard?tab=profile}" class="btn-nav-profile" title="Hồ sơ &amp; Đổi mật khẩu hội viên">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Hồ Sơ &amp; Mật Khẩu</span>
+          </a>
+
           <span class="nav-user-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <span style="font-size: 0.85rem;" sec:authentication="name"></span>
@@ -593,13 +635,20 @@
         <li><a th:href="@{/#dich-vu}" class="mobile-nav-link" onclick="closeMobileMenu()">Dịch vụ</a></li>
         <li><a th:href="@{/#cau-chuyen}" class="mobile-nav-link" onclick="closeMobileMenu()">Câu chuyện</a></li>
         <li><a th:href="@{/#quy-trinh}" class="mobile-nav-link" onclick="closeMobileMenu()">Quy trình</a></li>
-        <li>
+        <li sec:authorize="!hasRole('CUSTOMER')">
           <a th:href="@{/booking/search}" class="mobile-nav-booking" onclick="closeMobileMenu()">
             ★ Tìm phòng &amp; Đặt cọc 30%
           </a>
         </li>
         <li sec:authorize="hasRole('CUSTOMER')">
-          <a th:href="@{/customer/dashboard}" class="mobile-nav-link" style="color: #FDBF2D; font-weight: 700;" onclick="closeMobileMenu()">★ Bàn Điều Khiển Hội Viên</a>
+          <a th:href="@{/customer/dashboard}" class="mobile-nav-booking" onclick="closeMobileMenu()">
+            ★ Cổng Hội Viên
+          </a>
+        </li>
+        <li sec:authorize="hasRole('CUSTOMER')">
+          <a th:href="@{/customer/dashboard?tab=profile}" class="mobile-nav-link" style="color: #E5C07B; font-weight: 600;" onclick="closeMobileMenu()">
+            👤 Hồ Sơ &amp; Đổi Mật Khẩu
+          </a>
         </li>
         <li sec:authorize="hasAnyRole('RECEPTIONIST', 'ADMIN')">
           <a th:href="@{/staff/dashboard}" class="mobile-nav-link" style="color: #60A5FA;" onclick="closeMobileMenu()">Bàn Lễ Tân PMS</a>

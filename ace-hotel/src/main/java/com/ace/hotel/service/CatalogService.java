@@ -129,7 +129,8 @@ public class CatalogService {
             throw new BusinessException(MessageConstants.MSG_16);
         }
         if (room.getStatus() == RoomStatus.MAINTENANCE) {
-            room.setStatus(RoomStatus.AVAILABLE);
+            // Sau khi bảo trì hoàn tất, chuyển sang DIRTY để buồng phòng dọn dẹp và nghiệm thu trước khi khả dụng
+            room.setStatus(RoomStatus.DIRTY);
         } else {
             room.setStatus(RoomStatus.MAINTENANCE);
         }

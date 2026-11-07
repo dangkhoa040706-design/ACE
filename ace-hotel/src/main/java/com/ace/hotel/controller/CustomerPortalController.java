@@ -42,19 +42,22 @@ public class CustomerPortalController {
     private final UserRepository userRepository;
     private final InvoiceRepository invoiceRepository;
     private final ServiceOrderRepository serviceOrderRepository;
+    private final com.ace.hotel.service.PricingService pricingService;
 
     public CustomerPortalController(BookingRepository bookingRepository,
                                     BookingService bookingService,
                                     CustomerService customerService,
                                     UserRepository userRepository,
                                     InvoiceRepository invoiceRepository,
-                                    ServiceOrderRepository serviceOrderRepository) {
+                                    ServiceOrderRepository serviceOrderRepository,
+                                    com.ace.hotel.service.PricingService pricingService) {
         this.bookingRepository = bookingRepository;
         this.bookingService = bookingService;
         this.customerService = customerService;
         this.userRepository = userRepository;
         this.invoiceRepository = invoiceRepository;
         this.serviceOrderRepository = serviceOrderRepository;
+        this.pricingService = pricingService;
     }
 
     private User getCurrentUser(Authentication authentication) {
@@ -77,15 +80,16 @@ public class CustomerPortalController {
                               @RequestParam(value = "guests", required = false, defaultValue = "2") Integer guests,
                               Authentication authentication,
                               Model model) {
-        if (checkIn == null) {
+        if (checkIn == null || checkIn.isBefore(LocalDate.now())) {
+            if (checkIn != null && checkIn.isBefore(LocalDate.now())) {
+                model.addAttribute("errorMessage", "Ngày nhận phòng không thể ở trong quá khứ. Hệ thống đã tự động chọn ngày hôm nay.");
+            }
             checkIn = LocalDate.now();
         }
-        if (checkOut == null) {
-            checkOut = checkIn.plusDays(1);
-        }
-
-        if (!checkOut.isAfter(checkIn)) {
-            model.addAttribute("errorMessage", MessageConstants.MSG_20);
+        if (checkOut == null || !checkOut.isAfter(checkIn)) {
+            if (checkOut != null && !checkOut.isAfter(checkIn)) {
+                model.addAttribute("errorMessage", MessageConstants.MSG_20);
+            }
             checkOut = checkIn.plusDays(1);
         }
 
@@ -234,9 +238,12 @@ public class CustomerPortalController {
                 .orElseThrow(() -> new BusinessException("Không tìm thấy hóa đơn ID: " + id));
 
         Booking booking = invoice.getBooking();
-        // Kiểm tra quyền sở hữu hóa đơn
-        if (booking.getCustomer().getUser() == null ||
-            !booking.getCustomer().getUser().getUserId().equals(currentUser.getUserId())) {
+        // Kiểm tra quyền sở hữu hóa đơn (cho phép ADMIN xem trước để hỗ trợ/kiểm tra)
+        boolean isOwner = booking.getCustomer() != null &&
+                          booking.getCustomer().getUser() != null &&
+                          booking.getCustomer().getUser().getUserId().equals(currentUser.getUserId());
+        boolean isAdmin = currentUser.getRole() == Role.ADMIN;
+        if (!isOwner && !isAdmin) {
             throw new BusinessException(MessageConstants.MSG_05);
         }
 
@@ -279,16 +286,26 @@ public class CustomerPortalController {
         if (booking == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Không tìm thấy đơn đặt phòng"));
         }
-        if (booking.getCustomer().getUser() == null ||
-            !booking.getCustomer().getUser().getUserId().equals(currentUser.getUserId())) {
+        boolean isOwner = booking.getCustomer() != null &&
+                          booking.getCustomer().getUser() != null &&
+                          booking.getCustomer().getUser().getUserId().equals(currentUser.getUserId());
+        boolean isAdmin = currentUser.getRole() == Role.ADMIN;
+        if (!isOwner && !isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Bạn không có quyền xem đơn này"));
         }
 
         List<ServiceOrder> orders = serviceOrderRepository.findByBooking_BookingIdOrderByOrderedAtDesc(id);
         long serviceTotal = orders.stream().mapToLong(ServiceOrder::getLineTotal).sum();
         long roomCharge = booking.getRoomCharge() != null ? booking.getRoomCharge() : 0L;
+        long earlyCheckinFee = booking.getEarlyCheckinFee() != null ? booking.getEarlyCheckinFee() : 0L;
         long deposit = booking.getDepositAmount() != null ? booking.getDepositAmount() : 0L;
-        long balanceDue = Math.max(0, (roomCharge + serviceTotal) - deposit);
+
+        // Chuẩn mực biểu giá: Subtotal + 5% SVC + 10% VAT khớp 100% hóa đơn check-out
+        long subtotal = roomCharge + serviceTotal + earlyCheckinFee;
+        long svcAmount = pricingService.calculateSvc5Percent(subtotal);
+        long vatAmount = pricingService.calculateVat10Percent(subtotal, svcAmount);
+        long grandTotal = subtotal + svcAmount + vatAmount;
+        long balanceDue = Math.max(0L, grandTotal - deposit);
 
         List<Map<String, Object>> items = orders.stream().map(o -> Map.<String, Object>of(
             "serviceName", o.getService().getName(),
@@ -299,17 +316,22 @@ public class CustomerPortalController {
             "orderedAt", o.getOrderedAt().toString()
         )).toList();
 
-        return ResponseEntity.ok(Map.of(
-            "bookingCode", booking.getBookingCode(),
-            "roomNumber", booking.getRoom() != null ? booking.getRoom().getRoomNumber() : "Đang chuẩn bị",
-            "roomType", booking.getRoomType().getName(),
-            "nights", booking.getNights(),
-            "roomCharge", roomCharge,
-            "depositPaid", deposit,
-            "serviceTotal", serviceTotal,
-            "balanceDue", balanceDue,
-            "items", items
-        ));
+        Map<String, Object> responseData = new java.util.LinkedHashMap<>();
+        responseData.put("bookingCode", booking.getBookingCode());
+        responseData.put("roomNumber", booking.getRoom() != null ? booking.getRoom().getRoomNumber() : "Đang chuẩn bị");
+        responseData.put("roomType", booking.getRoomType().getName());
+        responseData.put("nights", booking.getNights());
+        responseData.put("roomCharge", roomCharge);
+        responseData.put("depositPaid", deposit);
+        responseData.put("serviceTotal", serviceTotal);
+        responseData.put("subtotal", subtotal);
+        responseData.put("svcAmount", svcAmount);
+        responseData.put("vatAmount", vatAmount);
+        responseData.put("grandTotal", grandTotal);
+        responseData.put("balanceDue", balanceDue);
+        responseData.put("items", items);
+
+        return ResponseEntity.ok(responseData);
     }
 
     @PostMapping("/customer/bookings/{id}/request-checkout")
@@ -322,17 +344,20 @@ public class CustomerPortalController {
         }
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Không tìm thấy đơn đặt phòng ID: " + id));
-        if (booking.getCustomer().getUser() == null ||
-            !booking.getCustomer().getUser().getUserId().equals(currentUser.getUserId())) {
+        boolean isOwner = booking.getCustomer() != null &&
+                          booking.getCustomer().getUser() != null &&
+                          booking.getCustomer().getUser().getUserId().equals(currentUser.getUserId());
+        boolean isAdmin = currentUser.getRole() == Role.ADMIN;
+        if (!isOwner && !isAdmin) {
             throw new BusinessException(MessageConstants.MSG_05);
         }
         if (booking.getStatus() != BookingStatus.CHECKED_IN) {
-            throw new BusinessException("Chỉ đơn đang lưu trú mới có thể yêu cầu trả phòng nhanh.");
+            throw new BusinessException("Chỉ đơn đang lưu trú mới có thể yêu cầu trả phòng.");
         }
 
         String roomName = booking.getRoom() != null ? booking.getRoom().getRoomNumber() : booking.getBookingCode();
         redirectAttributes.addFlashAttribute("successMessage",
-            "Đã gửi yêu cầu trả phòng nhanh cho phòng " + roomName + " đến Quầy Lễ Tân! Lễ tân đang hoàn tất hóa đơn sẵn sàng tiếp đón quý khách trong 30 giây.");
+            "Đã gửi yêu cầu trả phòng cho phòng " + roomName + " đến Quầy Lễ Tân. Lễ tân đang chuẩn bị sẵn hóa đơn để tiếp đón Quý khách tại quầy.");
         return "redirect:/customer/dashboard";
     }
 }

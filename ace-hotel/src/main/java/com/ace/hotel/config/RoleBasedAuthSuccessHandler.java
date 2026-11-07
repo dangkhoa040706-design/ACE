@@ -19,18 +19,34 @@ public class RoleBasedAuthSuccessHandler implements AuthenticationSuccessHandler
 
     private final RequestCache requestCache = new HttpSessionRequestCache();
 
+    public static boolean isSafeRedirectUrl(String url) {
+        if (url == null || url.isBlank()) return false;
+        String trimmed = url.trim();
+        if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.startsWith("/\\")) {
+            return false;
+        }
+        int queryIdx = trimmed.indexOf('?');
+        String pathPart = queryIdx >= 0 ? trimmed.substring(0, queryIdx) : trimmed;
+        if (pathPart.contains(":") || pathPart.contains("\\")) {
+            return false;
+        }
+        return !trimmed.contains("://");
+    }
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        // 1. Kiểm tra URL chuyển hướng ưu tiên lưu trong Session (ví dụ từ luồng đặt cọc /booking/search)
+        // 1. Kiểm tra URL chuyển hướng ưu tiên lưu trong Session (chỉ chấp nhận relative URL an toàn nội bộ)
         HttpSession session = request.getSession(false);
         if (session != null) {
             Object sessionRedirect = session.getAttribute("REDIRECT_URL");
             if (sessionRedirect instanceof String redirectUrl && !redirectUrl.isBlank()) {
                 session.removeAttribute("REDIRECT_URL");
-                response.sendRedirect(redirectUrl.startsWith("http") || redirectUrl.startsWith("/") ? redirectUrl : "/" + redirectUrl);
-                return;
+                if (isSafeRedirectUrl(redirectUrl)) {
+                    response.sendRedirect(request.getContextPath() + redirectUrl);
+                    return;
+                }
             }
         }
 

@@ -66,17 +66,17 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="rtCapacity">Sức chứa tối đa (Khách) *</label>
+              <label class="form-label" for="rtCapacity">Sức chứa tối đa *</label>
               <input type="number" id="rtCapacity" name="capacity" class="form-control" min="1" value="2" required>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="rtWeekdayPrice">Giá ngày thường T2–T5 (VNĐ) *</label>
+              <label class="form-label" for="rtWeekdayPrice">Giá ngày thường (T2–T5) *</label>
               <input type="number" id="rtWeekdayPrice" name="pricePerNight" class="form-control" min="1000" step="1000" placeholder="780000" required>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="rtWeekendPrice">Giá cuối tuần T6–CN (VNĐ) *</label>
+              <label class="form-label" for="rtWeekendPrice">Giá cuối tuần (T6–CN) *</label>
               <input type="number" id="rtWeekendPrice" name="weekendPricePerNight" class="form-control" min="1000" step="1000" placeholder="950000" required>
             </div>
 
@@ -106,8 +106,8 @@
                 <tr>
                   <th>Hạng Phòng</th>
                   <th>Sức Chứa</th>
-                  <th>Giá T2–T5 (Thường)</th>
-                  <th>Giá T6–CN (Cuối Tuần)</th>
+                  <th>Giá T2–T5</th>
+                  <th>Giá T6–CN</th>
                   <th>Mô Tả</th>
                   <th sec:authorize="hasRole('ADMIN')" style="text-align: right;">Thao Tác</th>
                 </tr>
@@ -205,10 +205,10 @@
                   <td>Tầng <span th:text="${r.floor}"></span></td>
                   <td th:text="${r.roomType.name}"></td>
                   <td>
-                    <span th:if="${r.status.name() == 'AVAILABLE'}" class="badge-status badge-available">AVAILABLE (Trống sạch)</span>
-                    <span th:if="${r.status.name() == 'OCCUPIED'}" class="badge-status badge-occupied">OCCUPIED (Đang ở)</span>
-                    <span th:if="${r.status.name() == 'DIRTY'}" class="badge-status badge-dirty">DIRTY (Chờ dọn)</span>
-                    <span th:if="${r.status.name() == 'MAINTENANCE'}" class="badge-status badge-maintenance">MAINTENANCE (Bảo trì)</span>
+                    <span th:if="${r.status.name() == 'AVAILABLE'}" class="badge-status badge-available">Trống sạch</span>
+                    <span th:if="${r.status.name() == 'OCCUPIED'}" class="badge-status badge-occupied">Đang ở</span>
+                    <span th:if="${r.status.name() == 'DIRTY'}" class="badge-status badge-dirty">Chờ dọn</span>
+                    <span th:if="${r.status.name() == 'MAINTENANCE'}" class="badge-status badge-maintenance">Bảo trì</span>
                   </td>
                   <td sec:authorize="hasRole('ADMIN')" style="text-align: right;">
                     <div class="flex justify-center gap-1">
@@ -258,17 +258,17 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="srvCategory">Nhóm dịch vụ Room Folio *</label>
+              <label class="form-label" for="srvCategory">Nhóm dịch vụ *</label>
               <select id="srvCategory" name="category" class="form-select" required>
-                <option value="MINIBAR">MINIBAR (Đồ uống, snack trong phòng)</option>
-                <option value="LAUNDRY">LAUNDRY (Giặt ủi, là hấp trang phục)</option>
-                <option value="FB">FB (Ẩm thực phòng, bữa sáng bổ sung)</option>
-                <option value="DAMAGES">DAMAGES (Bồi thường tài sản hư hao)</option>
+                <option value="MINIBAR">Minibar (Đồ uống, snack)</option>
+                <option value="LAUNDRY">Giặt ủi, là hấp</option>
+                <option value="FB">Ẩm thực phòng (F&amp;B)</option>
+                <option value="DAMAGES">Bồi thường tài sản</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="srvPrice">Đơn giá (VNĐ) *</label>
+              <label class="form-label" for="srvPrice">Đơn giá *</label>
               <input type="number" id="srvPrice" name="unitPrice" class="form-control" min="0" step="1000" placeholder="50000" required>
             </div>
 
@@ -293,7 +293,7 @@
                 <tr>
                   <th>Tên Dịch Vụ</th>
                   <th>Nhóm Danh Mục</th>
-                  <th>Đơn Giá (VNĐ)</th>
+                  <th>Đơn Giá</th>
                   <th>Đơn Vị</th>
                   <th sec:authorize="hasRole('ADMIN')" style="text-align: right;">Thao Tác</th>
                 </tr>
@@ -302,10 +302,10 @@
                 <tr th:each="s : ${services}">
                   <td><strong th:text="${s.name}" style="color: var(--text);"></strong></td>
                   <td>
-                    <span th:if="${s.category.name() == 'MINIBAR'}" style="color: #60A5FA; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#60A5FA;"></span>MINIBAR</span>
-                    <span th:if="${s.category.name() == 'LAUNDRY'}" style="color: #A78BFA; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#A78BFA;"></span>LAUNDRY</span>
-                    <span th:if="${s.category.name() == 'FB'}" style="color: #E5C07B; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#E5C07B;"></span>F&amp;B</span>
-                    <span th:if="${s.category.name() == 'DAMAGES'}" style="color: #F87171; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#F87171;"></span>DAMAGES</span>
+                    <span th:if="${s.category.name() == 'MINIBAR'}" style="color: #60A5FA; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#60A5FA;"></span>Minibar</span>
+                    <span th:if="${s.category.name() == 'LAUNDRY'}" style="color: #A78BFA; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#A78BFA;"></span>Giặt ủi</span>
+                    <span th:if="${s.category.name() == 'FB'}" style="color: #E5C07B; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#E5C07B;"></span>Ẩm thực (F&amp;B)</span>
+                    <span th:if="${s.category.name() == 'DAMAGES'}" style="color: #F87171; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#F87171;"></span>Bồi thường</span>
                   </td>
                   <td><span style="color: var(--primary); font-weight: 700;" th:text="${#numbers.formatDecimal(s.unitPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span></td>
                   <td th:text="${s.unit}"></td>

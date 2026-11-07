@@ -251,7 +251,7 @@
                 <th style="text-align: left; padding: 0.5rem 0.65rem;">Khách Hàng</th>
                 <th style="text-align: left; padding: 0.5rem 0.65rem;">Hạng Phòng</th>
                 <th style="text-align: left; padding: 0.5rem 0.65rem;">Lưu Trú</th>
-                <th style="text-align: right; padding: 0.5rem 0.65rem;">Cọc 30%</th>
+                <th style="text-align: right; padding: 0.5rem 0.65rem;">Tiền Cọc</th>
                 <th style="text-align: right; padding: 0.5rem 0.65rem;">Trạng Thái</th>
               </tr>
             </thead>
@@ -263,7 +263,7 @@
                 </td>
                 <!-- Khách hàng: Tên chuẩn theo theme + SĐT xám monospace -->
                 <td style="padding: 0.55rem 0.65rem;">
-                  <div style="font-weight: 600; color: var(--text);" th:text="${b.customer != null ? b.customer.fullName : 'Khách vãng lai'}">Nguyễn Minh Anh</div>
+                  <div style="font-weight: 600; color: var(--text);" th:text="${b.customer != null ? b.customer.fullName : 'Khách trực tiếp'}">Nguyễn Minh Anh</div>
                   <div style="font-size: 0.7rem; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace;" th:if="${b.customer != null and b.customer.phone != null}" th:text="${b.customer.phone}">0903...</div>
                 </td>
                 <!-- Hạng phòng & Phòng -->
@@ -276,18 +276,18 @@
                   <span th:text="${#temporals.format(b.checkInDate, 'dd/MM')}">23/10</span> → 
                   <span th:text="${#temporals.format(b.checkOutDate, 'dd/MM')}">25/10</span>
                 </td>
-                <!-- Cọc 30% -->
+                <!-- Cọc -->
                 <td style="padding: 0.55rem 0.65rem; text-align: right; white-space: nowrap;">
                   <span th:if="${b.depositAmount != null and b.depositAmount > 0}" style="color: var(--text); font-weight: 700;" class="tabular-num">
                     <span th:text="${#numbers.formatDecimal(b.depositAmount, 0, 'POINT', 0, 'COMMA')}">300,000</span> <span style="font-size: 0.75rem; color: var(--primary-text);">đ</span>
                   </span>
                   <span th:if="${b.depositAmount == null or b.depositAmount == 0}" style="color: var(--text-muted); font-size: 0.75rem;">
-                    0 đ <small>(Walk-in)</small>
+                    0 đ <small>(Trực tiếp)</small>
                   </span>
                 </td>
                 <!-- Trạng thái -->
                 <td style="padding: 0.55rem 0.65rem; text-align: right; white-space: nowrap;">
-                  <span th:if="${b.status.name() == 'RESERVED'}" class="pms-role-badge" style="font-size: 0.64rem; padding: 0.15rem 0.45rem; background: var(--primary-soft); color: var(--primary-text); border: 1px solid var(--primary-border);">ĐÃ ĐẶT (30%)</span>
+                  <span th:if="${b.status.name() == 'RESERVED'}" class="pms-role-badge" style="font-size: 0.64rem; padding: 0.15rem 0.45rem; background: var(--primary-soft); color: var(--primary-text); border: 1px solid var(--primary-border);">ĐÃ ĐẶT CỌC</span>
                   <span th:if="${b.status.name() == 'CHECKED_IN'}" class="pms-role-badge" style="font-size: 0.64rem; padding: 0.15rem 0.45rem; background: rgba(2, 132, 199, 0.15); color: #0284C7; border: 1px solid rgba(2, 132, 199, 0.35);">ĐANG Ở</span>
                   <span th:if="${b.status.name() == 'CHECKED_OUT'}" class="pms-role-badge" style="font-size: 0.64rem; padding: 0.15rem 0.45rem; background: rgba(71, 85, 105, 0.12); color: #475569; border: 1px solid rgba(71, 85, 105, 0.25);">HOÀN TẤT</span>
                   <span th:if="${b.status.name() == 'CANCELLED'}" class="pms-role-badge" style="font-size: 0.64rem; padding: 0.15rem 0.45rem; background: rgba(220, 38, 38, 0.15); color: #DC2626; border: 1px solid rgba(220, 38, 38, 0.35);">ĐÃ HỦY</span>

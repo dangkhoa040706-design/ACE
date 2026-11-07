@@ -120,14 +120,15 @@ public class BookingService {
             throw new BusinessException("Ngày nhận phòng không thể ở trong quá khứ.");
         }
 
-        // Kiểm tra lại Quota trong giao dịch để chống Race Condition
+        // 1. Khóa bi quan hàng RoomType trong giao dịch để ngăn chặn triệt để Race Condition / Overbooking
+        RoomType roomType = roomTypeRepository.findByIdForUpdate(request.getRoomTypeId())
+                .orElseThrow(() -> new BusinessException("Không tìm thấy hạng phòng được chọn."));
+
+        // 2. Kiểm tra lại Quota sau khi đã giữ khóa dòng
         int currentQuota = getAvailableQuota(request.getRoomTypeId(), request.getCheckInDate(), request.getCheckOutDate());
         if (currentQuota < 1) {
             throw new BusinessException(MessageConstants.MSG_22);
         }
-
-        RoomType roomType = roomTypeRepository.findById(request.getRoomTypeId())
-                .orElseThrow(() -> new BusinessException("Không tìm thấy hạng phòng được chọn."));
 
         // Kiểm tra sức chứa tối đa của hạng phòng
         if (request.getGuestCount() != null && request.getGuestCount() > roomType.getCapacity()) {

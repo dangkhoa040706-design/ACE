@@ -58,7 +58,17 @@ public class CheckOutService {
 
         if (now.isAfter(checkoutDeadline)) {
             if (now.toLocalDate().isAfter(booking.getCheckOutDate())) {
-                suggestedLateFee = pricePerNight; // Quá hạn ngày: 100%
+                long overdueDays = java.time.temporal.ChronoUnit.DAYS.between(booking.getCheckOutDate(), now.toLocalDate());
+                long overdueBase = pricePerNight * Math.max(1L, overdueDays);
+                long extraSameDay = 0L;
+                if (now.getHour() >= 18) {
+                    extraSameDay = pricePerNight;
+                } else if (now.getHour() >= 15) {
+                    extraSameDay = Math.round(pricePerNight * 0.50);
+                } else if (now.getHour() >= 12) {
+                    extraSameDay = Math.round(pricePerNight * 0.30);
+                }
+                suggestedLateFee = overdueBase + extraSameDay;
             } else if (now.getHour() >= 18) {
                 suggestedLateFee = pricePerNight; // Sau 18:00: 100%
             } else if (now.getHour() >= 15) {
@@ -68,7 +78,7 @@ public class CheckOutService {
             }
         }
 
-        long lateCheckoutFee = customLateFee != null ? customLateFee : suggestedLateFee;
+        long lateCheckoutFee = customLateFee != null ? Math.max(0L, customLateFee) : suggestedLateFee;
         long roomCharge = booking.getRoomCharge();
         long earlyCheckinFee = booking.getEarlyCheckinFee() != null ? booking.getEarlyCheckinFee() : 0L;
 

@@ -59,7 +59,7 @@ public class AuthController {
                             @RequestParam(value = "registered", required = false) String registered,
                             jakarta.servlet.http.HttpServletRequest request,
                             Model model) {
-        if (redirectUrl != null && !redirectUrl.isBlank()) {
+        if (redirectUrl != null && !redirectUrl.isBlank() && com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl(redirectUrl)) {
             request.getSession().setAttribute("REDIRECT_URL", redirectUrl);
         }
 
@@ -130,7 +130,9 @@ public class AuthController {
             String redirectUrl = (String) request.getSession().getAttribute("REDIRECT_URL");
             if (redirectUrl != null && !redirectUrl.isBlank()) {
                 request.getSession().removeAttribute("REDIRECT_URL");
-                return "redirect:" + redirectUrl;
+                if (com.ace.hotel.config.RoleBasedAuthSuccessHandler.isSafeRedirectUrl(redirectUrl)) {
+                    return "redirect:" + redirectUrl;
+                }
             }
             return "redirect:/customer/dashboard";
         } catch (BusinessException e) {
