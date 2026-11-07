@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/customer-layout :: layout(~{::title}, ~{::section})}">
+<head>
+  <title th:text="${pageTitle}">Đơn Đã Đặt &amp; Sổ Thẻ Lưu Trú QR | ACE Hotel</title>
+</head>
+<body>
+<section class="container" style="padding-top: 1.5rem; padding-bottom: 3.5rem;">
+
+  <!-- Header Section: Đơn Đã Đặt & Sổ Thẻ Lưu Trú -->
+  <div class="section-eyebrow-wrapper" style="margin-bottom: 0.5rem;">
+    <span class="section-eyebrow-badge">
+      <span>✦</span> SỔ PHIẾU ĐẶT PHÒNG &amp; THẺ LƯU TRÚ QR
+    </span>
+    <span style="font-size: 0.825rem; color: var(--text-secondary);">
+      Xuất trình mã QR tại quầy Lễ tân để làm thủ tục nhận phòng tức thì trong 3 giây
+    </span>
+  </div>
+
+  <div class="flex justify-between items-center flex-wrap gap-4" style="margin-bottom: 1.75rem;">
+    <div>
+      <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text); margin: 0 0 0.35rem; font-family: 'Cinzel', serif;">
+        Sổ Phiếu Đặt Phòng &amp; Thẻ Lưu Trú QR
+      </h1>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); margin: 0;">
+        Quản lý chi tiết toàn bộ hành trình nghỉ dưỡng, tra cứu Live Folio chi phí và xuất phiếu thu cọc 30% chính thức.
+      </p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center gap-3">
+      <a th:href="@{/customer/dashboard}" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 0.45rem;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>Bàn Điều Khiển</span>
+      </a>
+      <a th:href="@{/booking/search}" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 700;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>Đặt Thêm Phòng Mới</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Filter Tabs Toolbar -->
+  <div class="card" style="padding: 0.65rem 1rem; margin-bottom: 1.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px;">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <div class="flex gap-2 flex-wrap" id="bookingFilterGroup">
+        <button type="button" class="btn-tab-filter active" data-status="ALL" onclick="filterBookings('ALL', this)">
+          <span>Tất Cả</span>
+          <span class="badge-status" style="margin-left: 0.35rem; padding: 2px 7px; font-size: 0.7rem; background: rgba(229,192,123,0.2); color: var(--primary-text);"
+                th:text="${bookings != null ? bookings.size() : 0}">0</span>
+        </button>
+        <button type="button" class="btn-tab-filter" data-status="RESERVED" onclick="filterBookings('RESERVED', this)">
+          <span>Chờ Nhận Phòng</span>
+          <span class="badge-status" style="margin-left: 0.35rem; padding: 2px 7px; font-size: 0.7rem; background: rgba(245,158,11,0.2); color: #F59E0B;"
+                th:text="${dashboard != null ? dashboard.upcomingCount : 0}">0</span>
+        </button>
+        <button type="button" class="btn-tab-filter" data-status="CHECKED_IN" onclick="filterBookings('CHECKED_IN', this)">
+          <span>Đang Ở</span>
+          <span class="badge-status" style="margin-left: 0.35rem; padding: 2px 7px; font-size: 0.7rem; background: rgba(16,185,129,0.2); color: #10B981;"
+                th:text="${dashboard != null ? dashboard.inHouseCount : 0}">0</span>
+        </button>
+        <button type="button" class="btn-tab-filter" data-status="CHECKED_OUT" onclick="filterBookings('CHECKED_OUT', this)">
+          <span>Đã Trả Phòng</span>
+          <span class="badge-status" style="margin-left: 0.35rem; padding: 2px 7px; font-size: 0.7rem; background: rgba(148,163,184,0.2); color: #94A3B8;"
+                th:text="${dashboard != null ? dashboard.completedCount : 0}">0</span>
+        </button>
+        <button type="button" class="btn-tab-filter" data-status="CANCELLED" onclick="filterBookings('CANCELLED', this)">
+          <span>Đã Hủy</span>
+          <span class="badge-status" style="margin-left: 0.35rem; padding: 2px 7px; font-size: 0.7rem; background: rgba(239,68,68,0.2); color: #EF4444;"
+                th:text="${dashboard != null ? dashboard.cancelledCount : 0}">0</span>
+        </button>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-secondary);">
+        Hiển thị: <strong style="color: var(--primary-text);" th:text="${bookings != null ? bookings.size() : 0}">0</strong> đơn đặt phòng
+      </div>
+    </div>
+  </div>
+
+  <!-- Danh sách các Thẻ Đặt Phòng -->
+  <div id="bookingListContainer" class="flex flex-col gap-4">
+
+    <!-- Lặp qua danh sách booking -->
+    <div th:each="b : ${bookings}"
+         class="card card-elevated booking-item-card"
+         th:attr="data-booking-status=${b.status.name()},data-booking-code=${b.bookingCode},id='booking-card-' + ${b.bookingCode}"
+         style="padding: 1.5rem 1.75rem; border: 1px solid var(--border); border-radius: 12px; transition: all 0.25s ease;">
+
+      <!-- Top Header của Thẻ Booking: Mã Đơn & Trạng Thái -->
+      <div class="flex justify-between items-center flex-wrap gap-2" style="border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.85rem; margin-bottom: 1.25rem;">
+        <div class="flex items-center gap-3">
+          <span class="customer-brand-logo-frame" style="padding: 4px 6px;">
+            <img th:src="@{/images/2_logo-ACE_khong-nen.png}" alt="ACE" style="height: 20px;">
+          </span>
+          <div>
+            <span style="font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.8px;">THẺ LƯU TRÚ ĐIỆN TỬ</span>
+            <div style="font-size: 1.2rem; font-weight: 800; color: #FDBF2D; font-family: 'Courier New', monospace; letter-spacing: 0.5px;"
+                 th:text="${b.bookingCode}">BK-2401</div>
+          </div>
+        </div>
+
+        <div>
+          <!-- Badge Trạng thái chuẩn -->
+          <span th:if="${b.status.name() == 'RESERVED'}" class="badge-status" style="background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.4); padding: 4px 10px; font-size: 0.775rem;">
+            ★ ĐÃ XÁC NHẬN • ĐÃ CỌC 30%
+          </span>
+          <span th:if="${b.status.name() == 'CHECKED_IN'}" class="badge-status" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4); padding: 4px 10px; font-size: 0.775rem;">
+            🏨 ĐANG LƯU TRÚ TẠI KHÁCH SẠN
+          </span>
+          <span th:if="${b.status.name() == 'CHECKED_OUT'}" class="badge-status" style="background: rgba(148, 163, 184, 0.15); color: #94A3B8; border: 1px solid rgba(148, 163, 184, 0.3); padding: 4px 10px; font-size: 0.775rem;">
+            ✓ ĐÃ HOÀN TẤT TRẢ PHÒNG
+          </span>
+          <span th:if="${b.status.name() == 'CANCELLED'}" class="badge-status" style="background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 10px; font-size: 0.775rem;">
+            ✕ ĐÃ HỦY ĐƠN ĐẶT PHÒNG
+          </span>
+        </div>
+      </div>
+
+      <!-- Thân thẻ: Chia 3 Cột (QR Code | Thông tin Phòng & Lịch | Thanh Toán & Hành Động) -->
+      <div style="display: grid; grid-template-columns: 180px 1fr 300px; gap: 1.75rem; align-items: center;" class="booking-grid-layout">
+
+        <!-- CỘT 1: MÃ QR CHECK-IN NHANH -->
+        <div style="text-align: center; border-right: 1px solid rgba(255, 255, 255, 0.08); padding-right: 1.25rem;">
+          <div class="ace-qr-code" th:attr="data-booking-qr=${b.bookingCode},data-booking-code=${b.bookingCode}" data-qr-size="110"
+               style="background: #FFFFFF; padding: 6px; border-radius: 8px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid #FDBF2D;">
+          </div>
+          <div style="font-size: 0.7rem; font-family: 'Courier New', monospace; font-weight: 700; color: #FDBF2D; margin-top: 0.4rem;" th:text="${b.bookingCode}">BK-2401</div>
+          <div style="font-size: 0.675rem; color: var(--text-secondary); margin-top: 0.15rem;">Quét mã nhận phòng tại quầy</div>
+          <button type="button" class="btn btn-outline btn-xs" style="margin-top: 0.5rem; font-size: 0.7rem; padding: 2px 8px;"
+                  th:attr="onclick='openQrModal(\'' + ${b.bookingCode} + '\', \'' + ${b.roomType.name} + '\')'">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+            <span>Phóng to QR</span>
+          </button>
+        </div>
+
+        <!-- CỘT 2: CHI TIẾT HẠNG PHÒNG & LỊCH TRÌNH LƯU TRÚ -->
+        <div>
+          <div class="flex items-center gap-3" style="margin-bottom: 0.75rem;">
+            <img th:src="@{'/images/' + ${b.roomType.code.toLowerCase()} + '.png'}"
+                 onerror="this.src='/images/deluxe.png'"
+                 alt="Phòng" style="width: 56px; height: 56px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border);">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text); margin: 0;" th:text="${b.roomType.name}">Deluxe King</h3>
+              <div style="font-size: 0.8rem; color: var(--text-secondary);" th:text="${b.roomType.description}">1 Giường King lớn (2m x 2m) ban công</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.85rem;">
+            <div>
+              <span style="color: var(--text-secondary);">Phòng vật lý:</span>
+              <strong th:if="${b.room != null}" style="color: #10B981; margin-left: 0.35rem;" th:text="'Phòng ' + ${b.room.roomNumber} + ' (Tầng ' + ${b.room.floor} + ')'">Phòng 301</strong>
+              <span th:if="${b.room == null}" style="color: var(--text-secondary); margin-left: 0.35rem; font-style: italic;">Khóa giữ chỗ trước (Bảo đảm 0% Overbooking)</span>
+            </div>
+            <div>
+              <span style="color: var(--text-secondary);">Nhận phòng:</span>
+              <strong style="margin-left: 0.35rem;" th:text="${#temporals.format(b.checkInDate, 'dd/MM/yyyy') + ' • Từ 14:00'}">04/11/2026</strong>
+            </div>
+            <div>
+              <span style="color: var(--text-secondary);">Thời lượng &amp; Số khách:</span>
+              <strong style="margin-left: 0.35rem;" th:text="${b.nights + ' đêm • ' + b.guestCount + ' khách'}">2 đêm • 2 khách</strong>
+            </div>
+            <div>
+              <span style="color: var(--text-secondary);">Trả phòng:</span>
+              <strong style="margin-left: 0.35rem;" th:text="${#temporals.format(b.checkOutDate, 'dd/MM/yyyy') + ' • Trước 12:00'}">06/11/2026</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- CỘT 3: TÀI CHÍNH & HÀNH ĐỘNG DÀNH CHO KHÁCH -->
+        <div style="border-left: 1px solid rgba(255, 255, 255, 0.08); padding-left: 1.25rem;">
+          <div style="font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px; margin-bottom: 0.35rem;">CHI TIẾT THANH TOÁN</div>
+          <div class="flex justify-between" style="font-size: 0.825rem; margin-bottom: 0.2rem;">
+            <span style="color: var(--text-secondary);">Tiền phòng gốc:</span>
+            <span style="font-weight: 700;" th:text="${#numbers.formatDecimal(b.roomCharge, 0, 'COMMA', 0, 'POINT') + ' đ'}">2,000,000 đ</span>
+          </div>
+          <div class="flex justify-between" style="font-size: 0.825rem; margin-bottom: 0.35rem; color: var(--text-secondary);">
+            <span>Biểu giá chuẩn:</span>
+            <span>5% Phí phục vụ + 10% VAT</span>
+          </div>
+          <div class="flex justify-between items-center" style="font-size: 0.9rem; margin-bottom: 0.85rem; padding-top: 0.35rem; border-top: 1px dashed rgba(255, 255, 255, 0.1);">
+            <strong style="color: #10B981;">Tiền cọc đã trả (30%):</strong>
+            <strong style="color: #10B981; font-size: 1.05rem;" th:text="${#numbers.formatDecimal(b.depositAmount, 0, 'COMMA', 0, 'POINT') + ' đ'}">693,000 đ</strong>
+          </div>
+
+          <!-- Các nút thao tác theo trạng thái -->
+          <div class="flex flex-col gap-2">
+            <!-- Nút Xem Live Folio chi phí (Chỉ khi đang ở CHECKED_IN) -->
+            <button th:if="${b.status.name() == 'CHECKED_IN'}" type="button"
+                    class="btn btn-primary btn-sm" style="width: 100%; justify-content: center;"
+                    th:attr="onclick='openFolioModal(' + ${b.bookingId} + ', \'' + ${b.bookingCode} + '\', \'' + (${b.room != null ? ('Phòng ' + b.room.roomNumber) : 'Đang chuẩn bị'}) + '\')'">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              <span>Xem bảng kê chi phí</span>
+            </button>
+
+            <!-- Nút Yêu cầu trả phòng nhanh (Express Check-out) (Chỉ khi CHECKED_IN) -->
+            <form th:if="${b.status.name() == 'CHECKED_IN'}"
+                  th:action="@{/customer/bookings/{id}/request-checkout(id=${b.bookingId})}" method="post"
+                  data-confirm="Quý khách muốn gửi thông báo trả phòng đến Lễ tân ngay bây giờ? Nhân viên Lễ tân sẽ chuẩn bị sẵn hóa đơn VAT để tiếp đón Quý khách tại quầy."
+                  data-confirm-title="Xác Nhận Yêu Cầu Trả Phòng Nhanh"
+                  data-confirm-desc="Lễ tân sẽ chuẩn bị sẵn hóa đơn để hỗ trợ Quý khách làm thủ tục trong 30 giây."
+                  data-confirm-btn="Gửi Yêu Cầu Đến Lễ Tân"
+                  data-confirm-type="info">
+              <button type="submit" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>Yêu cầu trả phòng</span>
+              </button>
+            </form>
+
+            <!-- Nút Hủy đơn đặt phòng (Chỉ khi RESERVED) -->
+            <div th:if="${b.status.name() == 'RESERVED'}">
+              <form th:action="@{/customer/bookings/{id}/cancel(id=${b.bookingId})}" method="post"
+                    data-confirm="Bạn có chắc chắn muốn hủy đơn đặt phòng giữ chỗ này?"
+                    data-confirm-title="Xác Nhận Hủy Đơn Đặt Phòng"
+                    data-confirm-desc="Toàn bộ thông tin giữ chỗ sẽ bị hủy và phòng được hoàn lại quỹ phòng trống. Hành động này không thể hoàn tác."
+                    data-confirm-btn="Xác Nhận Hủy Đơn"
+                    data-confirm-type="danger">
+                <button type="submit" class="btn btn-danger btn-sm" style="width: 100%; justify-content: center;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                  <span>Hủy đơn đặt phòng</span>
+                </button>
+              </form>
+            </div>
+
+            <!-- Nút Xem & Tải Phiếu Thu Cọc (PDF) A4 Độc Lập -->
+            <a th:href="@{'/customer/bookings/' + ${b.bookingId} + '/deposit-receipt'}"
+               target="_blank"
+               class="btn btn-outline btn-xs"
+               style="width: 100%; justify-content: center; text-decoration: none; border-color: rgba(229, 192, 123, 0.4); color: var(--primary-text);">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              <span>Phiếu Thu Cọc (PDF)</span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Empty State: Khi không có đơn nào trong tab hoặc chưa đặt phòng -->
+    <div id="bookingEmptyState"
+         th:style="${bookings == null or #lists.isEmpty(bookings)} ? 'display: block;' : 'display: none;'"
+         class="card card-elevated"
+         style="text-align: center; padding: 4rem 2rem; border-radius: 12px; border: 1px dashed var(--border);">
+      <span class="customer-brand-logo-frame" style="padding: 10px 14px; margin-bottom: 1.25rem; display: inline-flex;">
+        <img th:src="@{/images/2_logo-ACE_khong-nen.png}" alt="ACE" style="height: 36px;">
+      </span>
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text); margin: 0 0 0.5rem; font-family: 'Cinzel', serif;">
+        Chưa Có Đơn Lưu Trú Nào Trong Danh Mục Này
+      </h3>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); max-width: 500px; margin: 0 auto 1.5rem; line-height: 1.6;">
+        Quý khách chưa có đơn đặt phòng nào hoặc danh mục lọc hiện tại đang trống. Hãy khám phá và đặt cọc giữ chỗ ngay hôm nay để nhận đặc quyền 5 sao.
+      </p>
+      <a th:href="@{/booking/search}" class="btn btn-primary btn-md" style="display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>Tìm Phòng &amp; Đặt Cọc Giữ Chỗ (30%)</span>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- =========================================================================
+       MODAL 1: PHÓNG TO MÃ QR CHECK-IN NHANH
+       ========================================================================= -->
+  <div id="qrModal" class="ace-modal-backdrop is-open" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center;"
+       onclick="if(event.target === this) closeQrModal()">
+    <div class="card card-elevated" style="width: 100%; max-width: 440px; text-align: center; border-color: #FDBF2D; padding: 2rem;">
+      <span class="customer-brand-logo-frame" style="padding: 4px 6px; margin-bottom: 0.75rem; display: inline-flex;">
+        <img th:src="@{/images/2_logo-ACE_khong-nen.png}" alt="ACE" style="height: 24px;">
+      </span>
+      <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text); margin: 0 0 0.25rem; font-family: 'Cinzel', serif;">MÃ QR NHẬN PHÒNG KHÔNG CHẠM</h3>
+      <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 1.25rem;">Xuất trình mã này cho nhân viên lễ tân khi đến khách sạn</p>
+
+      <div id="qrModalCodeTarget" style="background: #FFFFFF; padding: 14px; border-radius: 12px; display: inline-block; box-shadow: 0 8px 30px rgba(0,0,0,0.6); border: 3px solid #FDBF2D;">
+      </div>
+
+      <div id="qrModalCodeText" style="font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: 800; color: #FDBF2D; margin-top: 1rem; letter-spacing: 1.5px;"></div>
+      <div id="qrModalRoomTypeText" style="font-size: 0.875rem; color: var(--text); margin-top: 0.25rem;"></div>
+
+      <div style="margin-top: 1.5rem;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeQrModal()" style="min-width: 120px;">Đóng Lại</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: BẢNG KÊ CHI PHÍ THỜI GIAN THỰC (LIVE ROOM FOLIO MODAL)
+       ========================================================================= -->
+  <div id="folioModal" class="ace-modal-backdrop is-open" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center;"
+       onclick="if(event.target === this) closeFolioModal()">
+    <div class="card card-elevated" style="width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; border-color: #FDBF2D; padding: 0;">
+
+      <!-- Header -->
+      <div class="flex justify-between items-center" style="padding: 1.25rem 1.75rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: rgba(0,0,0,0.2);">
+        <div class="flex items-center gap-2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FDBF2D" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          <div>
+            <h3 style="margin: 0; font-size: 1.2rem; color: #FDBF2D; font-family: 'Cinzel', serif;">Bảng Kê Chi Phí Dịch Vụ Phòng (Live Folio)</h3>
+            <span style="font-size: 0.75rem; color: var(--text-secondary);">Minh bạch tài chính 5 sao • Cập nhật tự động thời gian thực</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeFolioModal()" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.5rem; line-height: 1;">&times;</button>
+      </div>
+
+      <!-- Body -->
+      <div style="padding: 1.5rem;" id="folioModalBody">
+        <div id="folioLoading" style="text-align: center; padding: 2rem 0; color: #FDBF2D;">
+          <div style="font-size: 1rem; font-weight: 600;">Đang kết nối hệ thống &amp; tải dữ liệu bảng kê...</div>
+        </div>
+
+        <div id="folioContent" style="display: none;">
+          <!-- Thông tin phòng & Mã đơn -->
+          <div class="flex justify-between items-center" style="background: rgba(255,255,255,0.03); padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; border: 1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-size: 0.725rem; color: var(--text-secondary);">MÃ ĐẶT PHÒNG</div>
+              <div id="folioBookingCode" style="font-size: 1.1rem; font-weight: 800; color: #FDBF2D; font-family: 'Courier New', monospace;">BK-2401</div>
+            </div>
+            <div>
+              <div style="font-size: 0.725rem; color: var(--text-secondary);">PHÒNG LƯU TRÚ</div>
+              <div id="folioRoomNumber" style="font-size: 1.1rem; font-weight: 800; color: #10B981;">Phòng 101</div>
+            </div>
+            <div>
+              <div style="font-size: 0.725rem; color: var(--text-secondary);">HẠNG PHÒNG</div>
+              <div id="folioRoomType" style="font-size: 0.95rem; font-weight: 700; color: var(--text);">Suite Luxury</div>
+            </div>
+          </div>
+
+          <!-- Bảng kê dịch vụ -->
+          <div style="margin-bottom: 1.25rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.5px;">
+              Dịch vụ đã sử dụng tại phòng
+            </div>
+            <table class="table" style="width: 100%; font-size: 0.825rem;">
+              <thead>
+                <tr>
+                  <th>Tên Dịch Vụ</th>
+                  <th style="text-align: center; width: 60px;">SL</th>
+                  <th style="text-align: right; width: 110px;">Đơn Giá</th>
+                  <th style="text-align: right; width: 130px;">Thành Tiền</th>
+                </tr>
+              </thead>
+              <tbody id="folioServiceList">
+                <!-- Render bằng JavaScript -->
+              </tbody>
+            </table>
+            <div id="folioNoServices" style="display: none; text-align: center; padding: 1.5rem; color: var(--text-secondary); font-style: italic; font-size: 0.85rem;">
+              Chưa phát sinh chi phí dịch vụ nào trong kỳ lưu trú này.
+            </div>
+          </div>
+
+          <!-- Tổng kết tài chính -->
+          <div style="background: rgba(229, 192, 123, 0.05); border: 1px solid rgba(229, 192, 123, 0.2); border-radius: 8px; padding: 1rem 1.25rem; font-size: 0.85rem;">
+            <div class="flex justify-between items-center" style="margin-bottom: 0.35rem;">
+              <span style="color: var(--text-secondary);">Tiền phòng gốc:</span>
+              <span id="folioRoomCharge" style="font-weight: 600;">0 đ</span>
+            </div>
+            <div class="flex justify-between items-center" style="margin-bottom: 0.35rem;">
+              <span style="color: var(--text-secondary);">Tổng tiền dịch vụ:</span>
+              <span id="folioServiceTotal" style="font-weight: 600;">0 đ</span>
+            </div>
+            <div class="flex justify-between items-center" style="margin-bottom: 0.35rem; color: var(--text-secondary);">
+              <span>Phí dịch vụ (SVC 5%):</span>
+              <span id="folioSvcAmount">0 đ</span>
+            </div>
+            <div class="flex justify-between items-center" style="margin-bottom: 0.35rem; color: var(--text-secondary);">
+              <span>Thuế GTGT (VAT 10%):</span>
+              <span id="folioVatAmount">0 đ</span>
+            </div>
+            <div class="flex justify-between items-center" style="margin-bottom: 0.5rem; padding-top: 0.35rem; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span style="font-weight: 700;">Tổng cộng dự toán (Gồm phí &amp; thuế):</span>
+              <span id="folioGrandTotal" style="font-weight: 800; font-size: 0.95rem;">0 đ</span>
+            </div>
+            <div class="flex justify-between items-center" style="margin-bottom: 0.5rem; color: #10B981;">
+              <span style="font-weight: 600;">Tiền cọc đã trả (30%):</span>
+              <span id="folioDeposit" style="font-weight: 700;">- 0 đ</span>
+            </div>
+            <div class="flex justify-between items-center" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.5rem;">
+              <span style="font-weight: 800; color: #FDBF2D; font-size: 0.95rem;">Tạm tính số dư thanh toán còn lại:</span>
+              <span id="folioBalanceDue" style="font-size: 1.25rem; font-weight: 800; color: #FDBF2D;">0 đ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3" style="padding: 1rem 1.75rem; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2);">
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeFolioModal()">Đóng Bảng Kê</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 3: POP-UP CHÚC MỪNG ĐẶT PHÒNG THÀNH CÔNG (CELEBRATION MODAL)
+       ========================================================================= -->
+  <div id="bookingCelebrationModal" class="modal-backdrop active" th:if="${newBookingCode != null}" onclick="if (event.target === this) closeCelebrationModal()">
+    <div class="modal-content" style="max-width: 520px; text-align: center; border-color: rgba(229, 192, 123, 0.5); padding: 2rem; position: relative;">
+
+      <button type="button" onclick="closeCelebrationModal()" style="position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.5rem;">&times;</button>
+
+      <!-- Badge & Icon -->
+      <div style="margin-bottom: 0.75rem;">
+        <span class="badge-status" style="background: rgba(229, 192, 123, 0.18); color: var(--primary-text); border: 1.5px solid rgba(229, 192, 123, 0.6); padding: 4px 12px; font-size: 0.775rem;">
+          ★ ĐẶT CHỖ THÀNH CÔNG • CỌC 30% ĐÃ GHI NHẬN
+        </span>
+      </div>
+
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text); margin: 0.75rem 0 0.5rem; font-family: 'Cinzel', serif;">
+        Cảm Ơn Quý Khách Đã Lựa Chọn ACE Hotel!
+      </h2>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); margin: 0 0 1.25rem; line-height: 1.6;">
+        Đơn đặt phòng của quý khách đã được tạo thành công trên hệ thống. Dưới đây là mã đặt phòng và mã QR Check-in ưu tiên của bạn:
+      </p>
+
+      <!-- Mã đặt phòng nổi bật -->
+      <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(229, 192, 123, 0.3); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
+        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">MÃ ĐẶT PHÒNG CHÍNH THỨC</div>
+        <div style="font-size: 1.75rem; font-weight: 800; color: var(--primary-text); font-family: 'Courier New', monospace; letter-spacing: 2px;" th:text="${newBookingCode}">BK-2401</div>
+
+        <!-- Render mã QR -->
+        <div style="margin-top: 1rem;">
+          <div class="ace-qr-code" th:attr="data-booking-qr=${newBookingCode},data-booking-code=${newBookingCode}" data-qr-size="160"
+               style="background: #FFFFFF; padding: 10px; border-radius: 12px; display: inline-block; box-shadow: 0 8px 25px rgba(0,0,0,0.5); border: 2.5px solid #FDBF2D;">
+          </div>
+        </div>
+
+        <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.75rem;">
+          Xuất trình mã QR tại quầy Lễ tân để hoàn tất thủ tục nhận phòng tức thì.
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-3 justify-center flex-wrap">
+        <a th:if="${newBooking != null}" th:href="@{'/customer/bookings/' + ${newBooking.bookingId} + '/deposit-receipt'}"
+           target="_blank"
+           class="btn btn-outline btn-sm"
+           style="border-color: rgba(229, 192, 123, 0.5); color: #FDBF2D; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          <span>Xem &amp; Tải Phiếu Thu Cọc (PDF)</span>
+        </a>
+        <button type="button" class="btn btn-primary btn-sm" th:attr="onclick='scrollToBooking(\'' + ${newBookingCode} + '\')'" style="font-weight: 700;">
+          <span>Xem Trong Sổ Lưu Trú →</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Styling cho Filter Tabs -->
+  <style>
+    .btn-tab-filter {
+      padding: 0.45rem 0.95rem;
+      border-radius: 7px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-tab-filter:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .btn-tab-filter.active {
+      color: #0B0F17;
+      background: linear-gradient(135deg, #FDBF2D, #D97706);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.35);
+    }
+    .btn-tab-filter.active .badge-status {
+      background: rgba(11, 15, 23, 0.2) !important;
+      color: #0B0F17 !important;
+    }
+
+    @media (max-width: 900px) {
+      .booking-grid-layout {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem !important;
+      }
+      .booking-grid-layout > div {
+        border-right: none !important;
+        border-left: none !important;
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+      }
+    }
+  </style>
+
+  <!-- Script điều khiển lọc & modal -->
+  <script>
+    // Tab Filter Logic
+    function filterBookings(status, el) {
+      var buttons = document.querySelectorAll('#bookingFilterGroup .btn-tab-filter');
+      buttons.forEach(function(b) { b.classList.remove('active'); });
+      if (el) el.classList.add('active');
+
+      var cards = document.querySelectorAll('.booking-item-card');
+      var visibleCount = 0;
+      cards.forEach(function(card) {
+        var cardStatus = card.getAttribute('data-booking-status');
+        if (status === 'ALL' || cardStatus === status) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      var emptyState = document.getElementById('bookingEmptyState');
+      if (emptyState) {
+        emptyState.style.display = (visibleCount === 0) ? 'block' : 'none';
+      }
+    }
+
+    // QR Modal Controllers
+    function openQrModal(code, roomType) {
+      var modal = document.getElementById('qrModal');
+      var target = document.getElementById('qrModalCodeTarget');
+      var textEl = document.getElementById('qrModalCodeText');
+      var roomEl = document.getElementById('qrModalRoomTypeText');
+
+      if (target && window.AceQR) {
+        target.innerHTML = '';
+        window.AceQR.render(target, code, { size: 220 });
+      }
+      if (textEl) textEl.textContent = code;
+      if (roomEl) roomEl.textContent = roomType ? ('Hạng: ' + roomType) : '';
+      if (modal) {
+        modal.style.display = 'flex';
+        modal.style.opacity = '1';
+        modal.style.pointerEvents = 'auto';
+      }
+    }
+
+    function closeQrModal() {
+      var modal = document.getElementById('qrModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    // Live Folio Modal Controllers
+    function openFolioModal(bookingId, bookingCode, roomInfo) {
+      var modal = document.getElementById('folioModal');
+      var loading = document.getElementById('folioLoading');
+      var content = document.getElementById('folioContent');
+
+      if (modal) {
+        modal.style.display = 'flex';
+        modal.style.opacity = '1';
+        modal.style.pointerEvents = 'auto';
+      }
+      if (loading) loading.style.display = 'block';
+      if (content) content.style.display = 'none';
+
+      // Gán trước thông tin cơ bản
+      var codeEl = document.getElementById('folioBookingCode');
+      var roomEl = document.getElementById('folioRoomNumber');
+      if (codeEl) codeEl.textContent = bookingCode;
+      if (roomEl) roomEl.textContent = roomInfo;
+
+      // Fetch dữ liệu thời gian thực
+      fetch('/customer/bookings/' + bookingId + '/folio-data')
+        .then(function(res) {
+          if (!res.ok) throw new Error('Không thể tải bảng kê chi phí');
+          return res.json();
+        })
+        .then(function(data) {
+          renderFolioData(data);
+          if (loading) loading.style.display = 'none';
+          if (content) content.style.display = 'block';
+        })
+        .catch(function(err) {
+          if (loading) {
+            loading.innerHTML = '<div style="color: #EF4444; padding: 1.5rem;">' + (err.message || 'Lỗi kết nối') + '</div>';
+          }
+        });
+    }
+
+    function renderFolioData(data) {
+      var roomEl = document.getElementById('folioRoomNumber');
+      var typeEl = document.getElementById('folioRoomType');
+      var listEl = document.getElementById('folioServiceList');
+      var noSvEl = document.getElementById('folioNoServices');
+
+      if (roomEl) roomEl.textContent = data.roomNumber ? ('Phòng ' + data.roomNumber) : 'Đang chuẩn bị';
+      if (typeEl) typeEl.textContent = data.roomType || '';
+
+      if (listEl) {
+        listEl.innerHTML = '';
+        if (data.items && data.items.length > 0) {
+          if (noSvEl) noSvEl.style.display = 'none';
+          data.items.forEach(function(item) {
+            var tr = document.createElement('tr');
+            tr.innerHTML = '<td><strong>' + item.serviceName + '</strong> <span style="font-size: 0.7rem; color: var(--text-secondary);">[' + item.category + ']</span></td>' +
+                           '<td style="text-align: center;">' + item.quantity + '</td>' +
+                           '<td style="text-align: right;">' + formatVND(item.unitPrice) + '</td>' +
+                           '<td style="text-align: right; font-weight: 700;">' + formatVND(item.lineTotal) + '</td>';
+            listEl.appendChild(tr);
+          });
+        } else {
+          if (noSvEl) noSvEl.style.display = 'block';
+        }
+      }
+
+      var rcEl = document.getElementById('folioRoomCharge');
+      var stEl = document.getElementById('folioServiceTotal');
+      var svcEl = document.getElementById('folioSvcAmount');
+      var vatEl = document.getElementById('folioVatAmount');
+      var gtEl = document.getElementById('folioGrandTotal');
+      var dpEl = document.getElementById('folioDeposit');
+      var bdEl = document.getElementById('folioBalanceDue');
+
+      if (rcEl) rcEl.textContent = formatVND(data.roomCharge);
+      if (stEl) stEl.textContent = formatVND(data.serviceTotal);
+      if (svcEl) svcEl.textContent = formatVND(data.svcAmount);
+      if (vatEl) vatEl.textContent = formatVND(data.vatAmount);
+      if (gtEl) gtEl.textContent = formatVND(data.grandTotal);
+      if (dpEl) dpEl.textContent = '- ' + formatVND(data.depositPaid);
+      if (bdEl) bdEl.textContent = formatVND(data.balanceDue);
+    }
+
+    function formatVND(num) {
+      if (num === null || num === undefined) return '0 đ';
+      return Number(num).toLocaleString('vi-VN') + ' đ';
+    }
+
+    function closeFolioModal() {
+      var modal = document.getElementById('folioModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    // Celebration Modal
+    function closeCelebrationModal() {
+      var modal = document.getElementById('bookingCelebrationModal');
+      if (modal) modal.style.display = 'none';
+      var url = new URL(window.location.href);
+      url.searchParams.delete('newBooking');
+      window.history.replaceState({}, document.title, url.toString());
+    }
+
+    function scrollToBooking(code) {
+      closeCelebrationModal();
+      var card = document.getElementById('booking-card-' + code);
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.style.borderColor = '#FDBF2D';
+        card.style.boxShadow = '0 0 25px rgba(253, 191, 45, 0.45)';
+        setTimeout(function() {
+          card.style.boxShadow = '';
+        }, 3000);
+      }
+    }
+
+    // ESC to close modals
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeQrModal();
+        closeFolioModal();
+        closeCelebrationModal();
+      }
+    });
+
+    // Auto-select tab if param present
+    document.addEventListener('DOMContentLoaded', function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var tabParam = urlParams.get('tab');
+      if (tabParam) {
+        var tabMap = {
+          'confirmed': 'RESERVED',
+          'upcoming': 'RESERVED',
+          'reserved': 'RESERVED',
+          'inhouse': 'CHECKED_IN',
+          'active': 'CHECKED_IN',
+          'checked_in': 'CHECKED_IN',
+          'completed': 'CHECKED_OUT',
+          'checked_out': 'CHECKED_OUT',
+          'cancelled': 'CANCELLED',
+          'canceled': 'CANCELLED',
+          'all': 'ALL'
+        };
+        var mapped = tabMap[tabParam.toLowerCase()] || tabParam.toUpperCase();
+        var btn = document.querySelector('#bookingFilterGroup button[data-status="' + mapped + '"]');
+        if (btn) filterBookings(mapped, btn);
+      }
+    });
+  </script>
+
+</section>
+</body>
+</html>

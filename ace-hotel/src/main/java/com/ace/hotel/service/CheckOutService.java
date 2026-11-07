@@ -29,15 +29,18 @@ public class CheckOutService {
     private final ServiceOrderRepository serviceOrderRepository;
     private final InvoiceRepository invoiceRepository;
     private final RoomRepository roomRepository;
+    private final PricingService pricingService;
 
     public CheckOutService(BookingRepository bookingRepository,
                            ServiceOrderRepository serviceOrderRepository,
                            InvoiceRepository invoiceRepository,
-                           RoomRepository roomRepository) {
+                           RoomRepository roomRepository,
+                           PricingService pricingService) {
         this.bookingRepository = bookingRepository;
         this.serviceOrderRepository = serviceOrderRepository;
         this.invoiceRepository = invoiceRepository;
         this.roomRepository = roomRepository;
+        this.pricingService = pricingService;
     }
 
     /**
@@ -64,17 +67,17 @@ public class CheckOutService {
                 if (now.getHour() >= 18) {
                     extraSameDay = pricePerNight;
                 } else if (now.getHour() >= 15) {
-                    extraSameDay = Math.round(pricePerNight * 0.50);
+                    extraSameDay = pricingService.calculateLateCheckoutFee(booking.getRoomType(), 50);
                 } else if (now.getHour() >= 12) {
-                    extraSameDay = Math.round(pricePerNight * 0.30);
+                    extraSameDay = pricingService.calculateLateCheckoutFee(booking.getRoomType(), 30);
                 }
                 suggestedLateFee = overdueBase + extraSameDay;
             } else if (now.getHour() >= 18) {
                 suggestedLateFee = pricePerNight; // Sau 18:00: 100%
             } else if (now.getHour() >= 15) {
-                suggestedLateFee = Math.round(pricePerNight * 0.50); // 15:00 - 18:00: 50%
+                suggestedLateFee = pricingService.calculateLateCheckoutFee(booking.getRoomType(), 50); // 15:00 - 18:00: 50%
             } else {
-                suggestedLateFee = Math.round(pricePerNight * 0.30); // 12:00 - 15:00: 30%
+                suggestedLateFee = pricingService.calculateLateCheckoutFee(booking.getRoomType(), 30); // 12:00 - 15:00: 30%
             }
         }
 
@@ -84,8 +87,8 @@ public class CheckOutService {
 
         // BR6: Tuần tự số nguyên để không bao giờ lệch 1đ với CHECK constraint CSDL
         long subtotal = roomCharge + serviceChargeTotal + earlyCheckinFee + lateCheckoutFee;
-        long serviceChargeAmount = Math.round(subtotal * 0.05);
-        long vatAmount = Math.round((subtotal + serviceChargeAmount) * 0.10);
+        long serviceChargeAmount = pricingService.calculateSvc5Percent(subtotal);
+        long vatAmount = pricingService.calculateVat10Percent(subtotal, serviceChargeAmount);
         long grandTotal = subtotal + serviceChargeAmount + vatAmount;
 
         // Khấu trừ tiền cọc: Online = 30% đã đóng; Walk-in = 0đ (BR4)

@@ -2,7 +2,13 @@
    ACE HOTEL DESIGN SYSTEM - PRINT STYLESHEET (print.css)
    ========================================================================= */
 
+@page {
+  size: A4 portrait;
+  margin: 10mm 12mm;
+}
+
 @media print {
+  /* Ẩn toàn bộ thành phần điều hướng, nút bấm, header/footer web */
   .sidebar,
   .topbar,
   .navbar,
@@ -10,11 +16,24 @@
   .no-print,
   .btn,
   .flash-alert,
-  .theme-toggle-btn {
+  .theme-toggle-btn,
+  .modal-backdrop,
+  header,
+  nav {
     display: none !important;
   }
 
-  body,
+  html, body {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   .pms-main,
   .invoice-print-card {
     background: #FFFFFF !important;
@@ -26,15 +45,41 @@
     width: 100% !important;
   }
 
+  /* Định dạng Phiếu Thu Cọc A4 Độc Lập (Single-Page A4 Guarantee) */
+  .deposit-receipt-wrapper {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: auto !important;
+  }
+
+  .deposit-receipt-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .deposit-receipt-sheet * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   .table th {
-    background-color: #F1F5F9 !important;
-    color: #000000 !important;
+    background-color: #F8FAFC !important;
+    color: #0F172A !important;
     border-bottom: 2px solid #CBD5E1 !important;
   }
 
   .table td {
     border-bottom: 1px solid #E2E8F0 !important;
-    color: #000000 !important;
+    color: #334155 !important;
   }
 
   .badge-status {

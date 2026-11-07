@@ -10,11 +10,11 @@ import com.ace.hotel.exception.BusinessException;
 import com.ace.hotel.repository.BookingRepository;
 import com.ace.hotel.repository.CustomerRepository;
 import com.ace.hotel.repository.UserRepository;
+import com.ace.hotel.util.ValidationUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class CustomerService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Customer getOrCreateCustomerForUser(User user) {
+    Customer getOrCreateCustomerForUser(User user) {
         return customerRepository.findByUser_UserId(user.getUserId())
                 .orElseGet(() -> {
                     Customer c = new Customer();
@@ -124,12 +124,7 @@ public class CustomerService {
         }
 
         // Kiểm tra độ tuổi tối thiểu 18
-        if (dto.getDateOfBirth() != null) {
-            LocalDate minAdultDate = LocalDate.now().minusYears(18);
-            if (dto.getDateOfBirth().isAfter(minAdultDate)) {
-                throw new BusinessException("Quý khách phải từ đủ 18 tuổi trở lên.");
-            }
-        }
+        ValidationUtils.validateMinimumAge(dto.getDateOfBirth(), "Quý khách phải từ đủ 18 tuổi trở lên.");
 
         // Kiểm tra trùng lặp SĐT
         String trimmedPhone = dto.getPhone().trim();
@@ -181,15 +176,9 @@ public class CustomerService {
             throw new BusinessException("Mật khẩu mới và xác nhận mật khẩu không trùng khớp.");
         }
 
-        String pwd = dto.getNewPassword();
-        if (pwd.contains(" ")) {
-            throw new BusinessException("Mật khẩu mới không được chứa khoảng trắng (dấu cách).");
-        }
-        if (pwd.length() < 8 || !pwd.matches(".*[A-Z].*") || !pwd.matches(".*[0-9].*") || !pwd.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?~`].*")) {
-            throw new BusinessException("Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm ít nhất 1 chữ in hoa, 1 chữ số và 1 ký tự đặc biệt.");
-        }
+        ValidationUtils.validatePasswordStrength(dto.getNewPassword(), "Mật khẩu mới");
 
-        user.setPasswordHash(passwordEncoder.encode(pwd));
+        user.setPasswordHash(passwordEncoder.encode(dto.getNewPassword()));
         userRepository.save(user);
     }
 }

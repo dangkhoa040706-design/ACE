@@ -12,7 +12,6 @@ import com.ace.hotel.entity.enums.BookingStatus;
 import com.ace.hotel.entity.enums.Role;
 import com.ace.hotel.exception.BusinessException;
 import com.ace.hotel.exception.MessageConstants;
-import com.ace.hotel.repository.BookingRepository;
 import com.ace.hotel.repository.InvoiceRepository;
 import com.ace.hotel.repository.ServiceOrderRepository;
 import com.ace.hotel.repository.UserRepository;
@@ -36,7 +35,6 @@ import java.util.Map;
 @Controller
 public class CustomerPortalController {
 
-    private final BookingRepository bookingRepository;
     private final BookingService bookingService;
     private final CustomerService customerService;
     private final UserRepository userRepository;
@@ -44,14 +42,12 @@ public class CustomerPortalController {
     private final ServiceOrderRepository serviceOrderRepository;
     private final com.ace.hotel.service.PricingService pricingService;
 
-    public CustomerPortalController(BookingRepository bookingRepository,
-                                    BookingService bookingService,
+    public CustomerPortalController(BookingService bookingService,
                                     CustomerService customerService,
                                     UserRepository userRepository,
                                     InvoiceRepository invoiceRepository,
                                     ServiceOrderRepository serviceOrderRepository,
                                     com.ace.hotel.service.PricingService pricingService) {
-        this.bookingRepository = bookingRepository;
         this.bookingService = bookingService;
         this.customerService = customerService;
         this.userRepository = userRepository;
@@ -149,7 +145,7 @@ public class CustomerPortalController {
             Booking booking = bookingService.createOnlineBookingWithDeposit(request, currentUser);
             redirectAttributes.addFlashAttribute("successMessage",
                     String.format(MessageConstants.MSG_18, booking.getBookingCode()));
-            return "redirect:/customer/dashboard?newBooking=" + booking.getBookingCode();
+            return "redirect:/customer/bookings?newBooking=" + booking.getBookingCode();
         } catch (BusinessException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/booking/search?checkIn=" + request.getCheckInDate() +
@@ -176,17 +172,56 @@ public class CustomerPortalController {
                 dashboard.getCustomer().getEmail()
         );
 
+        Booking newBooking = null;
+        if (newBookingCode != null && !newBookingCode.isBlank()) {
+            newBooking = dashboard.getAllBookings().stream()
+                    .filter(b -> newBookingCode.equalsIgnoreCase(b.getBookingCode()))
+                    .findFirst()
+                    .orElse(null);
+        }
+
         model.addAttribute("dashboard", dashboard);
         model.addAttribute("profileDto", profileDto);
         model.addAttribute("bookings", dashboard.getAllBookings());
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("newBookingCode", newBookingCode);
+        model.addAttribute("newBooking", newBooking);
         model.addAttribute("activeTab", activeTab);
         model.addAttribute("defaultCheckIn", LocalDate.now());
         model.addAttribute("defaultCheckOut", LocalDate.now().plusDays(1));
-        model.addAttribute("pageTitle", "Cổng Hội Viên ACE Elite - Bàn Điều Khiển & Phiếu Đặt Phòng");
+        model.addAttribute("pageTitle", "Cổng Hội Viên ACE Elite - Bàn Điều Khiển & Phân Khu");
 
         return "customer/dashboard";
+    }
+
+    @GetMapping("/customer/bookings")
+    public String customerBookings(@RequestParam(value = "newBooking", required = false) String newBookingCode,
+                                  @RequestParam(value = "tab", required = false, defaultValue = "all") String activeTab,
+                                  Authentication authentication,
+                                  Model model) {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        CustomerDashboardDto dashboard = customerService.getCustomerDashboardData(currentUser);
+        Booking newBooking = null;
+        if (newBookingCode != null && !newBookingCode.isBlank()) {
+            newBooking = dashboard.getAllBookings().stream()
+                    .filter(b -> newBookingCode.equalsIgnoreCase(b.getBookingCode()))
+                    .findFirst()
+                    .orElse(null);
+        }
+
+        model.addAttribute("dashboard", dashboard);
+        model.addAttribute("bookings", dashboard.getAllBookings());
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("newBookingCode", newBookingCode);
+        model.addAttribute("newBooking", newBooking);
+        model.addAttribute("activeTab", activeTab);
+        model.addAttribute("pageTitle", "Đơn Đã Đặt & Sổ Thẻ Lưu Trú QR | ACE Hotel");
+
+        return "customer/bookings";
     }
 
     @PostMapping("/customer/profile/update")
@@ -223,6 +258,60 @@ public class CustomerPortalController {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
         return "redirect:/customer/dashboard?tab=password";
+    }
+
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    @GetMapping("/customer/bookings/{id}/deposit-receipt")
+    public String viewDepositReceipt(@PathVariable("id") Long id,
+                                    Authentication authentication,
+                                    Model model) {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        Booking booking = bookingService.getBookingById(id);
+
+        // Phân quyền đa lớp: Chủ sở hữu (theo user_id hoặc email/username) hoặc Lễ tân / Admin
+        boolean isOwner = false;
+        if (booking.getCustomer() != null) {
+            if (booking.getCustomer().getUser() != null && booking.getCustomer().getUser().getUserId() != null) {
+                isOwner = booking.getCustomer().getUser().getUserId().equals(currentUser.getUserId());
+            }
+            if (!isOwner && booking.getCustomer().getEmail() != null && currentUser.getUsername() != null) {
+                isOwner = booking.getCustomer().getEmail().equalsIgnoreCase(currentUser.getUsername());
+            }
+        }
+        boolean isStaffOrAdmin = currentUser.getRole() == Role.ADMIN || currentUser.getRole() == Role.RECEPTIONIST;
+        if (!isOwner && !isStaffOrAdmin) {
+            throw new BusinessException(MessageConstants.MSG_05);
+        }
+
+        // Tính toán bóc tách tài chính cọc 30%
+        long roomCharge = booking.getRoomCharge() != null ? booking.getRoomCharge() : 0L;
+        long earlyFee = booking.getEarlyCheckinFee() != null ? booking.getEarlyCheckinFee() : 0L;
+        long subtotal = roomCharge + earlyFee;
+        long svcAmount = pricingService.calculateSvc5Percent(subtotal);
+        long vatAmount = pricingService.calculateVat10Percent(subtotal, svcAmount);
+        long grandTotal = subtotal + svcAmount + vatAmount;
+        long depositAmount = booking.getDepositAmount() != null ? booking.getDepositAmount() : pricingService.calculateOnlineDeposit30Percent(grandTotal);
+        long remainingBalance = Math.max(0L, grandTotal - depositAmount);
+        long nights = Math.max(1L, booking.getNights());
+        long pricePerNight = roomCharge / nights;
+
+        model.addAttribute("booking", booking);
+        model.addAttribute("nights", nights);
+        model.addAttribute("pricePerNight", pricePerNight);
+        model.addAttribute("subtotal", subtotal);
+        model.addAttribute("svcAmount", svcAmount);
+        model.addAttribute("vatAmount", vatAmount);
+        model.addAttribute("grandTotal", grandTotal);
+        model.addAttribute("depositAmount", depositAmount);
+        model.addAttribute("remainingBalance", remainingBalance);
+        model.addAttribute("receiptCode", "DEP-" + booking.getBookingCode());
+        model.addAttribute("pageTitle", "Phiếu Thu Tiền Cọc #" + booking.getBookingCode() + " | ACE Hotel");
+
+        return "customer/deposit-receipt";
     }
 
     @GetMapping("/customer/invoices/{id}")
@@ -272,7 +361,7 @@ public class CustomerPortalController {
         } catch (BusinessException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
-        return "redirect:/customer/dashboard";
+        return "redirect:/customer/bookings";
     }
 
     @GetMapping(value = "/customer/bookings/{id}/folio-data", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -282,8 +371,10 @@ public class CustomerPortalController {
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Vui lòng đăng nhập"));
         }
-        Booking booking = bookingRepository.findById(id).orElse(null);
-        if (booking == null) {
+        Booking booking;
+        try {
+            booking = bookingService.getBookingById(id);
+        } catch (BusinessException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Không tìm thấy đơn đặt phòng"));
         }
         boolean isOwner = booking.getCustomer() != null &&
@@ -342,8 +433,7 @@ public class CustomerPortalController {
         if (currentUser == null) {
             return "redirect:/login";
         }
-        Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Không tìm thấy đơn đặt phòng ID: " + id));
+        Booking booking = bookingService.getBookingById(id);
         boolean isOwner = booking.getCustomer() != null &&
                           booking.getCustomer().getUser() != null &&
                           booking.getCustomer().getUser().getUserId().equals(currentUser.getUserId());
@@ -358,6 +448,6 @@ public class CustomerPortalController {
         String roomName = booking.getRoom() != null ? booking.getRoom().getRoomNumber() : booking.getBookingCode();
         redirectAttributes.addFlashAttribute("successMessage",
             "Đã gửi yêu cầu trả phòng cho phòng " + roomName + " đến Quầy Lễ Tân. Lễ tân đang chuẩn bị sẵn hóa đơn để tiếp đón Quý khách tại quầy.");
-        return "redirect:/customer/dashboard";
+        return "redirect:/customer/bookings";
     }
 }

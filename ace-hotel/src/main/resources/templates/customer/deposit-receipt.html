@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${pageTitle}">Phiếu Xác Nhận Đặt Phòng &amp; Thu Cọc 30% | ACE Hotel</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" th:href="@{/images/2_logo-ACE_khong-nen.png}">
+  
+  <!-- Core Design Tokens & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/print.css}">
+
+  <style>
+    :root {
+      --receipt-bg: #FFFFFF;
+      --receipt-text: #0F172A;
+      --receipt-muted: #64748B;
+      --receipt-border: #E2E8F0;
+      --receipt-gold: #B45309;
+      --receipt-gold-light: #FFFBEB;
+      --receipt-gold-border: #FDE68A;
+      --receipt-emerald: #047857;
+      --receipt-emerald-light: #ECFDF5;
+    }
+
+    body {
+      background-color: #0B0F17;
+      color: #F8FAFC;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Screen Action Bar (Hidden on Print) */
+    .receipt-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(229, 192, 123, 0.2);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.15rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.875rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-back {
+      background: rgba(255, 255, 255, 0.08);
+      color: #E2E8F0;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-back:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+    }
+
+    .btn-print-download {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #0B0F17;
+      border: none;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+    }
+
+    .btn-print-download:hover {
+      background: linear-gradient(135deg, #FBBF24, #F59E0B);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(217, 119, 6, 0.45);
+    }
+
+    /* Receipt Canvas Area */
+    .receipt-page-container {
+      padding: 2rem 1rem 3.5rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Standard A4 Dimensions: 210mm x 297mm */
+    .deposit-receipt-sheet {
+      background: var(--receipt-bg);
+      color: var(--receipt-text);
+      width: 100%;
+      max-width: 820px;
+      padding: 2.25rem 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    /* Watermark background */
+    .deposit-receipt-sheet::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 380px;
+      height: 380px;
+      background-image: url('/images/2_logo-ACE_khong-nen.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .receipt-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header styling */
+    .receipt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid var(--receipt-gold);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .brand-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.55rem;
+      font-weight: 900;
+      color: #0F172A;
+      margin: 0;
+      letter-spacing: 0.5px;
+      line-height: 1.15;
+    }
+
+    .brand-tagline {
+      font-size: 0.775rem;
+      color: var(--receipt-gold);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    .brand-meta {
+      font-size: 0.775rem;
+      color: var(--receipt-muted);
+      margin-top: 0.4rem;
+      line-height: 1.45;
+    }
+
+    .receipt-title-block {
+      text-align: right;
+    }
+
+    .receipt-main-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #0F172A;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .receipt-subtitle {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--receipt-gold);
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+    }
+
+    .receipt-code-badge {
+      display: inline-block;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #92400E;
+      background: var(--receipt-gold-light);
+      border: 1px solid var(--receipt-gold-border);
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      margin-top: 0.45rem;
+      letter-spacing: 1px;
+    }
+
+    .paid-stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--receipt-emerald-light);
+      border: 1.5px solid var(--receipt-emerald);
+      color: var(--receipt-emerald);
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.725rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      margin-top: 0.35rem;
+    }
+
+    /* Metadata 2-Column Grid */
+    .metadata-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .meta-card {
+      background: #F8FAFC;
+      border: 1px solid var(--receipt-border);
+      border-radius: 8px;
+      padding: 0.95rem 1.15rem;
+      font-size: 0.825rem;
+      line-height: 1.5;
+    }
+
+    .meta-card-title {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--receipt-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 0.3rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.3rem;
+    }
+
+    .meta-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .meta-label {
+      color: var(--receipt-muted);
+      font-weight: 500;
+    }
+
+    .meta-value {
+      font-weight: 700;
+      color: #0F172A;
+      text-align: right;
+    }
+
+    /* Financial Table */
+    .receipt-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.15rem;
+      font-size: 0.825rem;
+    }
+
+    .receipt-table th {
+      background: #F1F5F9;
+      color: #334155;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.5px;
+      padding: 0.6rem 0.85rem;
+      border-top: 1px solid var(--receipt-border);
+      border-bottom: 2px solid var(--receipt-border);
+      text-align: left;
+    }
+
+    .receipt-table td {
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid var(--receipt-border);
+      color: #1E293B;
+    }
+
+    /* Financial Summary Breakdown */
+    .financial-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .qr-contactless-box {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #F8FAFC;
+      border: 1px dashed #CBD5E1;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+    }
+
+    .qr-container {
+      background: #FFFFFF;
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .qr-guide-title {
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: #0F172A;
+      margin-bottom: 0.2rem;
+    }
+
+    .qr-guide-desc {
+      font-size: 0.725rem;
+      color: var(--receipt-muted);
+      line-height: 1.4;
+    }
+
+    .totals-box {
+      width: 340px;
+      background: #FAFAFA;
+      border: 1px solid var(--receipt-border);
+      border-radius: 8px;
+      padding: 0.85rem 1.15rem;
+      font-size: 0.825rem;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.25rem 0;
+      color: #334155;
+    }
+
+    .total-row.highlight-grand {
+      border-top: 1px solid #E2E8F0;
+      border-bottom: 1px solid #E2E8F0;
+      padding: 0.4rem 0;
+      margin: 0.3rem 0;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    .total-row.deposit-paid {
+      color: var(--receipt-emerald);
+      font-weight: 800;
+      font-size: 0.95rem;
+      background: var(--receipt-emerald-light);
+      margin: 0.2rem -0.5rem;
+      padding: 0.4rem 0.5rem;
+      border-radius: 6px;
+    }
+
+    .total-row.balance-due {
+      border-top: 1.5px solid var(--receipt-border);
+      padding-top: 0.4rem;
+      margin-top: 0.3rem;
+      font-weight: 800;
+      font-size: 0.875rem;
+      color: #0F172A;
+    }
+
+    /* Policy & Terms Strip */
+    .policy-strip {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 6px;
+      padding: 0.6rem 0.85rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.725rem;
+      color: #92400E;
+      line-height: 1.45;
+    }
+
+    .policy-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.35rem;
+      flex: 1;
+    }
+
+    /* Signatures Section */
+    .signatures-block {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.75rem;
+      border-top: 1px solid #E2E8F0;
+      text-align: center;
+    }
+
+    .signature-col {
+      width: 220px;
+    }
+
+    .sign-title {
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: #0F172A;
+    }
+
+    .sign-subtitle {
+      font-size: 0.7rem;
+      color: var(--receipt-muted);
+      margin-top: 0.1rem;
+    }
+
+    .sign-space {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .digital-seal {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.8rem;
+      font-style: italic;
+      color: #B45309;
+      border: 1px dashed #D97706;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .sign-name {
+      font-weight: 700;
+      font-size: 0.825rem;
+      color: #0F172A;
+      border-top: 1px solid #E2E8F0;
+      padding-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Action Bar for Web View (Hidden on Print & PDF) -->
+  <header class="receipt-topbar no-print">
+    <a th:href="@{/customer/dashboard}" class="btn-action btn-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      <span>Quay về Cổng Hội Viên</span>
+    </a>
+
+    <div style="font-size: 0.85rem; color: #94A3B8; text-align: center;">
+      <span style="color: #FDBF2D; font-weight: 700;">★ Bản Gốc Hợp Chuẩn 5 Sao</span> — Khổ A4 Portrait tiêu chuẩn
+    </div>
+
+    <button type="button" class="btn-action btn-print-download" onclick="window.print()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      <span>In Phiếu / Tải PDF (A4)</span>
+    </button>
+  </header>
+
+  <!-- Document Sheet Area -->
+  <main class="receipt-page-container">
+    <article class="deposit-receipt-sheet">
+      <div class="receipt-content">
+
+        <!-- 1. Header: Brand & Voucher Title -->
+        <header class="receipt-header">
+          <div style="display: flex; align-items: flex-start; gap: 1rem;">
+            <img th:src="@{/images/2_logo-ACE_khong-nen.png}" alt="ACE Hotel Flagship" style="height: 56px; width: auto; object-fit: contain;">
+            <div>
+              <h1 class="brand-title">ACE HOTEL FLAGSHIP</h1>
+              <div class="brand-tagline">5★ Luxury, Privacy &amp; Exceptional Hospitality</div>
+              <div class="brand-meta">
+                19 Nguyễn Hữu Thọ, P. Tân Hưng, Quận 7, TP. Hồ Chí Minh<br>
+                Hotline 24/7: <strong>0903 723 342</strong> • Email: <strong>dangkhoa040706@gmail.com</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="receipt-title-block">
+            <h2 class="receipt-main-title">BIÊN LAI THU CỌC 30%</h2>
+            <div class="receipt-subtitle">BOOKING CONFIRMATION &amp; DEPOSIT RECEIPT</div>
+            <div>
+              <span class="receipt-code-badge" th:text="'#' + ${receiptCode}">#DEP-BK-2401</span>
+            </div>
+            <div>
+              <span class="paid-stamp">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>ĐÃ THANH TOÁN CỌC (PAID)</span>
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- 2. Metadata Grid: Guest & Stay Details -->
+        <section class="metadata-grid">
+          <!-- Cột 1: Thông tin khách hàng -->
+          <div class="meta-card">
+            <div class="meta-card-title">
+              <span>Thông Tin Khách Hàng (Guest Profile)</span>
+              <span style="font-weight: 700; color: #B45309;">HỘI VIÊN ELITE</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Họ và tên:</span>
+              <span class="meta-value" th:text="${booking.customer != null ? booking.customer.fullName : 'Quý khách'}">Nguyễn Minh Anh</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Số điện thoại:</span>
+              <span class="meta-value" th:text="${booking.customer != null ? booking.customer.phone : '—'}">0901234567</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Số CCCD / Passport:</span>
+              <span class="meta-value" th:text="${booking.customer != null && booking.customer.idNumber != null ? booking.customer.idNumber : 'Xuất trình tại quầy'}">079198001122</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Email liên hệ:</span>
+              <span class="meta-value" th:text="${booking.customer != null && booking.customer.email != null ? booking.customer.email : 'contact@acehotel.vn'}">guest@acehotel.vn</span>
+            </div>
+          </div>
+
+          <!-- Cột 2: Thông tin kỳ nghỉ -->
+          <div class="meta-card">
+            <div class="meta-card-title">
+              <span>Chi Tiết Đặt Phòng (Reservation Details)</span>
+              <span style="font-weight: 700; color: #047857;">MÃ ĐƠN: <span th:text="${booking.bookingCode}">BK-2401</span></span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Hạng phòng:</span>
+              <span class="meta-value" style="color: #B45309;" th:text="${booking.roomType.name}">Deluxe King Suite</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Phòng vật lý:</span>
+              <span class="meta-value" th:text="${booking.room != null ? ('Phòng ' + booking.room.roomNumber + ' (Tầng ' + booking.room.floor + ')') : 'Đã khóa giữ chỗ 100%'}">Phòng 301 (Tầng 3)</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Nhận phòng (Check-in):</span>
+              <span class="meta-value" th:text="${#temporals.format(booking.checkInDate, 'dd/MM/yyyy') + ' • Từ 14:00'}">04/11/2026 • Từ 14:00</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Trả phòng (Check-out):</span>
+              <span class="meta-value" th:text="${#temporals.format(booking.checkOutDate, 'dd/MM/yyyy') + ' • Trước 12:00'}">06/11/2026 • Trước 12:00</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Thời lượng &amp; Số khách:</span>
+              <span class="meta-value" th:text="${nights + ' đêm • ' + (booking.guestCount != null ? booking.guestCount : 2) + ' khách'}">2 đêm • 2 khách</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Financial Breakdown Table -->
+        <table class="receipt-table">
+          <thead>
+            <tr>
+              <th style="width: 45px; text-align: center;">STT</th>
+              <th>Mô Tả Khoản Mục (Line Items)</th>
+              <th style="text-align: center; width: 85px;">Thời Lượng</th>
+              <th style="text-align: right; width: 130px;">Đơn Giá Niêm Yết</th>
+              <th style="text-align: right; width: 140px;">Thành Tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: 700;">1</td>
+              <td>
+                <div style="font-weight: 700; color: #0F172A;" th:text="'Tiền phòng ' + ${booking.roomType.name}">Tiền phòng Deluxe</div>
+                <div style="font-size: 0.725rem; color: var(--receipt-muted);">Biểu giá động chuẩn 5 sao (Đã bao gồm tiện ích thượng lưu, hồ bơi &amp; gym)</div>
+              </td>
+              <td style="text-align: center; font-weight: 600;" th:text="${nights + ' đêm'}">2 đêm</td>
+              <td style="text-align: right; color: var(--receipt-muted);" th:text="${#numbers.formatDecimal(pricePerNight, 0, 'COMMA', 0, 'POINT') + ' đ'}">1,000,000 đ</td>
+              <td style="text-align: right; font-weight: 700;" th:text="${#numbers.formatDecimal(booking.roomCharge, 0, 'COMMA', 0, 'POINT') + ' đ'}">2,000,000 đ</td>
+            </tr>
+            <tr th:if="${booking.earlyCheckinFee != null && booking.earlyCheckinFee > 0}">
+              <td style="text-align: center; font-weight: 700;">2</td>
+              <td>
+                <div style="font-weight: 700; color: #0F172A;">Phụ thu nhận phòng sớm (Early Check-in)</div>
+                <div style="font-size: 0.725rem; color: var(--receipt-muted);">Ưu tiên chuẩn bị phòng sớm theo yêu cầu của Quý khách</div>
+              </td>
+              <td style="text-align: center; font-weight: 600;">1 lần</td>
+              <td style="text-align: right; color: var(--receipt-muted);" th:text="${#numbers.formatDecimal(booking.earlyCheckinFee, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+              <td style="text-align: right; font-weight: 700;" th:text="${#numbers.formatDecimal(booking.earlyCheckinFee, 0, 'COMMA', 0, 'POINT') + ' đ'}"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- 4. QR Contactless Check-in Box & Grand Totals -->
+        <section class="financial-summary">
+          <!-- Khối QR Check-in Không Chạm 3s -->
+          <div class="qr-contactless-box">
+            <div class="qr-container">
+              <div class="ace-qr-code"
+                   th:attr="data-booking-qr=${booking.bookingCode},data-booking-code=${booking.bookingCode}"
+                   data-qr-size="110"></div>
+            </div>
+            <div>
+              <div class="qr-guide-title">
+                <span>MÃ QR NHẬN PHÒNG KHÔNG CHẠM (3 GIÂY)</span>
+              </div>
+              <div class="qr-guide-desc">
+                Xuất trình mã QR này trực tiếp từ điện thoại hoặc bản in khi đến quầy Lễ tân để nhận thẻ phòng tức thì trong 3 giây.
+              </div>
+              <div style="margin-top: 0.35rem; font-size: 0.7rem; font-family: 'Courier New', monospace; font-weight: 700; color: #B45309;">
+                MÃ ĐẶT PHÒNG: <span th:text="${booking.bookingCode}">BK-2401</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bảng tính tài chính cọc 30% -->
+          <div class="totals-box">
+            <div class="total-row">
+              <span>Tổng tiền phòng gốc:</span>
+              <span style="font-weight: 600;" th:text="${#numbers.formatDecimal(subtotal, 0, 'COMMA', 0, 'POINT') + ' đ'}">2,000,000 đ</span>
+            </div>
+            <div class="total-row" style="color: var(--receipt-muted);">
+              <span>Phí dịch vụ (SVC 5%):</span>
+              <span th:text="${#numbers.formatDecimal(svcAmount, 0, 'COMMA', 0, 'POINT') + ' đ'}">100,000 đ</span>
+            </div>
+            <div class="total-row" style="color: var(--receipt-muted);">
+              <span>Thuế GTGT (VAT 10%):</span>
+              <span th:text="${#numbers.formatDecimal(vatAmount, 0, 'COMMA', 0, 'POINT') + ' đ'}">210,000 đ</span>
+            </div>
+            <div class="total-row highlight-grand">
+              <span>Tổng giá trị gói phòng (Gồm phí &amp; thuế):</span>
+              <span style="font-size: 0.95rem; color: #B45309;" th:text="${#numbers.formatDecimal(grandTotal, 0, 'COMMA', 0, 'POINT') + ' đ'}">2,310,000 đ</span>
+            </div>
+            <div class="total-row deposit-paid">
+              <span>TIỀN CỌC ĐÃ THANH TOÁN (30%):</span>
+              <span th:text="${#numbers.formatDecimal(depositAmount, 0, 'COMMA', 0, 'POINT') + ' đ'}">693,000 đ</span>
+            </div>
+            <div class="total-row balance-due">
+              <span>Dự kiến thanh toán khi trả phòng:</span>
+              <span style="color: #0F172A;" th:text="${#numbers.formatDecimal(remainingBalance, 0, 'COMMA', 0, 'POINT') + ' đ'}">1,617,000 đ</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. 5-Star Commitment & Policies Strip -->
+        <section class="policy-strip">
+          <div class="policy-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <div>
+              <strong>Cam kết 0% Overbooking:</strong> Tiền cọc bảo chứng giữ phòng thực tế 100%. Phòng luôn sẵn sàng đón Quý khách.
+            </div>
+          </div>
+          <div class="policy-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink: 0; margin-top: 1px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+            <div>
+              <strong>Chính sách hủy linh hoạt:</strong> Miễn phí hủy đơn giữ chỗ trước 48 giờ kể từ giờ nhận phòng tiêu chuẩn.
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Signatures & Digital Seal Block -->
+        <footer class="signatures-block">
+          <div class="signature-col">
+            <div class="sign-title">Khách Hàng (Guest)</div>
+            <div class="sign-subtitle">Xác nhận thông tin đặt phòng</div>
+            <div class="sign-space">
+              <span style="font-size: 0.75rem; color: #94A3B8; font-style: italic;">(Ký điện tử &amp; xác nhận trực tuyến)</span>
+            </div>
+            <div class="sign-name" th:text="${booking.customer != null ? booking.customer.fullName : 'Quý khách'}">Nguyễn Minh Anh</div>
+          </div>
+
+          <div class="signature-col">
+            <div class="sign-title">ACE HOTEL FLAGSHIP</div>
+            <div class="sign-subtitle">Ban Giám Đốc Vận Hành &amp; Lễ Tân</div>
+            <div class="sign-space">
+              <span class="digital-seal">ACE HOTEL VERIFIED • 5★</span>
+            </div>
+            <div class="sign-name">Ban Quản Lý Khách Sạn</div>
+          </div>
+        </footer>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- Offline Local QR Code Generator Engine -->
+  <script th:src="@{/js/qr-generator.js}"></script>
+
+</body>
+</html>

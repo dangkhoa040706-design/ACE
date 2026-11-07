@@ -16,15 +16,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     boolean existsByBookingCode(String bookingCode);
 
-    boolean existsByBookingCodeIgnoreCase(String bookingCode);
-
     List<Booking> findByCustomer_CustomerIdOrderByCreatedAtDesc(Long customerId);
 
     List<Booking> findByCustomer_User_UserIdOrderByCreatedAtDesc(Long userId);
 
     List<Booking> findByStatusOrderByCreatedAtDesc(BookingStatus status);
-
-    List<Booking> findAllByOrderByCreatedAtDesc();
 
     List<Booking> findTop5ByOrderByCreatedAtDesc();
 
@@ -49,6 +45,4 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     boolean existsByRoom_RoomId(Long roomId);
 
     boolean existsByRoomType_RoomTypeId(Long roomTypeId);
-
-    Optional<Booking> findFirstByRoom_RoomIdAndStatus(Long roomId, BookingStatus status);
 }

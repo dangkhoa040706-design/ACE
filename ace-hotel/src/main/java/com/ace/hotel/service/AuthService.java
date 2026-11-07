@@ -8,6 +8,7 @@ import com.ace.hotel.exception.BusinessException;
 import com.ace.hotel.exception.MessageConstants;
 import com.ace.hotel.repository.CustomerRepository;
 import com.ace.hotel.repository.UserRepository;
+import com.ace.hotel.util.ValidationUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,21 +36,10 @@ public class AuthService {
         }
 
         // 1b. Kiểm tra 4 tiêu chí bảo mật mật khẩu (>=8 ký tự, 1 chữ hoa, 1 số, 1 ký tự đặc biệt, không chứa dấu cách)
-        String pwd = form.getPassword();
-        if (pwd.contains(" ")) {
-            throw new BusinessException("Mật khẩu không được chứa khoảng trắng (dấu cách).");
-        }
-        if (pwd.length() < 8 || !pwd.matches(".*[A-Z].*") || !pwd.matches(".*[0-9].*") || !pwd.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?~`].*")) {
-            throw new BusinessException("Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất 1 chữ in hoa, 1 chữ số và 1 ký tự đặc biệt (không tính dấu cách).");
-        }
+        ValidationUtils.validatePasswordStrength(form.getPassword(), "Mật khẩu");
 
         // 2. Ràng buộc độ tuổi tối thiểu từ đủ 18 tuổi
-        if (form.getDateOfBirth() != null) {
-            java.time.LocalDate minAdultDate = java.time.LocalDate.now().minusYears(18);
-            if (form.getDateOfBirth().isAfter(minAdultDate)) {
-                throw new BusinessException("Quý khách phải từ đủ 18 tuổi trở lên để đăng ký tài khoản thành viên.");
-            }
-        }
+        ValidationUtils.validateMinimumAge(form.getDateOfBirth(), "Quý khách phải từ đủ 18 tuổi trở lên để đăng ký tài khoản thành viên.");
 
         // 3. Kiểm tra tính duy nhất của Tên đăng nhập
         String username = form.getUsername().trim();

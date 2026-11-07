@@ -1721,17 +1721,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 :root[data-theme="light"] .exec-alert-strip {
-  background: #FEF3C7 !important;
-  border: 1px solid #FCD34D !important;
-  color: #92400E !important;
-}
-  margin-top: 0.5rem;
-}
-
-:root[data-theme="light"] .exec-alert-strip {
-  background: #FFFBEB;
+  background: #FEF3C7;
   border-color: #FCD34D;
-  color: #B45309;
+  color: #92400E;
+  margin-top: 0.5rem;
 }
 
 .exec-alert-strip.is-all-clean {
@@ -2113,23 +2106,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   max-height: 250px;
   overflow-y: auto;
   padding: 0.35rem 0;
-}
-
-.ace-select-options-list::-webkit-scrollbar {
-  width: 5px;
-}
-
-.ace-select-options-list::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.ace-select-options-list::-webkit-scrollbar-thumb {
-  background: rgba(253, 191, 45, 0.35);
-  border-radius: 4px;
-}
-
-.ace-select-options-list::-webkit-scrollbar-thumb:hover {
-  background: rgba(253, 191, 45, 0.7);
 }
 
 /* --- Option Items --- */
@@ -2974,12 +2950,4 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 :root[data-theme="light"] .pms-mobile-drawer::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #D97706 0%, #B45309 100%);
 }
-
-
-
-
-
-
-
-
 

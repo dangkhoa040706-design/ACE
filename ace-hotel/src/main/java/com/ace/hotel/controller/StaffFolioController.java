@@ -4,7 +4,6 @@ import com.ace.hotel.entity.Booking;
 import com.ace.hotel.entity.ServiceItem;
 import com.ace.hotel.entity.ServiceOrder;
 import com.ace.hotel.entity.User;
-import com.ace.hotel.entity.enums.BookingStatus;
 import com.ace.hotel.entity.enums.ServiceCategory;
 import com.ace.hotel.exception.BusinessException;
 import com.ace.hotel.exception.MessageConstants;
@@ -51,8 +50,7 @@ public class StaffFolioController {
         return userRepository.findByUsername(userDetails.getUsername()).orElse(null);
     }
 
-    @GetMapping("/bookings/{id}/folio")
-    public String showFolio(@PathVariable("id") Long id, Model model) {
+    private void populateFolioModel(Long id, Model model) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Không tìm thấy đơn đặt phòng ID: " + id));
 
@@ -65,25 +63,17 @@ public class StaffFolioController {
         model.addAttribute("serviceChargeTotal", serviceChargeTotal);
         model.addAttribute("services", services);
         model.addAttribute("categories", ServiceCategory.values());
+    }
 
+    @GetMapping("/bookings/{id}/folio")
+    public String showFolio(@PathVariable("id") Long id, Model model) {
+        populateFolioModel(id, model);
         return "staff/folio";
     }
 
     @GetMapping("/bookings/{id}/folio-modal")
     public String showFolioModal(@PathVariable("id") Long id, Model model) {
-        Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Không tìm thấy đơn đặt phòng ID: " + id));
-
-        List<ServiceOrder> serviceOrders = serviceOrderRepository.findByBooking_BookingIdOrderByOrderedAtDesc(id);
-        long serviceChargeTotal = serviceOrders.stream().mapToLong(ServiceOrder::getLineTotal).sum();
-        List<ServiceItem> services = serviceItemRepository.findAllByOrderByCategoryAscNameAsc();
-
-        model.addAttribute("booking", booking);
-        model.addAttribute("serviceOrders", serviceOrders);
-        model.addAttribute("serviceChargeTotal", serviceChargeTotal);
-        model.addAttribute("services", services);
-        model.addAttribute("categories", ServiceCategory.values());
-
+        populateFolioModel(id, model);
         return "staff/folio-modal :: folioModal";
     }
 

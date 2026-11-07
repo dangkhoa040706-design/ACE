@@ -31,6 +31,14 @@ public class GlobalExceptionHandler {
         return "error/500";
     }
 
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public String handleNoResourceFoundException(org.springframework.web.servlet.resource.NoResourceFoundException ex, Model model) {
+        log.warn("Resource/Route not found: {}", ex.getResourcePath());
+        model.addAttribute("errorMessage", "Không tìm thấy trang hoặc tài nguyên yêu cầu. Vui lòng kiểm tra lại đường dẫn.");
+        model.addAttribute("pageTitle", "404 - Không Tìm Thấy");
+        return "error/404";
+    }
+
     @ExceptionHandler(Exception.class)
     public String handleGeneralException(Exception ex, HttpServletResponse response, Model model) {
         if (response.isCommitted()) {

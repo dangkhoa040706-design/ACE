@@ -4,7 +4,6 @@ import com.ace.hotel.entity.Room;
 import com.ace.hotel.entity.RoomType;
 import com.ace.hotel.entity.ServiceItem;
 import com.ace.hotel.entity.enums.RoomStatus;
-import com.ace.hotel.entity.enums.ServiceCategory;
 import com.ace.hotel.exception.BusinessException;
 import com.ace.hotel.exception.MessageConstants;
 import com.ace.hotel.repository.BookingRepository;

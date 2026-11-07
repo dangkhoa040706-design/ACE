@@ -33,8 +33,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     boolean existsByRoomType_RoomTypeId(Long roomTypeId);
 
-    boolean existsByRoomNumberIgnoreCase(String roomNumber);
-
     Optional<Room> findByRoomNumberIgnoreCase(String roomNumber);
 
     List<Room> findAllByOrderByRoomNumberAsc();
@@ -42,6 +40,4 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     List<Room> findAllByOrderByFloorAscRoomNumberAsc();
 
     List<Room> findByStatusOrderByRoomNumberAsc(RoomStatus status);
-
-    List<Room> findByFloorOrderByRoomNumberAsc(Integer floor);
 }
