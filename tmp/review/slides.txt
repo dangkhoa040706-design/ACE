@@ -1,0 +1,182 @@
+
+=== ppt/slides/slide1.xml ===
+HỆ THỐNG QUẢN LÝ KHÁCH SẠN
+Phân tích và thiết kế yêu cầu
+Hoàng Thái Đăng Khoa - 52400017
+Đinh Thanh Phong - 52400027
+Nguyễn Huy Hoàng - 52400116
+Lê Tuấn Kiệt - 52400133
+GV: Ths. Phạm Thị Kim Điệp 
+
+=== ppt/slides/slide2.xml ===
+Bảng phân công công việc
+
+=== ppt/slides/slide3.xml ===
+Lộ trình phân tích và thiết kế
+Initiation & Business Modeling
+Khảo sát As-Is Activity
+5 điểm nghẽnthất thoát
+Feasibility 3 chiều
+Event Table 6 cột
+Dẫn xuất 3 Actors & 7 UC
+Discoverry &   Analysis
+7 BR · 18 FR · 9 NFR
+Ưutiên hóaMoSCoW
+Use Case & Đặc tả 2 cột
+Activity & State kép
+Class miền & Black-Box
+Design    Discipline
+Kiếntrúc 4 tầng Package
+4 Stereotypes chuẩnL09
+Sequence đa tầng
+ERD 8 bảng / 73 cột3NF
+10 Wireframe & RBAC
+Construction &
+Live Demo
+Java 21 + Spring Boot 3.5
+H2 File DB bền vững
+Patterns: MVC, Facade,
+Singleton (L11)
+Live Demo 5 bướcthật
+Final V&V &
+Closeout
+4 cấp kiểmthử (L11)
+9/9 SmokeTest + 30/30 TC
+Ma trận RTM 100%
+Parallel Deployment 2 tuần
+Phâncông & Mởrộng
+
+=== ppt/slides/slide4.xml ===
+Hiện Trạng As - Is ⟶ Đánh giá khả thi
+Initiation 
+2
+3
+4
+5
+
+=== ppt/slides/slide5.xml ===
+KHÁCH HÀNG (CUSTOMER)
+UC01 · Đăng ký & Đăng nhập
+UC03 · Đặt phòng & Cọc 30%
+Quản lý đơn & Hủy 48 giờ
+Hệ thống ACE HOTEL
+(3 vai trò - 7 chức năng)
+Initiation 
+2
+3
+4
+5
+NHÂN VIÊN      LỄ TÂN (RECEPTIONIST)
+UC04 · Check-in QR & Walk-in
+UC06 · Sổ cái Room Folio
+UC05 · Check-out & Dọn phòng
+Tra cứu bảng giá (Chỉ đọc)
+QUẢN TRỊ VIÊN (ADMIN)
+UC02 · Quản trị Danh mục
+UC07 · Báo cáo Doanh thu & USALI
+KPI Chuẩn ngành & Xuất PDF
+
+=== ppt/slides/slide6.xml ===
+Hành trình khép kín 
+1 lượt lưu trú
+(End-to-End Flow)
+Initiation 
+2
+3
+4
+5
+
+=== ppt/slides/slide7.xml ===
+Hệ Phân rã sự kiện
+⟶ 7 Use Case 
+2.Discovery
+1
+3
+4
+5
+
+=== ppt/slides/slide8.xml ===
+Đặc tả yêu cầu
+⟶ 7 BR + 18 FR (MoSCoW) + 9 NFR 
+2.Discovery
+1
+3
+4
+5
+
+=== ppt/slides/slide9.xml ===
+Đặc Biểu đồ Use Case Tổng Quát
+2.Discovery
+1
+3
+4
+5
+
+=== ppt/slides/slide10.xml ===
+Mô hình hành vi: 
+State Machine Diagram
+2.Discovery
+1
+3
+4
+5
+
+=== ppt/slides/slide11.xml ===
+Phân tích cấu trúc & Kiến trúc 
+State Machine Diagram
+3.Design
+1
+2
+4
+5
+
+=== ppt/slides/slide12.xml ===
+Thiết kế tương tác đa tầng 
+3.Design
+1
+2
+4
+5
+
+=== ppt/slides/slide13.xml ===
+Thiết kế Cơ sở dữ liệu quan hệ
+ERD 8 Bảng + 73 Cột + 3NF
+3.Design
+1
+2
+4
+5
+
+=== ppt/slides/slide14.xml ===
+Thiết kế Giao Diện (10 WF) 
+& Phân Quyền RBAC
+3.Design
+1
+2
+4
+5
+
+=== ppt/slides/slide15.xml ===
+Cài Đặt Java Spring Boot 
+Sản phẩm chạy thật
+4.Construction
+1
+2
+3
+5
+
+=== ppt/slides/slide16.xml ===
+Cài Kịch bản Live Demo trực tiếp 
+4.Construction
+1
+2
+3
+5
+
+=== ppt/slides/slide17.xml ===
+Thank you so much
+Hoàng Thái Đăng Khoa - 52400017
+Đinh Thanh Phong - 52400027
+Nguyễn Huy Hoàng - 52400116
+Lê Tuấn Kiệt - 52400133
+Phân tích và thiết kế yêu cầu

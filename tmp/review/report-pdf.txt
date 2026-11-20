@@ -1,0 +1,5788 @@
+
+=== PDF PAGE 1 ===
+i 
+ 
+  TỔNG LIÊN ĐOÀN LAO ĐỘNG VIỆT NAM 
+TRƯỜNG ĐẠI HỌC TÔN ĐỨC THẮNG 
+KHOA CÔNG NGHỆ THÔNG TIN 
+ 
+ 
+ 
+ 
+BÁO CÁO ĐỒ ÁN CUỐI KỲ 
+MÔN PHÂN TÍCH THIẾT KẾ VÀ YÊU CẦU 
+ 
+HỆ THỐNG QUẢN LÝ KHÁCH SẠN 
+(ĐẶT PHÒNG, CHECK-IN/CHECK-
+OUT, DỊCH VỤ ĐI KÈM) 
+ 
+Người hướng dẫn: ThS. Phạm Thị Kim Điệp 
+Người thực hiện:   Hoàng Thái Đăng Khoa – 52400017 
+Đinh Thanh Phong – 52400027 
+Nguyễn Huy Hoàng – 52400116 
+Lê Tuấn Kiệt – 52400133 
+Nhóm: 13 
+Lớp: 502050 
+Khoá: 28 
+ 
+ 
+ 
+ 
+THÀNH PHỐ HỒ CHÍ MINH, NĂM 2026 
+ 
+
+=== PDF PAGE 2 ===
+ii 
+ 
+TỔNG LIÊN ĐOÀN LAO ĐỘNG VIỆT NAM 
+TRƯỜNG ĐẠI HỌC TÔN ĐỨC THẮNG 
+KHOA CÔNG NGHỆ THÔNG TIN 
+ 
+ 
+ 
+ 
+BÁO CÁO ĐỒ ÁN CUỐI KỲ 
+MÔN PHÂN TÍCH THIẾT KẾ VÀ YÊU CẦU 
+ 
+HỆ THỐNG QUẢN LÝ KHÁCH SẠN 
+(ĐẶT PHÒNG, CHECK-IN/CHECK-
+OUT, DỊCH VỤ ĐI KÈM) 
+ 
+Người hướng dẫn: ThS. Phạm Thị Kim Điệp 
+Người thực hiện:   Hoàng Thái Đăng Khoa – 52400017 
+Đinh Thanh Phong – 52400027 
+Nguyễn Huy Hoàng – 52400116 
+Lê Tuấn Kiệt – 52400133 
+Nhóm: 13 
+Lớp: 502050 
+Khoá: 28 
+ 
+ 
+ 
+ 
+THÀNH PHỐ HỒ CHÍ MINH, NĂM 2026 
+ 
+
+=== PDF PAGE 3 ===
+iii 
+ 
+LỜI CẢM ƠN 
+ 
+Lời đầu tiên, chúng em xin gửi lời cảm ơn chân thành và sâu sắc đến Cô 
+ThS. Phạm Thị Kim Điệp. Trong quá trình tìm hiểu và học tập môn Phân tích 
+thiết kế và yêu cầu, chúng em đã nhận được sự hướng dẫn rất tận tình của cô. 
+Qua những bài giảng của cô đã giúp chúng em hiểu và tiếp thu được nhiều kiến 
+thức cũng như nắm rõ bài học. Từ đó có cơ sở để hoàn thành được bài báo cáo 
+đồ án cuối  kỳ của môn học. Tuy nhiên, chúng em vẫn còn những hạn chế nhất 
+định về mặt kiến thức. Do đó, không tránh khỏi những thiếu sót trong bài báo 
+cáo này. Mong cô xem và có những góp ý tích cực để bài báo cáo của chúng 
+em được hoàn thiện hơn. Kính chúc cô luôn khỏe mạnh, hạnh phúc và thành 
+công hơn nữa trong sự nghiệp giảng dạy.  
+ 
+TP. Hồ Chí Minh, ngày 20 tháng 11 năm 2026      
+Tác giả 
+HOÀNG THÁI ĐĂNG KHOA 
+ĐINH THANH PHONG 
+NGUYỄN HUY HOÀNG 
+LÊ TUẤN KIỆT
+
+=== PDF PAGE 4 ===
+iv 
+ 
+CÔNG TRÌNH ĐƯỢC HOÀN THÀNH 
+TẠI TRƯỜNG ĐẠI HỌC TÔN ĐỨC THẮNG 
+Chúng tôi xin cam đoan đây là công trình nghiên cứu của riêng chúng 
+tôi và được sự hướng dẫn khoa học của ThS. Phạm Thị Kim Điệp. Các nội 
+dung nghiên cứu, kết quả trong đề tài này là trung thực và chưa công bố 
+dưới bất kỳ hình thức nào trước đây. Những số liệu trong các bảng biểu 
+phục vụ cho việc phân tích, nhận xét, đánh giá được chính tác giả thu thập 
+từ các nguồn khác nhau có ghi rõ trong phần tài liệu tham khảo. 
+Ngoài ra, trong Dự án còn sử dụng một số nhận xét, đánh giá cũng 
+như số liệu của các tác giả khác, cơ quan tổ chức khác đều có trích dẫn và 
+chú thích nguồn gốc.  
+Nếu phát hiện có bất kỳ sự gian lận nào tôi xin hoàn toàn chịu 
+trách nhiệm về nội dung Dự án của mình. Trường Đại học Tôn Đức 
+Thắng không liên quan đến những vi phạm tác quyền, bản quyền do tôi gây 
+ra trong quá trình thực hiện (nếu có). 
+TP. Hồ Chí Minh, ngày 20 tháng 11 năm 2026      
+Tác giả 
+HOÀNG THÁI ĐĂNG KHOA 
+ĐINH THANH PHONG 
+NGUYỄN HUY HOÀNG 
+LÊ TUẤN KIỆT 
+ 
+
+=== PDF PAGE 5 ===
+v 
+ 
+TÓM TẮT 
+ 
+Đồ án thực hiện khảo sát hiện trạng, phân tích yêu cầu, mô hình hóa hướng 
+đối tượng và xây dựng ứng dụng thực nghiệm Hệ thống Quản lý Khách sạn và Đặt 
+phòng Trực tuyến ACE Hotel (Accommodation, Check-in and Extras). Hệ thống 
+hướng tới hợp nhất quy trình đặt phòng trực tuyến của khách hàng với quy trình điều 
+phối buồng phòng tại quầy lễ tân (Property Management System – PMS) trên một cơ 
+sở dữ liệu tập trung dành cho khách sạn quy mô vừa và nhỏ. 
+Áp dụng quy trình phát triển lặp tăng trưởng Unified Process (UP), đồ án xác 
+lập ba tác nhân trực tiếp (Khách hàng, Nhân viên lễ tân, Quản trị viên), bốn phân hệ 
+giao diện, bảy quy tắc nghiệp vụ cốt lõi (BR1 – BR7), mười tám yêu cầu chức năng 
+(FR-01 – FR-18) và chín yêu cầu phi chức năng (NFR-01 – NFR-09) được ưu tiên 
+hóa theo phương pháp MoSCoW. Các yêu cầu được cụ thể hóa thành bảng phân rã 
+sự kiện sáu cột, 28 sơ đồ UML và mô hình ERD (Sơ đồ hoạt động nghiệp vụ hiện tại 
+As-Is, Biểu đồ Use Case tổng quát, bảy bộ Use Case/Activity/Sequence chi tiết, Biểu 
+đồ Gói kiến trúc phân tầng, Biểu đồ Lớp thiết kế, Mô hình ERD và Sơ đồ trạng thái 
+kép), lược đồ cơ sở dữ liệu tám bảng (73 cột) đạt chuẩn 3NF và mười thiết kế khung 
+giao diện Wireframe (WF-01 – WF-10). 
+Ứng dụng thực tế được cài đặt bằng Java 21, Spring Boot 3.5.0, Spring 
+Security 6, Spring Data JPA, Thymeleaf và cơ sở dữ liệu H2 lưu tệp bền vững. Kết 
+quả kiểm thử tự động (9/9 bài kiểm thử khói BugFixSmokeTest đạt yêu cầu), 30 kịch 
+bản kiểm thử hộp đen (TC-01 – TC-30) và ma trận truy vết yêu cầu hai chiều (RTM) 
+xác nhận hệ thống vận hành chính xác toàn bộ vòng đời lưu trú: tra cứu tồn kho hạng 
+phòng, chọn số phòng vật lý cụ thể và đặt cọc 30% kèm biên lai mã QR xuất tệp 
+PNG/PDF khổ A4, nhận phòng quét QR hoặc tiếp nhận khách vãng lai cọc 0 đồng, 
+quản lý sổ cái dịch vụ Room Folio, quyết toán hóa đơn theo biểu giá có 5% phí phục 
+vụ và 10% thuế giá trị gia tăng, kiểm soát trạng thái dọn phòng và xuất báo cáo doanh 
+thu khổ A4. 
+ 
+ 
+
+=== PDF PAGE 6 ===
+vi 
+ 
+MỤC LỤC 
+DANH MỤC BẢNG BIỂU ...................................................................................... ix 
+DANH MỤC HÌNH VẼ ........................................................................................... xi 
+DANH MỤC CHỮ VIẾT TẮT ............................................................................. xiv 
+CHƯƠNG 1. GIỚI THIỆU, PHẠM VI VÀ KHỞI TẠO DỰ ÁN ........................ 1 
+1.1 Lý do chọn đề tài ................................................................................................... 1 
+1.2 Mục tiêu của hệ thống ACE Hotel ........................................................................ 1 
+1.2.1 Mục tiêu nghiệp vụ ........................................................................................... 1 
+1.2.2 Mục tiêu kỹ thuật và khả năng truy vết ............................................................ 2 
+1.3 Phạm vi hệ thống và đường cơ sở dự án ............................................................... 3 
+1.3.1 Các phân hệ trong phạm vi thực hiện (In-Scope) ............................................ 3 
+1.3.2 Các nội dung nằm ngoài phạm vi thực hiện (Out-of-Scope) ........................... 4 
+1.4 Đánh giá tính khả thi, phương pháp phát triển và phân công thực hiện ............... 5 
+CHƯƠNG 2. KHẢO SÁT VÀ MÔ HÌNH HÓA NGHIỆP VỤ HIỆN TRẠNG.. 8 
+2.1 Mô tả nghiệp vụ thực tế tại khách sạn vừa và nhỏ ................................................ 8 
+2.2 Các bên liên quan (Stakeholders) và phân loại tác nhân (Actors) ........................ 9 
+2.3 Quy trình nghiệp vụ hiện tại khi chưa tin học hóa (As-Is) ................................. 10 
+2.4 Phân tích hạn chế hiện trạng và giải pháp đề xuất (To-Be) ................................ 12 
+CHƯƠNG 3. XÁC ĐỊNH VÀ ĐẶC TẢ YÊU CẦU ............................................. 15 
+3.1 Danh sách các quy tắc nghiệp vụ cốt lõi (BR1 – BR7)....................................... 15 
+3.2 Danh sách yêu cầu chức năng (FR-01 – FR-18) ................................................. 17 
+3.3 Danh sách yêu cầu phi chức năng (NFR-01 – NFR-09) ..................................... 20 
+3.4 Bảng ưu tiên hóa yêu cầu theo phương pháp MoSCoW ..................................... 22 
+
+=== PDF PAGE 7 ===
+vii 
+ 
+CHƯƠNG 4. MÔ HÌNH HÓA YÊU CẦU VÀ THIẾT KẾ HƯỚNG ĐỐI 
+TƯỢNG BẰNG UML ............................................................................................. 24 
+4.1 Phân rã sự kiện nghiệp vụ và Bảng sự kiện (Event Table) ................................. 24 
+4.2 Biểu đồ Use Case tổng quát toàn hệ thống ......................................................... 26 
+4.3 Đặc tả chi tiết bảy Use Case chính (UC01 – UC07) ........................................... 27 
+4.3.1 Đặc tả và mô hình hóa UC01 – Đăng ký hội viên, Đăng nhập và Điều hướng 
+vai trò…................................................................................................................... 27 
+4.3.2 Đặc tả và mô hình hóa UC02 – Quản lý Danh mục Phòng, Biểu giá và Dịch 
+vụ……… .................................................................................................................. 31 
+4.3.3 Đặc tả và mô hình hóa UC03 – Tìm kiếm, Chọn phòng, Đặt cọc 30% và Xuất 
+biên lai QR .............................................................................................................. 36 
+4.3.4 Đặc tả và mô hình hóa UC04 – Quản lý Nhận phòng (Check-in) và Tiếp 
+nhận Khách vãng lai ............................................................................................... 40 
+4.3.5 Đặc tả và mô hình hóa UC05 – Trả phòng, Quyết toán thuế phí và Vòng đời 
+dọn phòng ................................................................................................................ 44 
+4.3.6 Đặc tả và mô hình hóa UC06 – Ghi nhận Dịch vụ lưu trú vào Sổ cái phòng 
+(Room Folio) ........................................................................................................... 48 
+4.3.7 Đặc tả và mô hình hóa UC07 – Báo cáo Doanh thu đa chiều và Công suất 
+khai thác phòng ....................................................................................................... 51 
+4.4 Biểu đồ Lớp thiết kế, Kiến trúc Gói, Mô hình ERD và Sơ đồ Trạng thái .......... 54 
+CHƯƠNG 5. THIẾT KẾ CƠ SỞ DỮ LIỆU ......................................................... 61 
+5.1 Lược đồ quan hệ tổng thể (8 bảng cơ sở dữ liệu) ............................................... 61 
+5.2 Đặc tả từ điển dữ liệu chi tiết (Data Dictionary) ................................................. 63 
+5.3 Các ràng buộc toàn vẹn, chỉ mục và truy vấn trọng tâm ..................................... 69 
+CHƯƠNG 6. THIẾT KẾ GIAO DIỆN NGƯỜI DÙNG...................................... 71 
+
+=== PDF PAGE 8 ===
+viii 
+ 
+6.1 Hệ thống thiết kế giao diện và bảng mã màu (ACE Color System) ................... 71 
+6.2 Kiến trúc bốn phân hệ, sơ đồ điều hướng và ma trận phân quyền RBAC .......... 72 
+6.3 Thiết kế khung giao diện chi tiết cho mười màn hình chính (WF-01 – WF-10) 74 
+CHƯƠNG 7. KẾT QUẢ XÂY DỰNG PROTOTYPE, CÀI ĐẶT JAVA VÀ 
+KIỂM THỬ…. ......................................................................................................... 79 
+7.1 Kiến trúc kỹ thuật ứng dụng Java Web và các mẫu thiết kế áp dụng ................. 79 
+7.2 Kịch bản trình diễn thực nghiệm khép kín và bộ dữ liệu nền ............................. 80 
+7.3 Kết quả cài đặt các chức năng chính và giao diện thực tế .................................. 83 
+7.4 Chiến lược kiểm thử, ma trận truy vết (RTM) và kết quả 30 kịch bản kiểm thử86 
+CHƯƠNG 8. ĐÁNH GIÁ, KẾ HOẠCH TRIỂN KHAI VÀ KẾT LUẬN ......... 92 
+8.1 Tự đánh giá kết quả đạt được .............................................................................. 92 
+8.2 Các hạn chế hiện tại của hệ thống ....................................................................... 92 
+8.3 Kế hoạch triển khai thực tế và chuyển đổi hệ thống ........................................... 93 
+8.4 Hướng phát triển và mở rộng trong tương lai ..................................................... 94 
+TÀI LIỆU THAM KHẢO ...................................................................................... 95 
+ 
+ 
+ 
+
+=== PDF PAGE 9 ===
+ix 
+ 
+DANH MỤC BẢNG BIỂU 
+Bảng 1.1 Các thành phần bàn giao của đồ án ACE Hotel..................................... 3 
+Bảng 1.2 Phạm vi bốn phân hệ chức năng của hệ thống ACE Hotel ................... 4 
+Bảng 1.3 Đánh giá tính khả thi của dự án trên ba khía cạnh ............................... 5 
+Bảng 1.4 Bảng phân công nhiệm vụ và tỷ lệ đóng góp của bốn thành viên 
+Nhóm 13……. ............................................................................................................ 6 
+Bảng 2.1 Phân loại các bên liên quan và tác nhân hệ thống ACE Hotel.............. 9 
+Bảng 2.2 Đối chiếu các hạn chế hiện trạng và giải pháp thiết kế trên ACE 
+Hotel………… ......................................................................................................... 13 
+Bảng 3.1 Danh sách bảy quy tắc nghiệp vụ cốt lõi (BR1 – BR7) ........................ 15 
+Bảng 3.2 Danh sách mười tám yêu cầu chức năng của hệ thống (FR-01 – FR-
+18)…………… ......................................................................................................... 18 
+Bảng 3.3 Danh sách chín yêu cầu phi chức năng (NFR-01 – NFR-09) .............. 21 
+Bảng 3.4 Bảng tổng hợp phân loại ưu tiên yêu cầu theo phương pháp 
+MoSCoW……. ......................................................................................................... 22 
+Bảng 4.1 Bảng phân rã sự kiện nghiệp vụ của hệ thống ACE Hotel (Event 
+Table)……….. .......................................................................................................... 24 
+Bảng 4.2 Đặc tả chi tiết UC01 – Đăng ký hội viên, Đăng nhập và Điều hướng 
+vai trò………............................................................................................................ 28 
+Bảng 4.3 Đặc tả chi tiết UC02 – Quản lý Danh mục Phòng, Biểu giá và Dịch 
+vụ……………........................................................................................................... 31 
+Bảng 4.4 Đặc tả chi tiết UC03 – Tìm kiếm, Chọn phòng, Đặt cọc 30% và Xuất 
+biên lai QR…. .......................................................................................................... 36 
+Bảng 4.5 Đặc tả chi tiết UC04 – Quản lý Nhận phòng (Check-in) và Tiếp nhận 
+Khách vãng lai ......................................................................................................... 40 
+
+=== PDF PAGE 10 ===
+x 
+ 
+Bảng 4.6 Đặc tả chi tiết UC05 – Trả phòng, Quyết toán thuế phí và Vòng đời 
+dọn phòng….. ........................................................................................................... 44 
+Bảng 4.7 Đặc tả chi tiết UC06 – Ghi nhận Dịch vụ lưu trú vào Sổ cái phòng 
+(Room Folio).. .......................................................................................................... 48 
+Bảng 4.8 Đặc tả chi tiết UC07 – Báo cáo Doanh thu đa chiều và Công suất khai 
+thác phòng….. .......................................................................................................... 51 
+Bảng 4.9 Phân lớp gói kiến trúc hướng đối tượng của hệ thống ACE Hotel 
+(Package Architecture) ........................................................................................... 55 
+Bảng 5.1 Danh sách tám bảng quan hệ trong cơ sở dữ liệu ACE Hotel ............ 61 
+Bảng 5.2 Từ điển dữ liệu chi tiết tám bảng cơ sở dữ liệu ACE Hotel ................ 63 
+Bảng 6.1 Hệ thống mã màu trạng thái phòng và giao diện ACE Color System 71 
+Bảng 6.2 Ma trận phân quyền truy cập ba vai trò theo cấu hình SecurityConfig 
+(RBAC Matrix) ........................................................................................................ 73 
+Bảng 7.1 Danh sách bốn tài khoản kiểm thử mặc định trong tệp sample-
+data.sql……… ......................................................................................................... 81 
+Bảng 7.2 Ma trận truy vết yêu cầu hai chiều (RTM) ........................................... 87 
+Bảng 7.3 Kết quả thực thi 30 kịch bản kiểm thử nghiệp vụ (TC-01 – TC-30) .. 89 
+ 
+ 
+
+=== PDF PAGE 11 ===
+xi 
+ 
+DANH MỤC HÌNH VẼ  
+Hình 2.1 Sơ đồ Hoạt động (Activity Diagram) quy trình nghiệp vụ hiện tại (As-
+Is)…………… .......................................................................................................... 12 
+Hình 4.1 Biểu đồ Use Case tổng quát toàn hệ thống ACE Hotel ........................ 27 
+Hình 4.2 Biểu đồ Use Case chi tiết UC01 – Đăng ký hội viên, Đăng nhập và 
+Điều hướng vai trò................................................................................................... 30 
+Hình 4.3 Biểu đồ Hoạt động (Activity Diagram) của UC01 ................................ 30 
+Hình 4.4 Biểu đồ Tuần tự (Sequence Diagram) của UC01.................................. 31 
+Hình 4.5 Biểu đồ Use Case chi tiết UC02 – Quản lý Danh mục Phòng, Biểu giá 
+và Dịch vụ…............................................................................................................. 33 
+Hình 4.6 Biểu đồ Hoạt động (Activity Diagram) của UC02 ................................ 34 
+Hình 4.7 Biểu đồ Tuần tự UC02 – Luồng 2A: Quản lý Hạng phòng và Biểu 
+giá…………… .......................................................................................................... 34 
+Hình 4.8 Biểu đồ Tuần tự UC02 – Luồng 2B: Quản lý Phòng vật lý và Bảo 
+trì……………........................................................................................................... 35 
+Hình 4.9 Biểu đồ Tuần tự UC02 – Luồng 2C: Quản lý Danh mục Dịch vụ ...... 36 
+Hình 4.10 Biểu đồ Use Case chi tiết UC03 – Tìm kiếm, Chọn phòng, Đặt cọc 
+30% và Xuất biên lai QR ........................................................................................ 39 
+Hình 4.11 Biểu đồ Hoạt động (Activity Diagram) của UC03 .............................. 39 
+Hình 4.12 Biểu đồ Tuần tự (Sequence Diagram) của UC03................................ 40 
+Hình 4.13 Biểu đồ Use Case chi tiết UC04 – Nhận phòng (Check-in) và Tiếp 
+nhận Khách vãng lai ............................................................................................... 43 
+Hình 4.14 Biểu đồ Hoạt động (Activity Diagram) của UC04 .............................. 43 
+Hình 4.15 Biểu đồ Tuần tự (Sequence Diagram) của UC04................................ 44 
+
+=== PDF PAGE 12 ===
+xii 
+ 
+Hình 4.16 Biểu đồ Use Case chi tiết UC05 – Trả phòng, Quyết toán thuế phí và 
+Vòng đời dọn phòng ................................................................................................ 47 
+Hình 4.17 Biểu đồ Hoạt động (Activity Diagram) của UC05 .............................. 47 
+Hình 4.18 Biểu đồ Tuần tự (Sequence Diagram) của UC05................................ 48 
+Hình 4.19 Biểu đồ Use Case chi tiết UC06 – Ghi nhận Dịch vụ lưu trú vào Sổ 
+cái phòng (Room Folio) ........................................................................................... 50 
+Hình 4.20 Biểu đồ Hoạt động (Activity Diagram) của UC06 .............................. 50 
+Hình 4.21 Biểu đồ Tuần tự (Sequence Diagram) của UC06................................ 51 
+Hình 4.22 Biểu đồ Use Case chi tiết UC07 – Báo cáo Doanh thu đa chiều và 
+Công suất khai thác phòng ..................................................................................... 53 
+Hình 4.23 Biểu đồ Hoạt động (Activity Diagram) của UC07 .............................. 54 
+Hình 4.24 Biểu đồ Tuần tự (Sequence Diagram) của UC07................................ 54 
+Hình 4.25 Biểu đồ Gói kiến trúc phân tầng (Package Diagram) ........................ 57 
+Hình 4.26 Biểu đồ Lớp phân tích và thiết kế (Class Diagram – 8 lớp thực thể)58 
+Hình 4.27 Mô hình Thực thể – Kết hợp (ERD – 8 bảng cơ sở dữ liệu) .............. 59 
+Hình 4.28 Sơ đồ trạng thái đồng bộ giữa Đơn đặt phòng và Phòng vật lý ........ 60 
+Hình 6.1 Sơ đồ luồng điều hướng tổng thể giữa bốn phân hệ (Sitemap) ........... 73 
+Hình 6.2 Thiết kế giao diện Wireframe – Phân hệ Công khai và Cổng Khách 
+hàng (WF-01 đến WF-04) ....................................................................................... 75 
+Hình 6.3 Thiết kế giao diện Wireframe – Phân hệ Bàn Lễ tân PMS (WF-05 đến 
+WF-08)……… .......................................................................................................... 76 
+Hình 6.4 Thiết kế giao diện Wireframe – Phân hệ Quản trị điều hành (WF-09 
+đến WF-10)… .......................................................................................................... 76 
+Hình 7.1 Giao diện Trang chủ công khai và Cổng đặt phòng khách hàng ........ 84 
+
+=== PDF PAGE 13 ===
+xiii 
+ 
+Hình 7.2 Giao diện Cửa sổ chọn phòng trực tuyến và Biên lai thu cọc 30% khổ 
+A4…………… .......................................................................................................... 84 
+Hình 7.3 Giao diện Bàn lễ tân PMS: Sơ đồ phòng bốn trạng thái, Nhận phòng 
+và Room Folio .......................................................................................................... 85 
+Hình 7.4 Giao diện Quyết toán trả phòng thanh toán QR và Báo cáo doanh thu 
+PDF khổ A4… .......................................................................................................... 86 
+  
+ 
+ 
+ 
+
+=== PDF PAGE 14 ===
+xiv 
+ 
+DANH MỤC CHỮ VIẾT TẮT 
+STT 
+Chữ viết tắt Nghĩa trong báo cáo 
+1 
+ACE 
+Accommodation, Check-in and Extras – Tên hệ thống 
+quản lý khách sạn và đặt phòng trực tuyến 
+2 
+ADR 
+Average Daily Rate – Giá bán phòng bình quân trên mỗi 
+đêm đã bán 
+3 
+BR 
+Business Rule – Quy tắc nghiệp vụ cốt lõi của hệ thống 
+4 
+CCCD 
+Căn cước công dân hoặc Hộ chiếu định danh khách lưu 
+trú 
+5 
+CSDL 
+Cơ sở dữ liệu (Database) 
+6 
+ERD 
+Entity-Relationship Diagram – Mô hình Thực thể – Kết 
+hợp 
+7 
+F&B 
+Food and Beverage – Nhóm dịch vụ ẩm thực và phục vụ 
+ăn uống tại phòng 
+8 
+FR 
+Functional Requirement – Yêu cầu chức năng của hệ 
+thống 
+9 
+MoSCoW 
+Must have, Should have, Could have, Won't have – 
+Phương pháp phân loại ưu tiên yêu cầu 
+10 
+MVC 
+Model – View – Controller – Mẫu kiến trúc phần mềm 
+tách biệt dữ liệu, giao diện và điều khiển 
+11 
+NFR 
+Non-Functional Requirement – Yêu cầu phi chức năng 
+(hiệu năng, bảo mật, độ tin cậy) 
+12 
+OR% 
+Occupancy Rate – Tỷ lệ lấp đầy phòng khai thác thực tế 
+(đã loại trừ phòng đang bảo trì) 
+13 
+PMS 
+Property Management System – Hệ thống quản trị và 
+điều phối buồng phòng tại quầy 
+14 
+RBAC 
+Role-Based Access Control – Kiểm soát truy cập dựa trên 
+vai trò (ADMIN, RECEPTIONIST, CUSTOMER) 
+15 
+RevPAR 
+Revenue Per Available Room – Doanh thu phòng tính 
+trên mỗi phòng khả dụng 
+16 
+RTM 
+Requirements Traceability Matrix – Ma trận truy vết yêu 
+cầu hai chiều 
+17 
+SVC 
+Service Charge – Phí phục vụ 5% áp dụng trong biểu giá 
+có thuế phí ngành khách sạn 
+18 
+UC 
+Use Case – Ca sử dụng trong mô hình hóa UML 
+
+=== PDF PAGE 15 ===
+xv 
+ 
+19 
+UP 
+Unified Process – Quy trình phát triển phần mềm lặp tăng 
+trưởng định hướng theo ca sử dụng 
+20 
+VAT 
+Value-Added Tax – Thuế giá trị gia tăng 10% (GTGT) 
+21 
+WF 
+Wireframe – Bản thiết kế khung giao diện màn hình 
+
+=== PDF PAGE 16 ===
+1 
+ 
+CHƯƠNG 1.  GIỚI THIỆU, PHẠM VI VÀ KHỞI TẠO DỰ ÁN 
+1.1 Lý do chọn đề tài 
+Trong hoạt động kinh doanh dịch vụ lưu trú, thông tin vận hành cần được xử 
+lý liên tục ở cả hai tầng: tầng xử lý giao dịch hằng ngày (Transaction Processing 
+System – TPS) phục vụ đặt phòng, nhận phòng, ghi nhận dịch vụ và trả phòng, cùng 
+tầng hệ thống thông tin quản lý (Management Information System – MIS) phục vụ 
+tổng hợp doanh thu và đánh giá công suất khai thác [1]. Tại nhiều khách sạn quy mô 
+vừa và nhỏ (từ 10 đến 30 phòng), hai luồng công việc giữa kênh tiếp nhận đặt phòng 
+từ xa và bàn điều phối buồng phòng tại quầy lễ tân vẫn đang được xử lý rời rạc bằng 
+sổ ghi chép hoặc bảng tính thủ công. 
+Cách vận hành rời rạc đó gây ra nhiều hệ lụy trực tiếp: khách hàng khó xác 
+định chính xác hạng phòng và số phòng nào còn trống theo khoảng ngày mong muốn; 
+nhân viên lễ tân dễ gặp nhầm lẫn khi đối chiếu tiền đặt cọc, kiểm tra tình trạng vệ 
+sinh buồng phòng, tổng hợp phiếu dịch vụ phát sinh hoặc tính nhẩm biểu giá có 5% 
+phí phục vụ và 10% thuế giá trị gia tăng. Đồng thời, người quản lý thiếu số liệu kịp 
+thời về tỷ lệ lấp đầy phòng (Occupancy Rate), giá bán bình quân đêm (ADR) và doanh 
+thu trên mỗi phòng khả dụng (RevPAR) [5]. 
+Từ yêu cầu thực tế đó, Nhóm 13 thực hiện đề tài Hệ thống quản lý khách sạn 
+(đặt phòng, check-in/check-out, dịch vụ đi kèm), đặt tên triển khai là ACE Hotel 
+(Accommodation, Check-in and Extras). Đồ án áp dụng bài bản quy trình phân tích 
+và thiết kế yêu cầu từ khâu khởi tạo dự án, khảo sát hiện trạng, phân rã sự kiện, đặc 
+tả yêu cầu, mô hình hóa UML đến cài đặt hoàn chỉnh ứng dụng web Java Spring Boot. 
+1.2 Mục tiêu của hệ thống ACE Hotel 
+1.2.1 Mục tiêu nghiệp vụ 
+Hệ thống ACE Hotel hướng đến hợp nhất Cổng đặt phòng trực tuyến (Online 
+Booking Portal) và Hệ thống quản trị buồng phòng tại quầy (Front-Desk PMS) trên 
+một cơ sở dữ liệu duy nhất nhằm đạt bốn mục tiêu nghiệp vụ: 
+
+=== PDF PAGE 17 ===
+2 
+ 
+• Chuẩn hóa quy trình đặt phòng và thu cọc trực tuyến: Tự động kiểm tra tồn 
+kho hạng phòng theo khoảng ngày lưu trú, cho phép khách hàng lựa chọn trực tiếp 
+số phòng vật lý còn trống, tùy chỉnh ngày và giờ dự kiến nhận/trả phòng, hoàn tất 
+khoản đặt cọc 30% và nhận biên lai thu cọc kèm mã QR hỗ trợ tải ảnh PNG, tải 
+tệp PDF khổ A4 và in trực tiếp. 
+• Rút ngắn thời gian làm thủ tục nhận phòng và kiểm soát an toàn buồng 
+phòng: Hỗ trợ nhân viên lễ tân quét mã QR đơn đặt trước để nhận diện tức thời 
+phòng vật lý khách đã chọn, thực thi chốt chặn chỉ bàn giao phòng đang ở trạng 
+thái trống sạch (AVAILABLE), đồng thời hỗ trợ tiếp nhận khách vãng lai (Walk-
+in) tại quầy với mức đặt cọc 0 đồng. 
+• Quản lý sổ cái dịch vụ (Room Folio) và quyết toán hóa đơn chính xác: Ghi 
+nhận minh bạch các khoản dịch vụ phát sinh thuộc bốn nhóm chuẩn (Minibar, 
+Giặt ủi, Ẩm thực và Bồi thường hư hỏng) vào sổ cái phòng (Room Folio) kèm cơ 
+chế đóng băng đơn giá tại thời điểm gọi; tự động quyết toán hóa đơn có 5% phí 
+phục vụ và 10% thuế giá trị gia tăng, khấu trừ tiền cọc 30% và hỗ trợ thanh toán 
+tiền mặt, thẻ hoặc quét mã QR động tại quầy. 
+• Khép kín vòng đời vệ sinh buồng phòng và cung cấp báo cáo quản trị: Tự 
+động chuyển trạng thái phòng sang chờ dọn vệ sinh (DIRTY) ngay sau khi trả 
+phòng để phòng ngừa bàn giao phòng chưa dọn; cung cấp báo cáo doanh thu đa 
+chiều, tỷ lệ lấp đầy đã loại trừ phòng bảo trì, giá bán bình quân đêm (ADR), doanh 
+thu trên phòng khả dụng (RevPAR) và xuất báo cáo PDF khổ A4. 
+1.2.2 Mục tiêu kỹ thuật và khả năng truy vết 
+Về mặt kỹ nghệ yêu cầu phần mềm, đồ án đảm bảo tính nhất quán và khả năng 
+truy vết hai chiều (Requirements Traceability) [2], [4]: toàn bộ bảy quy tắc nghiệp vụ 
+(BR1 – BR7), mười tám yêu cầu chức năng (FR-01 – FR-18) và chín yêu cầu phi 
+chức năng (NFR-01 – NFR-09) đều ánh xạ rõ ràng sang bảng phân rã sự kiện, 28 sơ 
+đồ UML và mô hình ERD, lược đồ cơ sở dữ liệu tám bảng (73 cột), mười khung giao 
+
+=== PDF PAGE 18 ===
+3 
+ 
+diện Wireframe, mã nguồn Java Spring Boot và 30 kịch bản kiểm thử. Danh mục sản 
+phẩm bàn giao được tổng hợp tại Bảng 1.1. 
+Bảng 1.1 Các thành phần bàn giao của đồ án ACE Hotel 
+STT 
+Thành phần sản 
+phẩm 
+Nội dung và vai trò trong đồ án 
+1 
+Quyển báo cáo phân 
+tích 
+và 
+thiết 
+kế 
+(Chương 1 – Chương 
+8) 
+Trình bày đầy đủ khởi tạo dự án, khảo sát hiện trạng, 
+đặc tả BR/FR/NFR/MoSCoW, bảng sự kiện, 28 sơ 
+đồ UML và mô hình ERD, thiết kế CSDL tám bảng 
+(73 cột), mười khung giao diện, ma trận truy vết 
+RTM, 30 kịch bản kiểm thử và kế hoạch triển khai. 
+2 
+Bộ 28 sơ đồ UML, 
+mô hình ERD và 11 
+sơ đồ giao diện / điều 
+hướng 
+Mô hình hóa thống nhất cả quy trình hiện trạng As-
+Is (Activity Swimlane), góc nhìn hành vi (Use Case, 
+Activity, Sequence, State Machine) và góc nhìn cấu 
+trúc (Package Diagram, Class Diagram, ERD, 
+Sitemap, Wireframe). 
+3 
+Mã nguồn ứng dụng 
+Java Web (Spring 
+Boot 3.5.0 và JDK 
+21) 
+Gồm 58 tệp nguồn Java trong gói com.ace.hotel cài 
+đặt đầy đủ bảy ca sử dụng và 18 yêu cầu chức năng, 
+tích hợp Spring Security 6 (BCrypt, phân quyền 
+RBAC ba vai trò) và giao diện Thymeleaf. 
+4 
+Cơ sở dữ liệu H2 lưu 
+tệp 
+bền 
+vững 
+(schema.sql 
+và 
+sample-data.sql) 
+Định nghĩa tám bảng chuẩn 3NF kèm khóa chính, 
+khóa ngoại, chỉ mục tồn kho idx_bookings_quota và 
+các ràng buộc toàn vẹn CHECK bảo vệ công thức tài 
+chính. 
+5 
+Bộ kiểm thử tự động 
+và kịch bản trình diễn 
+thực nghiệm 
+Bao 
+gồm 
+lớp 
+kiểm 
+thử 
+khói 
+JUnit 
+5 
+(BugFixSmokeTest đạt 9/9 bài kiểm thử) và kịch bản 
+trình diễn khép kín năm bước trên dữ liệu thực tế. 
+ 
+1.3 Phạm vi hệ thống và đường cơ sở dự án 
+1.3.1 Các phân hệ trong phạm vi thực hiện (In-Scope) 
+Nhằm thiết lập đường cơ sở dự án (Project Baseline) cố định trước khi đi sâu 
+vào giai đoạn Khám phá yêu cầu [1], hệ thống ACE Hotel xác định rõ phạm vi chức 
+năng gồm bốn phân hệ giao diện tương tác với ba nhóm tác nhân có phân quyền độc 
+lập tại tầng máy chủ, được tổng hợp tại Bảng 1.2. 
+ 
+
+=== PDF PAGE 19 ===
+4 
+ 
+Bảng 1.2 Phạm vi bốn phân hệ chức năng của hệ thống ACE Hotel 
+STT Tên phân hệ 
+giao diện 
+Tác nhân sử dụng 
+Các chức năng trọng tâm trong 
+phạm vi 
+1 
+Phân hệ 
+Công khai 
+(Public 
+Portal) 
+Khách vãng lai, 
+Khách hàng 
+Giới thiệu không gian khách sạn, bảng 
+giá năm hạng phòng (ngày thường và 
+cuối tuần), bốn nhóm dịch vụ tiện ích, 
+đăng ký tài khoản hội viên (kiểm tra 
+tuổi ≥ 18) và đăng nhập hệ thống. 
+2 
+Phân hệ 
+Cổng Khách 
+hàng 
+(Customer 
+Portal) 
+Khách hàng 
+(CUSTOMER) 
+Tra cứu hạng phòng theo tồn kho khả 
+dụng; chọn trực tiếp số phòng vật lý, 
+hiệu chỉnh ngày và giờ dự kiến 
+nhận/trả; thanh toán đặt cọc 30% qua 
+mã QR; tải biên lai thu cọc (PNG/PDF 
+khổ A4); xem Live Folio, hủy đơn giữ 
+chỗ và gửi yêu cầu trả phòng nhanh. 
+3 
+Phân hệ Bàn 
+Lễ tân 
+(Front-Desk 
+PMS) 
+Nhân viên lễ tân 
+(RECEPTIONIST), 
+Quản trị viên 
+Theo dõi sơ đồ mười hai phòng theo 
+bốn trạng thái; quét mã QR nhận 
+phòng (tự động chọn sẵn phòng khách 
+đã chốt); tiếp nhận khách vãng lai cọc 
+0 đồng; ghi nhận hoặc xóa dịch vụ 
+Room Folio; quyết toán trả phòng có 
+5% phí phục vụ và 10% thuế GTGT 
+(tiền mặt, thẻ, mã QR), xuất hóa đơn 
+PDF khổ A4 và xác nhận dọn sạch 
+phòng. 
+4 
+Phân hệ 
+Quản trị 
+(Admin 
+Backoffice) 
+Quản trị viên 
+(ADMIN) 
+Quản trị danh mục năm hạng phòng và 
+biểu giá linh hoạt, mười hai phòng vật 
+lý (kèm bật/tắt trạng thái bảo trì) và 
+tám dịch vụ đi kèm; theo dõi báo cáo 
+doanh thu đa chiều, tỷ lệ lấp đầy 
+phòng, ADR, RevPAR và xuất báo 
+cáo PDF khổ A4. 
+1.3.2 Các nội dung nằm ngoài phạm vi thực hiện (Out-of-Scope) 
+Để đảm bảo độ sâu phân tích và chất lượng cài đặt trong thời lượng học phần, 
+các nội dung sau được xác định nằm ngoài phạm vi phiên bản hiện tại: 
+• Không tích hợp sàn đại lý du lịch trực tuyến (OTA): Không xây dựng bộ 
+đồng bộ tồn kho hai chiều (Channel Manager) với các sàn đại lý du lịch trực tuyến 
+như Agoda, Booking.com hay Traveloka. 
+
+=== PDF PAGE 20 ===
+5 
+ 
+• Không kết nối Webhook gạch nợ ngân hàng tự động: Ứng dụng sinh mã QR 
+chuẩn VietQR, MoMo và ZaloPay điền sẵn số tiền cần thanh toán để khách quét 
+thực tế, nhưng bước ghi nhận hoàn tất giao dịch được xác nhận trực tiếp trên ứng 
+dụng thay vì kết nối Webhook gạch nợ tự động từ ngân hàng lõi. 
+• Không bao gồm quản trị nhân sự, chuỗi đa chi nhánh và kho nguyên liệu: 
+Hệ thống tập trung giải quyết trọn vẹn bài toán đặt phòng, lưu trú, dịch vụ đi kèm 
+và doanh thu cho mô hình một cơ sở khách sạn độc lập, không bao gồm phân hệ 
+chấm công nhân sự, tính lương hay quản lý định lượng kho nguyên vật liệu bếp. 
+1.4 Đánh giá tính khả thi, phương pháp phát triển và phân công thực 
+hiện 
+Xét về phương pháp luận phát triển phần mềm (SDLC), thay vì áp dụng mô 
+hình thác nước tuyến tính (Predictive Waterfall) vốn chỉ kiểm chứng sản phẩm ở giai 
+đoạn cuối, nhóm lựa chọn cách tiếp cận lặp tăng trưởng theo quy trình Unified Process 
+(UP) gắn với năm giai đoạn tổng quát trong giáo trình [1]: Khởi tạo (Initiation), Khám 
+phá (Discovery), Xây dựng (Construction), Kiểm định và Xác nhận (Final 
+Verification and Validation) và Đóng gói (Closeout). Cách tiếp cận định hướng theo 
+ca sử dụng giúp nhóm sớm phát hiện và xử lý các rủi ro nghiệp vụ như đặt trùng 
+phòng, giao nhầm phòng chưa dọn hay sai lệch công thức tính thuế ngay từ các vòng 
+lặp đầu tiên. 
+Trong giai đoạn Khởi tạo, nhóm tiến hành đánh giá tính khả thi của dự án trên 
+ba khía cạnh chuẩn (kỹ thuật, kinh tế và tổ chức vận hành) [1], [3], được tổng hợp tại 
+Bảng 1.3. 
+Bảng 1.3 Đánh giá tính khả thi của dự án trên ba khía cạnh 
+Khía cạnh khả 
+thi 
+Tiêu chí đánh giá 
+Kết quả phân tích khả thi đối với dự án 
+ACE Hotel 
+Khả thi kỹ thuật 
+(Technical 
+Feasibility) 
+Mức độ phù hợp 
+của công nghệ, 
+năng lực lập trình 
+Đạt mức khả thi cao. Nhóm làm chủ ngôn 
+ngữ Java 21, khung Spring Boot 3.5.0, 
+Spring 
+Security 
+6, 
+JPA/Hibernate, 
+Thymeleaf và cơ sở dữ liệu nhúng H2. Ứng 
+
+=== PDF PAGE 21 ===
+6 
+ 
+và hạ tầng triển 
+khai 
+dụng đóng gói gọn nhẹ kèm Maven 
+Wrapper, không yêu cầu máy chủ cấu hình 
+cao hay phần mềm thương mại trả phí. 
+Khả thi kinh tế 
+(Economic 
+Feasibility) 
+Chi phí đầu tư ban 
+đầu so với lợi ích 
+giảm thất thoát và 
+tiết kiệm thời gian 
+Đạt mức khả thi cao. Toàn bộ nền tảng sử 
+dụng công nghệ mã nguồn mở nên chi phí 
+bản quyền phần mềm bằng 0. Việc tự động 
+hóa sổ cái dịch vụ, tính thuế phí chính xác 
+và chống đặt trùng phòng giúp khách sạn 
+giảm trực tiếp thất thoát doanh thu và tiết 
+kiệm thời gian tổng hợp sổ cuối tháng. 
+Khả thi tổ chức 
+vận hành 
+(Organizational 
+Feasibility) 
+Mức độ chấp nhận 
+của người dùng 
+cuối và sự phù hợp 
+với quy trình thực 
+tế 
+Đạt mức khả thi cao. Giao diện sử dụng 
+100% tiếng Việt, bố cục bám sát thao tác 
+thực tế của lễ tân (quét QR, sơ đồ phòng mã 
+hóa màu, hóa đơn khổ A4) và hỗ trợ chuyển 
+đổi Sáng/Tối, giúp nhân viên tiếp cận nhanh 
+chỉ sau một đến hai buổi hướng dẫn. 
+Về tổ chức nhân sự thực hiện dự án, đồ án do bốn thành viên Nhóm 13 trực 
+tiếp đảm nhiệm dưới sự hướng dẫn của Giảng viên ThS. Phạm Thị Kim Điệp. Tất cả 
+bốn thành viên đều tham gia đầy đủ vào quá trình phân tích, thiết kế, kiểm thử chéo 
+và trực tiếp phân chia trình bày, trả lời vấn đáp tại buổi báo cáo cuối kỳ theo đúng 
+quy định học phần. Chi tiết phân công nhiệm vụ, tỷ lệ đóng góp và xác nhận của từng 
+thành viên được trình bày tại Bảng 1.4. 
+Bảng 1.4 Bảng phân công nhiệm vụ và tỷ lệ đóng góp của bốn thành viên Nhóm 13 
+STT 
+Họ và tên 
+sinh viên 
+MSSV 
+Nhiệm vụ phụ trách trong 
+đồ án và thuyết trình 
+Tỷ lệ 
+đóng 
+góp 
+Chữ 
+ký xác 
+nhận 
+1 
+Đinh Thanh 
+Phong 
+52400027 
+Phụ trách Chương 1 (Giới 
+thiệu, phạm vi, đánh giá tính 
+khả thi) và Chương 2 (Khảo 
+sát hiện trạng kèm Activity 
+As-Is); đặc tả và vẽ 6 sơ đồ 
+UML cho UC04, UC05; xây 
+dựng kịch bản Demo và 
+thuyết trình Phần 1. 
+25% 
+ 
+2 
+Hoàng Thái 
+Đăng Khoa 
+52400017 
+Thiết kế kiến trúc phần mềm 
+và CSDL 8 bảng (73 cột, 
+Chương 5); vẽ Biểu đồ Gói, 
+Biểu đồ Lớp, ERD, Sơ đồ 
+25% 
+ 
+
+=== PDF PAGE 22 ===
+7 
+ 
+trạng thái và 3 sơ đồ UC07; 
+lập trình ứng dụng Java 
+Spring Boot bốn phân hệ và 
+vận hành trình diễn trực tiếp 
+Phần 4. 
+3 
+Nguyễn Huy 
+Hoàng 
+52400116 
+Phụ trách Chương 3 (BR, 
+FR, NFR, MoSCoW), Bảng 
+phân rã sự kiện, Chương 7 
+(RTM và 30 Test Cases), 
+Chương 8 (Đánh giá và kế 
+hoạch triển khai); vẽ Use 
+Case tổng quát và 8 sơ đồ 
+UC02 
+(gồm 
+3 
+luồng 
+Sequence), UC03; tổng hợp 
+báo cáo Word và thuyết 
+trình Phần 2. 
+25% 
+ 
+4 
+Lê Tuấn Kiệt 
+52400133 
+Thiết kế ACE Color System, 
+Sơ đồ điều hướng và 10 
+khung giao diện Wireframe 
+(WF-01 
+– 
+WF-10) 
+tại 
+Chương 6; đặc tả và vẽ 6 sơ 
+đồ UML cho UC01, UC06; 
+biên soạn bài trình chiếu và 
+thuyết trình Phần 3. 
+25% 
+ 
+
+=== PDF PAGE 23 ===
+8 
+ 
+CHƯƠNG 2.  KHẢO SÁT VÀ MÔ HÌNH HÓA NGHIỆP VỤ 
+HIỆN TRẠNG 
+2.1 Mô tả nghiệp vụ thực tế tại khách sạn vừa và nhỏ 
+Trong bước mô hình hóa nghiệp vụ (Business Modeling) nhằm tìm hiểu cách 
+tổ chức vận hành trước khi tin học hóa [1], nhóm khảo sát mô hình đặc trưng của một 
+khách sạn thương mại quy mô vừa và nhỏ (cấu hình thực nghiệm của ACE Hotel gồm 
+12 phòng vật lý bố trí trên bốn tầng: 101, 102, 103, 201, 202, 205, 301, 302, 305, 401, 
+418 và 420). Quỹ phòng được phân thành năm hạng phòng rõ ràng kèm cấu hình 
+giường ngủ và khung giá niêm yết: Standard (1 giường đôi Queen 1m6 × 2m, sức 
+chứa 2 khách, giá ngày thường 780.000 đồng/đêm và cuối tuần 950.000 đồng/đêm), 
+Superior (1 giường đôi King 1m8 × 2m, 2 khách, 950.000 đồng và 1.150.000 đồng), 
+Deluxe (1 giường King lớn ban công, 2 khách, 1.000.000 đồng và 1.250.000 đồng), 
+Family (2 giường đôi Queen lớn, 4 khách, 1.850.000 đồng và 2.200.000 đồng) và 
+Suite (1 giường King Master kèm ghế sofa giường, 4 khách, 3.200.000 đồng và 
+3.800.000 đồng). 
+Nghiệp vụ định giá phòng áp dụng chính sách biến động theo ngày trong tuần: 
+các đêm từ Thứ Hai đến Thứ Năm áp dụng đơn giá ngày thường, còn các đêm Thứ 
+Sáu, Thứ Bảy và Chủ Nhật áp dụng đơn giá cuối tuần. Thời gian nhận phòng tiêu 
+chuẩn bắt đầu từ 14:00 và thời gian trả phòng tiêu chuẩn trước 12:00 trưa hôm sau; 
+khách nhận phòng sớm trước 14:00 hoặc trả phòng muộn sau 12:00 sẽ phát sinh phụ 
+thu theo các mốc 30%, 50% hoặc 100% đơn giá một đêm ngày thường. 
+Trong thời gian lưu trú, khách hàng có thể sử dụng tám loại dịch vụ đi kèm 
+tiêu chuẩn phân bổ trong bốn nhóm: Đồ uống và đồ ăn nhẹ tại phòng (MINIBAR – 
+nước ngọt/bia lon, combo đồ ăn nhẹ), Giặt ủi (LAUNDRY – giặt ủi nhanh bộ trang 
+phục, giặt khô áo vest), Ẩm thực (FB – bữa sáng Buffet gọi thêm, phục vụ món nóng 
+tại phòng) và Bồi thường hư hỏng (DAMAGES – vỡ ly tách, mất thẻ từ phòng). Toàn 
+bộ chi phí dịch vụ được ghi nợ vào sổ cái phòng (Room Folio) và quyết toán tập trung 
+khi trả phòng theo chuẩn biểu giá có 5% phí phục vụ và 10% thuế giá trị gia tăng [5]. 
+
+=== PDF PAGE 24 ===
+9 
+ 
+2.2 Các bên liên quan (Stakeholders) và phân loại tác nhân (Actors) 
+Áp dụng quy chuẩn phân loại vai trò trong bài giảng Mô hình hóa nghiệp vụ 
+và Giai đoạn Khởi tạo [1], nhóm phân biệt rõ giữa tác nhân nghiệp vụ chính (Primary 
+Business Actor – đối tượng nhận giá trị từ ca sử dụng), tác nhân hệ thống chính 
+(Primary System Actor – người trực tiếp vận hành giao diện xử lý nghiệp vụ), nhân 
+sự nghiệp vụ nội bộ (Business Worker – bộ phận thực thi công việc thực địa bên trong 
+khách sạn) và tác nhân nhận đầu ra (External Receiver Actor – bộ phận sử dụng chứng 
+từ và báo cáo đầu ra). Bảng 2.1 trình bày đầy đủ phân loại và trách nhiệm của từng 
+đối tượng. 
+Bảng 2.1 Phân loại các bên liên quan và tác nhân hệ thống ACE Hotel 
+STT 
+Đối tượng / Vai 
+trò 
+Phân loại theo 
+chuẩn bài 
+giảng 
+Trách nhiệm nghiệp vụ và nhu 
+cầu tương tác hệ thống 
+1 
+Khách hàng 
+(CUSTOMER) 
+Tác nhân 
+nghiệp vụ chính 
+và Tác nhân hệ 
+thống chính 
+(Primary 
+Business & 
+System Actor) 
+Tra cứu hạng phòng trống theo 
+ngày và số khách; chọn số phòng 
+cụ thể, hiệu chỉnh ngày giờ nhận trả 
+và đặt cọc 30% trực tuyến; lưu biên 
+lai mã QR (PNG/PDF khổ A4); 
+theo dõi Live Folio, hủy đơn giữ 
+chỗ và gửi yêu cầu trả phòng 
+nhanh. 
+2 
+Nhân viên lễ tân 
+(RECEPTIONIST) 
+Tác nhân hệ 
+thống chính 
+(Primary 
+System Actor – 
+Front-Desk 
+PMS) 
+Giám sát sơ đồ 12 phòng bốn trạng 
+thái; quét mã QR nhận phòng cho 
+khách đặt trước; tiếp nhận khách 
+vãng lai cọc 0 đồng; ghi nhận hoặc 
+xóa dịch vụ trong Room Folio; 
+quyết toán hóa đơn trả phòng và 
+xác nhận hoàn tất dọn phòng. 
+3 
+Quản trị viên / 
+Chủ khách sạn 
+(ADMIN) 
+Tác nhân hệ 
+thống chính 
+(Primary 
+System Actor – 
+Admin 
+Backoffice) 
+Quản lý danh mục hạng phòng, 
+biểu giá ngày thường/cuối tuần, 
+danh sách phòng vật lý (bật/tắt chế 
+độ bảo trì) và danh mục tám dịch 
+vụ; theo dõi chỉ số Occupancy 
+Rate, ADR, RevPAR và xuất báo 
+cáo doanh thu PDF khổ A4. 
+
+=== PDF PAGE 25 ===
+10 
+ 
+4 
+Bộ phận Buồng 
+phòng 
+(Housekeeping) 
+Nhân sự nghiệp 
+vụ nội bộ 
+(Business 
+Worker – 
+Stakeholder) 
+Tiếp nhận thông tin phòng chuyển 
+sang trạng thái chờ dọn (DIRTY) 
+ngay sau khi khách trả phòng, tiến 
+hành vệ sinh buồng phòng, kiểm tra 
+vật tư Minibar và báo lại lễ tân để 
+mở khóa phòng về trạng thái 
+AVAILABLE. 
+5 
+Bộ phận Kế toán 
+(Accounting) 
+Tác nhân nhận 
+đầu ra (External 
+Receiver Actor 
+– Stakeholder) 
+Tiếp nhận và lưu trữ biên lai thu 
+cọc 30%, hóa đơn GTGT quyết 
+toán và báo cáo doanh thu định 
+dạng PDF khổ A4 để đối chiếu quỹ 
+tiền mặt, giao dịch thẻ và chuyển 
+khoản ngân hàng. 
+2.3 Quy trình nghiệp vụ hiện tại khi chưa tin học hóa (As-Is) 
+Qua khảo sát quy trình thủ công truyền thống tại khách sạn quy mô nhỏ khi 
+chưa có phần mềm quản trị đồng bộ, toàn bộ vòng đời phục vụ khách lưu trú diễn ra 
+qua năm bước rời rạc: 
+1. Tiếp nhận yêu cầu đặt phòng và ghi sổ giữ chỗ: Khách hàng gọi điện hoặc 
+nhắn tin hỏi tình trạng phòng trống. Lễ tân mở tệp bảng tính kẻ lịch thủ công để 
+kiểm tra bằng mắt, gửi số tài khoản nhận tiền đặt cọc và tự điền tên khách vào ô 
+bảng tính. 
+2. Làm thủ tục nhận phòng và đón khách vãng lai: Khi khách đặt trước hoặc 
+khách vãng lai đến quầy, lễ tân tra lại sổ giữ chỗ, liên lạc bộ đàm xác nhận với 
+nhân viên buồng phòng xem phòng dự kiến bàn giao đã vệ sinh hay chưa, sau đó 
+ghi chép thông tin căn cước công dân vào sổ lưu trú giấy. 
+3. Ghi nhận dịch vụ phát sinh bằng phiếu giấy: Mỗi khi khách sử dụng đồ uống 
+Minibar, gửi đồ giặt ủi hoặc gọi món ăn tại phòng, nhân viên viết tay số lượng và 
+đơn giá ra phiếu tạm tính rồi kẹp vào hộc chìa khóa tương ứng của phòng. 
+4. Cộng sổ thủ công và tính thuế phí khi trả phòng: Khi khách làm thủ tục trả 
+phòng, lễ tân gom toàn bộ phiếu giấy dịch vụ để cộng tay, tự đối chiếu những đêm 
+thuộc ngày thường hay cuối tuần, tính thêm 5% phí phục vụ và 10% thuế giá trị 
+
+=== PDF PAGE 26 ===
+11 
+ 
+gia tăng, đồng thời rà soát lại lịch sử tin nhắn để khấu trừ khoản tiền đặt cọc trước 
+đó. 
+5. Điều phối dọn phòng qua bộ đàm và tổng hợp báo cáo cuối kỳ: Sau khi 
+khách rời quầy, lễ tân thông báo miệng cho bộ phận buồng phòng lên dọn dẹp. 
+Cuối ngày hoặc cuối tháng, chủ khách sạn thu thập hóa đơn giấy của từng ca trực 
+để cộng dồn doanh thu. 
+Áp dụng kỹ thuật mô hình hóa quy trình nghiệp vụ bằng sơ đồ hoạt động phân 
+làn (Activity Diagram with Swimlanes) trong bài giảng Mô hình hóa nghiệp vụ [1], 
+Hình 2.1 trực quan hóa toàn bộ luồng phối hợp thủ công giữa Khách hàng, Nhân viên 
+lễ tân, Bộ phận buồng phòng và Chủ khách sạn cùng các điểm nghẽn dễ phát sinh sai 
+sót. 
+
+=== PDF PAGE 27 ===
+12 
+ 
+ 
+Hình 2.1 Sơ đồ Hoạt động (Activity Diagram) quy trình nghiệp vụ hiện tại (As-Is) 
+2.4 Phân tích hạn chế hiện trạng và giải pháp đề xuất (To-Be) 
+
+=== PDF PAGE 28 ===
+13 
+ 
+Từ quy trình hiện trạng nêu trên, nhóm tổng hợp năm hạn chế nghiệp vụ trọng 
+yếu cần khắc phục và ánh xạ trực tiếp sang các giải pháp thiết kế trên hệ thống ACE 
+Hotel trong Bảng 2.2. 
+Bảng 2.2 Đối chiếu các hạn chế hiện trạng và giải pháp thiết kế trên ACE Hotel 
+STT 
+Hạn chế nghiệp 
+vụ hiện trạng 
+(As-Is) 
+Hệ quả trong vận 
+hành 
+Giải pháp thiết kế trên hệ 
+thống ACE Hotel (To-Be) 
+1 
+Xung đột lịch đặt 
+phòng và nhận đặt 
+vượt 
+tồn 
+kho 
+(Overbooking) 
+Nhiều yêu cầu hỏi 
+phòng đồng thời 
+hoặc sơ suất khi 
+nhìn bảng tính dễ 
+dẫn đến nhận đặt 
+cọc trùng một số 
+phòng trong cùng 
+khoảng ngày. 
+Áp dụng công thức tồn kho hạng 
+phòng (BR1), truy vấn lọc phòng 
+không giao lịch theo khoảng 
+[Ngày nhận, Ngày trả) và khóa bi 
+quan 
+(PESSIMISTIC_WRITE) 
+trong giao dịch cơ sở dữ liệu. 
+2 
+Rủi ro bàn giao 
+phòng chưa hoàn 
+tất vệ sinh cho 
+khách mới 
+Thông 
+tin 
+dọn 
+phòng 
+truyền 
+miệng giữa các ca 
+trực dễ bị bỏ sót, 
+dẫn đến xếp khách 
+mới vào phòng vừa 
+trả 
+nhưng 
+chưa 
+thay chăn ga. 
+Áp dụng máy trạng thái bốn mức 
+(AVAILABLE, 
+OCCUPIED, 
+DIRTY, MAINTENANCE); tự 
+động chuyển phòng sang DIRTY 
+sau trả phòng (BR7) và chỉ cho 
+phép nhận phòng khi phòng ở 
+trạng thái AVAILABLE (BR2). 
+3 
+Thất thoát khoản 
+thu dịch vụ và 
+biến động đơn giá 
+lịch sử 
+Phiếu giấy kẹp tại 
+quầy dễ thất lạc 
+vào giờ cao điểm; 
+việc cập nhật bảng 
+giá mới làm sai 
+lệch đơn giá các 
+dịch vụ khách đã 
+dùng trước đó. 
+Xây dựng sổ cái điện tử Room 
+Folio (service_orders) gắn chặt 
+với đơn CHECKED_IN và sao 
+chép cố định đơn giá tại thời điểm 
+ghi nhận (Price Snapshot – BR5). 
+4 
+Sai sót khi tính 
+biểu giá có thuế 
+phí và khấu trừ 
+tiền cọc 
+Tính 
+nhẩm 
+dễ 
+nhầm giá đêm cuối 
+tuần, làm tròn lệch 
+thuế giá trị gia tăng 
+hoặc 
+khấu 
+trừ 
+nhầm 
+mức 
+cọc 
+giữa khách đặt trực 
+tuyến 
+và 
+khách 
+vãng lai. 
+Tự động hóa công thức tính bằng 
+số nguyên BIGINT tuần tự (BR3, 
+BR4, BR6) có ba ràng buộc 
+CHECK trong bảng invoices; tích 
+hợp mã QR động tự điền số tiền 
+thực thu ngay tại màn hình quyết 
+toán. 
+
+=== PDF PAGE 29 ===
+14 
+ 
+5 
+Độ trễ báo cáo và 
+sai lệch chỉ số 
+công 
+suất 
+khai 
+thác 
+Tốn 
+nhiều 
+thời 
+gian tổng hợp thủ 
+công cuối kỳ; chia 
+công suất cho tổng 
+số phòng kể cả 
+phòng đang đóng 
+cửa sửa chữa gây 
+sai lệch tỷ lệ lấp 
+đầy. 
+Xây dựng mô-đun báo cáo thời 
+gian thực (UC07) tự động loại trừ 
+phòng bảo trì khỏi mẫu số 
+Occupancy Rate (BR7), tính 
+ADR, RevPAR, tách cơ cấu thực 
+thu tại quầy và xuất báo cáo PDF 
+khổ A4. 
+
+=== PDF PAGE 30 ===
+15 
+ 
+CHƯƠNG 3.  XÁC ĐỊNH VÀ ĐẶC TẢ YÊU CẦU 
+3.1 Danh sách các quy tắc nghiệp vụ cốt lõi (BR1 – BR7) 
+Trong giai đoạn Khám phá yêu cầu theo chuẩn kỹ nghệ yêu cầu phần mềm [2], 
+[4], việc tách biệt rõ các quy tắc nghiệp vụ (Business Rules) khỏi các bước xử lý chi 
+tiết giúp đảm bảo tính nhất quán và khả năng tái sử dụng xuyên suốt các ca sử dụng. 
+Dựa trên khảo sát hiện trạng tại Chương 2, hệ thống ACE Hotel thiết lập bảy quy tắc 
+nghiệp vụ bất biến (từ BR1 đến BR7), được thực thi đồng thời ở tầng dịch vụ ứng 
+dụng và tầng ràng buộc cơ sở dữ liệu. Chi tiết các quy tắc được trình bày tại Bảng 
+3.1. 
+Bảng 3.1 Danh sách bảy quy tắc nghiệp vụ cốt lõi (BR1 – BR7) 
+Mã 
+quy 
+tắc 
+Tên quy 
+tắc nghiệp 
+vụ 
+Nội dung và điều kiện kiểm soát 
+Thành phần thực 
+thi 
+BR1 
+Kiểm tra 
+tồn kho 
+hạng phòng 
+và chống 
+đặt trùng 
+phòng vật 
+lý 
+Khi khách hàng tìm kiếm hoặc đặt phòng trực 
+tuyến (UC03), hệ thống tính số suất trống khả 
+dụng của hạng phòng trong khoảng ngày nửa mở 
+[Ngày nhận, Ngày trả) theo công thức: Số suất 
+trống = Tổng số phòng hoạt động (trạng thái 
+khác MAINTENANCE) − Số đơn đang hiệu lực 
+(trạng thái RESERVED hoặc CHECKED_IN) 
+có khoảng ngày giao nhau. Hai khoảng lưu trú 
+giao nhau khi: Ngày nhận đơn cũ < Ngày trả đơn 
+mới và Ngày trả đơn cũ > Ngày nhận đơn mới. 
+Khi khách chọn một phòng vật lý cụ thể, hệ 
+thống khóa bi quan bản ghi hạng phòng 
+(PESSIMISTIC_WRITE) trong giao dịch và xác 
+nhận phòng đó không có đơn trùng lịch trước khi 
+lưu. 
+BookingRepository, 
+BookingService 
+BR2 
+Ràng buộc 
+chỉ bàn giao 
+phòng ở 
+trạng thái 
+trống sạch 
+khi nhận 
+phòng 
+Khi nhân viên lễ tân thực hiện thủ tục nhận 
+phòng (UC04) cho đơn đặt trước hoặc cho khách 
+vãng lai, phòng vật lý được phân bổ bắt buộc 
+phải đang ở trạng thái sẵn sàng (AVAILABLE). 
+Hệ thống khóa hoàn toàn thao tác gán khách vào 
+các phòng đang có khách lưu trú (OCCUPIED), 
+đang chờ dọn vệ sinh (DIRTY) hoặc đang bảo trì 
+(MAINTENANCE). 
+CheckInService, 
+RoomRepository 
+
+=== PDF PAGE 31 ===
+16 
+ 
+BR3 
+Ràng buộc 
+khoảng 
+ngày lưu trú 
+và định giá 
+động theo 
+ngày trong 
+tuần 
+Ngày trả phòng dự kiến bắt buộc phải sau ngày 
+nhận phòng ít nhất một đêm (check_out_date > 
+check_in_date). Tiền phòng gốc (room_charge) 
+được cộng dồn theo từng đêm lưu trú trong 
+khoảng [Ngày nhận, Ngày trả): các đêm từ Thứ 
+Hai đến Thứ Năm áp dụng đơn giá ngày thường 
+(price_per_night); các đêm Thứ Sáu, Thứ Bảy và 
+Chủ Nhật áp dụng đơn giá cuối tuần 
+(weekend_price_per_night). 
+PricingService, 
+ràng buộc CHECK 
+bảng bookings 
+BR4 
+Chính sách 
+đặt cọc 30% 
+trực tuyến 
+và 0 đồng 
+đối với 
+khách vãng 
+lai 
+Khách đặt phòng trực tuyến (UC03) phải hoàn 
+tất khoản tiền đặt cọc giữ chỗ bằng 30% tổng giá 
+trị gói phòng ước tính đã bao gồm phí phục vụ 
+5% và thuế giá trị gia tăng 10% (deposit_amount 
+= làm tròn(tổng gói phòng ước tính × 30%)) để 
+đơn được xác lập ở trạng thái RESERVED; khi 
+trả phòng, khách thanh toán phần tiền phòng còn 
+lại cùng toàn bộ dịch vụ phát sinh và phụ thu. 
+Khách vãng lai nhận phòng trực tiếp tại quầy 
+(UC04) có mức tiền đặt cọc bằng 0 đồng và 
+thanh toán 100% giá trị hóa đơn khi trả phòng. 
+PricingService, 
+BookingService, 
+CheckInService 
+BR5 
+Quản lý sổ 
+cái dịch vụ 
+và cố định 
+đơn giá tại 
+thời điểm 
+phát sinh 
+Hệ thống chỉ cho phép ghi nhận thêm hoặc xóa 
+các dòng dịch vụ lưu trú (service_orders) đối với 
+đơn đặt phòng đang ở trạng thái đang lưu trú 
+(CHECKED_IN). Tại thời điểm ghi nhận, hệ 
+thống sao chép đơn giá hiện hành từ danh mục 
+(services.unit_price) sang cột đơn giá của dòng 
+dịch vụ (service_orders.unit_price) nhằm bảo 
+toàn giá lịch sử khi quản trị viên điều chỉnh bảng 
+giá về sau. 
+FolioService, 
+ServiceOrderRepos
+itory 
+BR6 
+Công thức 
+quyết toán 
+thuế phí và 
+tính duy 
+nhất của 
+hóa đơn 
+Mọi hóa đơn quyết toán (bảng invoices) được 
+tính tuần tự bằng kiểu số nguyên 64-bit 
+(BIGINT, đơn vị đồng Việt Nam) nhằm tránh sai 
+số dấu phẩy động: 
+• Tổng tiền trước thuế phí (subtotal) = Tiền 
+phòng (room_charge) + Tổng dịch vụ 
+(service_charge_total) + Phụ thu nhận sớm 
+(early_checkin_fee) + Phụ thu trả trễ 
+(late_checkout_fee). 
+• Phí phục vụ 5% (service_charge_amount) = 
+làm tròn(subtotal × 5%). 
+PricingService, 
+CheckOutService, 
+ràng buộc CHECK 
+bảng invoices 
+
+=== PDF PAGE 32 ===
+17 
+ 
+• Thuế giá trị gia tăng 10% (vat_amount) = làm 
+tròn((subtotal + service_charge_amount) × 
+10%). 
+• Tổng giá trị thanh toán (grand_total) = subtotal 
++ service_charge_amount + vat_amount. 
+• Số tiền còn phải thu tại quầy (balance_due) = 
+grand_total − tiền cọc đã khấu trừ 
+(deposit_deducted). 
+Mỗi đơn lưu trú chỉ được phép phát hành tối đa 
+một hóa đơn duy nhất (ràng buộc UNIQUE trên 
+cột booking_id). 
+BR7 
+Vòng đời vệ 
+sinh buồng 
+phòng, 
+chính sách 
+hủy cọc 48 
+giờ, loại trừ 
+phòng bảo 
+trì và bảo 
+toàn lịch sử 
+Ngay sau khi hoàn tất quyết toán trả phòng 
+(UC05), trạng thái phòng vật lý tự động chuyển 
+từ có khách (OCCUPIED) sang chờ dọn vệ sinh 
+(DIRTY) và chỉ trở về sẵn sàng (AVAILABLE) 
+sau khi nhân viên lễ tân xác nhận bộ phận buồng 
+phòng đã dọn sạch. Chỉ cho phép hủy đơn đặt 
+phòng khi đơn đang ở trạng thái giữ chỗ 
+(RESERVED) — áp dụng chính sách 48 giờ 
+trước giờ nhận phòng tiêu chuẩn (14:00): hủy 
+trước đủ 48 giờ được miễn phí và hoàn 100% 
+tiền cọc 30%; hủy cận ngày (dưới 48 giờ hoặc 
+không đến nhận phòng – No-show) sẽ không 
+hoàn lại tiền cọc 30% (mất cọc), đồng thời giải 
+phóng ngay phòng vật lý về quỹ trống. Trong 
+báo cáo công suất, tỷ lệ lấp đầy phòng loại trừ 
+các phòng đang bảo trì (MAINTENANCE) khỏi 
+mẫu số phòng khả dụng. Hệ thống ngăn chặn 
+xóa các bản ghi danh mục (hạng phòng, phòng, 
+dịch vụ) đã phát sinh dữ liệu giao dịch. 
+CheckOutService, 
+BookingService, 
+CatalogService, 
+ReportService 
+3.2 Danh sách yêu cầu chức năng (FR-01 – FR-18) 
+Từ bảy quy tắc nghiệp vụ và nhu cầu sử dụng của ba nhóm tác nhân, hệ thống 
+ACE Hotel được đặc tả thành mười tám yêu cầu chức năng (Functional Requirements, 
+từ FR-01 đến FR-18). Danh sách chi tiết từng yêu cầu cùng ánh xạ sang ca sử dụng 
+và bảng cơ sở dữ liệu tương ứng được tổng hợp trong Bảng 3.2. 
+ 
+ 
+
+=== PDF PAGE 33 ===
+18 
+ 
+Bảng 3.2 Danh sách mười tám yêu cầu chức năng của hệ thống (FR-01 – FR-18) 
+Mã 
+FR 
+Mô tả chi tiết yêu cầu chức năng 
+Ca sử 
+dụng 
+Bảng cơ sở dữ 
+liệu 
+Mức 
+ưu 
+tiên 
+FR-
+01 
+Cho phép khách hàng mới đăng ký tài khoản hội 
+viên trực tuyến với các thông tin bắt buộc (họ và 
+tên, ngày sinh từ đủ 18 tuổi, số điện thoại, căn 
+cước công dân, tên đăng nhập, mật khẩu), mã 
+hóa mật khẩu bằng BCrypt và khởi tạo hồ sơ 
+khách hàng gắn vai trò CUSTOMER. 
+UC01 
+users, 
+customers 
+Must 
+FR-
+02 
+Cho phép người dùng đăng nhập và đăng xuất 
+an toàn qua Spring Security; tự động điều hướng 
+về đúng trang làm việc theo ba vai trò (ADMIN 
+đến /admin/dashboard, RECEPTIONIST đến 
+/staff/dashboard, 
+CUSTOMER 
+đến 
+/customer/dashboard) và chuyển hướng các truy 
+cập vượt quyền về /error/403. 
+UC01 
+users 
+Must 
+FR-
+03 
+Cho phép quản trị viên xem, thêm mới, cập nhật 
+và xóa an toàn danh mục hạng phòng, bao gồm 
+sức chứa tối đa, cấu hình loại giường, đơn giá 
+ngày thường (Thứ Hai đến Thứ Năm) và đơn giá 
+cuối tuần (Thứ Sáu đến Chủ Nhật). 
+UC02 
+room_types, 
+rooms, 
+bookings 
+Must 
+FR-
+04 
+Cho phép quản trị viên quản lý danh sách phòng 
+vật lý (số phòng, tầng, hạng phòng) và chuyển 
+đổi trạng thái bảo trì (MAINTENANCE) đối với 
+các phòng không đang có khách lưu trú. 
+UC02 
+rooms, 
+room_types, 
+bookings 
+Must 
+FR-
+05 
+Cho phép quản trị viên xem, thêm mới, chỉnh 
+sửa và xóa an toàn danh mục dịch vụ đi kèm 
+thuộc 
+bốn 
+nhóm 
+chuẩn 
+(MINIBAR, 
+LAUNDRY, FB, DAMAGES) kèm đơn giá 
+niêm yết và đơn vị tính. 
+UC02 
+services, 
+service_orders 
+Must 
+FR-
+06 
+Cho phép khách hàng tra cứu các hạng phòng 
+còn suất trống theo ngày nhận phòng, ngày trả 
+phòng và số lượng khách dựa trên quy tắc tồn 
+kho hạng phòng (BR1) và định giá động theo 
+từng đêm (BR3). 
+UC03 
+room_types, 
+rooms, 
+bookings 
+Must 
+FR-
+07 
+Cung cấp cửa sổ đặt phòng trực tuyến cho phép 
+khách hàng hiệu chỉnh ngày nhận/trả, khung giờ 
+dự kiến nhận/trả phòng, chọn số phòng vật lý cụ 
+thể 
+còn 
+trống 
+(qua 
+giao 
+diện 
+API 
+/booking/api/available-rooms), xem trước cơ 
+UC03 
+bookings, 
+customers, 
+rooms 
+Must 
+
+=== PDF PAGE 34 ===
+19 
+ 
+cấu giá có thuế phí, hoàn tất đặt cọc 30% và tạo 
+đơn ở trạng thái RESERVED. 
+FR-
+08 
+Tự động phát hành biên lai thu cọc 30% bố cục 
+hai cột kèm mã QR định danh mã đơn ngay sau 
+khi đặt phòng thành công, hỗ trợ tải ảnh PNG, 
+tải tệp PDF khổ A4 và in trực tiếp trên cổng 
+khách hàng. 
+UC03 
+bookings, 
+customers 
+Must 
+FR-
+09 
+Cho phép khách hàng theo dõi lịch sử đặt phòng, 
+xem bảng chi phí dịch vụ phát sinh theo thời 
+gian thực (Live Folio), tự hủy đơn khi đang ở 
+trạng thái giữ chỗ (RESERVED) có hiển thị rõ 
+chính sách hoàn cọc 100% (trước 48 giờ) hoặc 
+mất cọc 30% (dưới 48 giờ) và gửi yêu cầu trả 
+phòng 
+nhanh 
+(ghi 
+nhận 
+mốc 
+checkout_requested_at) khi đang lưu trú 
+(CHECKED_IN). 
+UC03, 
+UC05 
+bookings, 
+service_orders 
+Should 
+FR-
+10 
+Cho phép nhân viên lễ tân quét mã QR (từ máy 
+ảnh hoặc tệp ảnh biên lai) hoặc nhập mã đơn đặt 
+trước; tự động nhận diện và chọn sẵn phòng vật 
+lý khách đã chốt nếu phòng đang trống sạch 
+(AVAILABLE), ghi nhận phụ thu nhận phòng 
+sớm (nếu có) và chuyển trạng thái đơn sang 
+CHECKED_IN, phòng sang OCCUPIED. 
+UC04 
+bookings, 
+rooms, 
+customers 
+Must 
+FR-
+11 
+Cho phép nhân viên lễ tân tiếp nhận và làm thủ 
+tục nhận phòng trực tiếp cho khách vãng lai tại 
+quầy với mức tiền cọc 0 đồng, hỗ trợ tra cứu lại 
+hồ sơ khách quen theo số căn cước công dân 
+hoặc số điện thoại và gán ngay vào một phòng 
+trống sạch (AVAILABLE). 
+UC04 
+customers, 
+bookings, 
+rooms 
+Must 
+FR-
+12 
+Cho phép nhân viên lễ tân ghi nhận các dịch vụ 
+phát sinh thuộc bốn nhóm chuẩn vào sổ cái 
+phòng đang lưu trú (Room Folio) với đơn giá 
+đóng băng tại thời điểm phát sinh (BR5), đồng 
+thời cho phép xóa dòng dịch vụ ghi nhầm trước 
+khi thanh toán. 
+UC06 
+service_orders, 
+services, 
+bookings 
+Must 
+FR-
+13 
+Tự động tổng hợp quyết toán trả phòng theo 
+công thức biểu giá có thuế phí (BR6): cộng tiền 
+phòng, tổng dịch vụ Room Folio, phụ thu nhận 
+sớm và phụ thu trả trễ; tính 5% phí phục vụ và 
+10% thuế giá trị gia tăng; khấu trừ khoản tiền 
+UC05 
+bookings, 
+service_orders, 
+invoices 
+Must 
+
+=== PDF PAGE 35 ===
+20 
+ 
+cọc 30% đã thanh toán (hoặc 0 đồng với khách 
+vãng lai). 
+FR-
+14 
+Cho phép xác nhận thanh toán tại quầy theo ba 
+phương thức (tiền mặt CASH, thẻ CARD, 
+chuyển khoản QR TRANSFER có hiển thị mã 
+VietQR tự điền số tiền còn lại cùng MoMo và 
+ZaloPay), lưu hóa đơn quyết toán bất biến, hỗ 
+trợ in hoặc tải hóa đơn PDF khổ A4 và tự động 
+chuyển phòng sang trạng thái chờ dọn (DIRTY). 
+UC05 
+invoices, 
+bookings, 
+rooms 
+Must 
+FR-
+15 
+Ngăn chặn phân bổ phòng đang chờ dọn 
+(DIRTY) cho khách mới và cung cấp thao tác 
+xác nhận hoàn tất vệ sinh buồng phòng trên bảng 
+điều khiển lễ tân để chuyển trạng thái phòng từ 
+DIRTY trở về sẵn sàng (AVAILABLE). 
+UC05 
+rooms 
+Must 
+FR-
+16 
+Hiển thị sơ đồ lưới mười hai phòng trực quan 
+theo bốn màu trạng thái (AVAILABLE, 
+OCCUPIED, DIRTY, MAINTENANCE), nhãn 
+cảnh báo yêu cầu trả phòng nhanh từ khách hàng 
+và danh sách đơn chờ nhận phòng, đơn đang lưu 
+trú trong ngày. 
+UC04, 
+UC05 
+rooms, 
+bookings 
+Should 
+FR-
+17 
+Cho phép quản trị viên lọc và theo dõi báo cáo 
+cơ cấu doanh thu đa chiều theo khoảng thời gian 
+(tách bạch doanh thu tiền phòng, bốn nhóm dịch 
+vụ, phụ thu nhận sớm/trả trễ, phí phục vụ 5%, 
+thuế giá trị gia tăng 10%, cơ cấu thực thu tại 
+quầy theo phương thức thanh toán) và xuất báo 
+cáo định dạng PDF khổ A4. 
+UC07 
+invoices, 
+service_orders, 
+bookings 
+Should 
+FR-
+18 
+Tự động tính toán và trực quan hóa các chỉ số 
+hiệu quả khai thác theo chuẩn ngành khách sạn 
+trên trang quản trị, bao gồm tỷ lệ lấp đầy phòng 
+(Occupancy Rate, đã loại trừ phòng đang bảo 
+trì), giá bán bình quân đêm (ADR) và doanh thu 
+trên mỗi phòng khả dụng (RevPAR). 
+UC07 
+rooms, 
+bookings, 
+invoices 
+Could 
+3.3 Danh sách yêu cầu phi chức năng (NFR-01 – NFR-09) 
+Song song với các chức năng nghiệp vụ, hệ thống ACE Hotel phải thỏa mãn 
+chín yêu cầu phi chức năng (Non-Functional Requirements, từ NFR-01 đến NFR-09) 
+nhằm đảm bảo hiệu năng xử lý tại quầy lễ tân, an toàn bảo mật thông tin, tính toàn 
+
+=== PDF PAGE 36 ===
+21 
+ 
+vẹn dữ liệu đồng thời và khả năng vận hành ổn định. Chi tiết được trình bày trong 
+Bảng 3.3. 
+Bảng 3.3 Danh sách chín yêu cầu phi chức năng (NFR-01 – NFR-09) 
+Mã 
+NFR 
+Nhóm chất 
+lượng 
+Nội dung yêu cầu phi chức năng và tiêu chí 
+đo lường 
+Mức 
+ưu tiên 
+NFR-
+01 
+Hiệu năng 
+Thời gian phản hồi của các thao tác tra cứu tồn 
+kho hạng phòng, lọc phòng vật lý trống, quét 
+mã QR nhận phòng, ghi nợ Room Folio và tính 
+toán hóa đơn trả phòng đạt dưới 2 giây trong 
+môi trường triển khai thực nghiệm. 
+Should 
+NFR-
+02 
+Bảo mật xác 
+thực 
+Toàn bộ mật khẩu tài khoản trong bảng users 
+phải được băm một chiều bằng thuật toán 
+BCrypt (độ mạnh chuẩn 10 vòng), tuyệt đối 
+không lưu mật khẩu ở dạng văn bản thuần 
+trong cơ sở dữ liệu. 
+Must 
+NFR-
+03 
+Bảo mật phân 
+quyền 
+Thực thi cơ chế kiểm soát truy cập theo vai trò 
+tại tầng máy chủ (Server-side RBAC) thông 
+qua Spring Security 6 cho từng vùng đường 
+dẫn (/admin/**, /staff/**, /customer/**), kết 
+hợp bảo vệ chống giả mạo yêu cầu liên trang 
+(CSRF) và trả mã HTTP 403 đối với truy cập 
+vượt quyền. 
+Must 
+NFR-
+04 
+Toàn vẹn dữ 
+liệu và xử lý 
+đồng thời 
+Áp dụng đầy đủ khóa chính, khóa ngoại, ràng 
+buộc UNIQUE và CHECK trong schema.sql; 
+sử dụng giao dịch nguyên tử (@Transactional) 
+kết 
+hợp 
+khóa 
+bi 
+quan 
+(PESSIMISTIC_WRITE) để loại bỏ xung đột 
+đặt trùng phòng khi nhiều người dùng thao tác 
+đồng thời. 
+Must 
+NFR-
+05 
+Tính 
+khả 
+dụng và giao 
+diện 
+Giao diện thống nhất hoàn toàn bằng tiếng 
+Việt, áp dụng hệ thống màu nhận diện ACE 
+Color System hỗ trợ chuyển đổi chế độ 
+Sáng/Tối (Light/Dark Mode), tích hợp bộ chọn 
+ngày tùy chỉnh AceDatePicker và hoàn tất mỗi 
+luồng nghiệp vụ chính trong tối đa ba đến bốn 
+bước. 
+Should 
+NFR-
+06 
+Khả năng mở 
+rộng 
+và 
+chuyển 
+đổi 
+CSDL 
+Kiến trúc mã nguồn phân tách rõ các lớp điều 
+khiển, dịch vụ và truy cập dữ liệu theo chuẩn 
+Spring Data JPA; việc chuyển đổi hệ quản trị 
+cơ sở dữ liệu từ H2 sang MySQL hoặc 
+Should 
+
+=== PDF PAGE 37 ===
+22 
+ 
+PostgreSQL chỉ yêu cầu điều chỉnh tệp cấu 
+hình application.properties. 
+NFR-
+07 
+Tính 
+tương 
+thích 
+môi 
+trường 
+Ứng dụng biên dịch và vận hành ổn định trên 
+môi trường Windows hoặc macOS với Java 
+Development Kit 21 (JDK 21), hiển thị nhất 
+quán trên các trình duyệt hiện đại như Google 
+Chrome và Microsoft Edge. 
+Must 
+NFR-
+08 
+Độ tin cậy và 
+lưu trữ bền 
+vững 
+Cơ sở dữ liệu H2 vận hành ở chế độ lưu tệp vật 
+lý bền vững (./data/ace_hotel_db) với tham số 
+ace.seed=false mặc định, bảo toàn toàn bộ giao 
+dịch thực tế qua các lần khởi động lại ứng dụng 
+và hỗ trợ xuất chứng từ PNG/PDF khổ A4 
+ngoại tuyến. 
+Should 
+NFR-
+09 
+Khả năng bảo 
+trì và kiểm 
+thử 
+Mã nguồn tuân thủ quy ước đặt tên chuẩn Java 
+(UpperCamelCase cho lớp, lowerCamelCase 
+cho thuộc tính và phương thức theo bài giảng 
+[1]), có chú thích rõ tại các công thức nghiệp 
+vụ và đi kèm bộ kiểm thử tự động JUnit 5. 
+Should 
+3.4 Bảng ưu tiên hóa yêu cầu theo phương pháp MoSCoW 
+Để tập trung nguồn lực thực hiện các chức năng cốt lõi trước khi hoàn thiện 
+các tính năng mở rộng quản trị, nhóm áp dụng phương pháp phân loại ưu tiên 
+MoSCoW (Must have, Should have, Could have, Won't have) [2]. Trong phạm vi bàn 
+giao cuối kỳ, nhóm đã cài đặt và kiểm thử thành công toàn bộ 18 yêu cầu chức năng 
+và 9 yêu cầu phi chức năng thuộc ba mức Must, Should và Could. Bảng 3.4 tổng hợp 
+kết quả phân loại ưu tiên. 
+Bảng 3.4 Bảng tổng hợp phân loại ưu tiên yêu cầu theo phương pháp MoSCoW 
+Mức 
+độ ưu 
+tiên 
+Yêu cầu chức năng (FR) 
+Yêu cầu phi 
+chức năng 
+(NFR) 
+Ý nghĩa và kết quả thực 
+hiện 
+Must 
+have 
+(Bắt 
+buộc 
+phải 
+có) 
+FR-01, FR-02, FR-03, FR-
+04, FR-05, FR-06, FR-07, 
+FR-08, FR-10, FR-11, FR-
+12, FR-13, FR-14, FR-15 
+(14/18 FR – 77,8%) 
+NFR-02, 
+NFR-03, 
+NFR-04, 
+NFR-07 
+Cấu thành chuỗi nghiệp vụ 
+cốt lõi không thể tách rời 
+từ đăng ký, quản lý danh 
+mục, đặt phòng cọc 30%, 
+nhận phòng, ghi nợ dịch 
+vụ đến quyết toán hóa đơn 
+và dọn phòng. Đã hoàn 
+thành 100%. 
+
+=== PDF PAGE 38 ===
+23 
+ 
+Should 
+have 
+(Quan 
+trọng, 
+nên có) 
+FR-09, FR-16, FR-17 
+(3/18 FR – 16,7%) 
+NFR-01, 
+NFR-05, 
+NFR-06, 
+NFR-08, 
+NFR-09 
+Nâng cao hiệu quả điều 
+hành và minh bạch thông 
+tin gồm quản lý đơn hội 
+viên (Live Folio, hủy đơn, 
+yêu cầu trả phòng nhanh), 
+sơ đồ phòng trực quan bốn 
+trạng thái và báo cáo cơ 
+cấu doanh thu xuất PDF. 
+Đã hoàn thành 100%. 
+Could 
+have 
+(Tiện 
+ích gia 
+tăng) 
+FR-18 
+(1/18 FR – 5,5%) 
+Không 
+phát 
+sinh thêm 
+Tự động tính toán và biểu 
+đồ hóa ba chỉ số quản trị 
+khách 
+sạn 
+quốc 
+tế 
+(Occupancy Rate, ADR, 
+RevPAR) hỗ trợ ra quyết 
+định kinh doanh. Đã hoàn 
+thành 100%. 
+Won't 
+have 
+(Ngoài 
+phạm 
+vi đồ 
+án) 
+Kết nối sàn đại lý du lịch 
+trực tuyến (OTA); cổng 
+gạch nợ ngân hàng tự động 
+(Webhook); 
+đặt 
+phòng 
+đoàn gộp nhiều phòng; 
+quản trị nhân sự, chấm 
+công và kho bếp. 
+Không 
+áp 
+dụng 
+trong 
+phiên 
+bản 
+hiện tại 
+Được xác định rõ thuộc 
+phần ngoài phạm vi tại 
+Mục 1.3 nhằm giữ độ sâu 
+kỹ thuật cho nghiệp vụ 
+trọng tâm và định hướng 
+phát triển tại Mục 8.4. 
+
+=== PDF PAGE 39 ===
+24 
+ 
+CHƯƠNG 4.  MÔ HÌNH HÓA YÊU CẦU VÀ THIẾT KẾ 
+HƯỚNG ĐỐI TƯỢNG BẰNG UML 
+4.1 Phân rã sự kiện nghiệp vụ và Bảng sự kiện (Event Table) 
+Theo phương pháp luận giai đoạn Khởi tạo và Khám phá trong giáo trình môn 
+Phân tích và Thiết kế Yêu cầu [1], [3], để xác định đầy đủ và không bỏ sót các ca sử 
+dụng hệ thống (System Use Cases), nhà phân tích áp dụng kỹ thuật phân rã sự kiện 
+(Event Decomposition). Mỗi sự kiện nghiệp vụ phát sinh trong quá trình vận hành 
+khách sạn được phân loại vào một trong ba nhóm: sự kiện ngoại vi (External Event – 
+do tác nhân bên ngoài chủ động kích hoạt), sự kiện thời gian (Temporal Event – kích 
+hoạt khi đến một mốc thời điểm nghiệp vụ như giờ trả phòng 12:00 hoặc cuối kỳ báo 
+cáo) và sự kiện trạng thái (State Event – kích hoạt khi trạng thái nội bộ của hệ thống 
+đạt ngưỡng hoặc chuyển trạng thái như phòng chuyển sang chờ dọn DIRTY). 
+Áp dụng nguyên tắc ánh xạ một sự kiện tương ứng với một phản hồi ca sử 
+dụng hệ thống, Bảng 4.1 tổng hợp đầy đủ mười sự kiện trọng tâm của khách sạn ACE 
+Hotel theo đúng cấu trúc sáu cột chuẩn của bảng sự kiện (Event Table) [1], làm cơ sở 
+trực tiếp để hợp nhóm thành bảy ca sử dụng chính (từ UC01 đến UC07). 
+Bảng 4.1 Bảng phân rã sự kiện nghiệp vụ của hệ thống ACE Hotel (Event Table) 
+Sự kiện nghiệp 
+vụ (Event) và 
+Phân loại 
+Tác 
+nhân 
+kích 
+hoạt 
+(Trigger) 
+Nguồn 
+(Source) 
+Ca sử 
+dụng 
+(Use 
+Case) 
+Phản hồi của hệ 
+thống (Response) 
+Đích nhận 
+(Destination) 
+Khách mới yêu 
+cầu tạo tài khoản 
+hoặc người dùng 
+đăng nhập 
+(External) 
+Yêu cầu 
+đăng ký / 
+đăng 
+nhập 
+Khách 
+hàng, Lễ 
+tân, 
+Quản trị 
+viên 
+UC01 – 
+Xác 
+thực và 
+phân 
+quyền 
+Tạo tài khoản hội viên 
+mã hóa BCrypt hoặc 
+cấp phiên đăng nhập 
+và điều hướng đúng 
+vai trò 
+Người dùng 
+tương ứng 
+Quản trị viên cập 
+nhật hạng phòng, 
+giá, phòng vật lý 
+hoặc dịch vụ 
+(External) 
+Yêu cầu 
+lưu / cập 
+nhật danh 
+mục 
+Quản trị 
+viên 
+UC02 – 
+Quản lý 
+danh 
+mục 
+Lưu danh mục mới, 
+cập nhật trạng thái bảo 
+trì và đồng bộ tồn kho 
+bán phòng 
+Quản trị viên, 
+Cổng 
+đặt 
+phòng 
+
+=== PDF PAGE 40 ===
+25 
+ 
+Khách hàng tìm 
+kiếm và đặt giữ 
+chỗ phòng trực 
+tuyến (External) 
+Yêu cầu 
+tra cứu và 
+thanh 
+toán cọc 
+30% 
+Khách 
+hàng 
+UC03 – 
+Đặt 
+phòng 
+trực 
+tuyến 
+Kiểm tra tồn kho, khóa 
+phòng cụ thể trạng thái 
+RESERVED và xuất 
+biên lai mã QR 
+Khách hàng, 
+Bàn lễ tân 
+Khách đang lưu 
+trú gửi yêu cầu 
+trả phòng nhanh 
+(External) 
+Tín hiệu 
+yêu 
+cầu 
+trả phòng 
+Khách 
+hàng 
+UC03 / 
+UC05 – 
+Chuẩn 
+bị 
+trả 
+phòng 
+Lưu dấu thời gian 
+checkout_requested_at 
+và hiển thị cảnh báo 
+trên sơ đồ phòng 
+Nhân viên lễ 
+tân 
+Khách đặt trước 
+đến quầy xuất 
+trình mã QR 
+nhận phòng 
+(External) 
+Mã 
+QR 
+đơn 
+đặt 
+trước 
+Khách 
+hàng 
+/ 
+Lễ tân 
+UC04 – 
+Nhận 
+phòng 
+(Check-
+in) 
+Tra cứu đơn, xác thực 
+phòng AVAILABLE, 
+chuyển 
+đơn 
+sang 
+CHECKED_IN 
+và 
+phòng 
+sang 
+OCCUPIED 
+Khách hàng, 
+Nhân viên lễ 
+tân 
+Khách vãng lai 
+đến quầy thuê 
+phòng trực tiếp 
+(External) 
+Yêu cầu 
+thuê 
+phòng 
+Walk-in 
+Khách 
+vãng lai / 
+Lễ tân 
+UC04 – 
+Tiếp 
+nhận 
+Walk-
+in 
+Tạo hồ sơ khách, lập 
+đơn 
+CHECKED_IN 
+tiền cọc 0 đồng và bàn 
+giao 
+phòng 
+AVAILABLE 
+Khách hàng, 
+Nhân viên lễ 
+tân 
+Khách đang lưu 
+trú sử dụng thêm 
+dịch vụ đi kèm 
+(External) 
+Yêu cầu 
+ghi 
+nợ 
+dịch vụ 
+Khách 
+hàng 
+/ 
+Lễ tân 
+UC06 – 
+Quản lý 
+Room 
+Folio 
+Lưu dòng dịch vụ kèm 
+đơn giá đóng băng 
+(BR5) và cập nhật tổng 
+chi phí Room Folio 
+Nhân viên lễ 
+tân, 
+Khách 
+hàng 
+Đến mốc giờ trả 
+phòng 12:00 
+hoặc khách 
+xuống quầy trả 
+phòng 
+(Temporal / 
+External) 
+Yêu cầu 
+quyết 
+toán 
+Check-
+out 
+Thời 
+gian / Lễ 
+tân 
+UC05 – 
+Trả 
+phòng 
+và 
+quyết 
+toán 
+Tính tiền phòng, dịch 
+vụ, phụ thu trả trễ, 5% 
+SVC, 10% VAT, trừ 
+cọc, xuất hóa đơn và 
+khóa 
+phòng 
+sang 
+DIRTY 
+Khách hàng, 
+Kế 
+toán, 
+Buồng phòng 
+Phòng hoàn tất 
+vệ sinh sau khi 
+chuyển sang 
+trạng thái 
+DIRTY (State / 
+External) 
+Xác nhận 
+phòng đã 
+dọn sạch 
+Trạng 
+thái 
+phòng / 
+Lễ tân 
+UC05 – 
+Nghiệm 
+thu 
+buồng 
+phòng 
+Chuyển 
+trạng 
+thái 
+phòng từ DIRTY trở 
+về AVAILABLE sẵn 
+sàng đón khách mới 
+Nhân viên lễ 
+tân, Cổng đặt 
+phòng 
+Đến cuối 
+ngày/tháng hoặc 
+quản trị viên yêu 
+Yêu cầu 
+xem 
+/ 
+Thời 
+gian 
+/ 
+UC07 – 
+Báo cáo 
+doanh 
+Tổng 
+hợp 
+cơ 
+cấu 
+doanh thu, thực thu 
+theo phương thức, tính 
+Quản trị viên, 
+Bộ phận kế 
+toán 
+
+=== PDF PAGE 41 ===
+26 
+ 
+cầu thống kê 
+(Temporal / 
+External) 
+xuất báo 
+cáo kỳ 
+Quản trị 
+viên 
+thu và 
+công 
+suất 
+OR%, ADR, RevPAR 
+và xuất PDF khổ A4 
+4.2 Biểu đồ Use Case tổng quát toàn hệ thống 
+Từ kết quả phân rã sự kiện tại Bảng 4.1, Biểu đồ Use Case tổng quát (Hình 
+4.1) thể hiện rõ ranh giới hệ thống (System Boundary), ba tác nhân trực tiếp (Khách 
+hàng, Nhân viên lễ tân, Quản trị viên) và bảy ca sử dụng chính (UC01 đến UC07). 
+Theo quy ước chuẩn UML trong bài giảng [1], hai quan hệ phụ thuộc được áp dụng 
+chặt chẽ để tránh trùng lặp mô tả: quan hệ bao hàm bắt buộc (<<include>>, mũi tên 
+nét đứt hướng từ ca sử dụng cơ sở sang ca sử dụng dùng chung) biểu diễn việc mọi 
+nghiệp vụ từ UC02 đến UC07 đều bắt buộc đi qua bước xác thực và kiểm tra phân 
+quyền của UC01; quan hệ mở rộng có điều kiện (<<extend>>, mũi tên nét đứt hướng 
+từ ca sử dụng mở rộng về ca sử dụng cơ sở tại các điểm mở rộng – Extension Points) 
+biểu diễn các tình huống chỉ kích hoạt khi thỏa điều kiện như tiếp nhận khách vãng 
+lai tại quầy, tính phụ thu nhận sớm hoặc trả trễ, chọn thanh toán chuyển khoản mã 
+QR tại quầy và xuất báo cáo định dạng PDF. 
+
+=== PDF PAGE 42 ===
+27 
+ 
+ 
+Hình 4.1 Biểu đồ Use Case tổng quát toàn hệ thống ACE Hotel 
+4.3 Đặc tả chi tiết bảy Use Case chính (UC01 – UC07) 
+Mỗi ca sử dụng trong bảy ca sử dụng cốt lõi được đặc tả ở mức đầy đủ (Fully 
+Dressed Use Case Description) theo đúng cấu trúc biểu mẫu bài giảng [1], bao gồm: 
+thông tin định danh, tác nhân, các bên liên quan, sự kiện kích hoạt (Triggering Event), 
+mô tả tóm tắt, tiền điều kiện, hậu điều kiện, bảng luồng sự kiện chính tách rõ hai cột 
+đối thoại giữa Tác nhân (bước 1, 2, 3...) và Hệ thống (bước 1.1, 2.1, 3.1...), các luồng 
+thay thế và điều kiện ngoại lệ gắn trực tiếp theo số bước phát sinh. Kèm sau mỗi bảng 
+đặc tả là bộ ba sơ đồ mô hình hóa hành vi gồm Sơ đồ Use Case phân rã, Sơ đồ Hoạt 
+động (Activity Diagram phân làn Swimlane) và Sơ đồ Tuần tự (Sequence Diagram 
+phân tầng View – Controller – Service – Data Access). 
+4.3.1 Đặc tả và mô hình hóa UC01 – Đăng ký hội viên, Đăng nhập và Điều 
+hướng vai trò 
+
+=== PDF PAGE 43 ===
+28 
+ 
+Bảng 4.2 Đặc tả chi tiết UC01 – Đăng ký hội viên, Đăng nhập và Điều hướng vai 
+trò 
+Hạng mục đặc tả 
+Nội dung chi tiết 
+Mã và Tên ca sử 
+dụng 
+UC01 – Đăng ký hội viên, Đăng nhập và Điều hướng theo vai 
+trò 
+Tác nhân (Actors) 
+Tác nhân chính: Khách hàng (CUSTOMER), Nhân viên lễ 
+tân (RECEPTIONIST), Quản trị viên (ADMIN). 
+Các bên liên quan 
+(Stakeholders) 
+Khách hàng (truy cập cổng đặt phòng an toàn), Ban quản lý 
+khách sạn (kiểm soát phân quyền nội bộ theo vai trò). 
+Sự kiện kích hoạt 
+(Triggering 
+Event) 
+Người dùng gửi yêu cầu đăng nhập vào hệ thống hoặc khách 
+vãng lai gửi yêu cầu đăng ký tài khoản hội viên mới. 
+Mô tả tóm tắt 
+Xác thực danh tính người dùng bằng mật khẩu mã hóa 
+BCrypt, tự động điều hướng đến trang làm việc phù hợp với 
+vai trò được cấp và cho phép khách mới tạo tài khoản hội viên 
+gắn với hồ sơ khách hàng. 
+Tiền 
+điều 
+kiện 
+(Preconditions) 
+Đối với đăng nhập: tài khoản đã tồn tại trong bảng users. Đối 
+với đăng ký: người dùng chưa đăng nhập và cung cấp đầy đủ 
+thông tin cá nhân hợp lệ (từ đủ 18 tuổi). 
+Hậu 
+điều 
+kiện 
+(Postconditions) 
+Đăng nhập thành công: phiên làm việc (HTTP Session) được 
+khởi tạo kèm quyền hạn RBAC tương ứng và hệ thống 
+chuyển hướng đến trang chủ của vai trò đó. Đăng ký thành 
+công: một bản ghi mới trong bảng users (vai trò 
+CUSTOMER) và một bản ghi liên kết trong bảng customers 
+được lưu bền vững. 
+Luồng 
+sự 
+kiện 
+chính 
+(Flow of Events) 
+Hành động của Tác 
+nhân (Actor) 
+Phản hồi của Hệ thống 
+(System) 
+1. Người dùng truy cập 
+cổng đăng nhập (/login), 
+nhập tên đăng nhập cùng 
+mật khẩu và gửi yêu cầu 
+xác thực. 
+1.1 Bộ lọc Spring Security 
+chuyển 
+thông 
+tin 
+cho 
+CustomUserDetailsService truy 
+vấn bảng users theo tên đăng 
+nhập. 
+2. Người dùng chờ hệ 
+thống kiểm tra tính hợp lệ 
+của thông tin xác thực. 
+2.1 Hệ thống đối chiếu mật khẩu 
+nhập vào với chuỗi băm BCrypt 
+trong cột password_hash; nếu 
+hợp lệ, khởi tạo phiên làm việc 
+bảo mật. 
+
+=== PDF PAGE 44 ===
+29 
+ 
+3. Người dùng tiếp nhận 
+trang đích sau khi xác thực 
+thành công. 
+3.1 
+Lớp 
+RoleBasedAuthSuccessHandler 
+kiểm tra vai trò và điều hướng: 
+ADMIN đến /admin/dashboard, 
+RECEPTIONIST 
+đến 
+/staff/dashboard, CUSTOMER 
+đến /customer/dashboard (hoặc 
+trang nội bộ hợp lệ đã yêu cầu 
+trước đó). 
+Luồng thay thế 
+(Alternative 
+Flows) 
+• A1 – Đăng ký tài khoản hội viên mới (tại bước 1): Khách 
+hàng truy cập /register, nhập họ tên, ngày sinh, số điện thoại, 
+số căn cước công dân, thư điện tử, tên đăng nhập và mật khẩu. 
+Lớp AuthService kiểm tra tuổi ≥ 18, kiểm tra không trùng tên 
+đăng nhập và số căn cước công dân, băm mật khẩu bằng 
+BCrypt và lưu đồng thời vào hai bảng users và customers 
+trong cùng một giao dịch. 
+Điều kiện ngoại lệ 
+(Exception 
+Conditions) 
+• Tại bước 1.1 hoặc 2.1: Tên đăng nhập không tồn tại hoặc 
+mật khẩu không khớp → Hệ thống từ chối cấp phiên làm việc 
+và chuyển hướng về /login?error=true kèm thông báo lỗi 
+chung. 
+• Tại luồng A1: Khách hàng chưa đủ 18 tuổi, sai định dạng số 
+điện thoại/căn cước công dân hoặc trùng tên đăng nhập → Hệ 
+thống giữ nguyên dữ liệu hợp lệ đã nhập và hiển thị thông báo 
+yêu cầu hiệu chỉnh. 
+• Truy cập đường dẫn vượt quá vai trò được cấp → Spring 
+Security chặn yêu cầu và chuyển hướng đến trang /error/403. 
+Quy tắc nghiệp vụ 
+và Yêu cầu liên kết 
+NFR-02 (mã hóa BCrypt), NFR-03 (phân quyền RBAC tại 
+máy chủ); Liên kết FR-01, FR-02. 
+
+=== PDF PAGE 45 ===
+30 
+ 
+ 
+Hình 4.2 Biểu đồ Use Case chi tiết UC01 – Đăng ký hội viên, Đăng nhập và Điều 
+hướng vai trò 
+ 
+Hình 4.3 Biểu đồ Hoạt động (Activity Diagram) của UC01 
+
+=== PDF PAGE 46 ===
+31 
+ 
+ 
+Hình 4.4 Biểu đồ Tuần tự (Sequence Diagram) của UC01 
+4.3.2 Đặc tả và mô hình hóa UC02 – Quản lý Danh mục Phòng, Biểu giá 
+và Dịch vụ 
+Bảng 4.3 Đặc tả chi tiết UC02 – Quản lý Danh mục Phòng, Biểu giá và Dịch vụ 
+Hạng mục đặc tả 
+Nội dung chi tiết 
+Mã và Tên ca sử 
+dụng 
+UC02 – Quản lý Danh mục Hạng phòng, Phòng vật lý, Biểu 
+giá và Dịch vụ 
+Tác nhân (Actors) 
+Tác nhân chính: Quản trị viên (ADMIN). Tác nhân tham khảo 
+chế độ chỉ đọc: Nhân viên lễ tân (RECEPTIONIST được phép 
+xem bảng giá tại GET /admin/catalog). 
+Các bên liên quan 
+(Stakeholders) 
+Chủ khách sạn (điều chỉnh biểu giá theo mùa/cuối tuần), Bộ 
+phận kỹ thuật (đóng phòng để sửa chữa bảo trì), Bộ phận lễ 
+tân (áp dụng đúng bảng giá niêm yết). 
+Sự kiện kích hoạt 
+(Triggering 
+Event) 
+Quản trị viên mở trang quản trị danh mục (/admin/catalog) và 
+thực hiện thao tác thêm, chỉnh sửa, bật/tắt bảo trì hoặc xóa 
+một mục dữ liệu. 
+Mô tả tóm tắt 
+Cho phép quản trị viên cấu hình toàn bộ dữ liệu nền tảng của 
+khách sạn gồm năm hạng phòng (giá ngày thường và giá cuối 
+
+=== PDF PAGE 47 ===
+32 
+ 
+tuần, sức chứa, loại giường), mười hai phòng vật lý (tầng, 
+hạng phòng, trạng thái bảo trì) và danh mục dịch vụ thuộc bốn 
+nhóm chuẩn. 
+Tiền 
+điều 
+kiện 
+(Preconditions) 
+Người dùng đã đăng nhập với vai trò ADMIN và truy cập 
+thành công phân hệ quản trị danh mục. 
+Hậu 
+điều 
+kiện 
+(Postconditions) 
+Các thay đổi về hạng phòng, phòng vật lý hoặc dịch vụ được 
+lưu bền vững vào các bảng room_types, rooms, services; tồn 
+kho bán phòng và mẫu số tính công suất tự động cập nhật theo 
+trạng thái mới. 
+Luồng 
+sự 
+kiện 
+chính 
+(Flow of Events) 
+Hành động của Tác nhân 
+(Actor) 
+Phản hồi của Hệ thống 
+(System) 
+1. Quản trị viên truy cập 
+trang quản lý danh mục 
+(/admin/catalog). 
+1.1 AdminCatalogController 
+gọi CatalogService truy vấn 
+và hiển thị danh sách hạng 
+phòng, danh sách phòng vật lý 
+kèm trạng thái hiện tại và danh 
+mục dịch vụ theo bốn nhóm. 
+2. Quản trị viên chọn cập 
+nhật thông tin hạng phòng 
+(như đơn giá ngày thường, 
+đơn giá cuối tuần, sức chứa, 
+cấu hình giường) và gửi yêu 
+cầu lưu. 
+2.1 CatalogService kiểm tra 
+tính hợp lệ của dữ liệu đầu vào 
+(tên không trùng lặp, đơn giá 
+lớn hơn 0, sức chứa tối thiểu 
+bằng 1). 
+3. Quản trị viên tiếp nhận kết 
+quả lưu thay đổi. 
+3.1 Hệ thống ghi nhận bản ghi 
+vào bảng room_types trong cơ 
+sở dữ liệu H2 và hiển thị thông 
+báo cập nhật thành công. 
+Luồng thay thế 
+(Alternative 
+Flows) 
+• A1 – Bật hoặc tắt trạng thái bảo trì phòng vật lý 
+(/admin/rooms/{id}/toggle-maintenance): Quản trị viên chọn 
+chuyển một phòng đang ở trạng thái AVAILABLE sang 
+MAINTENANCE (hoặc mở lại từ MAINTENANCE về 
+AVAILABLE). Phòng đang bảo trì lập tức được loại khỏi tồn 
+kho bán (BR1) và mẫu số tính tỷ lệ lấp đầy (BR7). 
+• A2 – Thêm mới hoặc cập nhật danh mục dịch vụ 
+(/admin/services/save): Quản trị viên nhập tên dịch vụ, chọn 
+một trong bốn nhóm (MINIBAR, LAUNDRY, FB, 
+DAMAGES), nhập đơn giá và đơn vị tính. Việc đổi giá chỉ 
+áp dụng cho các lượt gọi mới, không ảnh hưởng tới các dòng 
+đã ghi trong Room Folio (BR5). 
+
+=== PDF PAGE 48 ===
+33 
+ 
+Điều kiện ngoại lệ 
+(Exception 
+Conditions) 
+• Tại bước 2.1: Tên hạng phòng, số phòng vật lý hoặc tên dịch 
+vụ bị trùng lặp, hoặc đơn giá nhỏ hơn hoặc bằng 0 → Hệ 
+thống hủy thao tác lưu và thông báo lỗi ràng buộc dữ liệu. 
+• Tại luồng A1: Quản trị viên yêu cầu chuyển phòng đang có 
+khách (OCCUPIED) hoặc chưa dọn vệ sinh (DIRTY) sang 
+bảo trì → Hệ thống từ chối để đảm bảo an toàn nghiệp vụ. 
+• Yêu cầu xóa hạng phòng, phòng hoặc dịch vụ đã phát sinh 
+đơn đặt phòng hoặc hóa đơn lịch sử → Hệ thống chặn xóa 
+theo quy tắc bảo toàn lịch sử (BR7). 
+Quy tắc nghiệp vụ 
+và Yêu cầu liên kết BR1, BR3, BR5, BR7; Liên kết FR-03, FR-04, FR-05. 
+ 
+Hình 4.5 Biểu đồ Use Case chi tiết UC02 – Quản lý Danh mục Phòng, Biểu giá và 
+Dịch vụ 
+
+=== PDF PAGE 49 ===
+34 
+ 
+ 
+Hình 4.6 Biểu đồ Hoạt động (Activity Diagram) của UC02 
+ 
+Hình 4.7 Biểu đồ Tuần tự UC02 – Luồng 2A: Quản lý Hạng phòng và Biểu giá 
+
+=== PDF PAGE 50 ===
+35 
+ 
+ 
+Hình 4.8 Biểu đồ Tuần tự UC02 – Luồng 2B: Quản lý Phòng vật lý và Bảo trì 
+
+=== PDF PAGE 51 ===
+36 
+ 
+ 
+Hình 4.9 Biểu đồ Tuần tự UC02 – Luồng 2C: Quản lý Danh mục Dịch vụ 
+4.3.3 Đặc tả và mô hình hóa UC03 – Tìm kiếm, Chọn phòng, Đặt cọc 30% 
+và Xuất biên lai QR 
+Bảng 4.4 Đặc tả chi tiết UC03 – Tìm kiếm, Chọn phòng, Đặt cọc 30% và Xuất biên 
+lai QR 
+Hạng mục đặc 
+tả 
+Nội dung chi tiết 
+Mã và Tên ca sử 
+dụng 
+UC03 – Tìm kiếm hạng phòng, Chọn số phòng cụ thể, Đặt cọc 
+30% trực tuyến và Xuất biên lai QR 
+
+=== PDF PAGE 52 ===
+37 
+ 
+Tác 
+nhân 
+(Actors) 
+Tác nhân chính: Khách hàng (CUSTOMER). 
+Các 
+bên 
+liên 
+quan 
+(Stakeholders) 
+Khách hàng (chủ động chọn đúng phòng mong muốn và nhận 
+chứng từ xác nhận cọc), Bộ phận lễ tân (nhận lịch đặt trước có 
+khóa sẵn phòng), Bộ phận kế toán (đối soát khoản thu cọc 30%). 
+Sự 
+kiện 
+kích 
+hoạt 
+(Triggering 
+Event) 
+Khách hàng nhập ngày nhận phòng, ngày trả phòng, số lượng 
+khách trên cổng đặt phòng trực tuyến (/booking) để tìm phòng 
+và tiến hành đặt cọc giữ chỗ. 
+Mô tả tóm tắt 
+Cho phép khách hàng tra cứu các hạng phòng còn suất trống 
+theo khoảng ngày lưu trú, hiệu chỉnh ngày và giờ dự kiến 
+nhận/trả phòng, chọn trực tiếp một số phòng vật lý còn trống, 
+hoàn tất khoản đặt cọc 30% qua mã QR và nhận biên lai thu cọc 
+kèm mã QR hỗ trợ xuất tệp PNG/PDF khổ A4. 
+Tiền điều kiện 
+(Preconditions) 
+Khoảng ngày lưu trú hợp lệ (ngày trả sau ngày nhận ít nhất một 
+đêm); tài khoản khách hàng đã đăng nhập với vai trò 
+CUSTOMER (hoặc ADMIN) khi gửi xác nhận đặt cọc tại 
+/booking/deposit. 
+Hậu điều kiện 
+(Postconditions) 
+Đơn đặt phòng mới được lưu vào bảng bookings ở trạng thái 
+RESERVED, gắn mã đơn duy nhất (BK-...), lưu chính xác 
+phòng vật lý đã chọn (room_id), giờ dự kiến nhận/trả, tiền 
+phòng gốc và khoản tiền cọc 30%; biên lai thu cọc kèm mã QR 
+được phát hành. 
+Luồng sự kiện 
+chính 
+(Flow of Events) 
+Hành động của Tác 
+nhân (Actor) 
+Phản hồi của Hệ thống (System) 
+1. Khách hàng truy cập 
+cổng 
+đặt 
+phòng 
+(/booking), 
+chọn 
+ngày 
+nhận phòng, ngày trả 
+phòng, số lượng khách và 
+gửi yêu cầu tìm kiếm. 
+1.1 CustomerPortalController gọi 
+BookingService và PricingService 
+kiểm tra tồn kho khả dụng (BR1), 
+lọc các hạng phòng đủ sức chứa và 
+tính giá từng đêm theo ngày 
+thường/cuối tuần (BR3) để hiển 
+thị. 
+2. Khách hàng chọn một 
+hạng phòng còn suất trống 
+để mở cửa sổ đặt phòng, rà 
+soát thông tin cá nhân và 
+hiệu chỉnh ngày, khung 
+giờ 
+dự 
+kiến 
+nhận/trả 
+phòng. 
+2.1 Giao diện gọi điểm cuối GET 
+/booking/api/available-rooms để 
+nạp danh sách các số phòng vật lý 
+không trùng lịch và khác trạng thái 
+bảo trì, đồng thời tính tức thời tổng 
+gói phòng ước tính (gồm 5% phí 
+phục vụ và 10% thuế GTGT) cùng 
+mức đặt cọc 30% (BR4). 
+
+=== PDF PAGE 53 ===
+38 
+ 
+3. Khách hàng chọn số 
+phòng vật lý mong muốn 
+(hoặc để lễ tân sắp xếp), 
+quét mã QR thanh toán 
+khoản đặt cọc 30% và xác 
+nhận hoàn tất đặt phòng 
+(/booking/deposit). 
+3.1 BookingService mở giao dịch 
+@Transactional, khóa bi quan bản 
+ghi 
+hạng 
+phòng 
+(PESSIMISTIC_WRITE), 
+xác 
+minh lại tồn kho và kiểm tra phòng 
+được chọn chưa bị đặt trùng trong 
+khoảng ngày. 
+4. Khách hàng tiếp nhận 
+biên lai thu cọc và lưu giữ 
+mã QR phục vụ nhận 
+phòng. 
+4.1 Hệ thống sinh mã đơn BK-..., 
+lưu đơn ở trạng thái RESERVED 
+và chuyển hướng tới trang biên lai 
+thu 
+cọc 
+(/customer/bookings/{id}/deposit-
+receipt) hỗ trợ tải ảnh PNG, tải tệp 
+PDF khổ A4 hoặc in trực tiếp. 
+Luồng thay thế 
+(Alternative 
+Flows) 
+• A1 – Khách hàng quản lý đơn cá nhân (/customer/bookings): 
+Khách xem danh sách kỳ lưu trú, mở bảng chi phí dịch vụ phát 
+sinh 
+theo 
+thời 
+gian 
+thực 
+(Live 
+Folio 
+qua 
+/customer/bookings/{id}/folio-data) khi đang lưu trú. 
+• 
+A2 
+– 
+Khách 
+tự 
+hủy 
+đơn 
+giữ 
+chỗ 
+(/customer/bookings/{id}/cancel): Khi đơn còn ở trạng thái 
+RESERVED, hệ thống tự động đối chiếu mốc 48 giờ trước giờ 
+nhận phòng (14:00) để thông báo rõ khách được hoàn 100% tiền 
+cọc (nếu hủy trước ≥ 48 giờ) hay bị mất cọc 30% (nếu hủy muộn 
+dưới 48 giờ); sau khi khách xác nhận, đơn chuyển sang 
+CANCELLED và giải phóng ngay phòng vật lý về quỹ trống. 
+• 
+A3 
+– 
+Khách 
+gửi 
+yêu 
+cầu 
+trả 
+phòng 
+nhanh 
+(/customer/bookings/{id}/request-checkout): Khi đơn đang ở 
+trạng thái CHECKED_IN, khách gửi thông báo trả phòng; hệ 
+thống lưu mốc thời gian checkout_requested_at để hiển thị cảnh 
+báo ngay trên bàn lễ tân. 
+Điều kiện ngoại 
+lệ 
+(Exception 
+Conditions) 
+• Tại bước 1.1: Ngày trả phòng nhỏ hơn hoặc bằng ngày nhận 
+phòng → Hệ thống từ chối truy vấn theo quy tắc BR3 và hiển 
+thị thông báo nhắc chọn lại. 
+• Tại bước 3.1: Hạng phòng hết tồn kho hoặc số phòng cụ thể 
+vừa được khách khác đặt trước đó vài giây → Giao dịch hoàn 
+tác (Rollback) và hệ thống yêu cầu khách chọn phòng hoặc hạng 
+phòng khác. 
+• Tại luồng A2: Khách yêu cầu hủy đơn đã nhận phòng 
+(CHECKED_IN) hoặc đã trả phòng (CHECKED_OUT) → Hệ 
+thống từ chối theo quy tắc BR7. 
+
+=== PDF PAGE 54 ===
+39 
+ 
+Quy tắc nghiệp 
+vụ và Yêu cầu 
+liên kết 
+BR1, BR3, BR4, BR7; Liên kết FR-06, FR-07, FR-08, FR-09. 
+ 
+Hình 4.10 Biểu đồ Use Case chi tiết UC03 – Tìm kiếm, Chọn phòng, Đặt cọc 30% 
+và Xuất biên lai QR 
+ 
+Hình 4.11 Biểu đồ Hoạt động (Activity Diagram) của UC03 
+
+=== PDF PAGE 55 ===
+40 
+ 
+ 
+Hình 4.12 Biểu đồ Tuần tự (Sequence Diagram) của UC03 
+4.3.4 Đặc tả và mô hình hóa UC04 – Quản lý Nhận phòng (Check-in) và 
+Tiếp nhận Khách vãng lai 
+Bảng 4.5 Đặc tả chi tiết UC04 – Quản lý Nhận phòng (Check-in) và Tiếp nhận 
+Khách vãng lai 
+Hạng mục đặc tả 
+Nội dung chi tiết 
+Mã và Tên ca sử 
+dụng 
+UC04 – Làm thủ tục Nhận phòng quét mã QR và Tiếp nhận 
+khách vãng lai (Walk-in) 
+Tác nhân (Actors) 
+Tác nhân chính: Nhân viên lễ tân (RECEPTIONIST), Quản 
+trị viên (ADMIN). Tác nhân phối hợp: Khách hàng (xuất trình 
+mã QR biên lai hoặc giấy tờ tùy thân tại quầy). 
+Các bên liên quan 
+(Stakeholders) 
+Khách hàng (nhận chìa khóa phòng sạch nhanh chóng), Bộ 
+phận lễ tân (kiểm soát chính xác phòng giao cho khách), Bộ 
+phận buồng phòng (đảm bảo chỉ phòng đã vệ sinh mới được 
+đưa vào sử dụng). 
+Sự kiện kích hoạt 
+(Triggering Event) 
+Khách đặt trước xuất trình mã QR biên lai cọc tại quầy lễ tân 
+hoặc khách vãng lai đến yêu cầu thuê phòng trực tiếp. 
+
+=== PDF PAGE 56 ===
+41 
+ 
+Mô tả tóm tắt 
+Hỗ trợ nhân viên lễ tân quét mã QR (từ máy ảnh hoặc tệp ảnh 
+biên lai) để tra cứu đơn đặt trước (RESERVED), tự động chọn 
+sẵn 
+phòng khách đã 
+chốt 
+nếu đang trống 
+sạch 
+(AVAILABLE), ghi nhận phụ thu nhận sớm (nếu có) và kích 
+hoạt trạng thái lưu trú; đồng thời hỗ trợ tạo đơn trực tiếp cho 
+khách vãng lai với mức cọc 0 đồng. 
+Tiền 
+điều 
+kiện 
+(Preconditions) 
+Nhân viên đã đăng nhập với vai trò RECEPTIONIST hoặc 
+ADMIN; có ít nhất một phòng vật lý thuộc hạng phòng yêu 
+cầu đang ở trạng thái AVAILABLE. 
+Hậu 
+điều 
+kiện 
+(Postconditions) 
+Đơn lưu trú chuyển sang trạng thái CHECKED_IN kèm dấu 
+thời gian thực tế (actual_check_in) và khóa ngoại room_id; 
+trạng thái phòng vật lý chuyển tức thời từ AVAILABLE sang 
+OCCUPIED trên toàn hệ thống. 
+Luồng 
+sự 
+kiện 
+chính 
+(Flow of Events) 
+Hành động của Tác nhân 
+(Actor) 
+Phản hồi của Hệ thống 
+(System) 
+1. Nhân viên lễ tân mở màn 
+hình 
+tiếp 
+nhận 
+khách 
+(/staff/check-in) 
+và 
+thực 
+hiện quét mã QR từ biên lai 
+của khách (hoặc nhập mã 
+đơn BK-...). 
+1.1 
+StaffCheckInController 
+tìm kiếm đơn ở trạng thái 
+RESERVED và hiển thị thông 
+tin khách hàng, hạng phòng, 
+khoảng ngày, tiền cọc 30% đã 
+đóng cùng số phòng khách đã 
+chọn trước. 
+2. Nhân viên lễ tân đối chiếu 
+căn cước công dân của 
+khách, kiểm tra số phòng vật 
+lý dự kiến bàn giao và chọn 
+mức phụ thu nhận phòng 
+sớm (nếu khách nhận trước 
+14:00). 
+2.1 Hệ thống lọc riêng các 
+phòng vật lý cùng hạng đang ở 
+trạng 
+thái 
+AVAILABLE 
+(BR2) và tự động đánh dấu 
+chọn sẵn phòng khách đã chốt 
+khi đặt trực tuyến. 
+3. Nhân viên lễ tân xác nhận 
+hoàn tất thủ tục nhận phòng. 
+3.1 CheckInService khóa bi 
+quan bản ghi phòng, kiểm tra 
+lại điều kiện phòng đang 
+AVAILABLE và không có 
+đơn CHECKED_IN trùng lặp, 
+sau đó cập nhật booking.status 
+thành CHECKED_IN, gán 
+actual_check_in và chuyển 
+room.status 
+thành 
+OCCUPIED. 
+
+=== PDF PAGE 57 ===
+42 
+ 
+4. Nhân viên lễ tân bàn giao 
+chìa khóa cho khách và tiếp 
+tục theo dõi sơ đồ phòng. 
+4.1 Hệ thống điều hướng về 
+bảng 
+điều 
+khiển 
+lễ 
+tân 
+(/staff/dashboard) hiển thị thẻ 
+phòng đã chuyển sang màu 
+đang lưu trú (OCCUPIED). 
+Luồng thay thế 
+(Alternative 
+Flows) 
+• A1 – Tiếp nhận khách vãng lai trực tiếp tại quầy 
+(/staff/walk-in): Nhân viên nhập thông tin định danh khách 
+(họ tên, số điện thoại, căn cước công dân), chọn ngày trả 
+phòng dự kiến, số khách và chọn một phòng vật lý đang ở 
+trạng thái AVAILABLE. CheckInService tính tiền phòng 
+theo lịch đêm (BR3), khởi tạo đơn ngay ở trạng thái 
+CHECKED_IN với deposit_amount = 0 đồng (BR4) và 
+chuyển phòng sang OCCUPIED. 
+• A2 – Thay đổi phòng bàn giao cùng hạng: Trường hợp 
+phòng khách chốt trước chưa kịp vệ sinh hoặc khách đề nghị 
+đổi tầng, nhân viên chọn một phòng AVAILABLE khác cùng 
+hạng trước khi xác nhận. 
+• A3 – Hủy đơn giữ chỗ hoặc xử lý khách không đến (No-
+show) tại quầy (/staff/bookings/{id}/cancel): Nhân viên lễ tân 
+hoặc quản trị viên hủy đơn đang RESERVED trên danh sách 
+chờ nhận phòng, áp dụng cùng quy tắc hoàn cọc / mất cọc 
+30% theo mốc 48 giờ (BR7) và giải phóng ngay phòng vật lý 
+về quỹ trống. 
+Điều kiện ngoại lệ 
+(Exception 
+Conditions) 
+• Tại bước 1.1: Mã QR không khớp với đơn nào hoặc đơn 
+không còn ở trạng thái RESERVED (đã nhận phòng hoặc đã 
+hủy) → Hệ thống hiển thị thông báo cảnh báo. 
+• Tại bước 3.1 hoặc luồng A1: Phòng được chọn đang ở trạng 
+thái DIRTY, OCCUPIED hoặc MAINTENANCE → Hệ 
+thống từ chối bàn giao phòng theo quy tắc BR2 và yêu cầu 
+hoàn tất dọn phòng hoặc chọn phòng trống sạch khác. 
+Quy tắc nghiệp vụ 
+và Yêu cầu liên kết BR1, BR2, BR3, BR4; Liên kết FR-10, FR-11, FR-16. 
+
+=== PDF PAGE 58 ===
+43 
+ 
+ 
+Hình 4.13 Biểu đồ Use Case chi tiết UC04 – Nhận phòng (Check-in) và Tiếp nhận 
+Khách vãng lai 
+ 
+Hình 4.14 Biểu đồ Hoạt động (Activity Diagram) của UC04 
+
+=== PDF PAGE 59 ===
+44 
+ 
+ 
+Hình 4.15 Biểu đồ Tuần tự (Sequence Diagram) của UC04 
+4.3.5 Đặc tả và mô hình hóa UC05 – Trả phòng, Quyết toán thuế phí và 
+Vòng đời dọn phòng 
+Bảng 4.6 Đặc tả chi tiết UC05 – Trả phòng, Quyết toán thuế phí và Vòng đời dọn 
+phòng 
+Hạng mục đặc tả 
+Nội dung chi tiết 
+Mã và Tên ca sử 
+dụng 
+UC05 – Quyết toán Trả phòng (Check-out), Xuất hóa đơn 
+GTGT và Xác nhận dọn phòng 
+Tác 
+nhân 
+(Actors) 
+Tác nhân chính: Nhân viên lễ tân (RECEPTIONIST), Quản trị 
+viên (ADMIN). Tác nhân phối hợp: Khách hàng (thanh toán 
+và nhận hóa đơn), Bộ phận buồng phòng (vệ sinh phòng 
+DIRTY). 
+Các bên liên quan 
+(Stakeholders) 
+Khách hàng (nhận hóa đơn minh bạch), Bộ phận kế toán (lưu 
+trữ hóa đơn GTGT chính xác), Bộ phận buồng phòng (nhận 
+danh sách phòng cần dọn dẹp ngay khi khách rời đi). 
+Sự kiện kích hoạt 
+(Triggering 
+Event) 
+Khách hàng xuống quầy báo trả phòng, gửi tín hiệu yêu cầu 
+trả phòng nhanh từ cổng hội viên, hoặc đến mốc giờ trả phòng 
+tiêu chuẩn 12:00. 
+
+=== PDF PAGE 60 ===
+45 
+ 
+Mô tả tóm tắt 
+Tổng hợp toàn bộ chi phí lưu trú của đơn CHECKED_IN (tiền 
+phòng, tổng dịch vụ Room Folio, phụ thu nhận sớm và trả trễ), 
+tính tự động 5% phí phục vụ và 10% thuế giá trị gia tăng, khấu 
+trừ tiền đặt cọc, hỗ trợ thanh toán tiền mặt/thẻ/quét mã QR 
+động tại quầy, phát hành hóa đơn bất biến khổ A4 và chuyển 
+phòng sang trạng thái chờ dọn (DIRTY). 
+Tiền điều 
+kiện 
+(Preconditions) 
+Đơn lưu trú đang ở trạng thái CHECKED_IN và chưa từng 
+được lập hóa đơn trong bảng invoices. 
+Hậu 
+điều 
+kiện 
+(Postconditions) 
+Bản ghi hóa đơn duy nhất được lưu vào bảng invoices thỏa 
+mãn ba ràng buộc CHECK tài chính; đơn chuyển sang 
+CHECKED_OUT kèm dấu thời gian actual_check_out; phòng 
+tự động chuyển từ OCCUPIED sang DIRTY (và trở về 
+AVAILABLE sau khi nghiệm thu dọn sạch). 
+Luồng sự 
+kiện 
+chính 
+(Flow of Events) 
+Hành động của Tác nhân 
+(Actor) 
+Phản hồi của Hệ thống 
+(System) 
+1. Từ bảng điều khiển lễ tân, 
+nhân viên chọn thao tác trả 
+phòng cho phòng đang lưu trú 
+(/staff/bookings/{id}/check-
+out). 
+1.1 StaffCheckOutController 
+gọi CheckOutService tổng 
+hợp bảng kê chi tiết gồm tiền 
+phòng gốc, liệt kê đầy đủ 
+từng khoản dịch vụ Room 
+Folio (tên dịch vụ, nhóm 
+danh mục, số lượng, đơn giá 
+đóng băng, thời điểm ghi và 
+thành tiền từng dòng), phụ 
+thu nhận sớm (nếu có) và 
+khoản tiền cọc đã đóng. 
+2. Nhân viên kiểm tra thời 
+điểm trả phòng, lựa chọn mức 
+phụ thu trả phòng trễ (0%, 
+30%, 50% hoặc 100% giá một 
+đêm ngày thường nếu trả sau 
+12:00) và chọn phương thức 
+thanh toán (CASH, CARD 
+hoặc TRANSFER). 
+2.1 Hệ thống tự động tính 
+tuần tự bằng số nguyên 
+BIGINT theo quy tắc BR6: 
+tổng 
+trước 
+thuế 
+phí 
+(subtotal), phí phục vụ 5%, 
+thuế GTGT 10%, tổng giá trị 
+hóa đơn (grand_total) và số 
+tiền còn phải thu tại quầy 
+(balance_due). Nếu 
+chọn 
+phương thức TRANSFER, 
+màn hình bật khung mã QR 
+VietQR điền sẵn đúng số tiền 
+balance_due cùng MoMo và 
+ZaloPay. 
+
+=== PDF PAGE 61 ===
+46 
+ 
+3. Sau khi khách hoàn tất 
+thanh toán tại quầy, nhân viên 
+xác nhận quyết toán và trả 
+phòng. 
+3.1 CheckOutService lưu 
+bản ghi hóa đơn bất biến vào 
+bảng invoices, cập nhật 
+booking.status 
+thành 
+CHECKED_OUT, 
+ghi 
+actual_check_out và tự động 
+chuyển room.status thành 
+DIRTY (BR7). 
+4. Nhân viên in hoặc xuất hóa 
+đơn cho khách hàng. 
+4.1 Hệ thống mở trang hóa 
+đơn GTGT chuẩn khổ A4 
+(/staff/invoices/{id}) hỗ trợ 
+in trực tiếp hoặc tải tệp PDF. 
+Luồng thay thế 
+(Alternative 
+Flows) 
+• A1 – Xác nhận hoàn tất dọn vệ sinh buồng phòng 
+(/staff/rooms/{id}/clean): Sau khi bộ phận buồng phòng thông 
+báo đã hoàn tất vệ sinh và kiểm tra vật tư tại phòng DIRTY, 
+nhân viên lễ tân chọn thao tác xác nhận dọn sạch trên bảng 
+điều khiển để chuyển trạng thái phòng từ DIRTY về lại 
+AVAILABLE (BR7). 
+Điều kiện ngoại lệ 
+(Exception 
+Conditions) 
+• Tại bước 3.1: Yêu cầu lập hóa đơn lặp lại cho một đơn đã 
+quyết toán → Ràng buộc UNIQUE(booking_id) dưới cơ sở dữ 
+liệu và kiểm tra trạng thái tại CheckOutService chặn phát sinh 
+hóa đơn trùng (BR6). 
+• Tại luồng A1: Yêu cầu chuyển trạng thái dọn sạch trên phòng 
+không ở trạng thái DIRTY → Hệ thống bỏ qua và giữ nguyên 
+trạng thái an toàn. 
+Quy tắc nghiệp vụ 
+và Yêu cầu liên 
+kết 
+BR4, BR6, BR7; Liên kết FR-09, FR-13, FR-14, FR-15. 
+
+=== PDF PAGE 62 ===
+47 
+ 
+ 
+Hình 4.16 Biểu đồ Use Case chi tiết UC05 – Trả phòng, Quyết toán thuế phí và 
+Vòng đời dọn phòng 
+ 
+Hình 4.17 Biểu đồ Hoạt động (Activity Diagram) của UC05 
+
+=== PDF PAGE 63 ===
+48 
+ 
+ 
+Hình 4.18 Biểu đồ Tuần tự (Sequence Diagram) của UC05 
+4.3.6 Đặc tả và mô hình hóa UC06 – Ghi nhận Dịch vụ lưu trú vào Sổ cái 
+phòng (Room Folio) 
+Bảng 4.7 Đặc tả chi tiết UC06 – Ghi nhận Dịch vụ lưu trú vào Sổ cái phòng (Room 
+Folio) 
+Hạng mục đặc tả 
+Nội dung chi tiết 
+Mã và Tên ca sử 
+dụng 
+UC06 – Ghi nhận và Quản lý Dịch vụ phát sinh trong kỳ lưu 
+trú (Room Folio) 
+Tác nhân (Actors) 
+Tác nhân chính: Nhân viên lễ tân (RECEPTIONIST), Quản 
+trị viên (ADMIN). Tác nhân phối hợp: Khách hàng (yêu cầu 
+sử dụng dịch vụ và đối chiếu Live Folio). 
+Các bên liên quan 
+(Stakeholders) 
+Khách hàng (theo dõi minh bạch các dịch vụ đã gọi), Bộ phận 
+lễ tân và nhà hàng/buồng phòng (ghi nhận đầy đủ khoản thu 
+tránh thất thoát). 
+Sự kiện kích hoạt 
+(Triggering 
+Event) 
+Khách hàng đang lưu trú phát sinh nhu cầu sử dụng dịch vụ 
+(đồ uống Minibar, giặt ủi, ẩm thực tại phòng hoặc bồi thường 
+hư hỏng vật tư). 
+Mô tả tóm tắt 
+Cho phép nhân viên lễ tân ghi nhận các khoản mục dịch vụ 
+thuộc bốn nhóm chuẩn vào sổ cái điện tử của phòng đang có 
+khách lưu trú (CHECKED_IN) với cơ chế đóng băng đơn giá 
+tại thời điểm gọi (BR5), hoặc xóa dòng ghi nhầm trước khi 
+xuất hóa đơn. 
+
+=== PDF PAGE 64 ===
+49 
+ 
+Tiền 
+điều 
+kiện 
+(Preconditions) 
+Đơn lưu trú phải đang ở trạng thái CHECKED_IN; dịch vụ 
+được chọn phải tồn tại trong bảng services. 
+Hậu 
+điều 
+kiện 
+(Postconditions) 
+Bản ghi mới được lưu vào bảng service_orders với cột 
+unit_price giữ nguyên đơn giá niêm yết tại thời điểm phát sinh 
+và cột created_by lưu mã nhân viên thao tác; tổng tạm tính 
+Room Folio được cập nhật ngay lập tức cho cả quầy lễ tân và 
+cổng khách hàng. 
+Luồng 
+sự 
+kiện 
+chính 
+(Flow of Events) 
+Hành động của Tác nhân 
+(Actor) 
+Phản hồi của Hệ thống 
+(System) 
+1. Từ bảng điều khiển lễ tân, 
+nhân viên mở sổ cái dịch vụ 
+của một phòng đang lưu trú 
+(/staff/bookings/{id}/folio). 
+1.1 StaffFolioController gọi 
+FolioService nạp thông tin 
+phòng, danh sách các dịch 
+vụ đã ghi nhận và danh mục 
+tám dịch vụ phân theo bốn 
+nhóm 
+(MINIBAR, 
+LAUNDRY, 
+FB, 
+DAMAGES). 
+2. Nhân viên chọn dịch vụ 
+khách sử dụng, nhập số lượng 
+(tối thiểu bằng 1) và gửi yêu 
+cầu ghi nợ vào Room Folio. 
+2.1 FolioService kiểm tra 
+đơn đặt phòng đang ở trạng 
+thái CHECKED_IN, truy 
+vấn đơn giá hiện hành từ 
+bảng services và sao chép cố 
+định 
+vào 
+trường 
+serviceOrder.unitPrice 
+(BR5). 
+3. Nhân viên kiểm tra lại danh 
+sách dịch vụ trên sổ cái của 
+phòng. 
+3.1 Hệ thống lưu bản ghi vào 
+bảng service_orders kèm 
+dấu thời gian ordered_at và 
+mã nhân viên ghi nhận 
+(created_by), tính lại tổng 
+tiền dịch vụ lũy kế và cập 
+nhật giao diện (hỗ trợ cả tải 
+trang và cập nhật bất đồng 
+bộ AJAX). 
+Luồng thay thế 
+(Alternative 
+Flows) 
+• 
+A1 
+– 
+Xóa 
+dòng 
+dịch 
+vụ 
+ghi 
+nhận 
+nhầm 
+(/staff/bookings/{id}/folio/{orderId}/delete): Trường 
+hợp 
+nhập sai số lượng hoặc khách hủy món chưa phục vụ, nhân 
+viên thực hiện thao tác xóa dòng tương ứng. Hệ thống kiểm 
+tra đơn vẫn đang CHECKED_IN trước khi xóa bản ghi và tính 
+lại tổng tạm tính. 
+
+=== PDF PAGE 65 ===
+50 
+ 
+Điều kiện ngoại lệ 
+(Exception 
+Conditions) 
+• Tại bước 2.1 hoặc luồng A1: Thực hiện thêm hoặc xóa dịch 
+vụ trên đơn chưa nhận phòng (RESERVED) hoặc đã quyết 
+toán trả phòng (CHECKED_OUT) → Hệ thống từ chối thao 
+tác theo quy tắc BR5. 
+• Tại bước 2.1: Số lượng nhập vào nhỏ hơn 1 → Ràng buộc 
+kiểm tra dữ liệu và ràng buộc CHECK (quantity >= 1) từ chối 
+lưu. 
+Quy tắc nghiệp vụ 
+và Yêu cầu liên 
+kết 
+BR5; Liên kết FR-09, FR-12. 
+ 
+Hình 4.19 Biểu đồ Use Case chi tiết UC06 – Ghi nhận Dịch vụ lưu trú vào Sổ cái 
+phòng (Room Folio) 
+ 
+Hình 4.20 Biểu đồ Hoạt động (Activity Diagram) của UC06 
+
+=== PDF PAGE 66 ===
+51 
+ 
+ 
+Hình 4.21 Biểu đồ Tuần tự (Sequence Diagram) của UC06 
+4.3.7 Đặc tả và mô hình hóa UC07 – Báo cáo Doanh thu đa chiều và Công 
+suất khai thác phòng 
+Bảng 4.8 Đặc tả chi tiết UC07 – Báo cáo Doanh thu đa chiều và Công suất khai thác 
+phòng 
+Hạng mục đặc tả 
+Nội dung chi tiết 
+Mã và Tên ca sử 
+dụng 
+UC07 – Thống kê Báo cáo Doanh thu đa chiều, Công suất 
+khai thác phòng và Xuất PDF khổ A4 
+Tác nhân (Actors) Tác nhân chính: Quản trị viên (ADMIN). 
+Các bên liên quan 
+(Stakeholders) 
+Chủ khách sạn và Ban giám đốc (đánh giá hiệu quả kinh 
+doanh theo chuẩn USALI), Bộ phận kế toán (đối soát tổng thu 
+theo phương thức thanh toán và bảng kê hóa đơn). 
+Sự kiện kích hoạt 
+(Triggering 
+Event) 
+Đến kỳ tổng kết (ngày, tuần, tháng) hoặc quản trị viên truy 
+cập phân hệ báo cáo (/admin/reports) và lọc theo khoảng thời 
+gian. 
+Mô tả tóm tắt 
+Tổng hợp số liệu doanh thu từ toàn bộ hóa đơn đã quyết toán 
+theo khoảng ngày tùy chọn, phân tách cơ cấu doanh thu 
+phòng, dịch vụ, phụ thu, phí phục vụ 5%, thuế GTGT 10%, 
+cơ cấu thực thu tại quầy theo ba phương thức thanh toán, tính 
+
+=== PDF PAGE 67 ===
+52 
+ 
+bộ chỉ số hiệu quả khai thác (Occupancy Rate, ADR, 
+RevPAR) và hỗ trợ xuất báo cáo định dạng PDF khổ A4. 
+Tiền 
+điều 
+kiện 
+(Preconditions) 
+Người dùng đã đăng nhập với vai trò ADMIN và truy cập 
+phân hệ quản trị. 
+Hậu 
+điều 
+kiện 
+(Postconditions) 
+Trang báo cáo hiển thị chính xác bộ chỉ số quản trị, cơ cấu 
+doanh thu, bảng kê hóa đơn chi tiết và xuất thành công tệp 
+báo cáo khổ A4 khi người dùng yêu cầu. 
+Luồng 
+sự 
+kiện 
+chính 
+(Flow of Events) 
+Hành động của Tác nhân 
+(Actor) 
+Phản hồi của Hệ thống 
+(System) 
+1. Quản trị viên truy cập trang 
+báo 
+cáo 
+doanh 
+thu 
+(/admin/reports) 
+và 
+chọn 
+khoảng thời gian Từ ngày – 
+Đến ngày qua bộ chọn lịch 
+AceDatePicker. 
+1.1 AdminReportController 
+chuẩn hóa khoảng ngày lọc và 
+chuyển 
+yêu 
+cầu 
+cho 
+ReportService truy vấn bảng 
+invoices, 
+service_orders, 
+bookings và rooms. 
+2. Quản trị viên xem các thẻ 
+chỉ số tổng quan và bảng 
+phân tích chi tiết trên màn 
+hình. 
+2.1 ReportService tổng hợp 
+tổng doanh thu có thuế phí, 
+tiền phòng, bốn nhóm dịch 
+vụ, phụ thu nhận sớm/trả trễ, 
+5% phí phục vụ, 10% thuế 
+GTGT; tính cơ cấu thực thu 
+tại quầy (tổng balance_due) 
+theo 
+CASH, 
+CARD, 
+TRANSFER; tính tỷ lệ lấp 
+đầy Occupancy Rate (mẫu số 
+loại 
+trừ 
+phòng 
+MAINTENANCE 
+theo 
+BR7), ADR và RevPAR. 
+3. Quản trị viên chọn thao tác 
+xuất báo cáo điều hành 
+(/admin/reports/export) 
+để 
+lưu trữ hoặc trình ký. 
+3.1 Hệ thống kết xuất bản báo 
+cáo chuẩn khổ A4 dọc (nền 
+trắng, có đầy đủ bảng kê hóa 
+đơn và khung xác nhận ký 
+duyệt), tích hợp chức năng tải 
+tệp PDF nhiều trang và in trực 
+tiếp. 
+Luồng thay thế 
+(Alternative 
+Flows) 
+• A1 – Theo dõi nhanh bảng điều khiển tổng quan quản trị 
+(/admin/dashboard): Quản trị viên xem nhanh tình hình công 
+suất hiện tại, danh sách phòng đang bảo trì và doanh thu lũy 
+kế ngay sau khi đăng nhập. 
+
+=== PDF PAGE 68 ===
+53 
+ 
+Điều kiện ngoại lệ 
+(Exception 
+Conditions) 
+• Tại bước 1.1: Ngày bắt đầu lớn hơn ngày kết thúc → Phương 
+thức normalizeDateRange tự động chuẩn hóa khoảng ngày 
+hợp lệ trước khi truy vấn. 
+• Tại bước 2.1: Khoảng ngày lọc chưa có hóa đơn quyết toán 
+nào hoặc không có phòng khả dụng → Hệ thống trả về giá trị 
+0 đồng và 0% có bảo vệ tránh lỗi chia cho 0. 
+Quy tắc nghiệp vụ 
+và Yêu cầu liên 
+kết 
+BR6, BR7; Liên kết FR-17, FR-18. 
+ 
+Hình 4.22 Biểu đồ Use Case chi tiết UC07 – Báo cáo Doanh thu đa chiều và Công 
+suất khai thác phòng 
+
+=== PDF PAGE 69 ===
+54 
+ 
+ 
+Hình 4.23 Biểu đồ Hoạt động (Activity Diagram) của UC07 
+ 
+Hình 4.24 Biểu đồ Tuần tự (Sequence Diagram) của UC07 
+4.4 Biểu đồ Lớp thiết kế, Kiến trúc Gói, Mô hình ERD và Sơ đồ Trạng 
+thái 
+Chuyển từ giai đoạn phân tích cấu trúc (Structural Analysis) sang kỷ luật thiết 
+kế hướng đối tượng (Design Discipline) theo khung kiến thức bài giảng [1], [3], hệ 
+thống ACE Hotel xây dựng Biểu đồ Lớp thiết kế (Design Class Diagram) mở rộng từ 
+tám lớp thực thể miền dữ liệu với đầy đủ ký hiệu phạm vi truy cập (visibility: + public, 
+− private, # protected), kiểu dữ liệu cụ thể của ngôn ngữ Java 21, chữ ký phương thức 
+
+=== PDF PAGE 70 ===
+55 
+ 
+và chiều điều hướng liên kết. Quá trình phân bổ trách nhiệm giữa các lớp tuân thủ 
+chặt chẽ các nguyên lý thiết kế cốt lõi: Đóng gói thông tin (Encapsulation), Giảm 
+thiểu sự phụ thuộc chéo (Low Coupling), Tăng độ gắn kết đơn trách nhiệm (High 
+Cohesion) và các mẫu phân công trách nhiệm GRASP (Information Expert trên lớp 
+PricingService, Controller trên các lớp điều khiển Spring MVC và Creator khi khởi 
+tạo ServiceOrder thuộc vòng đời Booking). 
+Cụ thể về quan hệ cấu trúc giữa tám lớp thực thể (User, Customer, RoomType, 
+Room, Booking, ServiceItem, ServiceOrder, Invoice): một tài khoản User liên kết 1 
+với 0..1 hồ sơ Customer; một hạng phòng RoomType tập hợp 1..* phòng vật lý Room 
+(quan hệ kết tập – Aggregation, vì hạng phòng là nhóm phân loại quản lý nhiều 
+phòng); một đơn lưu trú Booking sở hữu 0..* dòng ghi nhận dịch vụ ServiceOrder 
+theo quan hệ hợp thành (Composition – dòng dịch vụ chỉ tồn tại gắn liền với đơn lưu 
+trú tương ứng) và kết thúc bằng 0..1 hóa đơn quyết toán duy nhất Invoice. Ngoài các 
+lớp thực thể (<<Entity>>), kiến trúc phân tầng của hệ thống còn định nghĩa rõ ba 
+nhóm lớp thiết kế theo chuẩn bài giảng [1] gồm lớp biên giao diện (<<Boundary>>), 
+lớp điều khiển và xử lý nghiệp vụ (<<Control>>) và lớp truy cập cơ sở dữ liệu 
+(<<Data Access>>). Cấu trúc phân lớp gói (Package Architecture) không phụ thuộc 
+vòng tròn của gói gốc com.ace.hotel được tổng hợp tại Bảng 4.9 và trực quan hóa 
+bằng Biểu đồ Gói tại Hình 4.25; tiếp theo là Biểu đồ Lớp thiết kế (Hình 4.26) và Mô 
+hình Thực thể – Kết hợp ERD (Hình 4.27). 
+Bảng 4.9 Phân lớp gói kiến trúc hướng đối tượng của hệ thống ACE Hotel (Package 
+Architecture) 
+Tầng kiến 
+trúc 
+(Stereotype) 
+Gói phần mềm 
+(Package) 
+Các thành phần đại diện 
+trong mã nguồn Java 
+Trách nhiệm thiết 
+kế và Chiều phụ 
+thuộc 
+Tầng Trình 
+diễn 
+(<<Boundary
+>>) 
+resources/templates/
+** 
+resources/static/** 
+public-layout.html, customer-
+layout.html, pms-layout.html, 
+các mẫu Thymeleaf và mô-đun 
+giao diện JavaScript 
+Tiếp nhận tương tác 
+của người dùng, hiển 
+thị dữ liệu và chứng 
+từ in ấn; chỉ giao tiếp 
+với tầng Điều khiển. 
+
+=== PDF PAGE 71 ===
+56 
+ 
+Tầng Điều 
+khiển 
+(<<Control>> 
+– MVC) 
+com.ace.hotel.contro
+ller 
+com.ace.hotel.dto 
+9 
+lớp 
+Controller 
+(PublicController, 
+AuthController, 
+CustomerPortalController, 
+StaffDashboardController, 
+StaffCheckInController, 
+StaffFolioController, 
+StaffCheckOutController, 
+AdminCatalogController, 
+AdminReportController) và 9 
+lớp DTO 
+Định tuyến yêu cầu 
+HTTP, kiểm tra định 
+dạng dữ liệu đầu vào 
+qua DTO và chuyển 
+giao xử lý nghiệp vụ 
+cho tầng Dịch vụ. 
+Tầng Dịch vụ 
+Nghiệp vụ 
+(<<Control>> 
+– Business) 
+com.ace.hotel.servic
+e 
+com.ace.hotel.config 
+10 lớp Service (AuthService, 
+BookingService, 
+PricingService, 
+CheckInService, FolioService, 
+CheckOutService, 
+CatalogService, 
+CustomerService, 
+ReportService, 
+CustomUserDetailsService) và 
+SecurityConfig 
+Thực thi bảy quy tắc 
+nghiệp vụ (BR1 – 
+BR7), quản lý giao 
+dịch @Transactional, 
+khóa bi quan và kiểm 
+soát 
+phân 
+quyền 
+RBAC. 
+Tầng Thực 
+thể Miền 
+(<<Entity>>) 
+com.ace.hotel.entity 
+com.ace.hotel.entity.
+enums 
+8 lớp 
+Entity JPA (User, 
+RoomType, Room, Customer, 
+Booking, 
+ServiceItem, 
+ServiceOrder, Invoice) và 5 
+kiểu liệt kê Enum (Role, 
+RoomStatus, 
+BookingStatus, 
+PaymentMethod, 
+ServiceCategory) 
+Biểu diễn cấu trúc 
+đối tượng nghiệp vụ 
+và ánh xạ quan hệ 
+thực thể xuống tám 
+bảng cơ sở dữ liệu. 
+Tầng Truy 
+cập Dữ liệu 
+(<<Data 
+Access>>) 
+com.ace.hotel.reposi
+tory 
+8 giao diện Spring Data JPA 
+(UserRepository, 
+RoomTypeRepository, 
+RoomRepository, 
+CustomerRepository, 
+BookingRepository, 
+ServiceItemRepository, 
+ServiceOrderRepository, 
+InvoiceRepository) 
+Cô lập toàn bộ câu 
+truy vấn JPQL/SQL 
+khỏi tầng nghiệp vụ; 
+cung cấp truy vấn 
+kiểm tra tồn kho và 
+khóa bi quan bản ghi. 
+
+=== PDF PAGE 72 ===
+57 
+ 
+ 
+Hình 4.25 Biểu đồ Gói kiến trúc phân tầng (Package Diagram) 
+
+=== PDF PAGE 73 ===
+58 
+ 
+ 
+Hình 4.26 Biểu đồ Lớp phân tích và thiết kế (Class Diagram – 8 lớp thực thể) 
+
+=== PDF PAGE 74 ===
+59 
+ 
+ 
+Hình 4.27 Mô hình Thực thể – Kết hợp (ERD – 8 bảng cơ sở dữ liệu) 
+Bên cạnh cấu trúc dữ liệu tĩnh, tính nhất quán trong vận hành khách sạn phụ 
+thuộc trực tiếp vào cơ chế đồng bộ máy trạng thái kép giữa trạng thái đơn đặt phòng 
+(BookingStatus: RESERVED, CHECKED_IN, CHECKED_OUT, CANCELLED) 
+và trạng thái phòng vật lý (RoomStatus: AVAILABLE, OCCUPIED, DIRTY, 
+MAINTENANCE). Khi đơn chuyển sang CHECKED_IN thì phòng chuyển sang 
+
+=== PDF PAGE 75 ===
+60 
+ 
+OCCUPIED; khi đơn hoàn tất quyết toán CHECKED_OUT thì phòng lập tức chuyển 
+sang DIRTY nhằm ngăn chặn rủi ro bàn giao phòng chưa vệ sinh, và chỉ quay lại 
+AVAILABLE sau bước xác nhận dọn sạch. Vòng đời đồng bộ này được minh họa tại 
+Hình 4.28. 
+ 
+Hình 4.28 Sơ đồ trạng thái đồng bộ giữa Đơn đặt phòng và Phòng vật lý 
+
+=== PDF PAGE 76 ===
+61 
+ 
+CHƯƠNG 5.  THIẾT KẾ CƠ SỞ DỮ LIỆU 
+5.1 Lược đồ quan hệ tổng thể (8 bảng cơ sở dữ liệu) 
+Cơ sở dữ liệu của hệ thống ACE Hotel được thiết kế theo mô hình quan hệ 
+chuẩn hóa đạt dạng chuẩn thứ ba (Third Normal Form – 3NF) [3], kết hợp kỹ thuật 
+lưu vết cố định đơn giá lịch sử (Price Snapshot) tại các bảng giao dịch (bookings, 
+service_orders, invoices) nhằm đảm bảo số liệu kế toán của các kỳ lưu trú cũ không 
+bị biến động khi quản trị viên điều chỉnh biểu giá danh mục. Toàn bộ lược đồ gồm 
+đúng tám bảng vật lý được khởi tạo tự động từ kịch bản schema.sql trên hệ quản trị 
+cơ sở dữ liệu H2 vận hành ở chế độ lưu tệp bền vững (./data/ace_hotel_db). Bảng 5.1 
+tổng hợp cấu trúc khóa chính, khóa ngoại và lớp thực thể ánh xạ tương ứng của cả 
+tám bảng. 
+Bảng 5.1 Danh sách tám bảng quan hệ trong cơ sở dữ liệu ACE Hotel 
+STT 
+Tên 
+bảng 
+vật lý 
+Lớp thực 
+thể JPA 
+Khóa chính (PK) 
+Khóa ngoại 
+(FK) 
+Vai trò lưu trữ trong hệ 
+thống 
+1 
+users 
+User.java 
+user_id (BIGINT) 
+Không có 
+Lưu tài khoản đăng nhập, 
+chuỗi 
+băm 
+mật 
+khẩu 
+BCrypt, họ tên hiển thị và 
+vai 
+trò 
+phân 
+quyền 
+(ADMIN, 
+RECEPTIONIST, 
+CUSTOMER). 
+2 
+room_ty
+pes 
+RoomType.j
+ava 
+room_type_id 
+(BIGINT) 
+Không có 
+Lưu danh mục năm hạng 
+phòng (Standard, Superior, 
+Deluxe, Family, Suite), đơn 
+giá ngày thường, đơn giá 
+cuối tuần, sức chứa, cấu 
+hình loại giường và mô tả. 
+3 
+rooms 
+Room.java 
+room_id (BIGINT) 
+room_type_id 
+→ 
+room_types(ro
+om_type_id) 
+Lưu danh sách mười hai 
+phòng vật lý trên bốn tầng 
+(101 đến 420) cùng vòng đời 
+bốn 
+trạng 
+thái 
+(AVAILABLE, 
+OCCUPIED, 
+DIRTY, 
+MAINTENANCE). 
+
+=== PDF PAGE 77 ===
+62 
+ 
+4 
+custome
+rs 
+Customer.ja
+va 
+customer_id 
+(BIGINT) 
+user_id 
+→ 
+users(user_id) 
+[UNIQUE, 
+NULLABLE] 
+Lưu hồ sơ định danh khách 
+lưu trú (họ tên, ngày sinh, số 
+điện thoại, số căn cước công 
+dân, thư điện tử); cho phép 
+user_id rỗng đối với khách 
+vãng lai. 
+5 
+booking
+s 
+Booking.jav
+a 
+booking_id 
+(BIGINT) 
+customer_id → 
+customers(cust
+omer_id) 
+room_type_id 
+→ 
+room_types(ro
+om_type_id) 
+room_id 
+→ 
+rooms(room_i
+d) 
+created_by → 
+users(user_id) 
+Lưu thông tin đơn đặt phòng 
+và kỳ lưu trú: mã đơn BK-..., 
+ngày và giờ dự kiến/thực tế 
+nhận trả, số phòng đã chọn, 
+tiền phòng gốc, tiền cọc 
+30%, phụ thu nhận sớm/trả 
+trễ, trạng thái đơn và thời 
+điểm yêu cầu trả phòng 
+nhanh. 
+6 
+services 
+ServiceItem.
+java 
+service_id 
+(BIGINT) 
+Không có 
+Lưu danh mục tám dịch vụ 
+lưu trú thuộc bốn nhóm 
+chuẩn 
+(MINIBAR, 
+LAUNDRY, 
+FB, 
+DAMAGES) cùng đơn giá 
+niêm yết và đơn vị tính. 
+7 
+service_
+orders 
+ServiceOrde
+r.java 
+order_id (BIGINT) 
+booking_id → 
+bookings(book
+ing_id) 
+service_id → 
+services(servic
+e_id) 
+created_by → 
+users(user_id) 
+Sổ cái dịch vụ phòng (Room 
+Folio) ghi nhận từng lượt sử 
+dụng dịch vụ khi đơn ở trạng 
+thái CHECKED_IN và lưu 
+cố định đơn giá tại thời điểm 
+gọi (BR5). 
+8 
+invoices 
+Invoice.java 
+invoice_id 
+(BIGINT) 
+booking_id → 
+bookings(book
+ing_id) 
+[UNIQUE] 
+created_by → 
+users(user_id) 
+Lưu hóa đơn quyết toán duy 
+nhất cho mỗi đơn lưu trú: 
+bóc tách tiền phòng, dịch vụ, 
+phụ thu, tổng trước thuế phí, 
+5% phí phục vụ, 10% thuế 
+GTGT, tổng thanh toán, tiền 
+cọc đã khấu trừ, số tiền thực 
+thu và phương thức thanh 
+toán. 
+
+=== PDF PAGE 78 ===
+63 
+ 
+5.2 Đặc tả từ điển dữ liệu chi tiết (Data Dictionary) 
+Để đảm bảo khả năng truy vết chính xác giữa mô hình dữ liệu và mã nguồn 
+triển khai, Bảng 5.2 trình bày từ điển dữ liệu chi tiết của toàn bộ 73 cột thuộc tám 
+bảng vật lý được định nghĩa trong tệp schema.sql, kèm kiểu dữ liệu, các ràng buộc 
+toàn vẹn và mô tả ý nghĩa nghiệp vụ. 
+Bảng 5.2 Từ điển dữ liệu chi tiết tám bảng cơ sở dữ liệu ACE Hotel 
+Bảng 
+Tên cột (Column) 
+Kiểu dữ liệu 
+Ràng buộc 
+(Constraints) 
+Ý nghĩa và quy tắc lưu 
+trữ 
+users 
+user_id 
+BIGINT 
+(IDENTITY) 
+PK, 
+NOT 
+NULL 
+Khóa chính tự tăng định 
+danh tài khoản người 
+dùng. 
+users 
+username 
+VARCHAR(50) 
+UNIQUE, 
+NOT NULL 
+Tên đăng nhập duy nhất 
+trong hệ thống (ví dụ: 
+admin, nhanvien, letan, 
+khach). 
+users 
+password_hash 
+VARCHAR(255) NOT NULL 
+Chuỗi băm mật khẩu 
+chuẩn BCrypt, không lưu 
+dạng văn bản thuần. 
+users 
+full_name 
+VARCHAR(100) NOT NULL 
+Họ và tên đầy đủ hiển thị 
+trên giao diện người 
+dùng. 
+users 
+role 
+VARCHAR(20) 
+NOT NULL, 
+CHECK 
+Vai 
+trò 
+phân 
+quyền 
+RBAC: chỉ nhận một 
+trong ba giá trị ADMIN, 
+RECEPTIONIST 
+hoặc 
+CUSTOMER. 
+users 
+created_at 
+TIMESTAMP 
+NOT NULL, 
+DEFAULT 
+NOW 
+Thời điểm khởi tạo tài 
+khoản trong cơ sở dữ 
+liệu. 
+room_types 
+room_type_id 
+BIGINT 
+(IDENTITY) 
+PK, 
+NOT 
+NULL 
+Khóa chính tự tăng định 
+danh hạng phòng. 
+room_types 
+name 
+VARCHAR(50) 
+UNIQUE, 
+NOT NULL 
+Tên hạng phòng duy nhất 
+(Standard, 
+Superior, 
+Deluxe, Family, Suite). 
+room_types 
+price_per_night 
+BIGINT 
+NOT NULL, 
+CHECK (> 0) 
+Đơn giá niêm yết ngày 
+thường từ Thứ Hai đến 
+Thứ Năm (đồng/đêm). 
+
+=== PDF PAGE 79 ===
+64 
+ 
+room_types 
+weekend_price_per_night 
+BIGINT 
+NOT NULL, 
+CHECK (> 0) 
+Đơn giá niêm yết cuối 
+tuần Thứ Sáu, Thứ Bảy 
+và Chủ Nhật (đồng/đêm). 
+room_types 
+capacity 
+INT 
+NOT NULL, 
+CHECK (≥ 1) 
+Sức chứa khách tiêu 
+chuẩn tối đa của hạng 
+phòng (2 hoặc 4 khách). 
+room_types 
+bed_type 
+VARCHAR(100) NULLABLE 
+Thông 
+tin 
+cấu 
+hình 
+giường ngủ (ví dụ: 1 
+Giường đôi Queen 1m6 × 
+2m, 2 Giường đôi Queen 
+lớn). 
+room_types 
+description 
+VARCHAR(500) NULLABLE 
+Mô tả chi tiết không gian, 
+tầm nhìn và tiện nghi tiêu 
+chuẩn. 
+room_types 
+image_url 
+VARCHAR(255) NULLABLE 
+Đường dẫn tương đối tới 
+ảnh 
+minh 
+họa 
+hạng 
+phòng trong thư mục 
+static/images. 
+rooms 
+room_id 
+BIGINT 
+(IDENTITY) 
+PK, 
+NOT 
+NULL 
+Khóa chính tự tăng định 
+danh phòng vật lý. 
+rooms 
+room_number 
+VARCHAR(10) 
+UNIQUE, 
+NOT NULL 
+Số hiệu phòng vật lý duy 
+nhất (101, 102, 103, 201, 
+202, 205, 301, 302, 305, 
+401, 418, 420). 
+rooms 
+floor 
+INT 
+NOT NULL, 
+CHECK (≥ 1) 
+Số tầng bố trí phòng vật 
+lý (từ Tầng 1 đến Tầng 
+4). 
+rooms 
+status 
+VARCHAR(20) 
+NOT NULL, 
+CHECK 
+Trạng thái vận hành hiện 
+tại: 
+AVAILABLE, 
+OCCUPIED, 
+DIRTY 
+hoặc MAINTENANCE. 
+rooms 
+room_type_id 
+BIGINT 
+FK 
+→ 
+room_types, 
+NOT NULL 
+Khóa ngoại liên kết 
+phòng vật lý với hạng 
+phòng tương ứng. 
+customers 
+customer_id 
+BIGINT 
+(IDENTITY) 
+PK, 
+NOT 
+NULL 
+Khóa chính tự tăng định 
+danh hồ sơ khách hàng. 
+customers 
+user_id 
+BIGINT 
+FK → users, 
+UNIQUE, 
+NULL 
+Liên kết 1–1 với tài 
+khoản hội viên; nhận giá 
+trị NULL đối với khách 
+vãng lai tại quầy. 
+
+=== PDF PAGE 80 ===
+65 
+ 
+customers 
+full_name 
+VARCHAR(100) NOT NULL 
+Họ và tên đầy đủ của 
+khách hàng theo giấy tờ 
+tùy thân. 
+customers 
+date_of_birth 
+DATE 
+NULLABLE 
+Ngày sinh của khách 
+hàng (bắt buộc đủ 18 tuổi 
+khi đăng ký tài khoản 
+trực tuyến). 
+customers 
+phone 
+VARCHAR(20) 
+NOT NULL 
+Số điện thoại liên hệ của 
+khách lưu trú. 
+customers 
+id_number 
+VARCHAR(30) 
+UNIQUE, 
+NULLABLE 
+Số căn cước công dân 
+hoặc hộ chiếu định danh 
+duy nhất phục vụ nhận 
+phòng và tra cứu khách 
+quen. 
+customers 
+email 
+VARCHAR(100) NULLABLE 
+Địa chỉ thư điện tử của 
+khách hàng. 
+bookings 
+booking_id 
+BIGINT 
+(IDENTITY) 
+PK, 
+NOT 
+NULL 
+Khóa chính tự tăng định 
+danh đơn đặt phòng và 
+lưu trú. 
+bookings 
+booking_code 
+VARCHAR(20) 
+UNIQUE, 
+NOT NULL 
+Mã đơn duy nhất dùng để 
+sinh mã QR trên biên lai 
+và tra cứu tại quầy (ví dụ: 
+BK-2401). 
+bookings 
+customer_id 
+BIGINT 
+FK 
+→ 
+customers, 
+NOT NULL 
+Khóa ngoại tham chiếu 
+tới khách hàng đứng tên 
+đơn đặt phòng. 
+bookings 
+room_type_id 
+BIGINT 
+FK 
+→ 
+room_types, 
+NOT NULL 
+Khóa ngoại xác định 
+hạng phòng khách đã đặt 
+để kiểm tra tồn kho theo 
+quy tắc BR1. 
+bookings 
+room_id 
+BIGINT 
+FK → rooms, 
+NULLABLE 
+Số phòng vật lý cụ thể 
+khách đã chọn khi đặt 
+trực tuyến hoặc được 
+nhân viên lễ tân gán khi 
+nhận phòng. 
+bookings 
+guest_count 
+INT 
+NOT NULL, 
+CHECK (≥ 1) 
+Số lượng khách lưu trú 
+đăng ký trong đơn. 
+bookings 
+check_in_date 
+DATE 
+NOT NULL 
+Ngày nhận phòng dự 
+kiến theo lịch đặt. 
+
+=== PDF PAGE 81 ===
+66 
+ 
+bookings 
+check_out_date 
+DATE 
+NOT NULL, 
+CHECK 
+(> 
+check_in) 
+Ngày trả phòng dự kiến 
+(bắt buộc sau ngày nhận 
+phòng ít nhất một đêm 
+theo BR3). 
+bookings 
+estimated_check_in_time 
+TIME 
+DEFAULT 
+'14:00:00' 
+Khung giờ nhận phòng 
+dự kiến do khách lựa 
+chọn khi đặt trực tuyến. 
+bookings 
+estimated_check_out_time TIME 
+DEFAULT 
+'12:00:00' 
+Khung giờ trả phòng dự 
+kiến do khách lựa chọn 
+khi đặt trực tuyến. 
+bookings 
+actual_check_in 
+TIMESTAMP 
+NULLABLE 
+Dấu thời gian thực tế tại 
+thời điểm lễ tân hoàn tất 
+thủ tục nhận phòng. 
+bookings 
+actual_check_out 
+TIMESTAMP 
+NULLABLE 
+Dấu thời gian thực tế tại 
+thời điểm lễ tân hoàn tất 
+quyết toán trả phòng. 
+bookings 
+room_charge 
+BIGINT 
+NOT NULL, 
+CHECK (≥ 0) 
+Tổng tiền phòng gốc 
+được tính theo từng đêm 
+ngày thường và cuối tuần 
+(đồng). 
+bookings 
+deposit_amount 
+BIGINT 
+NOT NULL, 
+CHECK (≥ 0) 
+Số tiền đặt cọc đã thu: 
+30% tổng gói phòng ước 
+tính đối với đơn trực 
+tuyến, 0 đồng đối với 
+khách vãng lai. 
+bookings 
+early_checkin_fee 
+BIGINT 
+NOT NULL, 
+DEFAULT 0 
+Khoản phụ thu nhận 
+phòng sớm trước 14:00 
+(0%, 30%, 50% hoặc 
+100% giá một đêm tiêu 
+chuẩn). 
+bookings 
+late_checkout_fee 
+BIGINT 
+NOT NULL, 
+DEFAULT 0 
+Khoản phụ thu trả phòng 
+trễ sau 12:00 (0%, 30%, 
+50% hoặc 100% giá một 
+đêm tiêu chuẩn). 
+bookings 
+status 
+VARCHAR(20) 
+NOT NULL, 
+CHECK 
+Trạng thái đơn lưu trú: 
+RESERVED, 
+CHECKED_IN, 
+CHECKED_OUT hoặc 
+CANCELLED. 
+
+=== PDF PAGE 82 ===
+67 
+ 
+bookings 
+checkout_requested_at 
+TIMESTAMP 
+NULLABLE 
+Dấu thời gian khách gửi 
+yêu cầu trả phòng nhanh 
+từ cổng hội viên. 
+bookings 
+created_at 
+TIMESTAMP 
+NOT NULL, 
+DEFAULT 
+NOW 
+Thời điểm khởi tạo đơn 
+đặt phòng trên hệ thống. 
+bookings 
+created_by 
+BIGINT 
+FK → users, 
+NULLABLE 
+Mã tài khoản người tạo 
+đơn (khách hàng đặt trực 
+tuyến hoặc lễ tân lập đơn 
+Walk-in). 
+services 
+service_id 
+BIGINT 
+(IDENTITY) 
+PK, 
+NOT 
+NULL 
+Khóa chính tự tăng định 
+danh dịch vụ đi kèm. 
+services 
+name 
+VARCHAR(100) UNIQUE, 
+NOT NULL 
+Tên dịch vụ duy nhất 
+trong danh mục (ví dụ: 
+Bữa sáng Buffet gọi 
+thêm, Giặt ủi nhanh). 
+services 
+category 
+VARCHAR(30) 
+NOT NULL, 
+CHECK 
+Phân 
+nhóm 
+dịch vụ 
+chuẩn: 
+MINIBAR, 
+LAUNDRY, FB hoặc 
+DAMAGES. 
+services 
+unit_price 
+BIGINT 
+NOT NULL, 
+CHECK (≥ 0) 
+Đơn giá niêm yết hiện 
+hành của dịch vụ (đồng). 
+services 
+unit 
+VARCHAR(30) 
+NOT NULL 
+Đơn vị tính của dịch vụ 
+(Lon, Gói, Bộ, Chiếc, 
+Suất, Phần, Cái, Thẻ). 
+service_orders order_id 
+BIGINT 
+(IDENTITY) 
+PK, 
+NOT 
+NULL 
+Khóa chính tự tăng định 
+danh từng dòng dịch vụ 
+trong Room Folio. 
+service_orders booking_id 
+BIGINT 
+FK 
+→ 
+bookings, 
+NOT NULL 
+Đơn lưu trú đang sử dụng 
+dịch vụ (bắt buộc ở trạng 
+thái CHECKED_IN). 
+service_orders service_id 
+BIGINT 
+FK 
+→ 
+services, 
+NOT NULL 
+Tham chiếu đến dịch vụ 
+tương ứng trong danh 
+mục services. 
+service_orders quantity 
+INT 
+NOT NULL, 
+CHECK (≥ 1) 
+Số lượng đơn vị dịch vụ 
+khách đã sử dụng. 
+service_orders unit_price 
+BIGINT 
+NOT NULL, 
+CHECK (≥ 0) 
+Đơn giá được sao chép 
+cố định tại thời điểm gọi 
+dịch vụ (BR5); thành tiền 
+
+=== PDF PAGE 83 ===
+68 
+ 
+được tính bằng quantity 
+× unit_price. 
+service_orders ordered_at 
+TIMESTAMP 
+NOT NULL, 
+DEFAULT 
+NOW 
+Thời điểm nhân viên lễ 
+tân ghi nhận dịch vụ vào 
+sổ cái phòng. 
+service_orders created_by 
+BIGINT 
+FK → users, 
+NOT NULL 
+Mã tài khoản nhân viên 
+thực hiện ghi nhận dịch 
+vụ phục vụ kiểm soát ca 
+trực. 
+invoices 
+invoice_id 
+BIGINT 
+(IDENTITY) 
+PK, 
+NOT 
+NULL 
+Khóa chính tự tăng định 
+danh hóa đơn quyết toán. 
+invoices 
+booking_id 
+BIGINT 
+FK 
+→ 
+bookings, 
+UNIQUE 
+Khóa ngoại duy nhất 
+đảm bảo mỗi kỳ lưu trú 
+chỉ phát hành tối đa một 
+hóa đơn (BR6). 
+invoices 
+room_charge 
+BIGINT 
+NOT NULL, 
+CHECK (≥ 0) 
+Tiền 
+phòng 
+gốc kết 
+chuyển từ đơn lưu trú. 
+invoices 
+service_charge_total 
+BIGINT 
+NOT NULL, 
+DEFAULT 0 
+Tổng tiền các dịch vụ 
+phát sinh cộng dồn từ 
+bảng service_orders. 
+invoices 
+early_checkin_fee 
+BIGINT 
+NOT NULL, 
+DEFAULT 0 
+Khoản phụ thu nhận 
+phòng sớm kết chuyển 
+vào hóa đơn. 
+invoices 
+late_checkout_fee 
+BIGINT 
+NOT NULL, 
+DEFAULT 0 
+Khoản phụ thu trả phòng 
+trễ áp dụng tại thời điểm 
+quyết toán. 
+invoices 
+subtotal 
+BIGINT 
+NOT NULL, 
+CHECK 
+Tổng chi phí trước thuế 
+phí: 
+room_charge 
++ 
+service_charge_total 
++ 
+early_checkin_fee 
++ 
+late_checkout_fee. 
+invoices 
+service_charge_amount 
+BIGINT 
+NOT NULL, 
+CHECK (≥ 0) 
+Phí phục vụ 5% tính trên 
+subtotal (làm tròn số 
+nguyên). 
+invoices 
+vat_amount 
+BIGINT 
+NOT NULL, 
+CHECK (≥ 0) 
+Thuế giá trị gia tăng 10% 
+tính trên tổng (subtotal + 
+service_charge_amount). 
+invoices 
+grand_total 
+BIGINT 
+NOT NULL, 
+CHECK 
+Tổng giá trị hóa đơn đã 
+bao gồm phí phục vụ và 
+thuế GTGT: subtotal + 
+
+=== PDF PAGE 84 ===
+69 
+ 
+service_charge_amount 
++ vat_amount. 
+invoices 
+deposit_deducted 
+BIGINT 
+NOT NULL, 
+DEFAULT 0 
+Số tiền đặt cọc 30% 
+khách đã thanh toán 
+trước được khấu trừ. 
+invoices 
+balance_due 
+BIGINT 
+NOT NULL, 
+CHECK 
+Số tiền còn lại thực thu 
+tại 
+quầy 
+lễ 
+tân: 
+grand_total 
+− 
+deposit_deducted. 
+invoices 
+payment_method 
+VARCHAR(20) 
+NOT NULL, 
+CHECK 
+Phương thức thanh toán 
+tại quầy: CASH (Tiền 
+mặt), CARD (Thẻ) hoặc 
+TRANSFER 
+(Chuyển 
+khoản QR). 
+invoices 
+paid_at 
+TIMESTAMP 
+NOT NULL, 
+DEFAULT 
+NOW 
+Thời điểm xác nhận hoàn 
+tất thanh toán và phát 
+hành hóa đơn. 
+invoices 
+created_by 
+BIGINT 
+FK → users, 
+NOT NULL 
+Mã tài khoản nhân viên 
+thực hiện quyết toán và 
+lập hóa đơn. 
+5.3 Các ràng buộc toàn vẹn, chỉ mục và truy vấn trọng tâm 
+Để ngăn ngừa sai lệch số liệu tài chính và xung đột lịch phòng ngay tại tầng 
+lưu trữ, kịch bản khởi tạo schema.sql thiết lập trực tiếp hệ thống ràng buộc toàn vẹn 
+CHECK, ràng buộc duy nhất UNIQUE và chỉ mục phức hợp trên cơ sở dữ liệu H2: 
+1. Ràng buộc khoảng ngày và chỉ mục tồn kho (Bảng bookings): Bảo đảm 
+ngày trả phòng luôn lớn hơn ngày nhận phòng thông qua biểu thức CHECK 
+(check_out_date > check_in_date), đồng thời tạo chỉ mục phức hợp 
+idx_bookings_quota trên bốn cột (room_type_id, status, check_in_date, 
+check_out_date) nhằm tăng tốc truy vấn kiểm tra tồn kho hạng phòng theo khoảng 
+ngày. 
+2. Ba ràng buộc toàn vẹn tài chính (Bảng invoices): Bảo vệ tuyệt đối công thức 
+quyết toán biểu giá có thuế phí (BR6) thông qua ba biểu thức ràng buộc nối tiếp 
+trực tiếp trong định nghĩa bảng invoices: CHECK (subtotal = room_charge + 
+service_charge_total + early_checkin_fee + late_checkout_fee), CHECK 
+
+=== PDF PAGE 85 ===
+70 
+ 
+(grand_total = subtotal + service_charge_amount + vat_amount) và CHECK 
+(balance_due = grand_total - deposit_deducted), kết hợp ràng buộc UNIQUE trên 
+booking_id. 
+3. Truy vấn lọc phòng trống và kiểm soát đồng thời (BookingRepository): Tại 
+tầng truy cập dữ liệu (BookingRepository), hai truy vấn JPQL trọng tâm được sử 
+dụng để loại bỏ hoàn toàn tình trạng đặt trùng phòng vật lý: phương thức 
+findBookedRoomIdsInDateRange tìm tập mã phòng đã có đơn hiệu lực 
+(RESERVED hoặc CHECKED_IN) thỏa điều kiện giao khoảng ngày nửa mở 
+b.checkInDate < :checkOutDate AND b.checkOutDate > :checkInDate; kết hợp 
+với phương thức existsOverlappingBookingForRoom kiểm tra lại phòng cụ thể 
+trong phạm vi khóa bi quan PESSIMISTIC_WRITE trước khi xác nhận lưu đơn. 
+
+=== PDF PAGE 86 ===
+71 
+ 
+CHƯƠNG 6.  THIẾT KẾ GIAO DIỆN NGƯỜI DÙNG 
+6.1 Hệ thống thiết kế giao diện và bảng mã màu (ACE Color System) 
+Giao diện người dùng của hệ thống ACE Hotel được xây dựng theo định 
+hướng phân tách rõ ràng giữa trải nghiệm tra cứu trực tuyến của khách hàng và môi 
+trường thao tác cường độ cao tại bàn lễ tân: 
+• Phân hệ công khai và cổng khách hàng (Public & Customer Portal): Áp 
+dụng tông nền tối Obsidian (#0A0D12) kết hợp màu nhấn Vàng Champagne 
+(#D4AF37) và kiểu chữ có chân Cormorant Garamond cho các tiêu đề, tạo bản 
+sắc trực quan rõ nét cho trang giới thiệu thương hiệu và cổng đặt phòng trực tuyến. 
+• Phân hệ bàn lễ tân và quản trị (Front-Desk PMS & Admin Backoffice): 
+Thiết kế theo phong cách bảng điều khiển tác nghiệp có độ tương phản cao, hỗ trợ 
+chuyển đổi linh hoạt giữa chế độ Sáng (Light Mode, nền #F8FAFC) và chế độ Tối 
+(Dark Mode, nền #0F172A) qua mô-đun theme.js; sử dụng phông chữ không chân 
+Plus Jakarta Sans và phông đơn cách JetBrains Mono cho số liệu tiền tệ để nhân 
+viên lễ tân quan sát nhanh trạng thái mười hai phòng. 
+• Thành phần tương tác đồng bộ và chuẩn chứng từ khổ A4: Toàn bộ các 
+trường nhập ngày và danh sách lựa chọn trên cả bốn phân hệ được chuẩn hóa bằng 
+hai thành phần tùy chỉnh là AceDatePicker (ace-datepicker.js – tự động đồng bộ 
+chế độ Sáng/Tối và khóa ngày không hợp lệ) và AceSelect (ace-select.js). Riêng 
+ba loại chứng từ in ấn (Biên lai thu cọc 30%, Hóa đơn GTGT và Báo cáo doanh 
+thu) được định dạng trên nền trắng chuẩn khổ A4 dọc (Executive White) nhằm 
+đảm bảo độ sắc nét khi in giấy hoặc xuất tệp PNG/PDF ngoại tuyến. 
+Bảng 6.1 Hệ thống mã màu trạng thái phòng và giao diện ACE Color System 
+Thành phần / 
+Trạng thái 
+Mã màu 
+Hex 
+Tên sắc 
+thái 
+Ý nghĩa thị giác và ngữ cảnh 
+áp dụng 
+Nền chính cổng 
+khách hàng 
+#0A0D12 
+Obsidian 
+Night 
+Nền tối chủ đạo của trang giới 
+thiệu khách sạn và cổng đặt 
+phòng trực tuyến. 
+
+=== PDF PAGE 87 ===
+72 
+ 
+Màu nhấn thương 
+hiệu 
+#D4AF37 
+Champagne 
+Gold 
+Dùng cho các nút hành động 
+chính, biểu trưng ACE Hotel và 
+đường viền nổi bật. 
+Phòng trống sạch 
+(AVAILABLE) 
+#10B981 
+Emerald 
+Green 
+Báo hiệu phòng đã hoàn tất vệ 
+sinh, sẵn sàng bàn giao cho 
+khách nhận phòng. 
+Phòng đang có 
+khách 
+(OCCUPIED) 
+#3B82F6 
+Royal Blue 
+Báo hiệu phòng đang có khách 
+lưu trú (CHECKED_IN), cho 
+phép mở Room Folio và Check-
+out. 
+Phòng chờ dọn 
+(DIRTY) 
+#F59E0B 
+Amber Gold 
+Cảnh báo phòng vừa trả chưa 
+dọn dẹp; bị khóa phân bổ cho 
+đến khi lễ tân xác nhận dọn 
+sạch. 
+Phòng đang bảo trì 
+(MAINTENANCE) 
+#EF4444 / 
+#64748B 
+Crimson 
+/ 
+Slate 
+Báo hiệu phòng tạm ngưng khai 
+thác để sửa chữa; tự động loại 
+trừ khỏi tồn kho và tỷ lệ lấp đầy. 
+Nhãn yêu cầu trả 
+phòng nhanh 
+#F43F5E 
+Rose Badge 
+Hiển thị nổi bật trên thẻ phòng 
+bảng điều khiển lễ tân ngay khi 
+khách gửi yêu cầu trả phòng. 
+6.2 Kiến trúc bốn phân hệ, sơ đồ điều hướng và ma trận phân quyền 
+RBAC 
+Hệ thống tổ chức giao diện thành bốn phân hệ liên thông chặt chẽ gồm: Trang 
+giới thiệu công khai, Cổng khách hàng, Bàn lễ tân PMS và Phân hệ quản trị điều 
+hành. Hình 6.1 minh họa sơ đồ luồng điều hướng tổng thể (Sitemap) giữa các màn 
+hình. Quyền truy cập từng nhóm đường dẫn URL được kiểm soát chặt chẽ tại tầng 
+máy chủ trong lớp SecurityConfig theo ma trận phân quyền RBAC trình bày tại Bảng 
+6.2. 
+
+=== PDF PAGE 88 ===
+73 
+ 
+ 
+Hình 6.1 Sơ đồ luồng điều hướng tổng thể giữa bốn phân hệ (Sitemap) 
+Bảng 6.2 Ma trận phân quyền truy cập ba vai trò theo cấu hình SecurityConfig 
+(RBAC Matrix) 
+Nhóm chức năng và 
+Đường dẫn URL thực tế 
+Chưa 
+đăng 
+nhập 
+Khách hàng 
+(CUSTOMER
+) 
+Lễ tân 
+(RECEPTIONIST
+) 
+Quản trị 
+viên 
+(ADMIN
+) 
+
+=== PDF PAGE 89 ===
+74 
+ 
+Trang chủ công khai (/), 
+Đăng nhập (/login), Đăng 
+ký (/register) 
+Cho 
+phép 
+Cho phép 
+Cho phép 
+Cho phép 
+Tra cứu hạng phòng 
+(/booking, 
+/booking/search) và API 
+lọc phòng trống 
+(/booking/api/available-
+rooms) 
+Cho 
+phép 
+Cho phép 
+Cho phép 
+Cho phép 
+Xác nhận đặt cọc 30% 
+(/booking/deposit) và 
+Cổng hội viên 
+(/customer/dashboard, 
+/customer/bookings/**, 
+/customer/invoices/{id}) 
+Chuyể
+n 
+hướng 
+/login 
+Cho phép 
+Chặn (/error/403) 
+Cho phép 
+Bàn lễ tân PMS: Sơ đồ 
+phòng (/staff/dashboard), 
+Nhận phòng (/staff/check-
+in, /staff/walk-in), Room 
+Folio 
+(/staff/bookings/{id}/folio)
+, Trả phòng và Hóa đơn 
+(/staff/bookings/{id}/chec
+k-out, /staff/invoices/{id}), 
+Dọn phòng 
+(/staff/rooms/{id}/clean) 
+Chuyể
+n 
+hướng 
+/login 
+Chặn 
+(/error/403) 
+Cho 
+phép 
+toàn 
+quyền 
+Cho phép 
+toàn 
+quyền 
+Xem danh mục hạng 
+phòng, phòng và dịch vụ ở 
+chế độ chỉ đọc (GET 
+/admin/catalog) 
+Chuyể
+n 
+hướng 
+/login 
+Chặn 
+(/error/403) 
+Cho phép xem 
+Cho phép 
+toàn 
+quyền 
+Cập nhật danh mục 
+(/admin/room-types/**, 
+/admin/rooms/**, 
+/admin/services/**), Tổng 
+quan và Báo cáo doanh thu 
+(/admin/dashboard, 
+/admin/reports, 
+/admin/reports/export), H2 
+Console (/h2-console/**) 
+Chuyể
+n 
+hướng 
+/login 
+Chặn 
+(/error/403) 
+Chặn (/error/403) 
+Cho phép 
+toàn 
+quyền 
+6.3 Thiết kế khung giao diện chi tiết cho mười màn hình chính (WF-01 – 
+WF-10) 
+
+=== PDF PAGE 90 ===
+75 
+ 
+Trong bước thiết kế tầng trình diễn (View Layer Design – theo bài giảng [1]), 
+nhóm đã xây dựng mười bản thiết kế khung giao diện dạng Low-fidelity Wireframe 
+(ký hiệu từ WF-01 đến WF-10) nhằm xác nhận bố cục, vị trí trường dữ liệu và luồng 
+thao tác trước khi lập trình các tệp giao diện Thymeleaf. Để đảm bảo độ sắc nét khi 
+trình bày trên khổ giấy A4, bộ mười bản vẽ được chia theo ba nhóm phân hệ tại Hình 
+6.2 (Khách hàng), Hình 6.3 (Bàn lễ tân PMS) và Hình 6.4 (Quản trị điều hành). 
+ 
+Hình 6.2 Thiết kế giao diện Wireframe – Phân hệ Công khai và Cổng Khách hàng 
+(WF-01 đến WF-04) 
+
+=== PDF PAGE 91 ===
+76 
+ 
+ 
+Hình 6.3 Thiết kế giao diện Wireframe – Phân hệ Bàn Lễ tân PMS (WF-05 đến 
+WF-08) 
+ 
+Hình 6.4 Thiết kế giao diện Wireframe – Phân hệ Quản trị điều hành (WF-09 đến 
+WF-10) 
+• WF-01 – Trang giới thiệu công khai (wf-01-public-landing.png): Gồm thanh 
+điều hướng trên cùng, vùng giới thiệu không gian khách sạn kết hợp thanh tra cứu 
+phòng trống nhanh, khu vực trưng bày năm hạng phòng kèm đơn giá ngày thường 
+và cuối tuần, cùng phần giới thiệu bốn nhóm dịch vụ tiện ích. 
+• WF-02 – Màn hình Đăng nhập và Đăng ký hội viên (wf-02-login-
+register.png): Bố cục hai cột cân đối giữa thông tin nhận diện và biểu mẫu xác 
+
+=== PDF PAGE 92 ===
+77 
+ 
+thực, hỗ trợ chuyển nhanh giữa đăng nhập và đăng ký tài khoản mới có kiểm tra 
+ràng buộc ngày sinh đủ 18 tuổi, số điện thoại và căn cước công dân. 
+• WF-03 – Cổng đặt phòng và Cửa sổ chọn phòng trực tuyến (wf-03-
+customer-booking-portal.png): Trình bày danh sách các hạng phòng còn suất 
+trống theo tồn kho (BR1). Khi người dùng chọn đặt phòng, cửa sổ đặt phòng nhiều 
+bước hiển thị thông tin khách hàng, cho phép chỉnh ngày và giờ nhận/trả dự kiến, 
+chọn số phòng vật lý cụ thể còn trống, xem bảng phân tích chi phí và quét mã QR 
+đặt cọc 30%. 
+• WF-04 – Biên lai thu cọc khổ A4 và Quản lý kỳ lưu trú (wf-04-deposit-
+receipt-and-my-bookings.png): Gồm hai màn hình liên kết: Biên lai thu cọc thiết 
+kế hai cột trên nền trắng (cột trái đặt mã QR định danh 168 × 168 điểm ảnh, cột 
+phải đặt bảng tài chính cọc 30%) kèm ba nút Tải ảnh PNG, Tải PDF (A4) và In 
+phiếu; cùng trang Quản lý đơn hội viên hiển thị Live Folio, thao tác hủy đơn giữ 
+chỗ và gửi yêu cầu trả phòng nhanh. 
+• WF-05 – Bàn lễ tân PMS và Sơ đồ mười hai phòng (wf-05-staff-dashboard-
+room-map.png): Hiển thị bốn thẻ chỉ số nhanh, bộ lọc trạng thái (AVAILABLE, 
+OCCUPIED, DIRTY, MAINTENANCE), lưới mười hai thẻ phòng mã hóa màu 
+kèm nhãn cảnh báo yêu cầu trả phòng nhanh, các nút tác vụ theo ngữ cảnh và hai 
+bảng danh sách đơn chờ nhận phòng, đơn đang lưu trú. 
+• WF-06 – Màn hình Nhận phòng quét mã QR và Khách vãng lai (wf-06-
+staff-checkin-walkin.png): Tổ chức thành hai khu vực song song: khu vực nhận 
+phòng đặt trước tích hợp khung quét mã QR từ máy ảnh hoặc tệp ảnh biên lai (tự 
+động chọn sẵn phòng khách đã chốt nếu đang AVAILABLE và cho chọn phụ thu 
+nhận sớm); khu vực tiếp nhận khách vãng lai (Walk-in cọc 0 đồng) có tra cứu 
+nhanh khách quen. 
+• WF-07 – Sổ cái dịch vụ phòng Room Folio (wf-07-staff-room-folio.png): 
+Hiển thị thông tin phòng đang lưu trú, danh mục tám dịch vụ chia theo bốn nhóm 
+(MINIBAR, LAUNDRY, FB, DAMAGES) để ghi nợ nhanh và bảng kê chi tiết 
+
+=== PDF PAGE 93 ===
+78 
+ 
+các dịch vụ đã gọi kèm đơn giá cố định, thành tiền và thao tác xóa dòng nhập 
+nhầm. 
+• WF-08 – Quyết toán trả phòng và Hóa đơn GTGT khổ A4 (wf-08-staff-
+checkout-invoice.png): Tổng hợp tự động tiền phòng, liệt kê chi tiết từng khoản 
+dịch vụ Room Folio (tên dịch vụ, nhóm, số lượng × đơn giá đóng băng, thành 
+tiền), phụ thu nhận sớm, tùy chọn phụ thu trả phòng trễ, 5% phí phục vụ, 10% 
+thuế GTGT và khấu trừ cọc 30%; khi chọn phương thức chuyển khoản QR, khung 
+mã VietQR tự điền số tiền còn lại cùng MoMo và ZaloPay hiển thị ngay trên màn 
+hình. Trước khi phát hành hóa đơn, hộp thoại xác nhận đối soát thẻ phòng và 
+minibar bật lên; sau xác nhận, hệ thống mở Hóa đơn GTGT chuẩn khổ A4 hỗ trợ 
+in và tải PDF. 
+• WF-09 – Quản trị danh mục hạng phòng, phòng và dịch vụ (wf-09-admin-
+rooms-services.png): Cung cấp ba thẻ quản trị tập trung tại /admin/catalog với 
+bố cục thích ứng theo vai trò (toàn chiều rộng ở chế độ tra cứu chỉ đọc của Lễ tân 
+và hai cột kèm biểu mẫu cập nhật cho Quản trị viên), dải bốn chỉ số tổng quan, 
+cột ước tính tiền cọc 30% mỗi đêm, bộ lọc nhanh theo trạng thái phòng và bốn 
+nhóm dịch vụ. 
+• WF-10 – Báo cáo doanh thu đa chiều và Xuất báo cáo PDF khổ A4 (wf-10-
+admin-reports.png): Trang tổng hợp điều hành với bộ lọc khoảng thời gian 
+AceDatePicker, nút xuất báo cáo PDF khổ A4, các thẻ chỉ số hiệu quả khai thác 
+(Occupancy Rate, ADR, RevPAR), bảng phân tách cơ cấu doanh thu, cơ cấu thực 
+thu theo phương thức thanh toán và bảng kê hóa đơn chi tiết. 
+
+=== PDF PAGE 94 ===
+79 
+ 
+CHƯƠNG 7.  KẾT QUẢ XÂY DỰNG PROTOTYPE, CÀI 
+ĐẶT JAVA VÀ KIỂM THỬ 
+7.1 Kiến trúc kỹ thuật ứng dụng Java Web và các mẫu thiết kế áp dụng 
+Ứng dụng ACE Hotel được xây dựng bằng ngôn ngữ Java 21 (JDK 21) trên 
+nền tảng Spring Boot 3.5.0 [6], sử dụng Thymeleaf cho tầng trình diễn phía máy chủ, 
+Spring Security 6 cho tầng xác thực và phân quyền, Spring Data JPA kết hợp 
+Hibernate cho tầng ánh xạ đối tượng – quan hệ và cơ sở dữ liệu H2 chạy ở chế độ lưu 
+tệp bền vững (jdbc:h2:file:./data/ace_hotel_db;MODE=LEGACY) trên cổng dịch vụ 
+8088. Toàn bộ 58 tệp mã nguồn Java trong gói gốc com.ace.hotel được phân tầng 
+theo sáu gói thành phần: 
+1. Gói cấu hình và bảo mật (com.ace.hotel.config): Gồm bốn lớp 
+SecurityConfig (chuỗi bộ lọc phân quyền RBAC ba vai trò và mã hóa BCrypt), 
+RoleBasedAuthSuccessHandler (điều hướng sau đăng nhập an toàn chống chuyển 
+hướng mở), DemoDataSeeder (khởi tạo dữ liệu nền từ sample-data.sql khi bảng 
+users rỗng hoặc khi bật cờ ace.seed=true) và GlobalUserAdvice. 
+2. Gói thực thể miền dữ liệu (com.ace.hotel.entity): Gồm tám lớp thực thể JPA 
+(User, RoomType, Room, Customer, Booking, ServiceItem, ServiceOrder, 
+Invoice) và năm kiểu liệt kê trạng thái (Role, RoomStatus, BookingStatus, 
+PaymentMethod, ServiceCategory) ánh xạ trực tiếp sang tám bảng trong 
+schema.sql. 
+3. Gói truy cập dữ liệu (com.ace.hotel.repository): Gồm tám giao diện kế thừa 
+JpaRepository 
+(UserRepository, 
+RoomTypeRepository, 
+RoomRepository, 
+CustomerRepository, 
+BookingRepository, 
+ServiceItemRepository, 
+ServiceOrderRepository, InvoiceRepository) cung cấp các câu truy vấn JPQL lọc 
+phòng trống không trùng lịch và khóa bi quan bản ghi (PESSIMISTIC_WRITE). 
+4. Gói dịch vụ nghiệp vụ và xử lý ngoại lệ (com.ace.hotel.service, exception, 
+util): Gồm mười lớp dịch vụ nghiệp vụ chuyên biệt (AuthService, 
+
+=== PDF PAGE 95 ===
+80 
+ 
+CustomUserDetailsService, CustomerService, CatalogService, PricingService, 
+BookingService, 
+CheckInService, 
+FolioService, 
+CheckOutService, 
+ReportService) 
+cùng 
+gói 
+ngoại 
+lệ 
+và 
+tiện 
+ích 
+(BusinessException, 
+GlobalExceptionHandler, MessageConstants, ValidationUtils) đảm nhiệm toàn 
+bộ bảy quy tắc nghiệp vụ (BR1 – BR7) trong phạm vi giao dịch @Transactional. 
+5. Gói điều khiển và đối tượng truyền dữ liệu (com.ace.hotel.controller, dto): 
+Gồm 
+chín 
+lớp 
+điều 
+khiển 
+web 
+(PublicController, 
+AuthController, 
+CustomerPortalController, StaffDashboardController, StaffCheckInController, 
+StaffFolioController, 
+StaffCheckOutController, 
+AdminCatalogController, 
+AdminReportController) và chín lớp truyền tải dữ liệu DTO phục vụ bốn phân hệ 
+giao diện. 
+6. Tầng trình diễn và tài nguyên tĩnh (templates và static): Gồm ba bố cục 
+khung Thymeleaf (public-layout.html, customer-layout.html, pms-layout.html), 
+hệ thống bảng kiểu CSS chuyển đổi chế độ Sáng/Tối (theme.js), thành phần lịch 
+AceDatePicker (ace-datepicker.js), bộ chọn AceSelect (ace-select.js), thư viện 
+sinh mã QR phía trình duyệt (qr-generator.js), thư viện quét mã QR (html5-
+qrcode.min.js) và bộ đôi thư viện xuất chứng từ ngoại tuyến (html2canvas.min.js, 
+jspdf.umd.min.js). 
+Xét về kiến trúc phần mềm theo nội dung giai đoạn Xây dựng trong bài giảng 
+[1], ứng dụng vận dụng đồng bộ bốn mẫu thiết kế tiêu chuẩn: mẫu kiến trúc Model – 
+View – Controller (MVC) tách biệt hoàn toàn giao diện Thymeleaf khỏi logic điều 
+phối; mẫu Singleton (thông qua cơ chế quản lý Bean mặc định của Spring IoC 
+Container cho toàn bộ các lớp Service và Repository); mẫu Facade tại các lớp 
+CheckInService và CheckOutService nhằm đóng gói chuỗi thao tác cập nhật đồng 
+thời nhiều bảng vào một giao dịch nguyên tử duy nhất; và mẫu Repository giúp cô 
+lập tầng nghiệp vụ khỏi cú pháp truy vấn của hệ quản trị cơ sở dữ liệu. 
+7.2 Kịch bản trình diễn thực nghiệm khép kín và bộ dữ liệu nền 
+
+=== PDF PAGE 96 ===
+81 
+ 
+Toàn bộ mã nguồn ứng dụng được quản lý tại kho lưu trữ GitHub 
+(https://github.com/dangkhoa040706-design/ACE) và thư mục dự án ace-hotel, tích 
+hợp sẵn trình đóng gói Maven Wrapper (mvnw.cmd) cùng cơ sở dữ liệu nhúng H2 
+lưu tệp bền vững tại ./data/ace_hotel_db (yêu cầu môi trường duy nhất là Java 
+Development Kit 21 – JDK 21). 
+• Hướng dẫn khởi chạy và kiểm thử nhanh trên môi trường Windows: Mở 
+cửa sổ dòng lệnh PowerShell tại thư mục ace-hotel, thiết lập biến môi trường 
+JAVA_HOME trỏ tới thư mục JDK 21 và thực thi lệnh: .\mvnw.cmd spring-
+boot:run. Sau khi máy chủ Tomcat khởi động thành công trên cổng mặc định 
+8088, truy cập ứng dụng qua trình duyệt tại địa chỉ http://localhost:8088. Trường 
+hợp cần nạp lại toàn bộ dữ liệu mẫu từ sample-data.sql, khởi chạy kèm tham số: 
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.arguments=--ace.seed=true". Để 
+chạy bộ kiểm thử khói tự động JUnit 5, thực thi lệnh: .\mvnw.cmd test -
+Dtest=BugFixSmokeTest. 
+Hệ thống mặc định vận hành ở chế độ lưu trữ dữ liệu thực tế (ace.seed=false), 
+bảo toàn toàn bộ đơn đặt phòng, dịch vụ và hóa đơn qua các lần khởi động lại. Khi 
+cơ sở dữ liệu khởi tạo lần đầu, tệp sample-data.sql nạp sẵn bộ dữ liệu chuẩn gồm năm 
+hạng phòng, mười hai phòng vật lý trên bốn tầng (101 đến 420), tám dịch vụ đi kèm 
+thuộc bốn nhóm chuẩn và bốn tài khoản kiểm thử được liệt kê tại Bảng 7.1. 
+Bảng 7.1 Danh sách bốn tài khoản kiểm thử mặc định trong tệp sample-data.sql 
+STT Tên đăng 
+nhập 
+Mật khẩu 
+Vai trò (Role) 
+Trang điều hướng mặc 
+định sau đăng nhập 
+1 
+admin 
+admin 
+ADMIN 
+/admin/dashboard 
+(toàn 
+quyền phân hệ Quản trị, Lễ 
+tân và Khách hàng) 
+2 
+nhanvien 
+nhanvien 
+RECEPTIONIST 
+/staff/dashboard (điều hành 
+Bàn lễ tân PMS và xem danh 
+mục /admin/catalog) 
+3 
+letan 
+Letan@2026 RECEPTIONIST 
+/staff/dashboard (tài khoản 
+ca trực lễ tân thứ hai phục vụ 
+kiểm thử đa nhân viên) 
+
+=== PDF PAGE 97 ===
+82 
+ 
+4 
+khach 
+khach 
+CUSTOMER 
+/customer/dashboard 
+(đặt 
+phòng trực tuyến, xem biên 
+lai cọc và Live Folio) 
+Quy trình trình diễn thực nghiệm (Live Demo) khép kín toàn bộ vòng đời lưu 
+trú trên dữ liệu thực tế gồm năm bước liên hoàn: 
+Bước 1 – Khách hàng tra cứu, chọn phòng vật lý cụ thể và đặt cọc 30% trực 
+tuyến (UC01, UC03): Đăng nhập tài khoản khach (mật khẩu khach) tại /login, 
+chuyển sang cổng đặt phòng /booking, nhập ngày nhận, ngày trả và số lượng 
+khách qua bộ lịch AceDatePicker để lọc các hạng phòng còn suất trống (BR1). 
+Mở cửa sổ đặt phòng, hiệu chỉnh giờ dự kiến nhận/trả, chọn trực tiếp một số phòng 
+vật lý đang trống (ví dụ phòng 201 – hạng Deluxe), đối chiếu mức tiền cọc 30% 
+tự động tính trên gói phòng có thuế phí và xác nhận hoàn tất tại /booking/deposit. 
+Hệ thống phát hành Biên lai thu cọc bố cục hai cột kèm mã QR, cho phép tải ảnh 
+PNG và tải tệp PDF khổ A4. 
+Bước 2 – Nhân viên lễ tân quét mã QR nhận phòng và tiếp nhận khách vãng 
+lai (UC04): Đăng nhập tài khoản nhanvien (mật khẩu nhanvien) vào bàn lễ tân 
+/staff/dashboard. Mở màn hình /staff/check-in, tải ảnh biên lai QR vừa lưu ở Bước 
+1 lên bộ giải mã để tra cứu nhanh đơn RESERVED; hệ thống tự động chọn sẵn 
+phòng 201 khách đã chốt khi phòng đang ở trạng thái AVAILABLE. Lễ tân xác 
+nhận nhận phòng để chuyển trạng thái phòng 201 sang OCCUPIED. Sau đó, 
+chuyển sang biểu mẫu khách vãng lai (/staff/walk-in) để tiếp nhận thêm một khách 
+nhận phòng trực tiếp với tiền cọc 0 đồng. 
+Bước 3 – Ghi nhận dịch vụ vào sổ cái Room Folio và gửi yêu cầu trả phòng 
+nhanh (UC06, UC03): Từ sơ đồ phòng trên /staff/dashboard, nhân viên mở sổ 
+cái dịch vụ (/staff/bookings/{id}/folio) của phòng 201, thêm các dịch vụ thuộc 
+bốn nhóm (như bữa sáng Buffet và giặt ủi nhanh); hệ thống đóng băng đơn giá 
+(BR5) và cộng dồn tức thời. Ở tài khoản hội viên (/customer/bookings), khách 
+xem bảng Live Folio đồng bộ thời gian thực và gửi yêu cầu trả phòng nhanh; ngay 
+lập tức thẻ phòng 201 trên bàn lễ tân xuất hiện nhãn cảnh báo yêu cầu trả phòng. 
+
+=== PDF PAGE 98 ===
+83 
+ 
+Bước 4 – Quyết toán trả phòng theo biểu giá có thuế phí, thanh toán QR và 
+xuất 
+hóa 
+đơn 
+A4 
+(UC05): 
+Lễ 
+tân 
+mở 
+màn 
+hình 
+quyết 
+toán 
+(/staff/bookings/{id}/check-out) của phòng 201. Hệ thống tự động cộng tiền 
+phòng, tổng dịch vụ Room Folio, cho chọn mức phụ thu trả phòng trễ (nếu sau 
+12:00), tính 5% phí phục vụ, 10% thuế GTGT và khấu trừ chính xác tiền cọc 30% 
+đã thanh toán. Khi chọn phương thức chuyển khoản QR (TRANSFER), màn hình 
+hiển thị mã VietQR điền sẵn đúng số tiền còn lại (balance_due) cùng MoMo và 
+ZaloPay. Sau khi xác nhận thanh toán, hệ thống mở Hóa đơn GTGT chuẩn khổ 
+A4 (/staff/invoices/{id}) hỗ trợ tải PDF và tự động khóa phòng 201 sang trạng 
+thái chờ dọn (DIRTY). 
+Bước 5 – Nghiệm thu vệ sinh buồng phòng và xuất báo cáo doanh thu PDF 
+khổ A4 (UC05, UC02, UC07): Trên /staff/dashboard, lễ tân xác nhận hoàn tất 
+dọn phòng để đưa phòng 201 từ DIRTY trở về AVAILABLE. Cuối cùng, đăng 
+nhập tài khoản quản trị admin (mật khẩu admin), thử chuyển một phòng trống 
+sang bảo trì tại /admin/catalog, sau đó mở /admin/reports để đối chiếu doanh thu 
+vừa quyết toán, kiểm chứng tỷ lệ lấp đầy phòng đã tự động loại trừ phòng bảo trì 
+khỏi mẫu số (BR7), xem ADR, RevPAR và xuất báo cáo điều hành định dạng 
+PDF khổ A4 tại /admin/reports/export. 
+7.3 Kết quả cài đặt các chức năng chính và giao diện thực tế 
+Toàn bộ mười màn hình thiết kế tại Chương 6 đã được cài đặt hoàn chỉnh bằng 
+Thymeleaf và chạy thực tế trên trình duyệt, đồng bộ dữ liệu xuyên suốt giữa bốn phân 
+hệ. Các hình từ Hình 7.1 đến Hình 7.4 ghi nhận giao diện vận hành thực tế của ứng 
+dụng. 
+
+=== PDF PAGE 99 ===
+84 
+ 
+ 
+Hình 7.1 Giao diện Trang chủ công khai và Cổng đặt phòng khách hàng 
+ 
+Hình 7.2 Giao diện Cửa sổ chọn phòng trực tuyến và Biên lai thu cọc 30% khổ A4 
+
+=== PDF PAGE 100 ===
+85 
+ 
+ 
+Hình 7.3 Giao diện Bàn lễ tân PMS: Sơ đồ phòng bốn trạng thái, Nhận phòng và 
+Room Folio 
+
+=== PDF PAGE 101 ===
+86 
+ 
+ 
+Hình 7.4 Giao diện Quyết toán trả phòng thanh toán QR và Báo cáo doanh thu PDF 
+khổ A4 
+7.4 Chiến lược kiểm thử, ma trận truy vết (RTM) và kết quả 30 kịch bản 
+kiểm thử 
+Tuân thủ kế hoạch đảm bảo chất lượng xuyên suốt các giai đoạn phát triển 
+phần mềm trong bài giảng [1], hoạt động kiểm thử của đồ án được phân tầng thành 
+bốn cấp độ bổ trợ lẫn nhau: (1) Đánh giá chéo tài liệu (Structured Walkthrough) nhằm 
+rà soát tính nhất quán giữa bảng sự kiện, bảy đặc tả ca sử dụng và lược đồ cơ sở dữ 
+liệu trước khi lập trình; (2) Kiểm thử đơn vị và Kiểm thử khói tự động (Unit và Build 
+
+=== PDF PAGE 102 ===
+87 
+ 
+& Smoke Test) thông qua bộ kiểm thử JUnit 5 trong lớp BugFixSmokeTest (đạt kết 
+quả 9/9 bài kiểm thử thành công trong dưới 1 giây, xác minh công thức tính giá đêm 
+thường/cuối tuần, công thức thuế phí, chế độ lưu dữ liệu thực tế ace.seed=false, trạng 
+thái yêu cầu trả phòng và lọc chuyển hướng an toàn); (3) Kiểm thử hộp đen dựa trên 
+yêu cầu (Requirements-based Black-Box Testing) bao phủ toàn bộ 30 kịch bản (TC-
+01 đến TC-30) gồm cả luồng chuẩn, luồng biên và luồng ngoại lệ; và (4) Kiểm thử 
+chấp nhận người dùng (User Acceptance Testing – UAT) thông qua kịch bản trình 
+diễn khép kín năm bước. 
+Để chứng minh khả năng truy vết hai chiều từ yêu cầu chức năng đến thiết kế 
+mô hình, cơ sở dữ liệu, mã nguồn Java thực tế và kết quả kiểm thử, Bảng 7.2 trình 
+bày Ma trận truy vết yêu cầu (Requirements Traceability Matrix – RTM) cho toàn bộ 
+18 yêu cầu chức năng của hệ thống. 
+Bảng 7.2 Ma trận truy vết yêu cầu hai chiều (RTM) 
+Mã 
+FR 
+Quy tắc 
+liên quan 
+Use 
+Case 
+Bảng cơ sở 
+dữ liệu 
+Wirefr
+ame 
+Lớp Java thực thi 
+(com.ace.hotel) 
+Mã Test 
+Case 
+FR-
+01 
+NFR-02 
+UC01 
+users, 
+customers 
+WF-02 
+AuthController, AuthService 
+TC-01, 
+TC-02, 
+TC-03 
+FR-
+02 
+NFR-03 
+UC01 
+users 
+WF-02 
+SecurityConfig, 
+RoleBasedAuthSuccessHandler 
+TC-04, 
+TC-05 
+FR-
+03 
+BR3, 
+BR7 
+UC02 
+room_types
+, rooms 
+WF-09 
+AdminCatalogController, 
+CatalogService 
+TC-28 
+FR-
+04 
+BR1, 
+BR7 
+UC02 
+rooms, 
+room_types WF-09 
+AdminCatalogController, 
+CatalogService 
+TC-29 
+FR-
+05 
+BR5, 
+BR7 
+UC02 
+services, 
+service_ord
+ers 
+WF-09 
+AdminCatalogController, 
+CatalogService 
+TC-22, 
+TC-28 
+FR-
+06 
+BR1, 
+BR3 
+UC03 
+room_types
+, 
+rooms, 
+bookings 
+WF-01, 
+WF-03 
+CustomerPortalController, 
+BookingService, PricingService 
+TC-06, 
+TC-07 
+FR-
+07 
+BR1, 
+BR3, 
+BR4 
+UC03 
+bookings, 
+customers, 
+rooms 
+WF-03 
+CustomerPortalController, 
+BookingService, PricingService 
+TC-08, 
+TC-09, 
+TC-10 
+
+=== PDF PAGE 103 ===
+88 
+ 
+FR-
+08 
+BR4, 
+NFR-08 
+UC03 
+bookings, 
+customers 
+WF-04 
+CustomerPortalController, 
+qr-
+generator.js 
+TC-11 
+FR-
+09 
+BR5, 
+BR7 
+UC03, 
+UC05 
+bookings, 
+service_ord
+ers 
+WF-04, 
+WF-05 
+CustomerPortalController, 
+BookingService, 
+StaffDashboardController 
+TC-12, 
+TC-13, 
+TC-14 
+FR-
+10 
+BR1, 
+BR2 
+UC04 
+bookings, 
+rooms, 
+customers 
+WF-06 
+StaffCheckInController, 
+CheckInService 
+TC-16, 
+TC-17, 
+TC-18 
+FR-
+11 
+BR2, 
+BR3, 
+BR4 
+UC04 
+customers, 
+bookings, 
+rooms 
+WF-06 
+StaffCheckInController, 
+CheckInService, 
+CustomerService 
+TC-19, 
+TC-20 
+FR-
+12 
+BR5 
+UC06 
+service_ord
+ers, 
+services, 
+bookings 
+WF-07 
+StaffFolioController, 
+FolioService 
+TC-21, 
+TC-22, 
+TC-23 
+FR-
+13 
+BR4, 
+BR6 
+UC05 
+bookings, 
+service_ord
+ers, 
+invoices 
+WF-08 
+StaffCheckOutController, 
+CheckOutService, 
+PricingService 
+TC-24 
+FR-
+14 
+BR6, 
+BR7 
+UC05 
+invoices, 
+bookings, 
+rooms 
+WF-08 
+StaffCheckOutController, 
+CheckOutService 
+TC-25, 
+TC-26 
+FR-
+15 
+BR2, 
+BR7 
+UC05 
+rooms 
+WF-05 
+StaffDashboardController, 
+CatalogService 
+TC-27 
+FR-
+16 
+BR2, 
+BR7 
+UC04, 
+UC05 
+rooms, 
+bookings 
+WF-05 
+StaffDashboardController 
+TC-15 
+FR-
+17 
+BR6, 
+NFR-08 
+UC07 
+invoices, 
+service_ord
+ers, 
+bookings 
+WF-10 
+AdminReportController, 
+ReportService 
+TC-30 
+FR-
+18 
+BR7 
+UC07 
+rooms, 
+bookings, 
+invoices 
+WF-10 
+AdminReportController, 
+ReportService 
+TC-30 
+Chi tiết 30 kịch bản kiểm thử hộp đen (từ TC-01 đến TC-30) cùng kết quả 
+nghiệm thu thực tế trên ứng dụng ACE Hotel được tổng hợp tại Bảng 7.3. 
+ 
+ 
+
+=== PDF PAGE 104 ===
+89 
+ 
+Bảng 7.3 Kết quả thực thi 30 kịch bản kiểm thử nghiệp vụ (TC-01 – TC-30) 
+Mã 
+TC 
+Liên kết 
+UC / FR 
+/ BR 
+Nội dung kịch bản kiểm thử 
+Kết quả kỳ vọng 
+Kết quả 
+thực tế 
+TC-
+01 
+UC01 / 
+FR-01 
+Đăng ký tài khoản hội viên mới 
+với thông tin hợp lệ và tuổi đủ 18 
+Tạo bản ghi users (mã hóa 
+BCrypt) và customers, chuyển 
+hướng về /login 
+Đạt 
+(PASS) 
+TC-
+02 
+UC01 / 
+FR-01 
+Kiểm tra từ chối đăng ký khi 
+chưa đủ 18 tuổi hoặc trùng tên 
+đăng nhập/CCCD 
+Giữ lại dữ liệu hợp lệ trên biểu 
+mẫu và thông báo lỗi ràng 
+buộc 
+Đạt 
+(PASS) 
+TC-
+03 
+UC01 / 
+NFR-02 
+Kiểm tra chuỗi mật khẩu lưu 
+trong bảng users sau khi đăng ký 
+Mật khẩu được băm theo 
+chuẩn BCrypt, không lưu dạng 
+văn bản thuần 
+Đạt 
+(PASS) 
+TC-
+04 
+UC01 / 
+FR-02 
+Đăng nhập lần lượt bằng ba vai 
+trò ADMIN, RECEPTIONIST 
+và CUSTOMER 
+Tự động điều hướng đến 
+/admin/dashboard, 
+/staff/dashboard 
+và 
+/customer/dashboard 
+Đạt 
+(PASS) 
+TC-
+05 
+UC01 / 
+NFR-03 
+Tài khoản CUSTOMER truy cập 
+trực 
+tiếp 
+đường 
+dẫn 
+/staff/dashboard 
+hoặc 
+/admin/reports 
+Hệ thống chặn quyền truy cập 
+và chuyển hướng về trang 
+/error/403 
+Đạt 
+(PASS) 
+TC-
+06 
+UC03 / 
+FR-06 
+Tìm kiếm hạng phòng theo 
+khoảng ngày hợp lệ và số lượng 
+khách 
+Chỉ trả về hạng phòng có 
+capacity ≥ số khách và tồn kho 
+khả dụng ≥ 1 
+Đạt 
+(PASS) 
+TC-
+07 
+UC03 / 
+BR3 
+Kiểm tra điều kiện biên khi ngày 
+trả phòng nhỏ hơn hoặc bằng 
+ngày nhận phòng 
+AceDatePicker 
+khóa 
+chọn 
+ngày sai và tầng dịch vụ từ 
+chối truy vấn 
+Đạt 
+(PASS) 
+TC-
+08 
+UC03 / 
+FR-07 
+Gọi API /booking/api/available-
+rooms để lấy danh sách phòng 
+vật lý trống theo ngày 
+Chỉ liệt kê phòng không có 
+đơn giao lịch và không ở trạng 
+thái MAINTENANCE 
+Đạt 
+(PASS) 
+TC-
+09 
+UC03 / 
+BR3 
+Tính tổng tiền phòng cho kỳ lưu 
+trú trải qua cả đêm Thứ Năm và 
+đêm Thứ Sáu 
+Cộng đúng price_per_night 
+cho 
+đêm 
+thường 
+và 
+weekend_price_per_night cho 
+đêm cuối tuần 
+Đạt 
+(PASS) 
+TC-
+10 
+UC03 / 
+BR4 
+Hoàn tất đặt cọc 30% trực tuyến 
+có chọn sẵn số phòng vật lý cụ 
+thể 
+Lưu đơn RESERVED, chốt 
+room_id và deposit_amount = 
+30% tổng gói phòng có thuế 
+phí 
+Đạt 
+(PASS) 
+
+=== PDF PAGE 105 ===
+90 
+ 
+TC-
+11 
+UC03 / 
+FR-08 
+Xem biên lai thu cọc hai cột kèm 
+mã QR và xuất tệp PNG, PDF 
+khổ A4 
+Hiển thị đầy đủ thông tin, tải 
+tệp PNG và PDF khổ A4 
+không vỡ bố cục 
+Đạt 
+(PASS) 
+TC-
+12 
+UC03 / 
+FR-09 
+Khách hàng hoặc lễ tân hủy đơn 
+giữ chỗ RESERVED (kiểm 
+chứng cả 2 mốc trước 48h hoàn 
+cọc và dưới 48h mất cọc 30%) 
+Hiển thị đúng cảnh báo 
+hoàn/mất cọc theo mốc 48 giờ 
+trước 14:00 ngày nhận phòng, 
+đơn chuyển CANCELLED và 
+giải phóng ngay phòng trống 
+Đạt 
+(PASS) 
+TC-
+13 
+UC03 / 
+BR7 
+Kiểm tra chặn hủy đơn đối với 
+kỳ lưu trú đã nhận phòng 
+(CHECKED_IN) 
+Hệ thống từ chối hủy và giữ 
+nguyên 
+trạng 
+thái 
+đơn 
+CHECKED_IN 
+Đạt 
+(PASS) 
+TC-
+14 
+UC03 / 
+FR-09 
+Khách đang lưu trú gửi yêu cầu 
+trả phòng nhanh 
+từ trang 
+/customer/bookings 
+Lưu checkout_requested_at và 
+hiển thị nhãn yêu cầu trả 
+phòng trên bàn lễ tân 
+Đạt 
+(PASS) 
+TC-
+15 
+UC04 / 
+FR-16 
+Kiểm tra hiển thị sơ đồ 12 phòng 
+theo 4 trạng thái và chuyển đổi 
+chế độ Sáng/Tối 
+Hiển thị chính xác màu trạng 
+thái và đồng bộ chế độ 
+Sáng/Tối trên toàn phân hệ 
+PMS 
+Đạt 
+(PASS) 
+TC-
+16 
+UC04 / 
+FR-10 
+Quét mã QR từ tệp ảnh biên lai 
+cọc trên màn hình /staff/check-in 
+Giải mã chính xác mã đơn BK-
+... và hiển thị đầy đủ chi tiết 
+đơn đặt trước 
+Đạt 
+(PASS) 
+TC-
+17 
+UC04 / 
+FR-10 
+Kiểm tra tự động chọn sẵn 
+phòng khách đã chốt khi làm thủ 
+tục nhận phòng 
+Danh sách chọn phòng ưu tiên 
+chọn đúng room_id đã lưu nếu 
+phòng đang AVAILABLE 
+Đạt 
+(PASS) 
+TC-
+18 
+UC04 / 
+BR2 
+Kiểm tra chặn gán phòng đang ở 
+trạng thái DIRTY, OCCUPIED 
+hoặc MAINTENANCE 
+Hệ thống từ chối nhận phòng 
+và yêu cầu chọn phòng đang 
+AVAILABLE 
+Đạt 
+(PASS) 
+TC-
+19 
+UC04 / 
+FR-11 
+Tiếp nhận khách vãng lai (Walk-
+in) tại /staff/walk-in vào phòng 
+trống sạch 
+Tạo đơn CHECKED_IN với 
+deposit_amount = 0 đồng và 
+chuyển 
+phòng 
+sang 
+OCCUPIED 
+Đạt 
+(PASS) 
+TC-
+20 
+UC04 / 
+FR-11 
+Kiểm tra ghi nhận phụ thu nhận 
+phòng sớm 30% giá một đêm khi 
+nhận phòng trước 14:00 
+Lưu 
+chính 
+xác 
+early_checkin_fee vào bảng 
+bookings và kết chuyển sang 
+hóa đơn 
+Đạt 
+(PASS) 
+TC-
+21 
+UC06 / 
+FR-12 
+Ghi nhận dịch vụ thuộc bốn 
+nhóm (MINIBAR, LAUNDRY, 
+FB, DAMAGES) vào Room 
+Folio 
+Lưu 
+bản 
+ghi 
+vào 
+service_orders và cập nhật 
+đồng thời bảng Live Folio của 
+khách 
+Đạt 
+(PASS) 
+
+=== PDF PAGE 106 ===
+91 
+ 
+TC-
+22 
+UC06 / 
+BR5 
+Kiểm chứng đóng băng đơn giá 
+dịch vụ khi quản trị viên tăng giá 
+niêm yết sau đó 
+Dòng dịch vụ đã ghi trong 
+service_orders giữ nguyên đơn 
+giá cũ tại thời điểm gọi 
+Đạt 
+(PASS) 
+TC-
+23 
+UC06 / 
+BR5 
+Kiểm tra chặn thêm hoặc xóa 
+dịch vụ đối với đơn RESERVED 
+hoặc CHECKED_OUT 
+Hệ thống từ chối thao tác và 
+giữ nguyên toàn vẹn sổ cái 
+dịch vụ 
+Đạt 
+(PASS) 
+TC-
+24 
+UC05 / 
+FR-13 
+Quyết toán Check-out có cộng 
+tiền phòng, dịch vụ, phụ thu trả 
+trễ, 5% SVC, 10% VAT và trừ 
+cọc 
+Khớp chính xác từng dòng tính 
+toán và thỏa mãn ba ràng buộc 
+CHECK bảng invoices 
+Đạt 
+(PASS) 
+TC-
+25 
+UC05 / 
+FR-14 
+Chọn phương thức 
+chuyển 
+khoản QR (TRANSFER) và 
+thay đổi mức phụ thu trả phòng 
+trễ 
+Khung mã QR VietQR tự động 
+cập 
+nhật 
+đúng 
+số 
+tiền 
+balance_due cần thanh toán 
+Đạt 
+(PASS) 
+TC-
+26 
+UC05 / 
+BR6, 
+BR7 
+Hoàn tất quyết toán Check-out, 
+xuất hóa đơn PDF khổ A4 và 
+kiểm tra trạng thái phòng 
+Lưu hóa đơn duy nhất, đơn 
+chuyển CHECKED_OUT và 
+phòng tự động khóa sang 
+DIRTY 
+Đạt 
+(PASS) 
+TC-
+27 
+UC05 / 
+FR-15 
+Lễ tân xác nhận hoàn tất dọn vệ 
+sinh 
+phòng 
+DIRTY 
+trên 
+/staff/dashboard 
+Phòng chuyển trạng thái từ 
+DIRTY về AVAILABLE sẵn 
+sàng đón lượt khách mới 
+Đạt 
+(PASS) 
+TC-
+28 
+UC02 / 
+FR-03, 
+FR-05 
+Quản trị viên cập nhật đơn giá 
+hạng phòng, dịch vụ và kiểm tra 
+chặn xóa mục đã có giao dịch 
+Lưu thay đổi thành công; từ 
+chối xóa hạng phòng hoặc dịch 
+vụ đã phát sinh đơn 
+Đạt 
+(PASS) 
+TC-
+29 
+UC02 / 
+FR-04 
+Quản trị viên chuyển phòng 
+trống 
+sang 
+bảo 
+trì 
+(MAINTENANCE) và kiểm tra 
+chặn bảo trì phòng đang ở 
+Phòng AVAILABLE chuyển 
+sang 
+MAINTENANCE; 
+phòng OCCUPIED bị từ chối 
+bảo trì 
+Đạt 
+(PASS) 
+TC-
+30 
+UC07 / 
+FR-17, 
+FR-18 
+Lọc báo cáo doanh thu, kiểm tra 
+tỷ lệ lấp đầy (trừ phòng bảo trì), 
+ADR, RevPAR và xuất PDF khổ 
+A4 
+Số liệu khớp 100% hóa đơn 
+quyết toán, mẫu số OR% loại 
+trừ phòng bảo trì, xuất PDF sắc 
+nét 
+Đạt 
+(PASS) 
+
+=== PDF PAGE 107 ===
+92 
+ 
+CHƯƠNG 8.  ĐÁNH GIÁ, KẾ HOẠCH TRIỂN KHAI VÀ 
+KẾT LUẬN 
+8.1 Tự đánh giá kết quả đạt được 
+Qua quá trình khảo sát, phân tích, mô hình hóa và lập trình thực nghiệm, Nhóm 
+13 đã hoàn thiện đầy đủ mục tiêu đề ra của đề tài Hệ thống quản lý khách sạn (đặt 
+phòng, check-in/check-out, dịch vụ đi kèm) – triển khai dưới tên ACE Hotel. Kết quả 
+đạt được đáp ứng trọn vẹn các tiêu chí chuyên môn của học phần Phân tích và Thiết 
+kế Yêu cầu (Mã môn: 502050): 
+1. Về khảo sát, phân tích và đặc tả yêu cầu: Xây dựng bài bản từ phân tích tính 
+khả thi ba chiều, mô hình hóa nghiệp vụ hiện trạng, phân rã sự kiện bằng bảng 
+Event Table sáu cột đến đặc tả đầy đủ 7 quy tắc nghiệp vụ (BR1 – BR7), 18 yêu 
+cầu chức năng (FR-01 – FR-18) và 9 yêu cầu phi chức năng (NFR-01 – NFR-09) 
+phân loại ưu tiên theo MoSCoW. 
+2. Về mô hình hóa UML và thiết kế cơ sở dữ liệu: Hoàn thiện bộ 28 sơ đồ UML 
+và mô hình ERD đồng bộ (Sơ đồ hoạt động quy trình hiện tại As-Is, Biểu đồ Use 
+Case tổng quát, bảy bộ Use Case/Activity/Sequence chi tiết gắn với bảng đặc tả 
+đối thoại hai cột Tác nhân – Hệ thống, Biểu đồ Gói kiến trúc phân tầng, Biểu đồ 
+Lớp thiết kế, Mô hình ERD và Sơ đồ trạng thái kép) cùng lược đồ cơ sở dữ liệu 8 
+bảng (73 cột) đạt chuẩn 3NF có ràng buộc CHECK bảo vệ công thức tài chính. 
+3. Về cài đặt thực nghiệm và kiểm thử truy vết: Triển khai thành công ứng 
+dụng Java Spring Boot 3.5.0 với 58 tệp mã nguồn trong gói com.ace.hotel, đáp 
+ứng 100% (18/18) yêu cầu chức năng, 9/9 bài kiểm thử khói tự động 
+(BugFixSmokeTest) và 30/30 kịch bản kiểm thử hộp đen trên cả bốn phân hệ giao 
+diện. 
+8.2 Các hạn chế hiện tại của hệ thống 
+Trong khuôn khổ đồ án học phần và biên giới phạm vi đã thống nhất tại 
+Chương 1, hệ thống vẫn tồn tại hai giới hạn mang tính chủ đích sau: 
+
+=== PDF PAGE 108 ===
+93 
+ 
+• Đối soát thanh toán chuyển khoản bán tự động: Hệ thống đã sinh mã QR 
+chuẩn VietQR tự động điền đúng số tiền cọc 30% và số tiền cần thu tại quầy, tuy 
+nhiên bước xác nhận hoàn tất giao dịch vẫn dựa trên thao tác xác nhận thủ công 
+của người dùng hoặc lễ tân, chưa kết nối cơ chế nhận tín hiệu biến động số dư tự 
+động (Webhook) từ hệ thống ngân hàng. 
+• Chưa hỗ trợ gộp nhiều phòng trên một mã đơn đoàn: Mỗi đơn đặt phòng 
+hiện ánh xạ với một hạng phòng và một phòng vật lý cụ thể. Đối với nhu cầu đặt 
+nhiều phòng khác hạng trong cùng một mã hóa đơn tổng cho đoàn khách du lịch 
+(Group Master Folio), lễ tân hiện cần khởi tạo các đơn riêng cho từng phòng. 
+8.3 Kế hoạch triển khai thực tế và chuyển đổi hệ thống 
+Để đưa hệ thống ACE Hotel từ môi trường thực nghiệm vào vận hành thực tế 
+tại một khách sạn quy mô vừa và nhỏ theo hướng dẫn giai đoạn Đóng gói và Triển 
+khai trong bài giảng [1], nhóm đề xuất phương án chuyển đổi gồm ba hạng mục trọng 
+tâm: 
+1. Phương pháp triển khai song song (Parallel Deployment): Thay vì cắt 
+chuyển trực tiếp (Direct Deployment) tiềm ẩn rủi ro gián đoạn quầy lễ tân khi 
+nhân viên chưa quen thao tác, khách sạn nên áp dụng phương pháp triển khai song 
+song (Parallel Deployment) trong hai tuần đầu tiên: song hành ghi nhận đơn mới 
+trên hệ thống ACE Hotel cùng sổ theo dõi cũ để đối chiếu chéo số liệu doanh thu 
+cuối ca, sau đó chuyển hoàn toàn sang vận hành độc lập trên phần mềm. 
+2. Chuyển đổi và khởi tạo dữ liệu ban đầu (Data Conversion): Trước ngày vận 
+hành chính thức, quản trị viên tiến hành nhập toàn bộ danh mục hạng phòng, biểu 
+giá ngày thường/cuối tuần, sơ đồ phòng vật lý và bảng giá dịch vụ vào phân hệ 
+/admin/catalog, đồng thời chuyển đổi các đơn đặt trước còn hiệu lực từ bảng tính 
+cũ sang trạng thái RESERVED trong cơ sở dữ liệu. 
+3. Đào tạo người dùng cuối và đánh giá sau triển khai: Tổ chức hai buổi hướng 
+dẫn thực hành trực tiếp cho nhân viên lễ tân theo quy trình năm bước chuẩn (nhận 
+
+=== PDF PAGE 109 ===
+94 
+ 
+phòng quét QR, đón khách vãng lai, ghi nợ Room Folio, quyết toán trả phòng và 
+xác nhận dọn phòng), kèm tài liệu tra cứu nhanh thao tác xử lý tình huống ngoại 
+lệ tại quầy. 
+8.4 Hướng phát triển và mở rộng trong tương lai 
+Nhờ kiến trúc phân tầng rõ ràng và tách biệt lớp truy cập dữ liệu, hệ thống 
+ACE Hotel có thể tiếp tục mở rộng theo bốn hướng phát triển cụ thể: 
+1. Tự động hóa gạch nợ thanh toán qua Webhook ngân hàng: Tích hợp cổng 
+thanh toán trực tuyến và Webhook ngân hàng (như VNPay, PayOS hoặc SePay) 
+để tự động xác nhận tiền cọc 30% và cập nhật trạng thái hóa đơn theo thời gian 
+thực. 
+2. Mở rộng nghiệp vụ đặt phòng đoàn (Group Booking và Split Folio): Bổ 
+sung bảng liên kết đặt phòng đoàn (booking_rooms) cho phép một trưởng đoàn 
+đặt nhiều phòng thuộc nhiều hạng khác nhau và lựa chọn quyết toán gộp hoặc tách 
+hóa đơn theo từng phòng. 
+3. Xây dựng ứng dụng di động cho bộ phận Buồng phòng: Phát triển giao diện 
+di động chuyên dụng cho bộ phận buồng phòng nhằm tiếp nhận tức thời danh sách 
+phòng chờ dọn (DIRTY), ghi nhận kiểm kê Minibar tại phòng và cập nhật trạng 
+thái sẵn sàng trực tiếp mà không cần báo qua bộ đàm. 
+4. Kết nối kênh phân phối OTA (Channel Manager) và mở rộng đa chi 
+nhánh: Xây dựng bộ giao diện lập trình RESTful API đồng bộ tồn kho phòng 
+trống hai chiều với các sàn đại lý du lịch trực tuyến (Agoda, Booking.com, 
+Traveloka) và chuyển đổi cơ sở dữ liệu sang PostgreSQL khi mở rộng quy mô 
+chuỗi nhiều chi nhánh. 
+ 
+ 
+
+=== PDF PAGE 110 ===
+95 
+ 
+TÀI LIỆU THAM KHẢO 
+[1] ThS. Phạm Thị Kim Điệp. Tài liệu bài giảng học phần Phân tích và Thiết kế Yêu cầu 
+(Mã môn: 502050, L01–L11), Khoa Công nghệ thông tin, Trường Đại học Tôn Đức 
+Thắng. 
+[2] Karl Wiegers, Joy Beatty. Software Requirements (3rd Edition), Microsoft Press, 2013. 
+Truy cập tại: https://www.processimpact.com/ 
+[3] Alan Dennis, Barbara Haley Wixom, David Tegarden. Systems Analysis and Design: 
+An Object-Oriented Approach with UML (6th Edition), Wiley, 2020. Truy cập tại: 
+https://www.wiley.com/ 
+[4] ISO / IEC / IEEE. ISO/IEC/IEEE 29148:2018 — Systems and Software Engineering — 
+Requirements Engineering. Truy cập tại: https://www.iso.org/standard/72089.html 
+[5] Hospitality Financial and Technology Professionals (HFTP). Uniform System of 
+Accounts for the Lodging Industry (USALI). Truy cập tại: https://www.hftp.org/ 
+[6] Broadcom / Spring. Spring Boot Reference Documentation (v3.5.0). Truy cập tại: 
+https://docs.spring.io/spring-boot/ 
+[7] Broadcom / Spring. Spring Security Reference Documentation (v6.x). Truy cập tại: 
+https://docs.spring.io/spring-security/reference/ 
+[8] Broadcom / Spring. Spring Data JPA Reference Documentation. Truy cập tại: 
+https://docs.spring.io/spring-data/jpa/reference/ 
+[9] Thymeleaf. Thymeleaf 3 Official Documentation. Truy cập tại: 
+https://www.thymeleaf.org/documentation.html 
+[10] H2 Database Engine. H2 Database Documentation (Embedded File Mode). Truy cập 
+tại: https://www.h2database.com/html/main.html 
+[11] Kazuhiko Arase & Minhaz Av. Thư viện QR nguồn mở (qrcode-generator & html5-
+qrcode). Truy cập tại: https://github.com/kazuhikoarase/qrcode-generator và 
+https://github.com/mebjas/html5-qrcode 
+[12] Niklas von Hertzen & Parallax. Thư viện xuất chứng từ PNG/PDF (html2canvas & 
+jsPDF). Truy cập tại: https://html2canvas.hertzen.com/ và 
+https://github.com/parallax/jsPDF 
+ 
