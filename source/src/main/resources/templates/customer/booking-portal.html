@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/customer-layout :: layout(~{::title}, ~{::content})}">
+<head>
+  <title>Đặt Phòng Trực Tuyến &amp; Đặt Cọc 30% | ACE Hotel Elite</title>
+</head>
+<body>
+  <div th:fragment="content" class="container" style="max-width: 1520px; padding: 2rem 1.25rem 4rem;">
+
+    <!-- Breadcrumb / Header Tiêu Đề Khu Vực Đặt Phòng -->
+    <div class="flex justify-between items-center flex-wrap gap-4" style="margin-bottom: 2rem;">
+      <div>
+        <div class="flex items-center gap-2" style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem;">
+          <a th:href="@{/customer/dashboard}" style="color: var(--primary-text); text-decoration: none;">Cổng Khách Hàng</a>
+          <span>/</span>
+          <span style="color: var(--text);">Đặt Phòng Mới</span>
+        </div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text); margin: 0; font-family: 'Cinzel', 'Playfair Display', serif, system-ui;">
+          Đặt Phòng Nghỉ Dưỡng &amp; Đặt Cọc 30%
+        </h1>
+      </div>
+      <div>
+        <a th:href="@{/customer/bookings}" class="btn btn-secondary btn-sm" style="display: inline-flex; align-items: center; gap: 0.4rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          <span>Đơn đặt của tôi</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Thanh Tìm Kiếm Phòng (Đồng bộ thiết kế Luxury của Cổng Khách Hàng) -->
+    <div class="card card-elevated" style="margin-bottom: 2.5rem; border-color: rgba(229, 192, 123, 0.35); padding: 1.5rem 1.75rem;">
+      <h3 style="font-size: 1.15rem; color: var(--text); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 700;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color: var(--primary-text);" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span>Tra Cứu Phòng Trống &amp; Báo Giá Ưu Đãi</span>
+      </h3>
+      <form th:action="@{/booking/search}" method="get" class="grid grid-cols-4 gap-4 items-center">
+        <div class="form-group" style="margin: 0;">
+          <label class="form-label" style="font-size: 0.825rem; color: var(--primary-text); font-weight: 600;">Ngày nhận phòng</label>
+          <input type="date" name="checkIn" th:value="${checkIn}" class="form-control" required style="font-family: inherit;">
+        </div>
+        <div class="form-group" style="margin: 0;">
+          <label class="form-label" style="font-size: 0.825rem; color: var(--primary-text); font-weight: 600;">Ngày trả phòng</label>
+          <input type="date" name="checkOut" th:value="${checkOut}" class="form-control" required style="font-family: inherit;">
+        </div>
+        <div class="form-group" style="margin: 0;">
+          <label class="form-label" style="font-size: 0.825rem; color: var(--primary-text); font-weight: 600;">Số lượng khách</label>
+          <select name="guests" class="form-select" style="font-family: inherit;">
+            <option value="1" th:selected="${guests == 1}">1 Khách</option>
+            <option value="2" th:selected="${guests == 2}">2 Khách</option>
+            <option value="3" th:selected="${guests == 3}">3 Khách</option>
+            <option value="4" th:selected="${guests == 4}">4 Khách</option>
+            <option value="5" th:selected="${guests == 5}">5 Khách</option>
+            <option value="6" th:selected="${guests == 6}">6 Khách</option>
+            <option value="8" th:selected="${guests == 8}">8 Khách</option>
+            <option value="10" th:selected="${guests == 10}">10+ Khách</option>
+          </select>
+        </div>
+        <div style="margin-top: 1.35rem;">
+          <button type="submit" class="btn btn-primary" style="width: 100%; height: 42px; font-weight: 700;">
+            Tìm phòng trống
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Cảnh báo nếu số lượng khách vượt quá sức chứa 1 phòng đơn lẻ (> 4 khách) -->
+    <div th:if="${capacityAdviceMessage != null}" class="card" style="margin-bottom: 2rem; background: rgba(245, 158, 11, 0.08); border: 1.5px solid #F59E0B; padding: 1.25rem 1.5rem; border-radius: 10px;">
+      <div style="display: flex; gap: 1rem; align-items: flex-start;">
+        <div style="color: #F59E0B; font-size: 1.75rem; flex-shrink: 0; line-height: 1;">⚠️</div>
+        <div>
+          <h4 style="color: #F59E0B; margin: 0 0 0.4rem 0; font-size: 1.05rem; font-weight: 700;">Khuyến nghị đặt phòng cho đoàn đông người:</h4>
+          <p style="margin: 0; color: var(--text); font-size: 0.95rem; line-height: 1.5;" th:text="${capacityAdviceMessage}"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thông báo nếu không còn phòng -->
+    <div th:if="${infoMessage != null}" class="card" style="text-align: center; padding: 3rem 1rem; border-color: rgba(245, 158, 11, 0.4);">
+      <div style="margin-bottom: 1rem; color: #F59E0B; display: flex; justify-content: center;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="9" y1="22" x2="9" y2="18"></line><line x1="15" y1="22" x2="15" y2="18"></line></svg>
+      </div>
+      <h3 style="color: #F59E0B; margin-bottom: 0.5rem;" th:text="${infoMessage}"></h3>
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Vui lòng chọn khoảng ngày khác hoặc điều chỉnh số lượng khách để kiểm tra lại.</p>
+    </div>
+
+    <!-- Danh sách Hạng Phòng Khả Dụng -->
+    <div th:if="${!quotes.isEmpty()}">
+      <div class="flex justify-between items-center" style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.35rem; color: var(--text); font-weight: 700;">
+          Tìm thấy <span style="color: var(--primary-text);" th:text="${quotes.size()}"></span> hạng phòng phù hợp
+          (<span th:text="${checkIn}"></span> đến <span th:text="${checkOut}"></span>)
+        </h3>
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">
+          Giá niêm yết đã gồm: <strong>5% phí phục vụ &amp; 10% VAT</strong> • Cọc giữ phòng: <strong>30%</strong>
+        </span>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <div th:each="q : ${quotes}" class="card card-elevated"
+             style="display: flex; flex-direction: row; gap: 1.75rem; border-color: rgba(229, 192, 123, 0.28); padding: 1.5rem;">
+
+          <!-- Ảnh phòng -->
+          <div style="width: 280px; flex-shrink: 0; position: relative;">
+            <img th:src="${q.imageUrl}" th:alt="${q.name}"
+                 onerror="this.onerror=null;this.src='/images/room-standard.png';"
+                 style="width: 100%; height: 190px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border);">
+            <span class="badge-status badge-available"
+                  style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.85); border: 1px solid var(--st-free);">
+              Còn <strong th:text="${q.availableQuota}"></strong> phòng trống
+            </span>
+          </div>
+
+          <!-- Thông tin & Báo giá -->
+          <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div class="flex justify-between items-start" style="margin-bottom: 0.65rem;">
+                <div>
+                  <h3 style="font-size: 1.45rem; color: var(--text); margin-bottom: 0.35rem; font-weight: 800;" th:text="${q.name}"></h3>
+                  <div style="font-size: 0.85rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                    <span style="background: rgba(229, 192, 123, 0.12); color: var(--primary-text); padding: 0.2rem 0.55rem; border-radius: 4px; font-weight: 600; border: 1px solid var(--primary-border);">
+                      👥 Sức chứa: Tối đa <strong th:text="${q.capacity}"></strong> khách
+                    </span>
+                    <span style="background: rgba(56, 189, 248, 0.12); color: #38BDF8; padding: 0.2rem 0.55rem; border-radius: 4px; font-weight: 500; border: 1px solid rgba(56, 189, 248, 0.3);">
+                      🛏️ Loại giường: <strong th:text="${q.bedType}"></strong>
+                    </span>
+                    <span>•</span>
+                    <span>Thời gian lưu trú: <strong style="color: var(--primary-text);" th:text="${q.nights}"></strong> đêm</span>
+                  </div>
+                </div>
+
+                <!-- Đơn Giá Tiêu Chuẩn 1 Đêm -->
+                <div style="text-align: right; background: var(--primary-soft); border: 1px solid var(--primary-border); border-radius: 8px; padding: 0.45rem 0.85rem;">
+                  <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Đơn giá tiêu chuẩn</div>
+                  <div style="font-size: 1.3rem; font-weight: 800; color: var(--primary-text); line-height: 1.2;">
+                    <span th:text="${#numbers.formatDecimal(q.pricePerNight, 0, 'COMMA', 0, 'POINT')}"></span>
+                    <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">đ / đêm</span>
+                  </div>
+                  <div th:if="${q.weekendPricePerNight != q.pricePerNight}" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem;">
+                    Cuối tuần (T6–CN): <strong th:text="${#numbers.formatDecimal(q.weekendPricePerNight, 0, 'COMMA', 0, 'POINT')}"></strong> đ/đêm
+                  </div>
+                </div>
+              </div>
+
+              <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5;" th:text="${q.description}"></p>
+
+              <!-- Chi tiết tính giá theo công thức ++ -->
+              <div class="grid grid-cols-3 gap-3" style="background: var(--surface-elevated); padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid var(--border);">
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-secondary);">Tiền phòng gốc (<span th:text="${q.nights}"></span> đêm):</div>
+                  <strong style="color: var(--text); font-size: 0.95rem;" th:text="${#numbers.formatDecimal(q.roomCharge, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
+                </div>
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-secondary);">Thuế &amp; Phí (5% SVC, 10% VAT):</div>
+                  <strong style="color: var(--text); font-size: 0.95rem;" th:text="${#numbers.formatDecimal(q.estSvc + q.estVat, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
+                </div>
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-secondary);">Tổng cộng tiền phòng:</div>
+                  <strong style="color: var(--primary-text); font-size: 1.15rem;" th:text="${#numbers.formatDecimal(q.estGrandTotal, 0, 'COMMA', 0, 'POINT') + ' đ'}"></strong>
+                </div>
+              </div>
+
+              <!-- Phân bổ Cọc 30% vs Còn lại 70% -->
+              <div class="flex items-center justify-between" style="font-size: 0.875rem; color: var(--text-secondary); background: var(--primary-soft); padding: 0.65rem 1rem; border-radius: 6px; border: 1px solid var(--primary-border);">
+                <div>
+                  <span style="color: var(--primary-text); font-weight: 700;">●</span> Cọc 30% thanh toán ngay:
+                  <span style="color: var(--primary-text); font-weight: 800; font-size: 1.1rem;"
+                        th:text="${#numbers.formatDecimal(q.depositAmount, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span>
+                </div>
+                <div>
+                  <span style="color: var(--text-secondary); font-weight: 700;">●</span> Còn lại 70% trả tại quầy:
+                  <span style="color: var(--text); font-weight: 600;"
+                        th:text="${#numbers.formatDecimal(q.remainingAtCounter, 0, 'COMMA', 0, 'POINT') + ' đ'}"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nút bấm đặt phòng -->
+            <div style="text-align: right; margin-top: 1rem;">
+              <button type="button" class="btn btn-primary"
+                      th:data-rtid="${q.roomTypeId}"
+                      th:data-rtname="${q.name}"
+                      th:data-capacity="${q.capacity}"
+                      th:data-bedtype="${q.bedType}"
+                      th:data-nights="${q.nights}"
+                      th:data-priceweekday="${q.pricePerNight}"
+                      th:data-priceweekend="${q.weekendPricePerNight}"
+                      th:data-roomcharge="${q.roomCharge}"
+                      th:data-svc="${q.estSvc}"
+                      th:data-vat="${q.estVat}"
+                      th:data-grand="${q.estGrandTotal}"
+                      th:data-deposit="${q.depositAmount}"
+                      th:data-remain="${q.remainingAtCounter}"
+                      th:data-roomnumber="${q.suggestedRoomNumber}"
+                      th:data-desc="${q.description}"
+                      onclick="openDepositModal(this)">
+                Đặt phòng &amp; Cọc 30% →
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POP-UP MODAL XÁC NHẬN VÀ THANH TOÁN CỌC 30% THEO WIZARD STEPPER (WF-04) -->
+    <style>
+      #depositModal, #depositModal * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+      }
+      #depositModal button, #depositModal input, #depositModal textarea, #depositModal select {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+      }
+      #btnConfirmDeposit {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+        font-weight: 700 !important;
+      }
+    </style>
+    <div id="depositModal" class="modal-backdrop" onclick="if (event.target === this) closeDepositModal()">
+      <div class="modal-content" style="max-width: 720px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; border: 1.5px solid var(--primary-border); box-shadow: 0 12px 48px rgba(0,0,0,0.5);">
+        
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center" style="border-bottom: 1px solid var(--border); padding-bottom: 0.85rem; margin-bottom: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <span style="background: var(--primary-soft); color: var(--primary-text); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.95rem; border: 1px solid var(--primary-border);">★</span>
+            <div>
+              <h3 style="color: var(--primary-text); font-size: 1.2rem; margin: 0; font-weight: 800;">
+                Quy Trình Đặt Phòng &amp; Thanh Toán Cọc 30%
+              </h3>
+              <div style="font-size: 0.78rem; color: var(--text-secondary);">ACE Hotel 5★ Luxury &amp; Privacy • Trực Tuyến 24/7</div>
+            </div>
+          </div>
+          <button type="button" onclick="closeDepositModal()" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; line-height: 1;">✕</button>
+        </div>
+
+        <!-- Thanh Stepper 3 Bước Tiến Trình -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; background: var(--surface-elevated); padding: 0.6rem 0.85rem; border-radius: 8px; border: 1px solid var(--border);">
+          <div id="stepTab1" class="stepper-tab active" onclick="goToStep(1)" style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 700; color: var(--primary-text);">
+            <span style="background: var(--primary); color: #000; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;">1</span>
+            <span>Thông Tin Khách</span>
+          </div>
+          <div style="flex: 1; height: 2px; background: var(--border); margin: 0 0.5rem;" id="stepLine1"></div>
+          <div id="stepTab2" class="stepper-tab" onclick="goToStep(2)" style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 600; color: var(--text-muted);">
+            <span style="background: var(--surface); color: var(--text-muted); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; border: 1px solid var(--border);">2</span>
+            <span>Chốt Phòng &amp; Chi Phí</span>
+          </div>
+          <div style="flex: 1; height: 2px; background: var(--border); margin: 0 0.5rem;" id="stepLine2"></div>
+          <div id="stepTab3" class="stepper-tab" onclick="goToStep(3)" style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 600; color: var(--text-muted);">
+            <span style="background: var(--surface); color: var(--text-muted); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; border: 1px solid var(--border);">3</span>
+            <span>Thanh Toán Cọc (QR)</span>
+          </div>
+        </div>
+
+        <form th:action="@{/booking/deposit}" method="post" id="formOnlineBooking">
+          <input type="hidden" id="modalRoomTypeId" name="roomTypeId">
+          <input type="hidden" id="inputCheckInDate" name="checkInDate" th:value="${checkIn}">
+          <input type="hidden" id="inputCheckOutDate" name="checkOutDate" th:value="${checkOut}">
+          <input type="hidden" name="guestCount" th:value="${guests}">
+          <input type="hidden" id="inputRoomNumber" name="roomNumber">
+          <input type="hidden" id="inputPaymentMethod" name="paymentMethod" value="VNPAY">
+
+          <!-- ================= BƯỚC 1: XÁC NHẬN THÔNG TIN KHÁCH HÀNG ================= -->
+          <div id="stepPanel1" class="step-panel">
+            <div style="background: rgba(229, 192, 123, 0.08); border-left: 3px solid var(--primary); padding: 0.65rem 0.85rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.82rem; color: var(--text-secondary);">
+              Vui lòng kiểm tra hoặc chỉnh sửa thông tin người đặt phòng. Dữ liệu này dùng để xuất vé lưu trú QR và làm thủ tục nhận phòng.
+            </div>
+
+            <div class="grid grid-cols-2 gap-3" style="margin-bottom: 0.85rem;">
+              <div class="form-group">
+                <label style="font-size: 0.8rem; font-weight: 700; color: var(--text); display: block; margin-bottom: 0.3rem;">
+                  Họ và tên khách hàng <span style="color: #EF4444;">*</span>
+                </label>
+                <input type="text" id="custFullName" name="fullName" class="form-control"
+                       th:value="${currentCustomer != null ? currentCustomer.fullName : (currentUser != null ? (currentUser.fullName != null ? currentUser.fullName : currentUser.username) : '')}"
+                       required placeholder="Ví dụ: Nguyễn Văn A" style="font-size: 0.88rem;">
+              </div>
+              <div class="form-group">
+                <label style="font-size: 0.8rem; font-weight: 700; color: var(--text); display: block; margin-bottom: 0.3rem;">
+                  Số điện thoại liên hệ <span style="color: #EF4444;">*</span>
+                </label>
+                <input type="text" id="custPhone" name="phone" class="form-control"
+                       th:value="${currentCustomer != null ? currentCustomer.phone : '0900000000'}"
+                       required placeholder="Ví dụ: 0912345678" style="font-size: 0.88rem;">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3" style="margin-bottom: 0.85rem;">
+              <div class="form-group">
+                <label style="font-size: 0.8rem; font-weight: 700; color: var(--text); display: block; margin-bottom: 0.3rem;">
+                  Email nhận vé lưu trú QR
+                </label>
+                <input type="email" id="custEmail" name="email" class="form-control"
+                       th:value="${currentCustomer != null ? currentCustomer.email : ''}"
+                       placeholder="email@example.com" style="font-size: 0.88rem;">
+              </div>
+              <div class="form-group">
+                <label style="font-size: 0.8rem; font-weight: 700; color: var(--text); display: block; margin-bottom: 0.3rem;">
+                  Số CCCD / Hộ chiếu (Tùy chọn)
+                </label>
+                <input type="text" id="custIdNumber" name="idNumber" class="form-control"
+                       th:value="${currentCustomer != null ? currentCustomer.idNumber : ''}"
+                       placeholder="Số định danh công dân" style="font-size: 0.88rem;">
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label style="font-size: 0.8rem; font-weight: 700; color: var(--text); display: block; margin-bottom: 0.3rem;">
+                Yêu cầu đặc biệt cho khách sạn (Tùy chọn)
+              </label>
+              <textarea name="specialRequests" id="custRequests" class="form-control" rows="2"
+                        placeholder="Ví dụ: Nhận phòng muộn sau 18h, phòng tầng cao, view thoáng, cần xuất hóa đơn VAT..."
+                        style="font-size: 0.85rem;"></textarea>
+            </div>
+
+            <div class="flex justify-between items-center" style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
+              <button type="button" class="btn btn-secondary" onclick="closeDepositModal()">
+                Hủy bỏ
+              </button>
+              <button type="button" class="btn btn-primary" onclick="goToStep(2)" style="display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 700;">
+                <span>Tiếp tục: Chốt Phòng &amp; Chi Phí</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ================= BƯỚC 2: XÁC NHẬN THÔNG TIN PHÒNG & CHỐT PHÒNG ================= -->
+          <div id="stepPanel2" class="step-panel" style="display: none;">
+            
+            <!-- Thẻ hồ sơ phòng chốt đàng hoàng -->
+            <div style="background: var(--surface-elevated); border: 1.5px solid var(--primary-border); border-radius: 10px; padding: 1rem 1.15rem; margin-bottom: 1rem;">
+              <div class="flex justify-between items-start gap-3" style="margin-bottom: 0.65rem; flex-wrap: wrap;">
+                <div>
+                  <div style="font-size: 0.72rem; color: var(--primary-text); text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px;">HẠNG PHÒNG ĐƯỢC CHỌN</div>
+                  <h4 id="modalRoomTypeName" style="color: var(--text); font-size: 1.35rem; margin: 0.15rem 0 0.35rem; font-weight: 800; font-family: 'Inter', -apple-system, sans-serif;"></h4>
+                </div>
+                <div style="text-align: right; background: rgba(16, 185, 129, 0.10); border: 1px solid #10B981; border-radius: 8px; padding: 0.45rem 0.75rem; min-width: 210px;">
+                  <label for="modalRoomSelect" style="font-size: 0.68rem; color: #10B981; font-weight: 800; letter-spacing: 0.5px; display: block; margin-bottom: 0.25rem;">CHỌN SỐ PHÒNG CHỐT:</label>
+                  <select id="modalRoomSelect" class="form-select" onchange="onModalRoomChanged()"
+                          style="font-size: 0.92rem; font-weight: 800; color: #10B981; background: var(--surface); border-color: rgba(16, 185, 129, 0.45); padding: 0.3rem 0.5rem;">
+                    <option value="">Đang tải phòng trống...</option>
+                  </select>
+                  <div id="displayRoomNumber" style="display: none;"></div>
+                </div>
+              </div>
+
+              <!-- Chi tiết thông số đàng hoàng: Giường, Sức chứa, Tiện ích -->
+              <div class="grid grid-cols-2 gap-2" style="font-size: 0.84rem; color: var(--text-secondary); background: var(--surface); padding: 0.85rem 1rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 0.75rem; line-height: 1.5; font-family: 'Inter', -apple-system, sans-serif;">
+                <div>🛏️ Cấu hình giường: <strong id="modalBedType" style="color: var(--primary-text); font-weight: 700;"></strong></div>
+                <div>👥 Sức chứa: <strong id="modalCapacity" style="color: var(--text); font-weight: 700;"></strong></div>
+                <div>📐 Diện tích phòng: <strong style="color: var(--text); font-weight: 700;">32m² – 45m²</strong></div>
+                <div>🏙️ Hướng nhìn: <strong style="color: var(--text); font-weight: 700;">View Thành Phố / Ban Công</strong></div>
+                <div>☕ Tiện ích nổi bật: <strong style="color: var(--primary-text); font-weight: 700;">Wifi 6 • Buffet Sáng • Smart TV</strong></div>
+                <div>🕒 Giờ quy chuẩn: <strong style="color: var(--text); font-weight: 700;">Nhận 14:00 • Trả 12:00</strong></div>
+              </div>
+
+              <!-- Chọn Ngày & Giờ Dự Kiến Nhận/Trả Phòng -->
+              <div style="background: var(--surface); padding: 0.85rem 1rem; border-radius: 8px; border: 1px solid var(--border);">
+                <div class="grid grid-cols-2 gap-3" style="margin-bottom: 0.5rem;">
+                  <div>
+                    <label for="modalCheckInInput" style="font-size: 0.74rem; font-weight: 700; color: var(--primary-text); display: block; margin-bottom: 0.25rem;">Ngày nhận phòng</label>
+                    <input type="date" id="modalCheckInInput" class="form-control" th:value="${checkIn}" onchange="onModalDateChanged()" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;">
+                  </div>
+                  <div>
+                    <label for="modalCheckInTime" style="font-size: 0.74rem; font-weight: 700; color: var(--primary-text); display: block; margin-bottom: 0.25rem;">Giờ dự kiến nhận phòng</label>
+                    <input type="time" id="modalCheckInTime" name="estimatedCheckInTime" class="form-control" value="14:00" onchange="onModalTimeChanged()" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;">
+                  </div>
+                  <div>
+                    <label for="modalCheckOutInput" style="font-size: 0.74rem; font-weight: 700; color: var(--primary-text); display: block; margin-bottom: 0.25rem;">Ngày trả phòng</label>
+                    <input type="date" id="modalCheckOutInput" class="form-control" th:value="${checkOut}" onchange="onModalDateChanged()" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;">
+                  </div>
+                  <div>
+                    <label for="modalCheckOutTime" style="font-size: 0.74rem; font-weight: 700; color: var(--primary-text); display: block; margin-bottom: 0.25rem;">Giờ dự kiến trả phòng</label>
+                    <input type="time" id="modalCheckOutTime" name="estimatedCheckOutTime" class="form-control" value="12:00" onchange="onModalTimeChanged()" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;">
+                  </div>
+                </div>
+                <div id="modalDateSummaryText" style="font-size: 0.8rem; color: var(--text-secondary);">
+                  Thời gian lưu trú: <strong id="summaryCheckInDate" th:text="${checkIn}" style="color: var(--text);"></strong> (<span id="summaryCheckInTime">14:00</span>) đến <strong id="summaryCheckOutDate" th:text="${checkOut}" style="color: var(--text);"></strong> (<span id="summaryCheckOutTime">12:00</span>) • Tổng cộng: <strong id="modalNights" style="color: var(--primary-text); font-weight: 800;"></strong> đêm
+                </div>
+                <div id="modalRoomAvailWarn" style="display: none; margin-top: 0.45rem; font-size: 0.78rem; color: #EF4444; font-weight: 600;"></div>
+              </div>
+            </div>
+
+            <!-- Bảng kê tài chính chi tiết ++ -->
+            <div style="border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; margin-bottom: 1.15rem; background: var(--surface);">
+              <div class="flex justify-between" style="font-size: 0.85rem; margin-bottom: 0.35rem;">
+                <span style="color: var(--text-secondary);">Tiền phòng gốc:</span>
+                <strong id="modalRoomCharge"></strong>
+              </div>
+              <div class="flex justify-between" style="font-size: 0.85rem; margin-bottom: 0.35rem;">
+                <span style="color: var(--text-secondary);">Phí phục vụ tiêu chuẩn (5%):</span>
+                <strong id="modalSvc"></strong>
+              </div>
+              <div class="flex justify-between" style="font-size: 0.85rem; margin-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary);">Thuế GTGT (10%):</span>
+                <strong id="modalVat"></strong>
+              </div>
+              <div class="flex justify-between items-center" style="border-top: 1px dashed var(--border); padding-top: 0.5rem; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.95rem; font-weight: 700; color: var(--text);">Tổng cộng tiền phòng:</span>
+                <strong id="modalGrandTotal" style="font-size: 1.15rem; color: var(--primary-text);"></strong>
+              </div>
+
+              <!-- Khung cọc 30% nổi bật -->
+              <div style="background: var(--primary-soft); border: 1.5px solid var(--primary-border); padding: 0.7rem 0.9rem; border-radius: 8px;">
+                <div class="flex justify-between items-center" style="margin-bottom: 0.2rem;">
+                  <span style="font-weight: 800; color: var(--primary-text); font-size: 0.9rem;">
+                    ★ Tiền cọc 30% thanh toán ngay:
+                  </span>
+                  <span id="modalDepositAmount" style="font-size: 1.25rem; font-weight: 900; color: var(--primary-text);"></span>
+                </div>
+                <div class="flex justify-between items-center" style="font-size: 0.78rem; color: var(--text-secondary);">
+                  <span>Số tiền 70% còn lại thanh toán khi trả phòng:</span>
+                  <span id="modalRemaining" style="font-weight: 700; color: var(--text);"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center" style="border-top: 1px solid var(--border); padding-top: 1rem;">
+              <button type="button" class="btn btn-secondary" onclick="goToStep(1)">
+                ← Quay lại thông tin khách
+              </button>
+              <button type="button" class="btn btn-primary" onclick="goToStep(3)" style="display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 700;">
+                <span>Tiếp tục: Chọn Cổng Thanh Toán</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ================= BƯỚC 3: LỰA CHỌN CỔNG THANH TOÁN & QUÉT QR ================= -->
+          <div id="stepPanel3" class="step-panel" style="display: none; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            
+            <div style="margin-bottom: 1rem;">
+              <label style="font-size: 0.88rem; font-weight: 800; color: var(--text); display: block; margin-bottom: 0.6rem;">
+                Chọn phương thức chuyển khoản cọc 30% (Chính xác &amp; Tức thì):
+              </label>
+
+              <!-- 3 Tab cổng thanh toán với Logo thương hiệu rõ ràng -->
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 1.15rem;">
+                <!-- Tab 1: VietQR / VNPAY -->
+                <button type="button" id="tabBtnVnpay" onclick="switchPaymentTab('VNPAY')"
+                        style="padding: 0.75rem 0.6rem; border-radius: 10px; border: 2px solid var(--primary); background: var(--primary-soft); color: var(--primary-text); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; transition: all 0.2s;">
+                  <div style="display: flex; align-items: center; gap: 0.45rem;">
+                    <img th:src="@{/images/payment/vnpay.png}" src="/images/payment/vnpay.png" alt="VNPay" style="width: 26px; height: 26px; border-radius: 6px; object-fit: contain; flex-shrink: 0; background: #fff; padding: 2px; box-shadow: 0 1px 4px rgba(0,0,0,0.15);">
+                    <span style="font-weight: 800; font-size: 0.85rem; color: var(--text);">Cổng VNPAY</span>
+                  </div>
+                  <span style="font-size: 0.7rem; color: #0284C7; font-weight: 600;">Khuyên Dùng • VietQR 24/7</span>
+                </button>
+
+                <!-- Tab 2: Ví MoMo -->
+                <button type="button" id="tabBtnMomo" onclick="switchPaymentTab('MOMO')"
+                        style="padding: 0.75rem 0.6rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-elevated); color: var(--text-muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; transition: all 0.2s;">
+                  <div style="display: flex; align-items: center; gap: 0.45rem;">
+                    <img th:src="@{/images/payment/momo.webp}" src="/images/payment/momo.webp" alt="MoMo" style="width: 26px; height: 26px; border-radius: 6px; object-fit: contain; flex-shrink: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.15);">
+                    <span style="font-weight: 800; font-size: 0.85rem; color: #EC4899;">Ví MoMo</span>
+                  </div>
+                  <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Quét mã App MoMo</span>
+                </button>
+
+                <!-- Tab 3: Ví ZaloPay -->
+                <button type="button" id="tabBtnZalopay" onclick="switchPaymentTab('ZALOPAY')"
+                        style="padding: 0.75rem 0.6rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-elevated); color: var(--text-muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; transition: all 0.2s;">
+                  <div style="display: flex; align-items: center; gap: 0.45rem;">
+                    <img th:src="@{/images/payment/zalopay.png}" src="/images/payment/zalopay.png" alt="ZaloPay" style="width: 26px; height: 26px; border-radius: 6px; object-fit: contain; flex-shrink: 0; background: #fff; padding: 2px; box-shadow: 0 1px 4px rgba(0,0,0,0.15);">
+                    <span style="font-weight: 800; font-size: 0.85rem; color: #0284C7;">Ví ZaloPay</span>
+                  </div>
+                  <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Zalo &amp; 50+ Ngân Hàng</span>
+                </button>
+              </div>
+
+              <!-- NỘI DUNG 1: VNPAY / ACB VIETQR -->
+              <div id="contentVnpay" class="payment-content" style="background: var(--surface-elevated); border: 1.5px solid var(--primary-border); border-radius: 12px; padding: 1.15rem; display: flex; gap: 1.25rem; align-items: center;">
+                <div style="background: #FFFFFF; padding: 0.75rem; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.18); flex-shrink: 0; text-align: center; width: 270px;">
+                  <img id="vnpayQrImg" src="/images/qr/qr-acb-vietqr.jpg" alt="ACB VietQR" style="width: 245px; height: 245px; object-fit: contain; display: block; margin: 0 auto; border-radius: 6px;">
+                  <div style="font-size: 0.72rem; font-weight: 800; color: #005BAA; margin-top: 0.45rem; letter-spacing: 0.5px;">VIETQR 24/7 • NAPAS • ACB</div>
+                </div>
+                <div style="flex: 1; font-size: 0.85rem; line-height: 1.45;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.65rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                      <img th:src="@{/images/payment/vnpay.png}" src="/images/payment/vnpay.png" alt="VNPay" style="width: 28px; height: 28px; border-radius: 6px; object-fit: contain; background: #fff; padding: 2px;">
+                      <span style="font-weight: 800; font-size: 0.95rem; color: #0284C7;">Cổng Chuyển Khoản VNPAY / VietQR</span>
+                    </div>
+                    <span style="background: #005BAA; color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">ACB 24/7</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Ngân hàng:</span>
+                    <strong style="color: #0284C7; font-weight: 800;">ACB (Ngân Hàng Á Châu)</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Số tài khoản:</span>
+                    <div style="display: flex; align-items: center; gap: 0.4rem;">
+                      <strong style="color: var(--primary-text); font-size: 1.05rem; font-weight: 800; letter-spacing: 0.5px;">22298327</strong>
+                      <button type="button" onclick="copyText('22298327', this)" class="btn btn-secondary btn-xs" style="padding: 2px 7px; font-size: 0.72rem;">Sao chép</button>
+                    </div>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Chủ tài khoản:</span>
+                    <strong style="color: var(--text); text-transform: uppercase; font-weight: 800;">HOANG THAI DANG KHOA</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Số tiền cọc (30%):</span>
+                    <div style="display: flex; align-items: center; gap: 0.4rem;">
+                      <strong id="vnpayDepositText" style="color: var(--primary-text); font-size: 1.15rem; font-weight: 900;"></strong>
+                      <button type="button" onclick="copyText(currentDepositVal, this)" class="btn btn-secondary btn-xs" style="padding: 2px 7px; font-size: 0.72rem;">Sao chép</button>
+                    </div>
+                  </div>
+                  <!-- NỘI DUNG CHUYỂN KHOẢN -->
+                  <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid rgba(2, 132, 199, 0.3); padding: 0.55rem 0.75rem; border-radius: 8px; margin-top: 0.6rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <span style="color: var(--text-secondary); font-size: 0.74rem; display: block; font-weight: 600;">Nội dung chuyển khoản (bắt buộc):</span>
+                      <strong id="vnpayDescText" style="color: #0284C7; font-size: 1.05rem; font-weight: 900; letter-spacing: 0.5px;">ACECOC P101</strong>
+                    </div>
+                    <button type="button" onclick="copyText(currentTransferCode, this)" class="btn btn-secondary btn-xs" style="padding: 4px 9px; font-size: 0.75rem; font-weight: 700;">Sao chép</button>
+                  </div>
+                  <div style="margin-top: 0.6rem; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.35;">
+                    💡 <em>Quét mã QR bằng ứng dụng ngân hàng bất kỳ để tự động điền STK, Số tiền và Nội dung CK.</em>
+                  </div>
+                </div>
+              </div>
+
+              <!-- NỘI DUNG 2: VÍ MOMO -->
+              <div id="contentMomo" class="payment-content" style="display: none; background: var(--surface-elevated); border: 1.5px solid #EC4899; border-radius: 12px; padding: 1.15rem; gap: 1.25rem; align-items: center;">
+                <div style="background: #FFFFFF; padding: 0.75rem; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.18); flex-shrink: 0; text-align: center; width: 270px;">
+                  <img id="momoQrImg" src="/images/qr/qr-momo.jpg" alt="MoMo QR" style="width: 245px; height: 245px; object-fit: contain; display: block; margin: 0 auto; border-radius: 6px;">
+                  <div style="font-size: 0.72rem; font-weight: 800; color: #A50064; margin-top: 0.45rem; letter-spacing: 0.5px;">VÍ ĐIỆN TỬ MOMO</div>
+                </div>
+                <div style="flex: 1; font-size: 0.85rem; line-height: 1.45;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(236,72,153,0.25); padding-bottom: 0.5rem; margin-bottom: 0.65rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                      <img th:src="@{/images/payment/momo.webp}" src="/images/payment/momo.webp" alt="MoMo" style="width: 28px; height: 28px; border-radius: 6px; object-fit: contain;">
+                      <span style="font-weight: 800; font-size: 0.95rem; color: #EC4899;">Cổng Thanh Toán Ví MoMo</span>
+                    </div>
+                    <span style="background: #A50064; color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">MOMO APP</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Cổng thanh toán:</span>
+                    <strong style="color: #EC4899; font-weight: 800;">Ví Điện Tử MoMo</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Chủ tài khoản ví:</span>
+                    <strong style="color: var(--text); text-transform: uppercase; font-weight: 800;">HOANG THAI DANG KHOA</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Số tiền cọc (30%):</span>
+                    <div style="display: flex; align-items: center; gap: 0.4rem;">
+                      <strong id="momoDepositText" style="color: #EC4899; font-size: 1.15rem; font-weight: 900;"></strong>
+                      <button type="button" onclick="copyText(currentDepositVal, this)" class="btn btn-secondary btn-xs" style="padding: 2px 7px; font-size: 0.72rem;">Sao chép</button>
+                    </div>
+                  </div>
+                  <!-- NỘI DUNG CHUYỂN KHOẢN -->
+                  <div style="background: rgba(236, 72, 153, 0.08); border: 1.5px solid rgba(236, 72, 153, 0.3); padding: 0.55rem 0.75rem; border-radius: 8px; margin-top: 0.6rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <span style="color: var(--text-secondary); font-size: 0.74rem; display: block; font-weight: 600;">Lời nhắn chuyển tiền:</span>
+                      <strong id="momoDescText" style="color: #EC4899; font-size: 1.05rem; font-weight: 900; letter-spacing: 0.5px;">ACECOC P101</strong>
+                    </div>
+                    <button type="button" onclick="copyText(currentTransferCode, this)" class="btn btn-secondary btn-xs" style="padding: 4px 9px; font-size: 0.75rem; font-weight: 700;">Sao chép</button>
+                  </div>
+                  <div style="background: rgba(236, 72, 153, 0.08); padding: 0.5rem 0.65rem; border-radius: 6px; border: 1px solid rgba(236, 72, 153, 0.2); margin-top: 0.6rem; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;">
+                    📱 Mở App <strong>MoMo</strong> → Chọn <strong>"Quét Mã"</strong> để chuyển tiền cho chủ ví. Bấm nút <strong>Sao chép</strong> số tiền &amp; lời nhắn bên trên để dán vào ví nhanh chóng.<br>
+                    💡 <em>Mẹo: Chọn tab <strong>VietQR / ACB</strong> nếu bạn muốn tự động điền sẵn 100% số tiền và nội dung.</em>
+                  </div>
+                </div>
+              </div>
+
+              <!-- NỘI DUNG 3: VÍ ZALOPAY -->
+              <div id="contentZalopay" class="payment-content" style="display: none; background: var(--surface-elevated); border: 1.5px solid #0284C7; border-radius: 12px; padding: 1.15rem; gap: 1.25rem; align-items: center;">
+                <div style="background: #FFFFFF; padding: 0.75rem; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.18); flex-shrink: 0; text-align: center; width: 270px;">
+                  <img id="zalopayQrImg" src="/images/qr/qr-zalopay.jpg" alt="ZaloPay QR" style="width: 245px; height: 245px; object-fit: contain; display: block; margin: 0 auto; border-radius: 6px;">
+                  <div style="font-size: 0.72rem; font-weight: 800; color: #0068FF; margin-top: 0.45rem; letter-spacing: 0.5px;">ZALOPAY &amp; ĐA NGÂN HÀNG</div>
+                </div>
+                <div style="flex: 1; font-size: 0.85rem; line-height: 1.45;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(2,132,199,0.25); padding-bottom: 0.5rem; margin-bottom: 0.65rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                      <img th:src="@{/images/payment/zalopay.png}" src="/images/payment/zalopay.png" alt="ZaloPay" style="width: 28px; height: 28px; border-radius: 6px; object-fit: contain; background: #fff; padding: 2px;">
+                      <span style="font-weight: 800; font-size: 0.95rem; color: #0284C7;">Cổng Thanh Toán Ví ZaloPay</span>
+                    </div>
+                    <span style="background: #0068FF; color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">ZALO &amp; NAPAS</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Cổng thanh toán:</span>
+                    <strong style="color: #0284C7; font-weight: 800;">Ví Đa Năng ZaloPay</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Chủ tài khoản:</span>
+                    <strong style="color: var(--text); text-transform: uppercase; font-weight: 800;">HOANG THAI DANG KHOA</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-secondary);">Số tiền cọc (30%):</span>
+                    <div style="display: flex; align-items: center; gap: 0.4rem;">
+                      <strong id="zalopayDepositText" style="color: #0284C7; font-size: 1.15rem; font-weight: 900;"></strong>
+                      <button type="button" onclick="copyText(currentDepositVal, this)" class="btn btn-secondary btn-xs" style="padding: 2px 7px; font-size: 0.72rem;">Sao chép</button>
+                    </div>
+                  </div>
+                  <!-- NỘI DUNG CHUYỂN KHOẢN -->
+                  <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid rgba(2, 132, 199, 0.3); padding: 0.55rem 0.75rem; border-radius: 8px; margin-top: 0.6rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <span style="color: var(--text-secondary); font-size: 0.74rem; display: block; font-weight: 600;">Nội dung chuyển khoản:</span>
+                      <strong id="zalopayDescText" style="color: #0284C7; font-size: 1.05rem; font-weight: 900; letter-spacing: 0.5px;">ACECOC P101</strong>
+                    </div>
+                    <button type="button" onclick="copyText(currentTransferCode, this)" class="btn btn-secondary btn-xs" style="padding: 4px 9px; font-size: 0.75rem; font-weight: 700;">Sao chép</button>
+                  </div>
+                  <div style="background: rgba(2, 132, 199, 0.08); padding: 0.5rem 0.65rem; border-radius: 6px; border: 1px solid rgba(2, 132, 199, 0.2); margin-top: 0.6rem; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;">
+                    📱 Mở App <strong>Zalo / ZaloPay</strong> → Chọn <strong>"Quét QR"</strong> để chuyển tiền cho chủ ví. Bấm nút <strong>Sao chép</strong> số tiền &amp; nội dung bên trên để dán vào ví nhanh chóng.<br>
+                    💡 <em>Mẹo: Chọn tab <strong>VietQR / ACB</strong> nếu bạn muốn tự động điền sẵn 100% số tiền và nội dung.</em>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nút hành động Bước 3 -->
+            <div class="flex justify-between items-center" style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
+              <button type="button" class="btn btn-secondary" onclick="goToStep(2)" style="font-family: 'Inter', -apple-system, sans-serif !important; font-weight: 600;">
+                ← Kiểm tra lại phòng
+              </button>
+              <button type="submit" id="btnConfirmDeposit" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-weight: 700 !important; font-size: 0.95rem; padding: 0.7rem 1.4rem; letter-spacing: 0.2px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span style="font-family: inherit; font-weight: inherit;">Xác Nhận Đã Chuyển Khoản Cọc (Hoàn Tất)</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  <script>
+    var currentStep = 1;
+    var currentDepositVal = 0;
+    var currentTransferCode = 'ACECOC KHACH';
+    var currentPriceWeekday = 0;
+    var currentPriceWeekend = 0;
+    var currentModalRoomTypeId = null;
+
+    function formatMoney(num) {
+      return new Intl.NumberFormat('vi-VN').format(num) + ' đ';
+    }
+
+    function onModalRoomChanged() {
+      var sel = document.getElementById('modalRoomSelect');
+      if (!sel || !sel.value) return;
+      var selectedLabel = sel.options[sel.selectedIndex].text;
+      document.getElementById('inputRoomNumber').value = sel.value;
+      var roomMatch = selectedLabel.match(/P\.?(\d+)/i) || sel.value.match(/(\d+)/);
+      var roomNumOnly = roomMatch ? (roomMatch[1] || roomMatch[0]) : '101';
+      currentTransferCode = 'ACECOC P' + roomNumOnly;
+      if (currentStep === 3) {
+        refreshQrCode();
+      }
+    }
+
+    function onModalTimeChanged() {
+      var ciTime = document.getElementById('modalCheckInTime').value || '14:00';
+      var coTime = document.getElementById('modalCheckOutTime').value || '12:00';
+      var sCi = document.getElementById('summaryCheckInTime');
+      var sCo = document.getElementById('summaryCheckOutTime');
+      if (sCi) sCi.textContent = ciTime;
+      if (sCo) sCo.textContent = coTime;
+    }
+
+    function calculateRoomChargeClient(checkInStr, checkOutStr, weekdayPrice, weekendPrice) {
+      var d1 = new Date(checkInStr + 'T00:00:00');
+      var d2 = new Date(checkOutStr + 'T00:00:00');
+      var total = 0;
+      var nights = 0;
+      for (var d = new Date(d1); d < d2; d.setDate(d.getDate() + 1)) {
+        var dow = d.getDay(); // 0=Sun, 5=Fri, 6=Sat
+        total += (dow === 5 || dow === 6 || dow === 0) ? weekendPrice : weekdayPrice;
+        nights++;
+      }
+      return { nights: Math.max(1, nights), roomCharge: total };
+    }
+
+    function loadAvailableRoomsForModal(roomTypeId, checkInStr, checkOutStr, preferredRoomLabel) {
+      var sel = document.getElementById('modalRoomSelect');
+      var warn = document.getElementById('modalRoomAvailWarn');
+      if (!sel || !roomTypeId) return;
+      fetch('/booking/api/available-rooms?roomTypeId=' + encodeURIComponent(roomTypeId) + '&checkIn=' + encodeURIComponent(checkInStr) + '&checkOut=' + encodeURIComponent(checkOutStr))
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          var rooms = data.rooms || [];
+          sel.innerHTML = '';
+          if (rooms.length === 0) {
+            var opt = document.createElement('option');
+            opt.value = '';
+            opt.textContent = '-- Hết phòng ngày đã chọn --';
+            sel.appendChild(opt);
+            document.getElementById('inputRoomNumber').value = '';
+            if (warn) {
+              warn.textContent = 'Không còn phòng trống thuộc hạng này trong khoảng ngày vừa chọn. Vui lòng đổi ngày hoặc hạng phòng khác.';
+              warn.style.display = 'block';
+            }
+            return;
+          }
+          if (warn) warn.style.display = 'none';
+          var matchedIdx = 0;
+          rooms.forEach(function(r, idx) {
+            var opt = document.createElement('option');
+            opt.value = r.roomNumber;
+            opt.textContent = r.label;
+            if (preferredRoomLabel && preferredRoomLabel.indexOf('P.' + r.roomNumber) !== -1) {
+              matchedIdx = idx;
+            }
+            sel.appendChild(opt);
+          });
+          sel.selectedIndex = matchedIdx;
+          onModalRoomChanged();
+        })
+        .catch(function() {
+          if (warn) {
+            warn.textContent = 'Không thể tải danh sách phòng trống.';
+            warn.style.display = 'block';
+          }
+        });
+    }
+
+    function onModalDateChanged() {
+      var ciInput = document.getElementById('modalCheckInInput');
+      var coInput = document.getElementById('modalCheckOutInput');
+      if (!ciInput || !coInput) return;
+      var ci = ciInput.value;
+      var co = coInput.value;
+      var todayStr = new Date().toISOString().split('T')[0];
+      if (!ci || ci < todayStr) {
+        ci = todayStr;
+        ciInput.value = ci;
+      }
+      var ciDate = new Date(ci + 'T00:00:00');
+      var minCoDate = new Date(ciDate);
+      minCoDate.setDate(minCoDate.getDate() + 1);
+      var minCoStr = minCoDate.toISOString().split('T')[0];
+      coInput.min = minCoStr;
+      if (!co || co <= ci) {
+        co = minCoStr;
+        coInput.value = co;
+      }
+      if (ciInput._aceDatePicker) ciInput._aceDatePicker.sync();
+      if (coInput._aceDatePicker) coInput._aceDatePicker.sync();
+
+      document.getElementById('inputCheckInDate').value = ci;
+      document.getElementById('inputCheckOutDate').value = co;
+      document.getElementById('summaryCheckInDate').textContent = ci;
+      document.getElementById('summaryCheckOutDate').textContent = co;
+
+      var calc = calculateRoomChargeClient(ci, co, currentPriceWeekday, currentPriceWeekend);
+      var roomCharge = calc.roomCharge;
+      var svc = Math.round(roomCharge * 0.05);
+      var vat = Math.round((roomCharge + svc) * 0.10);
+      var grand = roomCharge + svc + vat;
+      var deposit = Math.round(grand * 0.30);
+      var remain = grand - deposit;
+
+      currentDepositVal = deposit;
+      document.getElementById('modalNights').textContent = calc.nights;
+      document.getElementById('modalRoomCharge').textContent = formatMoney(roomCharge);
+      document.getElementById('modalSvc').textContent = formatMoney(svc);
+      document.getElementById('modalVat').textContent = formatMoney(vat);
+      document.getElementById('modalGrandTotal').textContent = formatMoney(grand);
+      document.getElementById('modalDepositAmount').textContent = formatMoney(deposit);
+      document.getElementById('modalRemaining').textContent = formatMoney(remain);
+
+      loadAvailableRoomsForModal(currentModalRoomTypeId, ci, co, document.getElementById('inputRoomNumber').value);
+    }
+
+    function goToStep(step) {
+      if (step === 2) {
+        var nameInput = document.getElementById('custFullName');
+        var phoneInput = document.getElementById('custPhone');
+        if (nameInput && !nameInput.value.trim()) {
+          alert('Vui lòng nhập Họ và tên khách hàng.');
+          nameInput.focus();
+          return;
+        }
+        if (phoneInput && !phoneInput.value.trim()) {
+          alert('Vui lòng nhập Số điện thoại liên hệ.');
+          phoneInput.focus();
+          return;
+        }
+      }
+
+      currentStep = step;
+
+      // Ẩn hiện panel
+      document.getElementById('stepPanel1').style.display = (step === 1) ? 'block' : 'none';
+      document.getElementById('stepPanel2').style.display = (step === 2) ? 'block' : 'none';
+      document.getElementById('stepPanel3').style.display = (step === 3) ? 'block' : 'none';
+
+      // Cập nhật giao diện thanh stepper
+      updateStepperTab('stepTab1', 'stepLine1', step >= 1, step === 1);
+      updateStepperTab('stepTab2', 'stepLine2', step >= 2, step === 2);
+      updateStepperTab('stepTab3', null, step >= 3, step === 3);
+
+      if (step === 3) {
+        var selRoom = document.getElementById('modalRoomSelect');
+        if (selRoom && !selRoom.value) {
+          alert('Hiện không có phòng trống cho khoảng ngày vừa chọn. Vui lòng chọn ngày khác.');
+          return;
+        }
+        refreshQrCode();
+      }
+    }
+
+    function updateStepperTab(tabId, lineId, isReached, isCurrent) {
+      var tab = document.getElementById(tabId);
+      if (!tab) return;
+      var badge = tab.querySelector('span');
+
+      if (isCurrent) {
+        tab.style.color = 'var(--primary-text)';
+        if (badge) {
+          badge.style.background = 'var(--primary)';
+          badge.style.color = '#000';
+          badge.style.borderColor = 'var(--primary)';
+        }
+      } else if (isReached) {
+        tab.style.color = 'var(--text)';
+        if (badge) {
+          badge.style.background = 'rgba(16, 185, 129, 0.2)';
+          badge.style.color = '#10B981';
+          badge.style.borderColor = '#10B981';
+        }
+      } else {
+        tab.style.color = 'var(--text-muted)';
+        if (badge) {
+          badge.style.background = 'var(--surface)';
+          badge.style.color = 'var(--text-muted)';
+          badge.style.borderColor = 'var(--border)';
+        }
+      }
+
+      if (lineId) {
+        var line = document.getElementById(lineId);
+        if (line) {
+          line.style.background = isReached ? 'var(--primary)' : 'var(--border)';
+        }
+      }
+    }
+
+    function switchPaymentTab(method) {
+      document.getElementById('inputPaymentMethod').value = method;
+
+      var btnVnpay = document.getElementById('tabBtnVnpay');
+      var btnMomo = document.getElementById('tabBtnMomo');
+      var btnZalopay = document.getElementById('tabBtnZalopay');
+
+      var contentVnpay = document.getElementById('contentVnpay');
+      var contentMomo = document.getElementById('contentMomo');
+      var contentZalopay = document.getElementById('contentZalopay');
+
+      // Reset style nút
+      [btnVnpay, btnMomo, btnZalopay].forEach(function(b) {
+        if (b) {
+          b.style.border = '1px solid var(--border)';
+          b.style.background = 'var(--surface-elevated)';
+          b.style.color = 'var(--text-muted)';
+        }
+      });
+
+      // Ẩn tất cả nội dung
+      if (contentVnpay) contentVnpay.style.display = 'none';
+      if (contentMomo) contentMomo.style.display = 'none';
+      if (contentZalopay) contentZalopay.style.display = 'none';
+
+      if (method === 'VNPAY') {
+        if (btnVnpay) {
+          btnVnpay.style.border = '2px solid var(--primary)';
+          btnVnpay.style.background = 'var(--primary-soft)';
+          btnVnpay.style.color = 'var(--primary-text)';
+        }
+        if (contentVnpay) contentVnpay.style.display = 'flex';
+      } else if (method === 'MOMO') {
+        if (btnMomo) {
+          btnMomo.style.border = '2px solid #EC4899';
+          btnMomo.style.background = 'rgba(236, 72, 153, 0.12)';
+          btnMomo.style.color = '#EC4899';
+        }
+        if (contentMomo) contentMomo.style.display = 'flex';
+      } else if (method === 'ZALOPAY') {
+        if (btnZalopay) {
+          btnZalopay.style.border = '2px solid #0284C7';
+          btnZalopay.style.background = 'rgba(2, 132, 199, 0.12)';
+          btnZalopay.style.color = '#0284C7';
+        }
+        if (contentZalopay) contentZalopay.style.display = 'flex';
+      }
+    }
+
+    function refreshQrCode() {
+      var depositFormatted = formatMoney(currentDepositVal);
+      var vnpayDeposit = document.getElementById('vnpayDepositText');
+      var momoDeposit = document.getElementById('momoDepositText');
+      var zalopayDeposit = document.getElementById('zalopayDepositText');
+
+      if (vnpayDeposit) vnpayDeposit.textContent = depositFormatted;
+      if (momoDeposit) momoDeposit.textContent = depositFormatted;
+      if (zalopayDeposit) zalopayDeposit.textContent = depositFormatted;
+
+      var vnpayDesc = document.getElementById('vnpayDescText');
+      if (vnpayDesc) vnpayDesc.textContent = currentTransferCode;
+      var momoDesc = document.getElementById('momoDescText');
+      if (momoDesc) momoDesc.textContent = currentTransferCode;
+      var zalopayDesc = document.getElementById('zalopayDescText');
+      if (zalopayDesc) zalopayDesc.textContent = currentTransferCode;
+
+      // Sinh URL mã QR VietQR động (ACB)
+      var qrImg = document.getElementById('vnpayQrImg');
+      if (qrImg && currentDepositVal > 0) {
+        var cleanDesc = encodeURIComponent(currentTransferCode);
+        qrImg.src = 'https://img.vietqr.io/image/acb-22298327-qr_only.png?amount=' + currentDepositVal + '&addInfo=' + cleanDesc + '&accountName=HOANG%20THAI%20DANG%20KHOA';
+        qrImg.onerror = function() {
+          this.onerror = null;
+          this.src = '/images/qr/qr-acb-vietqr.jpg';
+        };
+      }
+
+      // Giữ mã QR tĩnh chính chủ cho Ví MoMo và Ví ZaloPay để đảm bảo app MoMo & ZaloPay quét chuẩn xác 100%
+      var momoQr = document.getElementById('momoQrImg');
+      if (momoQr) {
+        momoQr.src = '/images/qr/qr-momo.jpg';
+      }
+
+      var zalopayQr = document.getElementById('zalopayQrImg');
+      if (zalopayQr) {
+        zalopayQr.src = '/images/qr/qr-zalopay.jpg';
+      }
+    }
+
+    function copyText(txt, btn) {
+      var text = String(txt);
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(function() {
+          var original = btn.textContent;
+          btn.textContent = 'Đã chép!';
+          setTimeout(function() { btn.textContent = original; }, 1800);
+        }).catch(function() {
+          var ta = document.createElement('textarea');
+          ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          var original = btn.textContent;
+          btn.textContent = 'Đã chép!';
+          setTimeout(function() { btn.textContent = original; }, 1800);
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        var original = btn.textContent;
+        btn.textContent = 'Đã chép!';
+        setTimeout(function() { btn.textContent = original; }, 1800);
+      }
+    }
+
+    function openDepositModal(btn) {
+      var rtid = btn.getAttribute('data-rtid');
+      var rtname = btn.getAttribute('data-rtname');
+      var capacity = btn.getAttribute('data-capacity');
+      var bedType = btn.getAttribute('data-bedtype');
+      var nights = btn.getAttribute('data-nights');
+      currentPriceWeekday = Number(btn.getAttribute('data-priceweekday') || 0);
+      currentPriceWeekend = Number(btn.getAttribute('data-priceweekend') || currentPriceWeekday);
+      currentModalRoomTypeId = rtid;
+      var roomcharge = btn.getAttribute('data-roomcharge');
+      var svc = btn.getAttribute('data-svc');
+      var vat = btn.getAttribute('data-vat');
+      var grand = btn.getAttribute('data-grand');
+      var deposit = btn.getAttribute('data-deposit');
+      var remain = btn.getAttribute('data-remain');
+      var roomNumber = btn.getAttribute('data-roomnumber') || 'P.101 (Tầng 1)';
+
+      currentDepositVal = deposit;
+
+      document.getElementById('modalRoomTypeId').value = rtid;
+      document.getElementById('modalRoomTypeName').textContent = rtname;
+      if (bedType) bedType = bedType.replace(/\s*ho[aặ]c\s*2\s*Gi[uưừ][oờ]ng\s*[dđ][oơờ]n/gi, '').trim();
+      document.getElementById('modalBedType').textContent = bedType || '1 Giường đôi Queen (1m6 × 2m)';
+      document.getElementById('modalCapacity').textContent = capacity ? 'Tối đa ' + capacity + ' khách' : '2 khách';
+      document.getElementById('modalNights').textContent = nights;
+      document.getElementById('modalRoomCharge').textContent = formatMoney(roomcharge);
+      document.getElementById('modalSvc').textContent = formatMoney(svc);
+      document.getElementById('modalVat').textContent = formatMoney(vat);
+      document.getElementById('modalGrandTotal').textContent = formatMoney(grand);
+      document.getElementById('modalDepositAmount').textContent = formatMoney(deposit);
+      document.getElementById('modalRemaining').textContent = formatMoney(remain);
+
+      var ciVal = document.getElementById('inputCheckInDate').value;
+      var coVal = document.getElementById('inputCheckOutDate').value;
+      var todayStr = new Date().toISOString().split('T')[0];
+      var ciInput = document.getElementById('modalCheckInInput');
+      var coInput = document.getElementById('modalCheckOutInput');
+      if (ciInput) { ciInput.min = todayStr; ciInput.value = ciVal; if (ciInput._aceDatePicker) ciInput._aceDatePicker.sync(); }
+      if (coInput) { coInput.min = ciVal; coInput.value = coVal; if (coInput._aceDatePicker) coInput._aceDatePicker.sync(); }
+      onModalTimeChanged();
+      loadAvailableRoomsForModal(rtid, ciVal, coVal, roomNumber);
+
+      goToStep(1);
+      switchPaymentTab('VNPAY');
+
+      var modal = document.getElementById('depositModal');
+      modal.classList.add('active');
+    }
+
+    function closeDepositModal() {
+      var modal = document.getElementById('depositModal');
+      modal.classList.remove('active');
+    }
+  </script>
+  </div>
+</body>
+</html>
+

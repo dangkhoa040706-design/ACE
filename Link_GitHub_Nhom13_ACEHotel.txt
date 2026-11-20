@@ -1,0 +1,33 @@
+====================================================================
+ĐỒ ÁN CUỐI KỲ MÔN PHÂN TÍCH VÀ THIẾT KẾ YÊU CẦU (MÃ MÔN: 502050)
+Đề tài: Hệ thống Quản lý Khách sạn ACE Hotel
+Nhóm thực hiện: Nhóm 13 – Khóa 28 | Khoa CNTT – ĐH Tôn Đức Thắng
+Giảng viên hướng dẫn: ThS. Phạm Thị Kim Điệp
+====================================================================
+
+1. ĐƯỜNG DẪN KHO MÃ NGUỒN (GITHUB REPOSITORY):
+https://github.com/dangkhoa040706-design/ACE
+
+2. THÀNH VIÊN NHÓM 13:
+- Đinh Thanh Phong   – MSSV: 52400027
+- Nguyễn Huy Hoàng   – MSSV: 52400116
+- Lê Tuấn Kiệt       – MSSV: 52400133
+- Hoàng Thái Đăng Khoa – MSSV: 52400017
+
+3. HƯỚNG DẪN CHẠY NHANH (YÊU CẦU JDK 21):
+Bước 1: Clone mã nguồn:
+    git clone https://github.com/dangkhoa040706-design/ACE.git
+
+Bước 2: Di chuyển vào thư mục mã nguồn và chạy ứng dụng:
+    cd ACE/source
+    .\mvnw.cmd spring-boot:run        (Windows)
+    ./mvnw spring-boot:run            (macOS / Linux)
+
+Bước 3: Mở trình duyệt truy cập:
+    http://localhost:8088
+
+4. TÀI KHOẢN KIỂM THỬ (DEMO ACCOUNTS):
+- Khách hàng (Customer):      khach / khach
+- Nhân viên lễ tân (Staff):   nhanvien / nhanvien
+- Quản trị viên (Admin):      admin / admin
+====================================================================

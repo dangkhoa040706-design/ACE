@@ -1,0 +1,110 @@
+/* =========================================================================
+   ACE HOTEL DESIGN SYSTEM - PRINT STYLESHEET (print.css)
+   ========================================================================= */
+
+@page {
+  size: A4 portrait;
+  margin: 10mm 12mm;
+}
+
+@media print {
+  /* Ẩn toàn bộ thành phần điều hướng, nút bấm, topbar/navbar web, trừ header bên trong tài liệu in */
+  .sidebar,
+  .topbar,
+  .navbar,
+  .footer,
+  .no-print,
+  .btn,
+  .flash-alert,
+  .theme-toggle-btn,
+  .modal-backdrop,
+  .receipt-topbar,
+  nav {
+    display: none !important;
+  }
+
+  html, body {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .pms-main,
+  .invoice-print-card {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Định dạng Phiếu Thu Cọc A4 Độc Lập (Single-Page A4 Guarantee) */
+  .deposit-receipt-wrapper,
+  .receipt-page-container {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: auto !important;
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .deposit-receipt-sheet,
+  .report-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 8mm 10mm !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    box-sizing: border-box !important;
+  }
+
+  .receipt-header {
+    display: flex !important;
+  }
+
+  .financial-summary {
+    display: grid !important;
+    grid-template-columns: 1fr 1.35fr !important;
+    gap: 1.25rem !important;
+    align-items: stretch !important;
+  }
+
+  .deposit-receipt-sheet {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .deposit-receipt-sheet *,
+  .report-sheet * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .table th {
+    background-color: #F8FAFC !important;
+    color: #0F172A !important;
+    border-bottom: 2px solid #CBD5E1 !important;
+  }
+
+  .table td {
+    border-bottom: 1px solid #E2E8F0 !important;
+    color: #334155 !important;
+  }
+
+  .badge-status {
+    border: 1px solid #94A3B8 !important;
+    color: #000000 !important;
+    background: #F8FAFC !important;
+  }
+}

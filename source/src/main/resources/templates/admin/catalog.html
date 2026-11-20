@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/pms-layout :: layout(~{::title}, ~{::content})}">
+<head>
+  <title>Danh Mục &amp; Biểu Giá | ACE Hotel</title>
+</head>
+<body>
+  <div th:fragment="content">
+    <style>
+      .cat-page-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .cat-page-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text);
+        margin: 0 0 0.25rem 0;
+        letter-spacing: -0.01em;
+      }
+
+      .cat-page-sub {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin: 0;
+      }
+
+      .cat-mode-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.45rem 0.95rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+
+      .cat-mode-admin {
+        background: rgba(16, 185, 129, 0.12);
+        color: #10B981;
+        border: 1px solid rgba(16, 185, 129, 0.35);
+      }
+
+      .cat-mode-readonly {
+        background: rgba(96, 165, 250, 0.12);
+        color: #60A5FA;
+        border: 1px solid rgba(96, 165, 250, 0.35);
+      }
+
+      :root[data-theme="light"] .cat-mode-readonly {
+        background: #EFF6FF;
+        color: #1D4ED8;
+        border-color: #BFDBFE;
+      }
+
+      /* 4 KPI Summary Strip */
+      .cat-kpi-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.35rem;
+      }
+
+      .cat-kpi-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.95rem 1.15rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        transition: border-color 0.2s ease, transform 0.2s ease;
+      }
+
+      .cat-kpi-card:hover {
+        border-color: rgba(229, 192, 123, 0.4);
+        transform: translateY(-1px);
+      }
+
+      .cat-kpi-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-secondary);
+        margin-bottom: 0.2rem;
+      }
+
+      .cat-kpi-value {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1.15;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .cat-kpi-meta {
+        font-size: 0.74rem;
+        color: var(--text-muted);
+        margin-top: 0.2rem;
+      }
+
+      .cat-kpi-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: rgba(229, 192, 123, 0.12);
+        color: #E5C07B;
+        border: 1px solid rgba(229, 192, 123, 0.25);
+      }
+
+      :root[data-theme="light"] .cat-kpi-icon {
+        background: #FEF3C7;
+        color: #B45309;
+        border-color: #FDE68A;
+      }
+
+      /* Segmented Navigation Tabs */
+      .cat-tabs-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 1.35rem;
+      }
+
+      .cat-tabs-group {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        padding: 0.3rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+
+      .cat-tab-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.55rem 1.05rem;
+        border-radius: 9px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.18s ease;
+        font-family: inherit;
+      }
+
+      .cat-tab-btn:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      :root[data-theme="light"] .cat-tab-btn:hover {
+        background: rgba(15, 23, 42, 0.05);
+      }
+
+      .cat-tab-btn.is-active {
+        background: linear-gradient(135deg, #F59E0B, #D97706);
+        color: #0B0F17;
+        box-shadow: 0 4px 14px rgba(217, 119, 6, 0.28);
+      }
+
+      .cat-tab-count {
+        font-size: 0.72rem;
+        font-weight: 800;
+        padding: 0.08rem 0.45rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.1);
+        color: inherit;
+      }
+
+      .cat-tab-btn.is-active .cat-tab-count {
+        background: rgba(11, 15, 23, 0.18);
+        color: #0B0F17;
+      }
+
+      /* Adaptive Layout Grid: Admin (Form + Full Table) vs Staff Read-Only (100% Full Width) */
+      .cat-layout-admin {
+        display: grid;
+        grid-template-columns: minmax(320px, 370px) minmax(0, 1fr);
+        gap: 1.5rem;
+        align-items: start;
+      }
+
+      .cat-layout-full {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+        align-items: start;
+      }
+
+      .cat-form-card {
+        position: sticky;
+        top: 82px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.35rem 1.4rem;
+      }
+
+      .cat-panel-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+
+      .cat-panel-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.85rem;
+        padding: 1.1rem 1.35rem;
+        border-bottom: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.015);
+      }
+
+      :root[data-theme="light"] .cat-panel-header {
+        background: #F8FAFC;
+      }
+
+      .cat-panel-title {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--text);
+        margin: 0;
+      }
+
+      .cat-panel-desc {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        margin: 0.15rem 0 0 0;
+      }
+
+      /* Filter Toolbar inside Tabs 2 & 3 */
+      .cat-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .cat-filter-pill {
+        padding: 0.34rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.76rem;
+        font-weight: 700;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.15s ease;
+        font-family: inherit;
+      }
+
+      .cat-filter-pill:hover {
+        color: var(--text);
+        border-color: rgba(229, 192, 123, 0.5);
+      }
+
+      .cat-filter-pill.is-active {
+        background: rgba(229, 192, 123, 0.16);
+        color: #E5C07B;
+        border-color: rgba(229, 192, 123, 0.55);
+      }
+
+      :root[data-theme="light"] .cat-filter-pill.is-active {
+        background: #FEF3C7;
+        color: #B45309;
+        border-color: #F59E0B;
+      }
+
+      .cat-search-input {
+        padding: 0.36rem 0.75rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text);
+        font-size: 0.8rem;
+        width: 210px;
+        outline: none;
+        transition: border-color 0.15s ease;
+      }
+
+      .cat-search-input:focus {
+        border-color: #E5C07B;
+      }
+
+      /* Refined Full-Width Tables */
+      .cat-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+      }
+
+      .cat-table thead th {
+        text-align: left;
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-secondary);
+        padding: 0.85rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.02);
+        white-space: nowrap;
+      }
+
+      :root[data-theme="light"] .cat-table thead th {
+        background: #F1F5F9;
+        color: #475569;
+      }
+
+      .cat-table tbody td {
+        padding: 0.95rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+        vertical-align: middle;
+      }
+
+      .cat-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .cat-table tbody tr {
+        transition: background-color 0.15s ease;
+      }
+
+      .cat-table tbody tr:hover {
+        background: rgba(229, 192, 123, 0.045);
+      }
+
+      :root[data-theme="light"] .cat-table tbody tr:hover {
+        background: #FFFBEB;
+      }
+
+      .cat-num {
+        text-align: right !important;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .cat-price-main {
+        font-weight: 800;
+        color: #E5C07B;
+        font-size: 0.95rem;
+      }
+
+      :root[data-theme="light"] .cat-price-main {
+        color: #B45309;
+      }
+
+      .cat-price-weekend {
+        font-weight: 800;
+        color: #F59E0B;
+        font-size: 0.95rem;
+      }
+
+      :root[data-theme="light"] .cat-price-weekend {
+        color: #C2410C;
+      }
+
+      .cat-price-deposit {
+        font-weight: 700;
+        color: #10B981;
+        font-size: 0.88rem;
+      }
+
+      :root[data-theme="light"] .cat-price-deposit {
+        color: #047857;
+      }
+
+      .cat-room-thumb {
+        width: 68px;
+        height: 46px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+
+      .cat-cap-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.24rem 0.65rem;
+        border-radius: 9999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        color: var(--text);
+        white-space: nowrap;
+      }
+
+      :root[data-theme="light"] .cat-cap-badge {
+        background: #F1F5F9;
+      }
+
+      .cat-room-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 68px;
+        padding: 0.28rem 0.7rem;
+        border-radius: 8px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-weight: 800;
+        font-size: 0.92rem;
+        color: #E5C07B;
+        background: rgba(229, 192, 123, 0.1);
+        border: 1px solid rgba(229, 192, 123, 0.3);
+      }
+
+      :root[data-theme="light"] .cat-room-pill {
+        color: #B45309;
+        background: #FEF3C7;
+        border-color: #FDE68A;
+      }
+
+      .cat-srv-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.24rem 0.7rem;
+        border-radius: 9999px;
+        font-size: 0.76rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .cat-srv-minibar { background: rgba(96, 165, 250, 0.12); color: #60A5FA; border: 1px solid rgba(96, 165, 250, 0.3); }
+      .cat-srv-laundry { background: rgba(167, 139, 250, 0.12); color: #A78BFA; border: 1px solid rgba(167, 139, 250, 0.3); }
+      .cat-srv-fb      { background: rgba(229, 192, 123, 0.14); color: #E5C07B; border: 1px solid rgba(229, 192, 123, 0.35); }
+      .cat-srv-damages { background: rgba(248, 113, 113, 0.12); color: #F87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+
+      :root[data-theme="light"] .cat-srv-minibar { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
+      :root[data-theme="light"] .cat-srv-laundry { background: #F5F3FF; color: #6D28D9; border-color: #DDD6FE; }
+      :root[data-theme="light"] .cat-srv-fb      { background: #FFFBEB; color: #B45309; border-color: #FDE68A; }
+      :root[data-theme="light"] .cat-srv-damages { background: #FEF2F2; color: #B91C1C; border-color: #FECACA; }
+
+      .cat-policy-footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.85rem 1.35rem;
+        border-top: 1px solid var(--border);
+        background: rgba(229, 192, 123, 0.04);
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+      }
+
+      @media (max-width: 1120px) {
+        .cat-kpi-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .cat-layout-admin {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .cat-form-card {
+          position: static;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .cat-kpi-strip {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+
+    <!-- 1. Executive Header & Role Mode Pill -->
+    <div class="cat-page-header">
+      <div>
+        <h2 class="cat-page-title">Danh Mục Phòng, Biểu Giá &amp; Dịch Vụ Lưu Trú</h2>
+        <p class="cat-page-sub">
+          Biểu giá động theo ngày thường (T2–T5) &amp; cuối tuần (T6–CN), quỹ phòng vật lý và 4 nhóm dịch vụ Room Folio.
+        </p>
+      </div>
+      <div>
+        <span sec:authorize="hasRole('ADMIN')" class="cat-mode-pill cat-mode-admin">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Toàn quyền Quản trị (Admin CRUD)</span>
+        </span>
+        <span sec:authorize="!hasRole('ADMIN')" class="cat-mode-pill cat-mode-readonly">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Chế độ Tra Cứu (Lễ Tân · Chỉ đọc)</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- 2. KPI Summary Strip (Full-Width 4 Columns) -->
+    <div class="cat-kpi-strip">
+      <div class="cat-kpi-card">
+        <div>
+          <div class="cat-kpi-label">Hạng phòng niêm yết</div>
+          <div class="cat-kpi-value" th:text="${roomTypes.size()} + ' hạng'">5 hạng</div>
+          <div class="cat-kpi-meta">Biểu giá động T2–T5 / T6–CN</div>
+        </div>
+        <div class="cat-kpi-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="22" x2="9" y2="18"/><line x1="15" y1="22" x2="15" y2="18"/></svg>
+        </div>
+      </div>
+
+      <div class="cat-kpi-card">
+        <div>
+          <div class="cat-kpi-label">Tổng quỹ phòng vật lý</div>
+          <div class="cat-kpi-value" th:text="${rooms.size()} + ' phòng'">12 phòng</div>
+          <div class="cat-kpi-meta">Theo dõi 4 trạng thái thời gian thực</div>
+        </div>
+        <div class="cat-kpi-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+      </div>
+
+      <div class="cat-kpi-card">
+        <div>
+          <div class="cat-kpi-label">Dịch vụ Room Folio</div>
+          <div class="cat-kpi-value" th:text="${services.size()} + ' mục'">8 mục</div>
+          <div class="cat-kpi-meta">Minibar · Giặt ủi · F&amp;B · Đền bù</div>
+        </div>
+        <div class="cat-kpi-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+        </div>
+      </div>
+
+      <div class="cat-kpi-card">
+        <div>
+          <div class="cat-kpi-label">Quy chuẩn thuế &amp; đặt cọc</div>
+          <div class="cat-kpi-value" style="color: #E5C07B;">5% + 10%</div>
+          <div class="cat-kpi-meta">SVC 5%, VAT 10% · Cọc Online 30%</div>
+        </div>
+        <div class="cat-kpi-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Segmented Navigation Tabs (Instant 0ms Client-Side Switch) -->
+    <div class="cat-tabs-bar">
+      <div class="cat-tabs-group">
+        <button type="button" id="tabBtn-room-types"
+                class="cat-tab-btn is-active"
+                onclick="switchCatalogTab('room-types')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="22" x2="9" y2="18"/><line x1="15" y1="22" x2="15" y2="18"/></svg>
+          <span>1. Hạng Phòng &amp; Biểu Giá Động</span>
+          <span class="cat-tab-count" th:text="${roomTypes.size()}">5</span>
+        </button>
+
+        <button type="button" id="tabBtn-rooms"
+                class="cat-tab-btn"
+                onclick="switchCatalogTab('rooms')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="12" r="1.5"/></svg>
+          <span>2. Phòng Vật Lý &amp; Bảo Trì</span>
+          <span class="cat-tab-count" th:text="${rooms.size()}">12</span>
+        </button>
+
+        <button type="button" id="tabBtn-services"
+                class="cat-tab-btn"
+                onclick="switchCatalogTab('services')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
+          <span>3. Danh Mục 4 Nhóm Dịch Vụ</span>
+          <span class="cat-tab-count" th:text="${services.size()}">8</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: HẠNG PHÒNG & BIỂU GIÁ ĐỘNG                                          -->
+    <!-- ========================================================================= -->
+    <div id="tabContent-room-types" class="catalog-tab-content">
+      <div th:class="${#authorization.expression('hasRole(''ADMIN'')')} ? 'cat-layout-admin' : 'cat-layout-full'">
+
+        <!-- Form Thêm / Cập nhật Hạng Phòng (Chỉ ADMIN) -->
+        <div class="cat-form-card" sec:authorize="hasRole('ADMIN')">
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--primary); margin: 0 0 1rem 0;">Thêm / Sửa Hạng Phòng</h3>
+          <form th:action="@{/admin/room-types/save}" method="post">
+            <input type="hidden" id="rtId" name="roomTypeId">
+
+            <div class="form-group">
+              <label class="form-label" for="rtName">Tên hạng phòng *</label>
+              <input type="text" id="rtName" name="name" class="form-control" placeholder="Ví dụ: Deluxe Suite" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rtCapacity">Sức chứa tối đa *</label>
+              <input type="number" id="rtCapacity" name="capacity" class="form-control" min="1" value="2" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rtWeekdayPrice">Giá ngày thường (T2–T5) *</label>
+              <input type="number" id="rtWeekdayPrice" name="pricePerNight" class="form-control" min="1000" step="1000" placeholder="780000" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rtWeekendPrice">Giá cuối tuần (T6–CN) *</label>
+              <input type="number" id="rtWeekendPrice" name="weekendPricePerNight" class="form-control" min="1000" step="1000" placeholder="950000" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rtDescription">Mô tả đặc trưng</label>
+              <textarea id="rtDescription" name="description" class="form-control" rows="2" placeholder="Nội thất sang trọng, tiện nghi cao cấp..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rtImageUrl">Đường dẫn ảnh minh họa</label>
+              <input type="text" id="rtImageUrl" name="imageUrl" class="form-control" value="/images/room-standard.png">
+            </div>
+
+            <div class="flex gap-2">
+              <button type="submit" class="btn btn-primary" style="flex: 1;">Lưu Hạng Phòng</button>
+              <button type="reset" class="btn btn-secondary" onclick="resetRtForm()">Làm mới</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Bảng Danh Sách Hạng Phòng (Full-Width khi Read-Only, Tự co giãn khi Admin) -->
+        <div class="cat-panel-card">
+          <div class="cat-panel-header">
+            <div>
+              <h3 class="cat-panel-title">Bảng Giá <span th:text="${roomTypes.size()}">5</span> Hạng Phòng Hiện Hành</h3>
+              <p class="cat-panel-desc">Giá phòng niêm yết chưa bao gồm 5% phí phục vụ (SVC) và 10% thuế GTGT (VAT). Cột cọc 30% đã tính gộp đầy đủ thuế phí cho 1 đêm ngày thường.</p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="cat-table">
+              <thead>
+                <tr>
+                  <th>Hạng Phòng &amp; Tiện Nghi</th>
+                  <th>Sức Chứa</th>
+                  <th class="cat-num">Giá Ngày Thường (T2–T5)</th>
+                  <th class="cat-num">Giá Cuối Tuần (T6–CN)</th>
+                  <th class="cat-num">Cọc 30% / Đêm (T2–T5)</th>
+                  <th sec:authorize="hasRole('ADMIN')" class="cat-num">Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="rt : ${roomTypes}">
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 0.9rem;">
+                      <img th:src="${rt.imageUrl}" onerror="this.src='/images/room-standard.png'" alt="Room" class="cat-room-thumb">
+                      <div>
+                        <div style="font-weight: 800; font-size: 0.96rem; color: var(--text);" th:text="${rt.name}">Standard</div>
+                        <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.15rem; line-height: 1.4;" th:text="${rt.description}">Phòng tiêu chuẩn</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="cat-cap-badge">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                      <span th:text="${rt.capacity + ' khách'}">2 khách</span>
+                    </span>
+                  </td>
+                  <td class="cat-num">
+                    <span class="cat-price-main" th:text="${#numbers.formatDecimal(rt.pricePerNight, 0, 'COMMA', 0, 'POINT') + ' đ'}">780,000 đ</span>
+                  </td>
+                  <td class="cat-num">
+                    <span class="cat-price-weekend" th:text="${#numbers.formatDecimal(rt.weekendPricePerNight, 0, 'COMMA', 0, 'POINT') + ' đ'}">950,000 đ</span>
+                    <div th:if="${rt.pricePerNight > 0 && rt.weekendPricePerNight > rt.pricePerNight}"
+                         style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.1rem;"
+                         th:text="'+' + ${#numbers.formatDecimal((rt.weekendPricePerNight - rt.pricePerNight) * 100.0 / rt.pricePerNight, 0, 'POINT', 0, 'COMMA')} + '% cuối tuần'">+22% cuối tuần</div>
+                  </td>
+                  <td class="cat-num"
+                      th:with="svc=${T(java.lang.Math).round(rt.pricePerNight * 0.05)},
+                               vat=${T(java.lang.Math).round((rt.pricePerNight + svc) * 0.10)},
+                               grand=${rt.pricePerNight + svc + vat},
+                               dep=${T(java.lang.Math).round(grand * 0.30)}">
+                    <span class="cat-price-deposit" th:text="${#numbers.formatDecimal(dep, 0, 'COMMA', 0, 'POINT') + ' đ'}">270,270 đ</span>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.1rem;"
+                         th:text="'Tổng 1 đêm: ' + ${#numbers.formatDecimal(grand, 0, 'COMMA', 0, 'POINT')} + 'đ'">Tổng 1 đêm</div>
+                  </td>
+                  <td sec:authorize="hasRole('ADMIN')" class="cat-num">
+                    <div style="display: inline-flex; justify-content: flex-end; gap: 0.4rem;">
+                      <button type="button" class="btn btn-secondary btn-sm"
+                              th:data-id="${rt.roomTypeId}"
+                              th:data-name="${rt.name}"
+                              th:data-cap="${rt.capacity}"
+                              th:data-weekday="${rt.pricePerNight}"
+                              th:data-weekend="${rt.weekendPricePerNight}"
+                              th:data-desc="${rt.description}"
+                              th:data-img="${rt.imageUrl}"
+                              onclick="editRt(this)">Sửa</button>
+                      <form th:action="@{/admin/room-types/{id}/delete(id=${rt.roomTypeId})}" method="post" style="margin: 0;"
+                            data-confirm="Bạn có chắc chắn muốn xóa hạng phòng này?"
+                            data-confirm-title="Xác Nhận Xóa Hạng Phòng"
+                            data-confirm-desc="Không thể xóa hạng phòng nếu đã có phòng vật lý hoặc đơn đặt phòng liên kết."
+                            data-confirm-btn="Xóa Hạng Phòng"
+                            data-confirm-type="danger">
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="cat-policy-footer">
+            <span><strong>Quy tắc nhận / trả phòng:</strong> Nhận phòng từ 14:00 · Trả phòng trước 12:00 · Phụ thu trả trễ 30% (12–15h), 50% (15–18h), 100% (sau 18h).</span>
+            <span><strong>Chính sách hủy:</strong> Hoàn 100% cọc trước 48h · Mất cọc 30% nếu hủy cận ngày (&lt; 48h).</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: PHÒNG VẬT LÝ & BẢO TRÌ                                              -->
+    <!-- ========================================================================= -->
+    <div id="tabContent-rooms" class="catalog-tab-content" style="display: none;">
+      <div th:class="${#authorization.expression('hasRole(''ADMIN'')')} ? 'cat-layout-admin' : 'cat-layout-full'">
+
+        <!-- Form Thêm Phòng (Chỉ ADMIN) -->
+        <div class="cat-form-card" sec:authorize="hasRole('ADMIN')">
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--primary); margin: 0 0 1rem 0;">Thêm Phòng Mới</h3>
+          <form th:action="@{/admin/rooms/save}" method="post">
+            <input type="hidden" id="roomId" name="roomId">
+
+            <div class="form-group">
+              <label class="form-label" for="roomNumber">Số phòng *</label>
+              <input type="text" id="roomNumber" name="roomNumber" class="form-control" placeholder="Ví dụ: 105, 204" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="roomFloor">Tầng lầu *</label>
+              <input type="number" id="roomFloor" name="floor" class="form-control" min="1" value="1" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="roomTypeId">Thuộc hạng phòng *</label>
+              <select id="roomTypeId" name="roomTypeId" class="form-select" required>
+                <option th:each="t : ${roomTypes}" th:value="${t.roomTypeId}" th:text="${t.name + ' (' + #numbers.formatDecimal(t.pricePerNight, 0, 'COMMA', 0, 'POINT') + ' đ)'}"></option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Lưu Phòng Mới</button>
+          </form>
+        </div>
+
+        <!-- Bảng Danh Sách Phòng Vật Lý -->
+        <div class="cat-panel-card">
+          <div class="cat-panel-header">
+            <div>
+              <h3 class="cat-panel-title">Danh Sách <span th:text="${rooms.size()}">12</span> Phòng Vật Lý &amp; Trạng Thái Khai Thác</h3>
+              <p class="cat-panel-desc">Phòng ở trạng thái Bảo trì sẽ tự động khóa gán khách và loại trừ khỏi mẫu số tính Công suất khai thác (OR%).</p>
+            </div>
+
+            <div class="cat-toolbar">
+              <button type="button" class="cat-filter-pill is-active" data-room-filter="ALL" onclick="filterRooms('ALL', this)">Tất cả</button>
+              <button type="button" class="cat-filter-pill" data-room-filter="AVAILABLE" onclick="filterRooms('AVAILABLE', this)">Trống sạch</button>
+              <button type="button" class="cat-filter-pill" data-room-filter="OCCUPIED" onclick="filterRooms('OCCUPIED', this)">Đang ở</button>
+              <button type="button" class="cat-filter-pill" data-room-filter="DIRTY" onclick="filterRooms('DIRTY', this)">Chờ dọn</button>
+              <button type="button" class="cat-filter-pill" data-room-filter="MAINTENANCE" onclick="filterRooms('MAINTENANCE', this)">Bảo trì</button>
+              <input type="text" id="roomSearchInput" class="cat-search-input" placeholder="Tìm số phòng, hạng phòng..." oninput="applyRoomFilters()">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="cat-table" id="catalogRoomsTable">
+              <thead>
+                <tr>
+                  <th>Số Phòng</th>
+                  <th>Tầng Lầu</th>
+                  <th>Hạng Phòng</th>
+                  <th>Sức Chứa</th>
+                  <th class="cat-num">Giá T2–T5 / T6–CN</th>
+                  <th>Trạng Thái Hiện Hành</th>
+                  <th sec:authorize="hasRole('ADMIN')" class="cat-num">Bảo Trì / Xóa</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="r : ${rooms}"
+                    class="catalog-room-row"
+                    th:attr="data-status=${r.status.name()},data-search=${('P.' + r.roomNumber + ' ' + r.roomNumber + ' ' + r.roomType.name + ' tầng ' + r.floor).toLowerCase()}">
+                  <td><span class="cat-room-pill" th:text="'P.' + ${r.roomNumber}">P.101</span></td>
+                  <td style="font-weight: 600;">Tầng <span th:text="${r.floor}">1</span></td>
+                  <td><strong th:text="${r.roomType.name}" style="color: var(--text);">Standard</strong></td>
+                  <td><span class="cat-cap-badge" th:text="${r.roomType.capacity + ' khách'}">2 khách</span></td>
+                  <td class="cat-num">
+                    <span class="cat-price-main" th:text="${#numbers.formatDecimal(r.roomType.pricePerNight, 0, 'COMMA', 0, 'POINT') + 'đ'}">780,000đ</span>
+                    <span style="color: var(--text-muted); margin: 0 0.25rem;">/</span>
+                    <span class="cat-price-weekend" th:text="${#numbers.formatDecimal(r.roomType.weekendPricePerNight, 0, 'COMMA', 0, 'POINT') + 'đ'}">950,000đ</span>
+                  </td>
+                  <td>
+                    <span th:if="${r.status.name() == 'AVAILABLE'}" class="badge-status badge-available">Trống sạch</span>
+                    <span th:if="${r.status.name() == 'OCCUPIED'}" class="badge-status badge-occupied">Đang ở</span>
+                    <span th:if="${r.status.name() == 'DIRTY'}" class="badge-status badge-dirty">Chờ dọn</span>
+                    <span th:if="${r.status.name() == 'MAINTENANCE'}" class="badge-status badge-maintenance">Bảo trì</span>
+                  </td>
+                  <td sec:authorize="hasRole('ADMIN')" class="cat-num">
+                    <div style="display: inline-flex; justify-content: flex-end; gap: 0.4rem;">
+                      <form th:action="@{/admin/rooms/{id}/toggle-maintenance(id=${r.roomId})}" method="post" style="margin: 0;">
+                        <button type="submit" class="btn btn-sm"
+                                th:classappend="${r.status.name() == 'MAINTENANCE' ? 'btn-primary' : 'btn-secondary'}"
+                                th:disabled="${r.status.name() == 'OCCUPIED'}"
+                                th:title="${r.status.name() == 'OCCUPIED' ? 'Không thể bảo trì phòng đang có khách' : 'Bật/Tắt bảo trì'}">
+                          <span th:text="${r.status.name() == 'MAINTENANCE' ? 'Mở lại' : 'Bảo trì'}"></span>
+                        </button>
+                      </form>
+
+                      <form th:action="@{/admin/rooms/{id}/delete(id=${r.roomId})}" method="post" style="margin: 0;"
+                            data-confirm="Bạn có chắc chắn muốn xóa phòng vật lý này?"
+                            data-confirm-title="Xác Nhận Xóa Phòng"
+                            data-confirm-desc="Không thể xóa phòng đã có lịch sử đặt phòng. Thay vào đó bạn có thể chuyển sang trạng thái Bảo trì."
+                            data-confirm-btn="Xóa Phòng"
+                            data-confirm-type="danger">
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: DANH MỤC 4 NHÓM DỊCH VỤ                                             -->
+    <!-- ========================================================================= -->
+    <div id="tabContent-services" class="catalog-tab-content" style="display: none;">
+      <div th:class="${#authorization.expression('hasRole(''ADMIN'')')} ? 'cat-layout-admin' : 'cat-layout-full'">
+
+        <!-- Form Thêm Dịch Vụ (Chỉ ADMIN) -->
+        <div class="cat-form-card" sec:authorize="hasRole('ADMIN')">
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--primary); margin: 0 0 1rem 0;">Thêm / Sửa Dịch Vụ</h3>
+          <form th:action="@{/admin/services/save}" method="post">
+            <input type="hidden" id="srvId" name="serviceId">
+
+            <div class="form-group">
+              <label class="form-label" for="srvName">Tên dịch vụ / hàng hóa *</label>
+              <input type="text" id="srvName" name="name" class="form-control" placeholder="Ví dụ: Giặt ủi áo sơ mi" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="srvCategory">Nhóm dịch vụ *</label>
+              <select id="srvCategory" name="category" class="form-select" required>
+                <option value="MINIBAR">Minibar (Đồ uống, snack)</option>
+                <option value="LAUNDRY">Giặt ủi, là hấp</option>
+                <option value="FB">Ẩm thực phòng (F&amp;B)</option>
+                <option value="DAMAGES">Bồi thường tài sản</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="srvPrice">Đơn giá *</label>
+              <input type="number" id="srvPrice" name="unitPrice" class="form-control" min="0" step="1000" placeholder="50000" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="srvUnit">Đơn vị tính *</label>
+              <input type="text" id="srvUnit" name="unit" class="form-control" placeholder="Ví dụ: Lon, Gói, Chiếc, Bộ" required>
+            </div>
+
+            <div class="flex gap-2">
+              <button type="submit" class="btn btn-primary" style="flex: 1;">Lưu Dịch Vụ</button>
+              <button type="reset" class="btn btn-secondary" onclick="resetSrvForm()">Làm mới</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Bảng Danh Sách Dịch Vụ -->
+        <div class="cat-panel-card">
+          <div class="cat-panel-header">
+            <div>
+              <h3 class="cat-panel-title">Danh Mục 4 Nhóm Dịch Vụ Room Folio (<span th:text="${services.size()}">8</span> mục)</h3>
+              <p class="cat-panel-desc">Đơn giá được đóng băng cố định (Price Snapshot · BR5) ngay tại thời điểm Lễ tân ghi nhận vào sổ dịch vụ phòng.</p>
+            </div>
+
+            <div class="cat-toolbar">
+              <button type="button" class="cat-filter-pill is-active" data-srv-filter="ALL" onclick="filterServices('ALL', this)">Tất cả</button>
+              <button type="button" class="cat-filter-pill" data-srv-filter="MINIBAR" onclick="filterServices('MINIBAR', this)">Minibar</button>
+              <button type="button" class="cat-filter-pill" data-srv-filter="LAUNDRY" onclick="filterServices('LAUNDRY', this)">Giặt ủi</button>
+              <button type="button" class="cat-filter-pill" data-srv-filter="FB" onclick="filterServices('FB', this)">Ẩm thực (F&amp;B)</button>
+              <button type="button" class="cat-filter-pill" data-srv-filter="DAMAGES" onclick="filterServices('DAMAGES', this)">Bồi thường</button>
+              <input type="text" id="srvSearchInput" class="cat-search-input" placeholder="Tìm tên dịch vụ..." oninput="applyServiceFilters()">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="cat-table" id="catalogServicesTable">
+              <thead>
+                <tr>
+                  <th>Tên Dịch Vụ / Hàng Hóa</th>
+                  <th>Nhóm Danh Mục</th>
+                  <th>Đơn Vị Tính</th>
+                  <th class="cat-num">Đơn Giá Niêm Yết</th>
+                  <th class="cat-num">Giá Gồm Thuế Phí (+15,5%)</th>
+                  <th sec:authorize="hasRole('ADMIN')" class="cat-num">Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="s : ${services}"
+                    class="catalog-service-row"
+                    th:attr="data-category=${s.category.name()},data-search=${(s.name + ' ' + s.unit + ' ' + s.category.name()).toLowerCase()}">
+                  <td><strong th:text="${s.name}" style="color: var(--text); font-size: 0.93rem;">Nước suối Evian</strong></td>
+                  <td>
+                    <span th:if="${s.category.name() == 'MINIBAR'}" class="cat-srv-badge cat-srv-minibar">● Minibar</span>
+                    <span th:if="${s.category.name() == 'LAUNDRY'}" class="cat-srv-badge cat-srv-laundry">● Giặt ủi</span>
+                    <span th:if="${s.category.name() == 'FB'}" class="cat-srv-badge cat-srv-fb">● Ẩm thực (F&amp;B)</span>
+                    <span th:if="${s.category.name() == 'DAMAGES'}" class="cat-srv-badge cat-srv-damages">● Bồi thường</span>
+                  </td>
+                  <td style="color: var(--text-secondary); font-weight: 600;" th:text="${s.unit}">Chai</td>
+                  <td class="cat-num">
+                    <span class="cat-price-main" th:text="${#numbers.formatDecimal(s.unitPrice, 0, 'COMMA', 0, 'POINT') + ' đ'}">50,000 đ</span>
+                  </td>
+                  <td class="cat-num"
+                      th:with="svc=${T(java.lang.Math).round(s.unitPrice * 0.05)},
+                               vat=${T(java.lang.Math).round((s.unitPrice + svc) * 0.10)},
+                               grand=${s.unitPrice + svc + vat}">
+                    <span style="font-weight: 700; color: var(--text-secondary);" th:text="${#numbers.formatDecimal(grand, 0, 'COMMA', 0, 'POINT') + ' đ'}">57,750 đ</span>
+                  </td>
+                  <td sec:authorize="hasRole('ADMIN')" class="cat-num">
+                    <div style="display: inline-flex; justify-content: flex-end; gap: 0.4rem;">
+                      <button type="button" class="btn btn-secondary btn-sm"
+                              th:data-id="${s.serviceId}"
+                              th:data-name="${s.name}"
+                              th:data-cat="${s.category.name()}"
+                              th:data-price="${s.unitPrice}"
+                              th:data-unit="${s.unit}"
+                              onclick="editSrv(this)">Sửa</button>
+                      <form th:action="@{/admin/services/{id}/delete(id=${s.serviceId})}" method="post" style="margin: 0;"
+                            data-confirm="Bạn có chắc chắn muốn xóa dịch vụ này khỏi danh mục?"
+                            data-confirm-title="Xác Nhận Xóa Dịch Vụ"
+                            data-confirm-desc="Không thể xóa dịch vụ nếu đã phát sinh trong lịch sử Room Folio của khách hàng."
+                            data-confirm-btn="Xóa Dịch Vụ"
+                            data-confirm-type="danger">
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SCRIPT ĐIỀU KHIỂN TỨC THÌ (Tab Switching + Instant Search & Filter + Admin Edit) -->
+    <script th:inline="javascript">
+      function switchCatalogTab(tabName) {
+        var tabIds = ['room-types', 'rooms', 'services'];
+        tabIds.forEach(function (id) {
+          var contentEl = document.getElementById('tabContent-' + id);
+          var btnEl = document.getElementById('tabBtn-' + id);
+          if (contentEl) {
+            contentEl.style.display = (id === tabName) ? 'block' : 'none';
+          }
+          if (btnEl) {
+            if (id === tabName) {
+              btnEl.classList.add('is-active');
+            } else {
+              btnEl.classList.remove('is-active');
+            }
+          }
+        });
+
+        try {
+          var url = new URL(window.location.href);
+          url.searchParams.set('tab', tabName);
+          window.history.replaceState({ tab: tabName }, '', url.toString());
+        } catch (e) {}
+      }
+
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var serverActive = /*[[${activeTab}]]*/ 'room-types';
+        var targetTab = params.get('tab') || serverActive || 'room-types';
+        if (targetTab === 'rooms' || targetTab === 'services' || targetTab === 'room-types') {
+          switchCatalogTab(targetTab);
+        }
+      })();
+
+      // Tab 2: Live Room Status Filter + Search
+      var currentRoomStatus = 'ALL';
+      function filterRooms(status, btn) {
+        currentRoomStatus = status;
+        document.querySelectorAll('[data-room-filter]').forEach(function (b) {
+          b.classList.remove('is-active');
+        });
+        if (btn) btn.classList.add('is-active');
+        applyRoomFilters();
+      }
+      function applyRoomFilters() {
+        var q = (document.getElementById('roomSearchInput')?.value || '').trim().toLowerCase();
+        document.querySelectorAll('.catalog-room-row').forEach(function (row) {
+          var st = row.getAttribute('data-status');
+          var txt = row.getAttribute('data-search') || '';
+          var matchStatus = (currentRoomStatus === 'ALL' || st === currentRoomStatus);
+          var matchQuery = (!q || txt.indexOf(q) !== -1);
+          row.style.display = (matchStatus && matchQuery) ? '' : 'none';
+        });
+      }
+
+      // Tab 3: Live Service Category Filter + Search
+      var currentSrvCategory = 'ALL';
+      function filterServices(cat, btn) {
+        currentSrvCategory = cat;
+        document.querySelectorAll('[data-srv-filter]').forEach(function (b) {
+          b.classList.remove('is-active');
+        });
+        if (btn) btn.classList.add('is-active');
+        applyServiceFilters();
+      }
+      function applyServiceFilters() {
+        var q = (document.getElementById('srvSearchInput')?.value || '').trim().toLowerCase();
+        document.querySelectorAll('.catalog-service-row').forEach(function (row) {
+          var cat = row.getAttribute('data-category');
+          var txt = row.getAttribute('data-search') || '';
+          var matchCat = (currentSrvCategory === 'ALL' || cat === currentSrvCategory);
+          var matchQuery = (!q || txt.indexOf(q) !== -1);
+          row.style.display = (matchCat && matchQuery) ? '' : 'none';
+        });
+      }
+
+      // Admin CRUD Form Fillers
+      function editRt(btn) {
+        document.getElementById('rtId').value = btn.getAttribute('data-id');
+        document.getElementById('rtName').value = btn.getAttribute('data-name');
+        document.getElementById('rtCapacity').value = btn.getAttribute('data-cap');
+        document.getElementById('rtWeekdayPrice').value = btn.getAttribute('data-weekday');
+        document.getElementById('rtWeekendPrice').value = btn.getAttribute('data-weekend');
+        document.getElementById('rtDescription').value = btn.getAttribute('data-desc');
+        document.getElementById('rtImageUrl').value = btn.getAttribute('data-img');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function resetRtForm() {
+        document.getElementById('rtId').value = '';
+      }
+
+      function editSrv(btn) {
+        document.getElementById('srvId').value = btn.getAttribute('data-id');
+        document.getElementById('srvName').value = btn.getAttribute('data-name');
+        var srvCat = document.getElementById('srvCategory');
+        if (srvCat) {
+          srvCat.value = btn.getAttribute('data-cat');
+          srvCat.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        document.getElementById('srvPrice').value = btn.getAttribute('data-price');
+        document.getElementById('srvUnit').value = btn.getAttribute('data-unit');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function resetSrvForm() {
+        document.getElementById('srvId').value = '';
+      }
+    </script>
+
+  </div>
+</body>
+</html>

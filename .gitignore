@@ -17,10 +17,11 @@
 **/*.mv.db
 **/*.trace.db
 
-# OS Files
+# OS & Office Temp Files
 .DS_Store
 Thumbs.db
 desktop.ini
+~$*
 
 # Local Tools
 tools/

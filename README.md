@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="./ace-hotel-plan/assets/1_logo-day-du_khong-nen.png" alt="ACE Hotel Flagship Logo" width="320" style="filter: drop-shadow(0 6px 20px rgba(253, 191, 45, 0.45));" />
+  <img src="./source/src/main/resources/static/images/1_logo-day-du_khong-nen.png" alt="ACE Hotel Flagship Logo" width="320" style="filter: drop-shadow(0 6px 20px rgba(253, 191, 45, 0.45));" />
 
   <br />
 
@@ -41,17 +41,17 @@
   <table>
     <tr>
       <td width="33.3%" align="center">
-        <img src="./anh1.png" alt="Grand Lobby Flagship" style="border-radius: 10px; border: 1px solid rgba(253, 191, 45, 0.3);" /><br />
+        <img src="./source/src/main/resources/static/images/hero/anh1.png" alt="Grand Lobby Flagship" style="border-radius: 10px; border: 1px solid rgba(253, 191, 45, 0.3);" /><br />
         <b>Đại Sảnh Obsidian Grand Lobby</b><br />
         <sub>Không gian đón tiếp chuẩn 5 sao với ánh sáng Ambient Gold</sub>
       </td>
       <td width="33.3%" align="center">
-        <img src="./room-suite.png" alt="Presidential Suite" style="border-radius: 10px; border: 1px solid rgba(253, 191, 45, 0.3);" /><br />
+        <img src="./source/src/main/resources/static/images/room-suite.png" alt="Presidential Suite" style="border-radius: 10px; border: 1px solid rgba(253, 191, 45, 0.3);" /><br />
         <b>Presidential Suite Hoàng Gia</b><br />
         <sub>Tầm nhìn Panorama, bồn sục Jacuzzi & đặc quyền VIP</sub>
       </td>
       <td width="33.3%" align="center">
-        <img src="./room-deluxe.png" alt="Deluxe King Balcony" style="border-radius: 10px; border: 1px solid rgba(253, 191, 45, 0.3);" /><br />
+        <img src="./source/src/main/resources/static/images/room-deluxe.png" alt="Deluxe King Balcony" style="border-radius: 10px; border: 1px solid rgba(253, 191, 45, 0.3);" /><br />
         <b>Deluxe King Ban Công</b><br />
         <sub>Nội thất gỗ óc chó cao cấp & hệ thống Smart-Room 24/7</sub>
       </td>
@@ -121,17 +121,17 @@ flowchart LR
   <table>
     <tr>
       <td width="33.3%" align="center">
-        <img src="./quytrinh1.png" alt="Bước 1: Tra cứu & Đặt cọc 30%" style="border-radius: 8px; border: 1px solid rgba(253, 191, 45, 0.25);" /><br /><br />
+        <img src="./source/src/main/resources/static/images/quytrinh1.png" alt="Bước 1: Tra cứu & Đặt cọc 30%" style="border-radius: 8px; border: 1px solid rgba(253, 191, 45, 0.25);" /><br /><br />
         <b>BƯỚC 01 • TRA CỨU & ĐẶT CỌC</b><br />
         <sub>Tra cứu tồn kho Quota khả dụng, xác nhận đặt phòng và cọc giữ chỗ 30% trực tuyến.</sub>
       </td>
       <td width="33.3%" align="center">
-        <img src="./quytrinh2.png" alt="Bước 2: Quét QR Nhận Phòng 3s" style="border-radius: 8px; border: 1px solid rgba(253, 191, 45, 0.25);" /><br /><br />
+        <img src="./source/src/main/resources/static/images/quytrinh2.png" alt="Bước 2: Quét QR Nhận Phòng 3s" style="border-radius: 8px; border: 1px solid rgba(253, 191, 45, 0.25);" /><br /><br />
         <b>BƯỚC 02 • CHECK-IN KHÔNG CHẠM</b><br />
         <sub>Xuất trình thẻ lưu trú QR trên smartphone, quầy lễ tân quét nhận phòng sạch trong 3 giây.</sub>
       </td>
       <td width="33.3%" align="center">
-        <img src="./quytrinh3.png" alt="Bước 3: Trải nghiệm & Quyết toán" style="border-radius: 8px; border: 1px solid rgba(253, 191, 45, 0.25);" /><br /><br />
+        <img src="./source/src/main/resources/static/images/quytrinh3.png" alt="Bước 3: Trải nghiệm & Quyết toán" style="border-radius: 8px; border: 1px solid rgba(253, 191, 45, 0.25);" /><br /><br />
         <b>BƯỚC 03 • NGHỈ DƯỠNG & QUYẾT TOÁN</b><br />
         <sub>Tận hưởng tiện ích 5 sao, tra cứu Live Folio và quyết toán tự động khấu trừ cọc khi rời đi.</sub>
       </td>
@@ -180,15 +180,17 @@ AVAILABLE  ──(Check-in)──>  OCCUPIED  ──(Check-out)──>  DIRTY  �
 
 ## 🔑 Tài Khoản Trải Nghiệm Demo Chuẩn
 
-Hệ thống được cấu hình sẵn 3 tài khoản chuẩn mực đại diện cho 3 phân hệ tương ứng:
+Hệ thống được cấu hình sẵn các tài khoản mẫu trong cơ sở dữ liệu (`sample-data.sql`) đại diện cho 3 phân hệ tương ứng:
 
-| Vai Trò | Tên Đăng Nhập | Mật Khẩu | Quyền Hạn (Role) | Cổng Truy Cập Chính |
+| Vai Trò | Tên Đăng Nhập (Username) | Mật Khẩu (Password) | Quyền Hạn (Role) | Cổng Truy Cập Chính |
 | :--- | :---: | :---: | :---: | :--- |
-| **👑 Khách Hàng (Customer)** | `khach` | `Khach@2026` | `ROLE_CUSTOMER` | `http://localhost:8080/customer/dashboard` |
-| **🛎️ Lễ Tân (Receptionist)** | `letan` | `Letan@2026` | `ROLE_RECEPTIONIST` | `http://localhost:8080/staff/dashboard` |
-| **👔 Quản Trị Viên (Admin)** | `admin` | `Admin@2026` | `ROLE_ADMIN` | `http://localhost:8080/admin/dashboard` |
+| **👑 Khách Hàng (Customer)** | `khach` | `khach` *(hoặc `Khach@2026`)* | `ROLE_CUSTOMER` | `http://localhost:8088/customer/dashboard` |
+| **🛎️ Lễ Tân (Receptionist)** | `nhanvien` *(hoặc `letan`)* | `nhanvien` *(hoặc `Letan@2026`)* | `ROLE_RECEPTIONIST` | `http://localhost:8088/staff/dashboard` |
+| **👔 Quản Trị Viên (Admin)** | `admin` | `admin` *(hoặc `Admin@2026`)* | `ROLE_ADMIN` | `http://localhost:8088/admin/dashboard` |
 
-> *Ghi chú: Mật khẩu mặc định tuân thủ tiêu chuẩn mật khẩu mạnh 5 sao (Tối thiểu 8 ký tự, có chữ hoa, số và ký tự đặc biệt).*
+> *Ghi chú quan trọng:* 
+> - **Đồng bộ Database:** CSDL khởi tạo sẵn tài khoản lễ tân với mã `nhanvien` (mật khẩu `nhanvien`), đồng thời hỗ trợ thêm alias `letan` (mật khẩu `Letan@2026`). Người dùng có thể đăng nhập bằng bất kỳ tài khoản nào ở trên.
+> - **Cổng chạy Local:** Ứng dụng đã được cấu hình chạy trên cổng **`8088`** (`server.port=8088`) để tránh xung đột với cổng `8080`.
 
 <br />
 
@@ -197,30 +199,30 @@ Hệ thống được cấu hình sẵn 3 tài khoản chuẩn mực đại di�
 ## 📁 Cấu Trúc Dự Án (Project Structure)
 
 ```text
-D:\ACE\
-├── 📂 ace-hotel/                    # Mã nguồn chính Spring Boot 3.5.0 (Java 21)
+ACE/
+├── 📂 source/                       # Mã nguồn chính Spring Boot 3.5.0 (Java 21 · 58 tệp Java)
 │   ├── 📂 src/main/java/com/ace/hotel/
-│   │   ├── 📂 config/               # Bảo mật Spring Security, Auth Handlers, Demo Seeder
-│   │   ├── 📂 controller/           # Web Controllers (Public, Customer, Staff, Admin)
-│   │   ├── 📂 dto/                  # Data Transfer Objects (Dashboards, Booking, Profile)
-│   │   ├── 📂 entity/               # JPA Entities (Booking, Room, RoomType, Invoice, User)
-│   │   ├── 📂 repository/           # Spring Data JPA Repositories (Pessimistic Locking)
-│   │   ├── 📂 service/              # Logic nghiệp vụ (Pricing, CheckIn, CheckOut, Folio)
-│   │   └── 📂 util/                 # Tiện ích dùng chung (ValidationUtils)
+│   │   ├── 📂 config/               # Bảo mật Spring Security 6, Auth Handlers, Demo Seeder
+│   │   ├── 📂 controller/           # 9 Web Controllers (Public, Customer, Staff, Admin)
+│   │   ├── 📂 dto/                  # 9 Data Transfer Objects
+│   │   ├── 📂 entity/               # 8 JPA Entities + 5 Enums
+│   │   ├── 📂 exception/            # GlobalExceptionHandler & BusinessException
+│   │   ├── 📂 repository/           # 8 Spring Data JPA Repositories (Pessimistic Locking)
+│   │   ├── 📂 service/              # 10 Services @Transactional (Booking, Pricing, CheckIn/Out, Folio, Report)
+│   │   └── 📂 util/                 # ValidationUtils
 │   ├── 📂 src/main/resources/
-│   │   ├── 📂 static/               # CSS Design System (base, components, tokens), JS, Fonts
-│   │   ├── 📂 templates/            # Thymeleaf HTML Templates theo phân hệ
-│   │   ├── 📄 application.properties # Cấu hình H2 Database, Timezone VN, Thymeleaf Cache
-│   │   ├── 📄 schema.sql            # Khởi tạo lược đồ quan hệ CSDL
-│   │   └── 📄 sample-data.sql       # Nạp dữ liệu mẫu ban đầu
-│   └── 📄 pom.xml                   # Quản lý phụ thuộc Maven
+│   │   ├── 📂 static/               # CSS Design System (Dark/Light), AceDatePicker, QR, PDF Export
+│   │   ├── 📂 templates/            # Thymeleaf HTML Templates (4 phân hệ)
+│   │   ├── 📄 application.properties # Cấu hình H2 File DB, Timezone VN, Port 8088
+│   │   ├── 📄 schema.sql            # Lược đồ quan hệ 8 bảng / 73 cột chuẩn 3NF + 3 CHECK constraints
+│   │   └── 📄 sample-data.sql       # Dữ liệu nền 5 hạng phòng, 12 phòng vật lý, 8 dịch vụ
+│   ├── 📄 pom.xml                   # Quản lý phụ thuộc Maven
+│   └── 📄 mvnw / mvnw.cmd           # Maven Wrapper chạy trực tiếp không cần cài Maven rời
 │
-├── 📂 ace-hotel-plan/               # Kế hoạch chi tiết 11 phần & Bộ nhận diện thương hiệu
-│   └── 📂 assets/                   # Logo ACE và biểu tượng Vector nguyên bản
+├── 📂 doc/                          # Báo cáo đồ án chính thức môn 502050 (Nhóm 13 – K28)
+│   └── 📄 BaoCao_Nhom13_502050_ACEHotel.docx
 │
-└── 📂 docs/                         # Toàn bộ hồ sơ phân tích thiết kế môn học 502050
-    ├── 01-project-brief.md .. 14-kiem-thu-nghiep-vu-va-ma-tran-truy-vet.md
-    └── 📂 assets/                   # Wireframe, ERD, Sơ đồ ca sử dụng
+└── 📄 README.md                     # Tài liệu tổng quan và hướng dẫn khởi chạy
 ```
 
 <br />
@@ -231,27 +233,28 @@ D:\ACE\
 
 ### Yêu Cầu Môi Trường
 - **Java Development Kit (JDK)**: Phiên bản **21 LTS** trở lên.
-- **Maven**: Đã tích hợp sẵn Maven Wrapper trong thư mục dự án.
+- **Maven**: Đã tích hợp sẵn Maven Wrapper trong thư mục `source/`.
 
 ### 1. Khởi chạy ứng dụng
-Mở terminal tại thư mục `ace-hotel/` và thực thi:
+Mở terminal tại thư mục `source/` và thực thi:
 
 ```bash
 # Trên hệ điều hành Windows:
-cd ace-hotel
+cd source
 mvnw.cmd spring-boot:run
 
 # Trên hệ điều hành Linux / macOS:
-cd ace-hotel
+cd source
 ./mvnw spring-boot:run
 ```
 
-### 2. Truy cập hệ thống
+### 2. Truy cập hệ thống (Cổng 8088)
 Sau khi màn hình console xuất hiện thông báo `Started AceHotelApplication`:
-- **Trang chủ quảng bá**: Truy cập [http://localhost:8080](http://localhost:8080)
-- **Bàn làm việc Lễ tân PMS**: Truy cập [http://localhost:8080/staff/dashboard](http://localhost:8080/staff/dashboard)
-- **Bảng điều khiển Quản trị**: Truy cập [http://localhost:8080/admin/dashboard](http://localhost:8080/admin/dashboard)
-- **Giao diện H2 Console**: Truy cập [http://localhost:8080/h2-console](http://localhost:8080/h2-console) (JDBC URL: `jdbc:h2:file:./data/ace_hotel_db`, User: `sa`, Password để trống).
+- **Trang chủ quảng bá**: Truy cập [http://localhost:8088](http://localhost:8088)
+- **Bàn làm việc Lễ tân PMS**: Truy cập [http://localhost:8088/staff/dashboard](http://localhost:8088/staff/dashboard)
+- **Bảng điều khiển Quản trị**: Truy cập [http://localhost:8088/admin/dashboard](http://localhost:8088/admin/dashboard)
+- **Cổng Hội Viên Khách Hàng**: Truy cập [http://localhost:8088/customer/dashboard](http://localhost:8088/customer/dashboard)
+- **Giao diện H2 Console**: Truy cập [http://localhost:8088/h2-console](http://localhost:8088/h2-console) (JDBC URL: `jdbc:h2:file:./data/ace_hotel_db`, User: `sa`, Password để trống).
 
 ### 3. Chạy kiểm thử tự động (Automated Smoke Test)
 ```bash

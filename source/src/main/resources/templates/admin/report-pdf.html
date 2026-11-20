@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${pageTitle}">Báo Cáo Doanh Thu A4 | ACE Hotel</title>
+  <link rel="icon" type="image/png" th:href="@{/images/2_logo-ACE_khong-nen.png}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/print.css}">
+
+  <style>
+    :root {
+      --rpt-bg: #FFFFFF;
+      --rpt-text: #0F172A;
+      --rpt-muted: #64748B;
+      --rpt-border: #E2E8F0;
+      --rpt-gold: #B45309;
+      --rpt-gold-soft: #FFFBEB;
+      --rpt-gold-border: #FDE68A;
+      --rpt-emerald: #047857;
+      --rpt-emerald-soft: #ECFDF5;
+    }
+
+    body {
+      background-color: #0B0F17;
+      color: #F8FAFC;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .report-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(229, 192, 123, 0.22);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.58rem 1.1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-back {
+      background: rgba(255, 255, 255, 0.08);
+      color: #E2E8F0;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .btn-back:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+    }
+
+    .btn-pdf {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #0B0F17;
+      border: none;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+    }
+
+    .btn-pdf:hover:not(:disabled) {
+      background: linear-gradient(135deg, #FBBF24, #F59E0B);
+      transform: translateY(-1px);
+    }
+
+    .btn-print-outline {
+      background: rgba(255, 255, 255, 0.06);
+      color: #CBD5E1;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-print-outline:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.14);
+      color: #FFFFFF;
+    }
+
+    .btn-action:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    .report-page-container {
+      padding: 2rem 1rem 3.5rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .report-sheet {
+      background: var(--rpt-bg);
+      color: var(--rpt-text);
+      width: 100%;
+      max-width: 840px;
+      padding: 1.6rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .report-sheet::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 340px;
+      height: 340px;
+      transform: translate(-50%, -50%) rotate(-12deg);
+      background-image: url('/images/2_logo-ACE_khong-nen.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .report-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.25rem;
+      border-bottom: 2px solid #B45309;
+      padding-bottom: 0.85rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .brand-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: #0F172A;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-tagline {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #B45309;
+      margin-top: 0.15rem;
+    }
+
+    .brand-meta {
+      font-size: 0.73rem;
+      color: var(--rpt-muted);
+      margin-top: 0.35rem;
+      line-height: 1.45;
+    }
+
+    .report-title-block {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .report-main-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #0F172A;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .report-subtitle {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #B45309;
+      letter-spacing: 0.8px;
+      margin-top: 0.2rem;
+    }
+
+    .report-meta-badges {
+      margin-top: 0.45rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.28rem;
+    }
+
+    .code-badge {
+      background: var(--rpt-gold-soft);
+      border: 1px solid var(--rpt-gold-border);
+      color: var(--rpt-gold);
+      font-family: 'Courier New', monospace;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 5px;
+    }
+
+    .verified-stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      border: 1.5px solid #047857;
+      color: #047857;
+      background: #ECFDF5;
+      padding: 0.18rem 0.65rem;
+      border-radius: 99px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    /* Period Strip */
+    .period-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      background: #F8FAFC;
+      border: 1px solid var(--rpt-border);
+      border-radius: 8px;
+      padding: 0.48rem 0.9rem;
+      margin-bottom: 0.9rem;
+      font-size: 0.77rem;
+      color: #334155;
+    }
+
+    /* 4 KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 0.95rem;
+    }
+
+    .kpi-card {
+      background: #FAFAFA;
+      border: 1px solid var(--rpt-border);
+      border-radius: 8px;
+      padding: 0.65rem 0.8rem;
+      border-top: 3px solid #B45309;
+    }
+
+    .kpi-label {
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--rpt-muted);
+    }
+
+    .kpi-val {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #0F172A;
+      margin: 0.25rem 0 0.2rem;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .kpi-sub {
+      font-size: 0.7rem;
+      color: var(--rpt-muted);
+      line-height: 1.35;
+    }
+
+    /* 2-Column Financial Section */
+    .finance-grid {
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      gap: 1rem;
+      margin-bottom: 0.95rem;
+      align-items: stretch;
+    }
+
+    .panel-box {
+      border: 1px solid var(--rpt-border);
+      border-radius: 8px;
+      padding: 0.75rem 0.95rem;
+      background: #FFFFFF;
+    }
+
+    .panel-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #0F172A;
+      border-bottom: 1.5px solid #E2E8F0;
+      padding-bottom: 0.35rem;
+      margin: 0 0 0.55rem 0;
+    }
+
+    .rpt-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.76rem;
+    }
+
+    .rpt-table th {
+      background: #F1F5F9;
+      color: #334155;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      letter-spacing: 0.4px;
+      padding: 0.38rem 0.55rem;
+      border-bottom: 1.5px solid #CBD5E1;
+      text-align: left;
+    }
+
+    .rpt-table td {
+      padding: 0.34rem 0.55rem;
+      border-bottom: 1px solid #E2E8F0;
+      color: #1E293B;
+    }
+
+    .num {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .row-sub td {
+      color: #64748B;
+      padding-left: 1.2rem;
+      font-size: 0.74rem;
+    }
+
+    .row-highlight td {
+      background: #F8FAFC;
+      font-weight: 700;
+    }
+
+    .row-grand td {
+      background: #FFFBEB;
+      color: #B45309;
+      font-weight: 800;
+      border-top: 1.5px solid #FDE68A;
+      border-bottom: 1.5px solid #FDE68A;
+    }
+
+    .row-net td {
+      background: #ECFDF5;
+      color: #047857;
+      font-weight: 800;
+    }
+
+    /* Payment method bars */
+    .pm-item {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .pm-bar-bg {
+      height: 6px;
+      background: #E2E8F0;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 0.4rem;
+    }
+
+    .pm-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+
+    /* Signatures */
+    .signatures-block {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.7rem;
+      margin-top: 0.95rem;
+      border-top: 1px solid #E2E8F0;
+      text-align: center;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .signature-col {
+      width: 240px;
+    }
+
+    .sign-title {
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: #0F172A;
+    }
+
+    .sign-subtitle {
+      font-size: 0.7rem;
+      color: var(--rpt-muted);
+      margin-top: 0.15rem;
+    }
+
+    .sign-space {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .digital-seal {
+      border: 2px solid #B45309;
+      color: #B45309;
+      border-radius: 99px;
+      padding: 0.2rem 0.85rem;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      transform: rotate(-6deg);
+      background: #FFFBEB;
+    }
+
+    .sign-name {
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: #0F172A;
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 8mm;
+      }
+      body {
+        background: #FFFFFF !important;
+      }
+      .report-topbar, .no-print {
+        display: none !important;
+      }
+      .report-page-container {
+        padding: 0 !important;
+        display: block !important;
+      }
+      .report-sheet {
+        max-width: 100% !important;
+        padding: 0.4rem 0.6rem !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+      .kpi-grid, .finance-grid, .signatures-block {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Action Bar (Hidden on Print & PDF) -->
+  <header class="report-topbar no-print">
+    <a th:href="@{/admin/reports(fromDate=${report.fromDate},toDate=${report.toDate})}" class="btn-action btn-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      <span>Quay lại Báo Cáo</span>
+    </a>
+
+    <div style="font-size: 0.84rem; color: #94A3B8; text-align: center;">
+      <span style="color: #FDBF2D; font-weight: 700;">★ Báo Cáo Điều Hành Chuẩn 5 Sao</span> — Khổ A4 Portrait
+    </div>
+
+    <div style="display: inline-flex; align-items: center; gap: 0.55rem;">
+      <button type="button" id="btnExportPdf" class="btn-action btn-pdf" onclick="exportReportPdf(this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <span>Tải PDF (A4)</span>
+      </button>
+      <button type="button" class="btn-action btn-print-outline" onclick="window.print()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        <span>In Báo Cáo</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- A4 Report Sheet -->
+  <main class="report-page-container">
+    <article class="report-sheet">
+      <div class="report-content">
+
+        <!-- 1. Executive Header -->
+        <header class="report-header">
+          <div style="display: flex; align-items: flex-start; gap: 0.9rem;">
+            <img th:src="@{/images/2_logo-ACE_khong-nen.png}" alt="ACE Hotel Flagship" style="height: 54px; width: auto; object-fit: contain;">
+            <div>
+              <h1 class="brand-title">ACE HOTEL FLAGSHIP</h1>
+              <div class="brand-tagline">5★ Luxury, Privacy &amp; Exceptional Hospitality</div>
+              <div class="brand-meta">
+                19 Nguyễn Hữu Thọ, P. Tân Hưng, Quận 7, TP. Hồ Chí Minh<br>
+                Hotline 24/7: <strong>0903 723 342</strong> • Email: <strong>dangkhoa040706@gmail.com</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-title-block">
+            <h2 class="report-main-title">BÁO CÁO DOANH THU</h2>
+            <div class="report-subtitle">EXECUTIVE FINANCIAL &amp; OCCUPANCY REPORT</div>
+            <div class="report-meta-badges">
+              <span class="code-badge" th:text="'#' + ${reportCode}">#RPT-20261118</span>
+              <span class="verified-stamp">✓ VERIFIED EXECUTIVE REPORT</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- 2. Reporting Period Strip -->
+        <div class="period-strip">
+          <div>
+            Kỳ báo cáo: <strong style="color: #0F172A;" th:text="${#temporals.format(report.fromDate, 'dd/MM/yyyy')}">01/11/2026</strong>
+            đến <strong style="color: #0F172A;" th:text="${#temporals.format(report.toDate, 'dd/MM/yyyy')}">18/11/2026</strong>
+          </div>
+          <div>
+            Ngày lập: <strong th:text="${#temporals.format(generatedAt, 'dd/MM/yyyy HH:mm')}">18/11/2026 10:10</strong>
+            • Đơn vị: <strong>VNĐ</strong>
+          </div>
+        </div>
+
+        <!-- 3. 4 Executive KPI Cards -->
+        <section class="kpi-grid">
+          <div class="kpi-card" style="border-top-color: #D97706;">
+            <div class="kpi-label">Công suất (OR%)</div>
+            <div class="kpi-val" style="color: #B45309;" th:text="${report.occupancyRate + '%'}">0.0%</div>
+            <div class="kpi-sub">
+              <strong th:text="${report.occupiedRooms}">0</strong> đang ở / <strong th:text="${report.sellableRooms}">12</strong> khả dụng
+            </div>
+          </div>
+
+          <div class="kpi-card" style="border-top-color: #047857;">
+            <div class="kpi-label">Tổng Doanh Thu</div>
+            <div class="kpi-val" style="color: #047857;" th:text="${#numbers.formatDecimal(report.totalGrandRevenue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</div>
+            <div class="kpi-sub">
+              <strong th:text="${report.totalInvoicesCount}">0</strong> hóa đơn • Thực thu: <strong th:text="${#numbers.formatDecimal(report.totalBalanceDue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</strong>
+            </div>
+          </div>
+
+          <div class="kpi-card" style="border-top-color: #2563EB;">
+            <div class="kpi-label">Giá Bình Quân (ADR)</div>
+            <div class="kpi-val" th:text="${#numbers.formatDecimal(report.adr, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</div>
+            <div class="kpi-sub">
+              Trên <strong th:text="${report.totalNightsPaid}">0</strong> đêm đã thanh toán
+            </div>
+          </div>
+
+          <div class="kpi-card" style="border-top-color: #7C3AED;">
+            <div class="kpi-label">RevPAR</div>
+            <div class="kpi-val" th:text="${#numbers.formatDecimal(report.revPar, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</div>
+            <div class="kpi-sub">Doanh thu / phòng khả dụng</div>
+          </div>
+        </section>
+
+        <!-- 4. 2-Column Financial Breakdown -->
+        <section class="finance-grid">
+          <!-- Left: Revenue Structure -->
+          <div class="panel-box">
+            <h3 class="panel-title">Cơ Cấu Doanh Thu Trong Kỳ</h3>
+            <table class="rpt-table">
+              <thead>
+                <tr>
+                  <th>Khoản Mục</th>
+                  <th class="num">Số Tiền (VNĐ)</th>
+                  <th class="num" style="width: 62px;">Tỷ Trọng</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Doanh thu phòng gốc</strong></td>
+                  <td class="num"><strong th:text="${#numbers.formatDecimal(report.totalRoomRevenue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</strong></td>
+                  <td class="num" th:text="${report.totalGrandRevenue > 0 ? #numbers.formatDecimal(report.totalRoomRevenue * 100.0 / report.totalGrandRevenue, 1, 'COMMA', 1, 'POINT') + '%' : '0.0%'}">0.0%</td>
+                </tr>
+                <tr>
+                  <td><strong>Doanh thu dịch vụ (Folio)</strong></td>
+                  <td class="num"><strong th:text="${#numbers.formatDecimal(report.totalServiceRevenue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</strong></td>
+                  <td class="num" th:text="${report.totalGrandRevenue > 0 ? #numbers.formatDecimal(report.totalServiceRevenue * 100.0 / report.totalGrandRevenue, 1, 'COMMA', 1, 'POINT') + '%' : '0.0%'}">0.0%</td>
+                </tr>
+                <tr class="row-sub">
+                  <td>• Minibar</td>
+                  <td class="num" th:text="${#numbers.formatDecimal(report.revenueMinibar, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num">—</td>
+                </tr>
+                <tr class="row-sub">
+                  <td>• Giặt ủi (Laundry)</td>
+                  <td class="num" th:text="${#numbers.formatDecimal(report.revenueLaundry, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num">—</td>
+                </tr>
+                <tr class="row-sub">
+                  <td>• Ẩm thực (F&amp;B)</td>
+                  <td class="num" th:text="${#numbers.formatDecimal(report.revenueFb, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num">—</td>
+                </tr>
+                <tr class="row-sub">
+                  <td>• Bồi thường (Damages)</td>
+                  <td class="num" th:text="${#numbers.formatDecimal(report.revenueDamages, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num">—</td>
+                </tr>
+                <tr>
+                  <td>Phụ thu nhận sớm / trả trễ</td>
+                  <td class="num" th:text="${#numbers.formatDecimal(report.totalSurchargeRevenue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num" th:text="${report.totalGrandRevenue > 0 ? #numbers.formatDecimal(report.totalSurchargeRevenue * 100.0 / report.totalGrandRevenue, 1, 'COMMA', 1, 'POINT') + '%' : '0.0%'}">0.0%</td>
+                </tr>
+                <tr class="row-highlight">
+                  <td>Cộng trước thuế phí (Subtotal)</td>
+                  <td class="num" th:text="${#numbers.formatDecimal(report.totalSubtotal, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num">—</td>
+                </tr>
+                <tr>
+                  <td>Phí phục vụ (SVC 5%)</td>
+                  <td class="num" th:text="${#numbers.formatDecimal(report.totalSvcRevenue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num" th:text="${report.totalGrandRevenue > 0 ? #numbers.formatDecimal(report.totalSvcRevenue * 100.0 / report.totalGrandRevenue, 1, 'COMMA', 1, 'POINT') + '%' : '0.0%'}">0.0%</td>
+                </tr>
+                <tr>
+                  <td>Thuế GTGT (VAT 10%)</td>
+                  <td class="num" th:text="${#numbers.formatDecimal(report.totalVatRevenue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num" th:text="${report.totalGrandRevenue > 0 ? #numbers.formatDecimal(report.totalVatRevenue * 100.0 / report.totalGrandRevenue, 1, 'COMMA', 1, 'POINT') + '%' : '0.0%'}">0.0%</td>
+                </tr>
+                <tr class="row-grand">
+                  <td>TỔNG DOANH THU HÓA ĐƠN</td>
+                  <td class="num" th:text="${#numbers.formatDecimal(report.totalGrandRevenue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num">100%</td>
+                </tr>
+                <tr>
+                  <td>Đã khấu trừ tiền cọc Online 30%</td>
+                  <td class="num" th:text="'-' + ${#numbers.formatDecimal(report.totalDepositDeducted, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num">—</td>
+                </tr>
+                <tr class="row-net">
+                  <td>THỰC THU TẠI QUẦY (BALANCE DUE)</td>
+                  <td class="num" th:text="${#numbers.formatDecimal(report.totalBalanceDue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                  <td class="num">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Right: Payment Methods -->
+          <div class="panel-box" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h3 class="panel-title">Thực Thu Theo Phương Thức</h3>
+              <p style="font-size: 0.72rem; color: var(--rpt-muted); margin: -0.35rem 0 0.85rem 0;">
+                Số tiền thu tại quầy lúc Check-out (đã trừ cọc 30%)
+              </p>
+
+              <!-- CASH -->
+              <div class="pm-item">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                  <strong style="color: #0F172A;">Tiền mặt (CASH)</strong>
+                  <strong style="color: #047857; font-variant-numeric: tabular-nums;" th:text="${#numbers.formatDecimal(report.paymentMethodTotals['CASH'], 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</strong>
+                </div>
+                <div class="pm-bar-bg">
+                  <div class="pm-bar-fill" style="background: #10B981;"
+                       th:styleappend="'width:' + (${report.totalBalanceDue > 0 ? (report.paymentMethodTotals['CASH'] * 100.0 / report.totalBalanceDue) : 0}) + '%;'"></div>
+                </div>
+              </div>
+
+              <!-- CARD -->
+              <div class="pm-item">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                  <strong style="color: #0F172A;">Thẻ thanh toán (POS / CARD)</strong>
+                  <strong style="color: #2563EB; font-variant-numeric: tabular-nums;" th:text="${#numbers.formatDecimal(report.paymentMethodTotals['CARD'], 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</strong>
+                </div>
+                <div class="pm-bar-bg">
+                  <div class="pm-bar-fill" style="background: #3B82F6;"
+                       th:styleappend="'width:' + (${report.totalBalanceDue > 0 ? (report.paymentMethodTotals['CARD'] * 100.0 / report.totalBalanceDue) : 0}) + '%;'"></div>
+                </div>
+              </div>
+
+              <!-- TRANSFER -->
+              <div class="pm-item">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                  <strong style="color: #0F172A;">Chuyển khoản (VietQR)</strong>
+                  <strong style="color: #B45309; font-variant-numeric: tabular-nums;" th:text="${#numbers.formatDecimal(report.paymentMethodTotals['TRANSFER'], 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</strong>
+                </div>
+                <div class="pm-bar-bg">
+                  <div class="pm-bar-fill" style="background: #F59E0B;"
+                       th:styleappend="'width:' + (${report.totalBalanceDue > 0 ? (report.paymentMethodTotals['TRANSFER'] * 100.0 / report.totalBalanceDue) : 0}) + '%;'"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 6px; padding: 0.6rem 0.75rem; font-size: 0.71rem; color: #92400E; line-height: 1.45; margin-top: 0.5rem;">
+              <strong>Ghi chú kiểm toán:</strong> Biểu giá tuân thủ chuẩn khách sạn 5★ (Subtotal + 5% SVC + 10% VAT). Phòng đang bảo trì được loại khỏi mẫu số công suất phòng bán được.
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Invoice Ledger Table -->
+        <section class="panel-box">
+          <h3 class="panel-title">
+            Bảng Kê Hóa Đơn VAT Quyết Toán Trong Kỳ (<span th:text="${report.invoices.size()}">0</span> hóa đơn)
+          </h3>
+
+          <div th:if="${report.invoices.isEmpty()}" style="text-align: center; padding: 1.25rem; color: var(--rpt-muted); font-size: 0.8rem;">
+            Không phát sinh hóa đơn quyết toán nào trong khoảng thời gian đã chọn.
+          </div>
+
+          <table th:if="${!report.invoices.isEmpty()}" class="rpt-table">
+            <thead>
+              <tr>
+                <th>Mã HĐ</th>
+                <th>Mã Đơn</th>
+                <th>Khách Hàng</th>
+                <th>Phòng</th>
+                <th>Ngày Thanh Toán</th>
+                <th>Hình Thức</th>
+                <th class="num">Tổng Hóa Đơn</th>
+                <th class="num">Thực Thu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="inv : ${report.invoices}">
+                <td><strong style="color: #B45309;" th:text="'#INV-' + ${inv.invoiceId}">#INV-1</strong></td>
+                <td th:text="${inv.booking.bookingCode}">BK-2401</td>
+                <td th:text="${inv.booking.customer.fullName}">Khách Hàng</td>
+                <td th:text="${inv.booking.room != null ? 'P.' + inv.booking.room.roomNumber : 'N/A'}">P.301</td>
+                <td th:text="${#temporals.format(inv.paidAt, 'dd/MM/yyyy HH:mm')}">18/11/2026 10:00</td>
+                <td th:text="${inv.paymentMethod.name()}">CASH</td>
+                <td class="num" style="font-weight: 700;" th:text="${#numbers.formatDecimal(inv.grandTotal, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+                <td class="num" style="font-weight: 800; color: #047857;" th:text="${#numbers.formatDecimal(inv.balanceDue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- 6. Executive Signatures -->
+        <footer class="signatures-block">
+          <div class="signature-col">
+            <div class="sign-title">Người Lập Báo Cáo</div>
+            <div class="sign-subtitle">Kế toán / Kiểm soát doanh thu</div>
+            <div class="sign-space">
+              <span style="font-size: 0.72rem; color: #94A3B8; font-style: italic;">(Ký &amp; ghi rõ họ tên)</span>
+            </div>
+            <div class="sign-name">Bộ Phận Tài Chính ACE</div>
+          </div>
+
+          <div class="signature-col">
+            <div class="sign-title">Ban Giám Đốc Điều Hành</div>
+            <div class="sign-subtitle">Phê duyệt báo cáo kỳ</div>
+            <div class="sign-space">
+              <span class="digital-seal">ACE HOTEL VERIFIED • 5★</span>
+            </div>
+            <div class="sign-name">Quản Trị Viên Hệ Thống</div>
+          </div>
+        </footer>
+
+      </div>
+    </article>
+  </main>
+
+  <script th:src="@{/js/html2canvas.min.js}"></script>
+  <script th:src="@{/js/jspdf.umd.min.js}"></script>
+  <script th:inline="javascript">
+    var reportFileName = /*[[${'Bao-Cao-Doanh-Thu-ACE_' + report.fromDate + '_' + report.toDate + '.pdf'}]]*/ 'Bao-Cao-Doanh-Thu-ACE.pdf';
+
+    function exportReportPdf(btn) {
+      if (typeof html2canvas === 'undefined' || !window.jspdf || !window.jspdf.jsPDF) {
+        window.print();
+        return;
+      }
+      var labelSpan = btn.querySelector('span');
+      var origText = labelSpan.textContent;
+      btn.disabled = true;
+      labelSpan.textContent = 'Đang tạo PDF...';
+
+      var sheet = document.querySelector('.report-sheet');
+      var prevScrollY = window.scrollY || window.pageYOffset || 0;
+      window.scrollTo(0, 0);
+      var readyPromise = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+
+      readyPromise.then(function() {
+        return html2canvas(sheet, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#FFFFFF',
+          scrollX: 0,
+          scrollY: 0,
+          logging: false,
+          onclone: function(clonedDoc) {
+            var fixStyle = clonedDoc.createElement('style');
+            fixStyle.textContent =
+              '.report-sheet, .report-sheet * {' +
+              '  font-family: "Segoe UI", Arial, Helvetica, sans-serif !important;' +
+              '  letter-spacing: 0 !important;' +
+              '  font-variant-numeric: normal !important;' +
+              '}' +
+              '.report-sheet .brand-title, .report-sheet .report-main-title {' +
+              '  font-family: Georgia, "Times New Roman", serif !important;' +
+              '}' +
+              '.report-sheet .code-badge {' +
+              '  font-family: Consolas, "Courier New", monospace !important;' +
+              '  display: inline-block !important;' +
+              '  padding: 4px 10px !important;' +
+              '  line-height: 1.35 !important;' +
+              '}' +
+              '.report-sheet .verified-stamp {' +
+              '  display: inline-block !important;' +
+              '  padding: 4px 11px !important;' +
+              '  line-height: 1.35 !important;' +
+              '  white-space: nowrap !important;' +
+              '}' +
+              '.report-sheet .digital-seal {' +
+              '  display: inline-block !important;' +
+              '  padding: 5px 14px !important;' +
+              '  line-height: 1.35 !important;' +
+              '  transform: none !important;' +
+              '}';
+            clonedDoc.head.appendChild(fixStyle);
+          }
+        });
+      }).then(function(canvas) {
+        var jsPDF = window.jspdf.jsPDF;
+        var pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        var pageWidth = pdf.internal.pageSize.getWidth();
+        var pageHeight = pdf.internal.pageSize.getHeight();
+        var margin = 7;
+        var maxWidth = pageWidth - margin * 2;
+        var usableHeight = pageHeight - margin * 2;
+        var imgWidth = maxWidth;
+        var imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        // Vừa 1 trang A4 hoặc chỉ tràn nhẹ (<= 25%): tự động co tỉ lệ chuẩn để nằm gọn trên đúng 1 trang A4 duy nhất
+        if (imgHeight <= usableHeight * 1.25) {
+          if (imgHeight > usableHeight) {
+            imgHeight = usableHeight;
+            imgWidth = (canvas.width * imgHeight) / canvas.height;
+          }
+          var x = (pageWidth - imgWidth) / 2;
+          pdf.addImage(canvas.toDataURL('image/png'), 'PNG', x, margin, imgWidth, imgHeight, undefined, 'FAST');
+        } else {
+          // Bảng kê quá dài (nhiều hóa đơn): cắt lát canvas thật theo từng trang, tuyệt đối không lặp nội dung
+          var pxPerMm = canvas.width / maxWidth;
+          var sliceHeightPx = Math.floor(usableHeight * pxPerMm);
+          var offsetY = 0;
+          var pageIdx = 0;
+          while (offsetY < canvas.height) {
+            var currentSliceH = Math.min(sliceHeightPx, canvas.height - offsetY);
+            var sliceCanvas = document.createElement('canvas');
+            sliceCanvas.width = canvas.width;
+            sliceCanvas.height = currentSliceH;
+            var ctx = sliceCanvas.getContext('2d');
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+            ctx.drawImage(canvas, 0, offsetY, canvas.width, currentSliceH, 0, 0, canvas.width, currentSliceH);
+            if (pageIdx > 0) {
+              pdf.addPage();
+            }
+            var sliceHeightMm = currentSliceH / pxPerMm;
+            pdf.addImage(sliceCanvas.toDataURL('image/png'), 'PNG', margin, margin, maxWidth, sliceHeightMm, undefined, 'FAST');
+            offsetY += currentSliceH;
+            pageIdx++;
+          }
+        }
+        pdf.save(reportFileName);
+      }).catch(function(err) {
+        console.error(err);
+        window.print();
+      }).finally(function() {
+        window.scrollTo(0, prevScrollY);
+        btn.disabled = false;
+        labelSpan.textContent = origText;
+      });
+    }
+  </script>
+
+</body>
+</html>
